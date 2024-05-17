@@ -1,7 +1,6 @@
 import Home from "./pages/home/Home";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
-import Test from "./pages/auth/Test";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -18,10 +17,6 @@ function App() {
     {
       path: "/login",
       element: <Login />,
-    },
-    {
-      path: "/test",
-      element: <Test />,
     }
   ]);
 

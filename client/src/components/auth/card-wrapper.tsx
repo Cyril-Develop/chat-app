@@ -8,7 +8,6 @@ import AuthHeader from "@/components/auth/auth-header";
 import BackButton from "./back-button";
 
 interface CardWrapperProps {
-  label: string;
   title: string;
   backButtonHref: string;
   backButtonLabel: string;
@@ -17,7 +16,6 @@ interface CardWrapperProps {
 }
 
 const CardWrapper = ({
-  label,
   title,
   backButtonHref,
   backButtonLabel,
@@ -27,7 +25,7 @@ const CardWrapper = ({
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <AuthHeader label={label} title={title} />
+        <AuthHeader title={title} />
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>

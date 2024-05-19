@@ -36,7 +36,6 @@ const LoginForm = () => {
   return (
     <CardWrapper
       title="Se connecter"
-      label="Se connecter"
       backButtonHref="/register"
       backButtonLabel="S'enregistrer"
       text="Pas encore de compte ?"
@@ -54,7 +53,7 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="j.doe@google.com"
+                      placeholder="john.doe@gmail.com"
                     />
                   </FormControl>
                   <FormMessage />
@@ -68,7 +67,7 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type="password" placeholder="******"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,7 +75,7 @@ const LoginForm = () => {
             />
           </div>
           <Button type="submit" className="w-full opacity-1" disabled={loading}>
-            {loading ? "Chargement..." : "Se connecter avec une adresse email"}
+            {loading ? "Chargement..." : "Avec une adresse email"}
           </Button>
 
           <div className="relative">
@@ -84,7 +83,7 @@ const LoginForm = () => {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="bg-background px-2 text-muted-foreground font-semibold">
                 OU
               </span>
             </div>
@@ -97,7 +96,7 @@ const LoginForm = () => {
               variant="secondary"
               onClick={() => console.log("google")}
             >
-              Se connecter avec Google
+              Avec Google
             </Button>
           </div>
         </form>

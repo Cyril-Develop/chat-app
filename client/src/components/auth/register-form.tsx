@@ -36,7 +36,6 @@ const RegisterForm = () => {
   return (
     <CardWrapper
       title="Créer un compte"
-      label="Créer un compte"
       backButtonHref="/login"
       backButtonLabel="Se connecter"
       text="Déjà un compte ?"
@@ -44,7 +43,7 @@ const RegisterForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row ">
               <FormField
                 control={form.control}
                 name="lastname"
@@ -82,7 +81,7 @@ const RegisterForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="j.doe@google.com"
+                      placeholder="john.doe@gmail.com"
                     />
                   </FormControl>
                   <FormMessage />
@@ -96,7 +95,7 @@ const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type="password" placeholder="******"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,7 +103,7 @@ const RegisterForm = () => {
             />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Chargement..." : "S'enregistrer avec une adresse email"}
+            {loading ? "Chargement..." : "Avec une adresse email"}
           </Button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -124,7 +123,7 @@ const RegisterForm = () => {
               variant="secondary"
               onClick={() => console.log("google")}
             >
-              S'enregistrer avec Google
+              Avec Google
             </Button>
           </div>
         </form>

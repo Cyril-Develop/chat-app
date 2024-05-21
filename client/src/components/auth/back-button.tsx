@@ -9,7 +9,7 @@ interface BackButtonProps {
 
 const BackButton = ({ label, href, text }: BackButtonProps) => {
   return (
-    <div className="font-normal w-full flex justify-center items-center">
+    <div className="font-normal w-full flex flex-col justify-center items-center sm:flex-row">
       <p>{text}</p>
       <Button variant="link" size="sm">
         <Link to={href}>{label}</Link>

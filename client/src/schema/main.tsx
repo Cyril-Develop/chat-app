@@ -12,7 +12,7 @@ export const RegisterFormSchema = z.object({
   }),
   password: z.string().min(6, {
     message: "Le mot de passe doit contenir au moins 6 caractères",
-  }),
+  })
 });
 
 export const LoginFormSchema = z.object({

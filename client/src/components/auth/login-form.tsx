@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import Google from "@/assets/google.svg";
+import { jwtDecode } from "jwt-decode";
 import {
   Form,
   FormControl,
@@ -12,7 +14,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useGoogleLogin } from '@react-oauth/google';
 import CardWrapper from "./card-wrapper";
 
 const LoginForm = () => {
@@ -32,6 +34,10 @@ const LoginForm = () => {
     setLoading(true);
     console.log("submit");
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse)
+  });
 
   return (
     <CardWrapper
@@ -67,7 +73,7 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="******"/>
+                    <Input {...field} type="password" placeholder="******" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,13 +98,15 @@ const LoginForm = () => {
           <div>
             <Button
               type="button"
-              className="w-full"
+              className="w-full flex gap-2"
               variant="secondary"
-              onClick={() => console.log("google")}
+              onClick={() => googleLogin()}
             >
-              Avec Google
+              <img src={Google} alt="icon - google" />
+              Google
             </Button>
           </div>
+          
         </form>
       </Form>
     </CardWrapper>

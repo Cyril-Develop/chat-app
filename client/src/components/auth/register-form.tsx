@@ -3,8 +3,8 @@ import { RegisterFormSchema } from "@/schema/main";
 import { useForm } from "react-hook-form";
 import Google from "@/assets/google.svg";
 import { registerByEmail } from "@/services/Auth";
-import AlertComp from "@/components/alert-comp";
-import { Check } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 import {
   Form,
@@ -21,7 +21,6 @@ import { useState } from "react";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [apiError, setApiError] = useState("");
 
   const form = useForm({
@@ -41,7 +40,12 @@ const RegisterForm = () => {
       const { lastname, firstname, email, password } = form.getValues();
       await registerByEmail({ lastname, firstname, email, password });
 
-      setSuccess(true);
+      toast({
+        title: "Compte créé avec succès,",
+        description: "Vous pouvez maintenant vous connecter.",
+        variant: "success",
+        logo: <BadgeCheck size={30} />,
+      });
       form.reset();
     } catch (error: any) {
       if (error.message.includes("Email déjà utilisé")) {
@@ -59,14 +63,6 @@ const RegisterForm = () => {
 
   return (
     <>
-      {success && (
-        <AlertComp
-          variant="success"
-          logo={<Check />}
-          description="Compte créé avec succès !"
-          duration={2000}
-        />
-      )}
       <CardWrapper
         title="Créer un compte"
         backButtonHref="/login"

@@ -50,6 +50,13 @@
   }
 }
 
+.link-form {
+  @apply text-primary underline-offset-4 hover:underline;
+}
+
+.link-nav{
+  @apply flex items-center gap-2 p-2 text-xl underline-offset-4 hover:underline hover:text-primary;
+}
 
 @layer base {
   * {

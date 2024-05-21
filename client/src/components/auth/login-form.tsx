@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import Google from "@/assets/google.svg";
-import { jwtDecode } from "jwt-decode";
 import {
   Form,
   FormControl,
@@ -81,7 +80,7 @@ const LoginForm = () => {
             />
           </div>
           <Button type="submit" className="w-full opacity-1" disabled={loading}>
-            {loading ? "Chargement..." : "Avec une adresse email"}
+            {loading ? "Envoi en cours..." : "Avec une adresse email"}
           </Button>
 
           <div className="relative">

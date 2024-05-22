@@ -88,7 +88,7 @@ const LoginForm = () => {
               disabled={loading}
               size={"lg"}
             >
-              {loading ? "Envoi en cours..." : "Se connecter"}
+              {loading ? "Connexion en cours..." : "Se connecter"}
             </Button>
 
             <Line />

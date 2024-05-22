@@ -5,6 +5,7 @@ import Google from "@/assets/google.svg";
 import { registerByEmail } from "@/services/Auth";
 import { BadgeCheck } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import Line from "@/components/auth/line";
 
 import {
   Form,
@@ -65,14 +66,15 @@ const RegisterForm = () => {
     <>
       <CardWrapper
         title="Créer un compte"
+        description="Créez un compte pour accéder à toutes les fonctionnalités de l'application."
         backButtonHref="/login"
         backButtonLabel="Se connecter"
-        text="Déjà un compte ?"
+        text="Vous possédez déjà un compte ?"
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4">
-              <div className="flex flex-col gap-4 sm:flex-row ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-8">
+              <div className="flex gap-8 justify-between flex-col sm:flex-row ">
                 <FormField
                   control={form.control}
                   name="lastname"
@@ -131,25 +133,22 @@ const RegisterForm = () => {
                 )}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Chargement..." : "Avec une adresse email"}
-            </Button>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Ou
-                </span>
-              </div>
-            </div>
+            <div className="flex flex-col gap-4">
+              <Button
+                type="submit"
+                className="w-full text-lg"
+                disabled={loading}
+                size={"lg"}
+              >
+                {loading ? "Envoi en cours..." : "Créer un compte"}
+              </Button>
+              <Line />
 
-            <div>
               <Button
                 type="button"
-                className="w-full flex gap-2"
+                className="w-full flex gap-2 text-lg"
                 variant="secondary"
+                size={"lg"}
                 onClick={() => console.log("google")}
               >
                 <img src={Google} alt="icon - google" />

@@ -13,7 +13,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
+import Line from "@/components/auth/line";
 import CardWrapper from "./card-wrapper";
 
 const LoginForm = () => {
@@ -35,19 +36,20 @@ const LoginForm = () => {
   };
 
   const googleLogin = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse)
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
   });
 
   return (
     <CardWrapper
       title="Se connecter"
+      description="Saisissez les identifiants de votre compte."
       backButtonHref="/register"
       backButtonLabel="S'enregistrer"
-      text="Pas encore de compte ?"
+      text="Vous n'avez pas encore de compte ?"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="space-y-8">
             <FormField
               control={form.control}
               name="email"
@@ -79,33 +81,29 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <Button type="submit" className="w-full opacity-1" disabled={loading}>
-            {loading ? "Envoi en cours..." : "Avec une adresse email"}
-          </Button>
+          <div className="flex flex-col gap-4">
+            <Button
+              type="submit"
+              className="w-full text-lg"
+              disabled={loading}
+              size={"lg"}
+            >
+              {loading ? "Envoi en cours..." : "Se connecter"}
+            </Button>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground font-semibold">
-                OU
-              </span>
-            </div>
-          </div>
+            <Line />
 
-          <div>
             <Button
               type="button"
-              className="w-full flex gap-2"
+              className="w-full flex gap-2 text-lg"
               variant="secondary"
+              size={"lg"}
               onClick={() => googleLogin()}
             >
               <img src={Google} alt="icon - google" />
               Google
             </Button>
           </div>
-          
         </form>
       </Form>
     </CardWrapper>

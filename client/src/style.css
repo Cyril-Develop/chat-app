@@ -51,11 +51,11 @@
 }
 
 .link-form {
-  @apply text-primary underline-offset-4 hover:underline;
+  @apply text-primary underline p-1 rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:no-underline focus:no-underline;
 }
 
 .link-nav{
-  @apply flex items-center gap-2 p-2 text-xl underline-offset-4 hover:underline hover:text-primary;
+  @apply flex items-center gap-2 p-2 text-xl rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent;
 }
 
 @layer base {

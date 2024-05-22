@@ -16,7 +16,7 @@ const Navbar = () => {
   const textClasses = "hidden sm:block";
 
   return (
-    <nav className="flex items-center justify-between h-20 p-2 border-b sm:p-10 ">
+    <nav className="flex items-center justify-between h-20 p-2 sm:p-10 ">
       <h1 className="font-black italic text-xl">Chat'App</h1>
       <div className="flex items-center gap-0 sm:gap-6">
         {pathname !== "/" ? (

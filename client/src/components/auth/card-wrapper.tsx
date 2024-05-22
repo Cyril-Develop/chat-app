@@ -9,6 +9,7 @@ import BackButton from "./back-button";
 
 interface CardWrapperProps {
   title: string;
+  description: string; 
   backButtonHref: string;
   backButtonLabel: string;
   children: React.ReactNode;
@@ -17,15 +18,16 @@ interface CardWrapperProps {
 
 const CardWrapper = ({
   title,
+  description,
   backButtonHref,
   backButtonLabel,
   children,
   text,
 }: CardWrapperProps) => {
   return (
-    <Card className="mx-auto max-w-sm">
+    <Card className="max-w-lg w-full px-6 py-4 h-fit">
       <CardHeader>
-        <AuthHeader title={title} />
+        <AuthHeader title={title} description={description}/>
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>

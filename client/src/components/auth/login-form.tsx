@@ -16,9 +16,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useGoogleLogin } from "@react-oauth/google";
 import Line from "@/components/auth/line";
 import CardWrapper from "./card-wrapper";
+import ShowPassord from "@/components/auth/show-password";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -74,7 +76,17 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="******" />
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        type={showPassword ? "text" : "password"}
+                        placeholder="******"
+                      />
+                      <ShowPassord
+                        showPassword={showPassword}
+                        setShowPassword={setShowPassword}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

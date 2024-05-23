@@ -25,7 +25,7 @@ const CardWrapper = ({
   text,
 }: CardWrapperProps) => {
   return (
-    <Card className="max-w-lg w-full px-6 py-4 h-fit">
+    <Card className="max-w-lg w-full h-fit p-2">
       <CardHeader>
         <AuthHeader title={title} description={description}/>
       </CardHeader>

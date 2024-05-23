@@ -6,6 +6,7 @@ import { registerByEmail } from "@/services/Auth";
 import { BadgeCheck } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import Line from "@/components/auth/line";
+import ShowPassord from "@/components/auth/show-password";
 
 import {
   Form,
@@ -23,6 +24,7 @@ import { useState } from "react";
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -72,9 +74,12 @@ const RegisterForm = () => {
         text="Vous possédez déjà un compte ?"
       >
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="space-y-8">
-              <div className="flex gap-8 justify-between flex-col sm:flex-row ">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4  sm:space-y-8"
+          >
+            <div className="space-y-4  sm:space-y-8">
+              <div className="flex gap-4 justify-between flex-col sm:gap-8 sm:flex-row ">
                 <FormField
                   control={form.control}
                   name="lastname"
@@ -126,7 +131,17 @@ const RegisterForm = () => {
                   <FormItem>
                     <FormLabel>Mot de passe</FormLabel>
                     <FormControl>
-                      <Input {...field} type="password" placeholder="******" />
+                      <div className="relative">
+                        <Input
+                          {...field}
+                          type={showPassword ? "text" : "password"}
+                          placeholder="******"
+                        />
+                        <ShowPassord
+                          showPassword={showPassword}
+                          setShowPassword={setShowPassword}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

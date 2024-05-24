@@ -50,7 +50,11 @@ const LoginForm = () => {
       text="Vous n'avez pas encore de compte ?"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8"
+          noValidate
+        >
           <div className="space-y-8">
             <FormField
               control={form.control}
@@ -76,17 +80,11 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
-                    <div className="relative">
-                      <Input
-                        {...field}
-                        type={showPassword ? "text" : "password"}
-                        placeholder="******"
-                      />
-                      <ShowPassord
-                        showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                      />
-                    </div>
+                    <ShowPassord
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
+                      field={field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

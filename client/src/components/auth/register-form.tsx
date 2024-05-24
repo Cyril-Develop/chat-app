@@ -75,6 +75,7 @@ const RegisterForm = () => {
       >
         <Form {...form}>
           <form
+            noValidate
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4  sm:space-y-8"
           >
@@ -131,17 +132,11 @@ const RegisterForm = () => {
                   <FormItem>
                     <FormLabel>Mot de passe</FormLabel>
                     <FormControl>
-                      <div className="relative">
-                        <Input
-                          {...field}
-                          type={showPassword ? "text" : "password"}
-                          placeholder="******"
-                        />
-                        <ShowPassord
-                          showPassword={showPassword}
-                          setShowPassword={setShowPassword}
-                        />
-                      </div>
+                      <ShowPassord
+                        showPassword={showPassword}
+                        setShowPassword={setShowPassword}
+                        field={field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -27,7 +27,7 @@ const ShowPassord = ({
       />
       <Button
         type="button"
-        variant="toggle"
+        variant="link"
         className="absolute right-0 h-auto  top-1/2 transform -translate-y-1/2 cursor-pointer"
         onClick={() => setShowPassword(!showPassword)}
       >

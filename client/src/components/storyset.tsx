@@ -3,11 +3,7 @@ interface StorysetProps {
 }
 
 const Storyset = ({ logo }: StorysetProps) => {
-  return (
-    <a href="https://storyset.com/online" className="cursor-auto">
-      <img src={logo} alt="" className="h-96" />
-    </a>
-  );
+  return <img src={logo} alt="" className="h-full sm:px-6 sm:pl-0  flex-1" />;
 };
 
 export default Storyset;

@@ -2,7 +2,7 @@ import LoginForm from "@/components/auth/login-form";
 
 const Login = () => {
   return (
-    <div className="flex justify-center items-center sm:h-[calc(100vh-81px)] px-2 relative py-2">
+    <div className="flex justify-center items-center sm:h-[calc(100vh-97px)] px-2 relative py-2">
       <LoginForm />
     </div>
   );

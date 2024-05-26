@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -54,8 +53,8 @@
   @apply text-primary underline p-1 rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:no-underline focus:no-underline;
 }
 
-.link-nav{
-  @apply flex items-center gap-2 p-2 text-xl rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-primary hover:text-primary-foreground;
+.link-nav {
+  @apply flex items-center gap-2 p-2 text-2xl font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground text-primary-foreground dark:text-foreground;
 }
 
 @layer base {

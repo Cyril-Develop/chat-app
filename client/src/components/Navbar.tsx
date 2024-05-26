@@ -17,7 +17,7 @@ const Navbar = () => {
   const textClasses = "hidden sm:block";
 
   return (
-    <nav className="flex items-center justify-between h-24 px-2 sm:px-10 ">
+    <nav className="flex items-center justify-between h-24 px-2 sm:px-10 bg-primary">
       <Link to="/" className="h-1/3  sm:h-1/2">
         <img src={Logo} alt="" className="h-full" />
       </Link>

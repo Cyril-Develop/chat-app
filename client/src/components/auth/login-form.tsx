@@ -9,7 +9,7 @@ import {
   FormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,24 +17,47 @@ import { useGoogleLogin } from "@react-oauth/google";
 import Line from "@/components/auth/line";
 import CardWrapper from "./card-wrapper";
 import ShowPassord from "@/components/auth/show-password";
+import { loginByEmail } from "@/services/Auth";
+import { useUserStore } from "@/store/user.store";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [apiError, setApiError] = useState("");
+
+  const setToken = useUserStore((state) => state.setUserToken);
+  const token = useUserStore((state) => state.token);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
 
   const form = useForm({
     defaultValues: {
-      lastname: "",
-      firstname: "",
       email: "",
       password: "",
     },
     resolver: zodResolver(LoginFormSchema),
   });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setLoading(true);
-    console.log("submit");
+    setApiError("");
+    try {
+      const { email, password } = form.getValues();
+      const token = await loginByEmail({ email, password });
+      setToken(token);
+      form.reset();
+    } catch (error: any) {
+      setApiError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const googleLogin = useGoogleLogin({
@@ -52,10 +75,10 @@ const LoginForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
+          className="space-y-4  sm:space-y-8"
           noValidate
         >
-          <div className="space-y-8">
+          <div className="space-y-4  sm:space-y-8">
             <FormField
               control={form.control}
               name="email"
@@ -114,6 +137,7 @@ const LoginForm = () => {
               Google
             </Button>
           </div>
+          {apiError && <p className="text-rose-500 text-center">{apiError}</p>}
         </form>
       </Form>
     </CardWrapper>

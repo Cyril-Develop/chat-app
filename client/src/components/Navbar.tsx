@@ -1,16 +1,13 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Link, useLocation } from "react-router-dom";
 import { Home, LogIn, User, LogOut } from "lucide-react";
-import { useState } from "react";
 import Logo from "@/assets/logo.svg";
+import { useUserStore } from "@/store/user.store";
 
 const Navbar = () => {
-  const [connected, setConnected] = useState(true);
 
-  const logout = () => {
-    console.log("logout");
-    setConnected(false);
-  };
+  const isConnected = useUserStore((state) => state.token) ? true : false;
+  const logout = useUserStore((state) => state.logout);
 
   const { pathname } = useLocation();
 
@@ -19,7 +16,7 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between h-24 px-2 sm:px-10 bg-primary">
       <Link to="/" className="h-1/3  sm:h-1/2">
-        <img src={Logo} alt="" className="h-full" />
+        <img src={Logo} alt="logo - Chat'App" className="h-full" />
       </Link>
       <div className="flex items-center gap-2 sm:gap-6">
         {pathname !== "/" ? (
@@ -27,7 +24,7 @@ const Navbar = () => {
             <Home />
             <span className={textClasses}>Accueil</span>
           </Link>
-        ) : connected ? (
+        ) : isConnected ? (
           <>
             <Link to="/dashboard" className="link-nav">
               <User />

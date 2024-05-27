@@ -8,7 +8,6 @@ import { toast } from "@/components/ui/use-toast";
 import Line from "@/components/auth/line";
 import ShowPassord from "@/components/auth/show-password";
 
-
 import {
   Form,
   FormControl,
@@ -172,7 +171,6 @@ const RegisterForm = () => {
           </form>
         </Form>
       </CardWrapper>
-        
     </>
   );
 };

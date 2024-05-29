@@ -67,7 +67,7 @@ const RegisterForm = () => {
   return (
     <>
       <CardWrapper
-        title="Créer un compte"
+        title="Créer un compte "
         description="Créez un compte pour accéder à toutes les fonctionnalités de l'application."
         backButtonHref="/login"
         backButtonLabel="Se connecter"
@@ -162,7 +162,7 @@ const RegisterForm = () => {
                 onClick={() => console.log("google")}
               >
                 <img src={Google} alt="icon - google" />
-                Google
+                Continuer avec Google
               </Button>
             </div>
             {apiError && (

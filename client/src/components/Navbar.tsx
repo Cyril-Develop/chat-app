@@ -5,7 +5,6 @@ import Logo from "@/assets/logo.svg";
 import { useUserStore } from "@/store/user.store";
 
 const Navbar = () => {
-
   const isConnected = useUserStore((state) => state.token) ? true : false;
   const logout = useUserStore((state) => state.logout);
 
@@ -14,7 +13,7 @@ const Navbar = () => {
   const textClasses = "hidden sm:block";
 
   return (
-    <nav className="flex items-center justify-between h-24 px-2 sm:px-10 bg-primary">
+    <nav className="flex items-center justify-between h-24 px-2 sm:px-10 bg-primary dark:bg-transparent">
       <Link to="/" className="h-1/3  sm:h-1/2">
         <img src={Logo} alt="logo - Chat'App" className="h-full" />
       </Link>

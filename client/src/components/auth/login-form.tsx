@@ -134,7 +134,7 @@ const LoginForm = () => {
               onClick={() => googleLogin()}
             >
               <img src={Google} alt="icon - google" />
-              Google
+              Continuer avec Google
             </Button>
           </div>
           {apiError && <p className="text-rose-500 text-center">{apiError}</p>}

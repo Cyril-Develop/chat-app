@@ -6,7 +6,7 @@ const line = () => {
       </div>
       <div className="relative flex justify-center uppercase">
         <span className="bg-background px-2 text-muted-foreground font-semibold text-m">
-          OU CONTINUER AVEC 
+          OU
         </span>
       </div>
     </div>

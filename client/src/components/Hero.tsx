@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="bg-primary p-20 flex items-center justify-center gap-52">
-      <img src={Img} alt="" />
+    <section className="bg-primary dark:bg-secondary p-10 pt-10 gap-12 flex items-center justify-center 2xl:gap-32 2xl:p-20 2xl:pt-10">
+      <img src={Img} alt="Illustration - unDraw"/>
       <Card>
         <CardHeader>
           <h1 className="text-center text-2xl font-semibold">

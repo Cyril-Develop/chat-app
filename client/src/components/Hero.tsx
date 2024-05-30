@@ -7,11 +7,17 @@ import {
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { Icons } from "@/components/Icons";
+import Logo from "@/assets/hero.svg";
 
 const Hero = () => {
   return (
-    <section className="bg-primary dark:bg-secondary p-4 pb-10 pt-0 gap-0 flex items-center justify-center flex-col xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
-      <Icons.hero />
+    <section className="bg-primary dark:bg-secondary flex flex-col h-[calc(100dvh-192px)]  p-4 pb-10 pt-0 gap-10 items-center justify-center xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
+      {/* <Icons.hero /> */}
+      <img
+        src={Logo}
+        alt="hero"
+        className="w-11/12 md:w-2/4 lg:w-2/4 sm:w-3/4"
+      />
       <Card>
         <CardHeader>
           <h1 className="text-center text-2xl font-semibold">

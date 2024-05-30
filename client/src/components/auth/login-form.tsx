@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import Google from "@/assets/google.svg";
 import {
   Form,
   FormControl,
@@ -20,6 +19,7 @@ import ShowPassord from "@/components/auth/show-password";
 import { loginByEmail } from "@/services/Auth";
 import { useUserStore } from "@/store/user.store";
 import { useNavigate } from "react-router-dom";
+import { Icons } from "@/components/Icons";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -121,19 +121,25 @@ const LoginForm = () => {
               disabled={loading}
               size={"lg"}
             >
-              {loading ? "Connexion en cours..." : "Se connecter"}
+              {loading ? (
+                <p className="flex items-center gap-1">
+                  Connexion <Icons.spinner className="animate-spin" />{" "}
+                </p>
+              ) : (
+                "Se connecter"
+              )}
             </Button>
 
             <Line />
 
             <Button
               type="button"
-              className="w-full flex gap-2 text-lg"
+              className="w-full text-lg"
               variant="secondary"
               size={"lg"}
               onClick={() => googleLogin()}
             >
-              <img src={Google} alt="icon - google" />
+              <Icons.google className="mr-2 h-4 w-4" />
               Continuer avec Google
             </Button>
           </div>

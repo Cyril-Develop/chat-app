@@ -1,4 +1,3 @@
-import Img from "@/assets/hero.svg";
 import {
   Card,
   CardContent,
@@ -7,11 +6,12 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import { Icons } from "@/components/Icons";
 
 const Hero = () => {
   return (
-    <section className="bg-primary dark:bg-secondary p-10 pt-10 gap-12 flex items-center justify-center 2xl:gap-32 2xl:p-20 2xl:pt-10">
-      <img src={Img} alt="Illustration - unDraw"/>
+    <section className="bg-primary dark:bg-secondary p-4 pb-10 pt-0 gap-0 flex items-center justify-center flex-col xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
+      <Icons.hero />
       <Card>
         <CardHeader>
           <h1 className="text-center text-2xl font-semibold">
@@ -27,10 +27,8 @@ const Hero = () => {
           </p>
         </CardContent>
         <CardFooter>
-          <Button className="mx-auto text-lg" size={"lg"} >
-            <Link to="/dashboard">
-              Commencer
-            </Link>
+          <Button className="mx-auto text-lg" size={"lg"}>
+            <Link to="/dashboard">Commencer</Link>
           </Button>
         </CardFooter>
       </Card>

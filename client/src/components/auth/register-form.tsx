@@ -1,12 +1,12 @@
 import CardWrapper from "@/components/auth/card-wrapper";
 import { RegisterFormSchema } from "@/schema/main";
 import { useForm } from "react-hook-form";
-import Google from "@/assets/google.svg";
 import { registerByEmail } from "@/services/Auth";
 import { BadgeCheck } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import Line from "@/components/auth/line";
 import ShowPassord from "@/components/auth/show-password";
+import { Icons } from "@/components/Icons";
 
 import {
   Form,
@@ -150,18 +150,24 @@ const RegisterForm = () => {
                 disabled={loading}
                 size={"lg"}
               >
-                {loading ? "Envoi en cours..." : "Créer un compte"}
+                {loading ? (
+                  <p className="flex items-center gap-1">
+                    Envoie en cours <Icons.spinner className="animate-spin" />{" "}
+                  </p>
+                ) : (
+                  "Créer un compte"
+                )}
               </Button>
               <Line />
 
               <Button
                 type="button"
-                className="w-full flex gap-2 text-lg"
+                className="w-full text-lg"
                 variant="secondary"
                 size={"lg"}
                 onClick={() => console.log("google")}
               >
-                <img src={Google} alt="icon - google" />
+                <Icons.google className="mr-2 h-4 w-4" />
                 Continuer avec Google
               </Button>
             </div>

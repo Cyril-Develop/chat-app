@@ -12,7 +12,7 @@ const Navbar = () => {
   const textClasses = "hidden sm:block";
 
   return (
-    <nav className="flex items-center justify-between h-24 px-2 sm:px-10 bg-primary dark:bg-transparent">
+    <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-primary-foreground sm:px-10">
       <Link to="/">
         <Icons.logo />
       </Link>

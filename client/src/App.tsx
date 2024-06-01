@@ -1,16 +1,16 @@
-import Home from "./pages/home/Home";
-import Register from "./pages/auth/Register";
-import Login from "./pages/auth/Login";
+import { ThemeProvider } from "@/components/theme-provider";
+import { useUserStore } from "@/store/user.store";
 import {
   createBrowserRouter,
   Navigate,
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "./components/Navbar";
-import { useUserStore } from "@/store/user.store";
-import Dashboard from "./pages/Dashboard";
+import Messaging from "./pages/Messaging";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Home from "./pages/home/Home";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -40,10 +40,10 @@ function App() {
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
         {
-          path: "/dashboard",
+          path: "/messaging",
           element: (
             <PrivateRoute>
-              <Dashboard />
+              <Messaging />
             </PrivateRoute>
           ),
         },

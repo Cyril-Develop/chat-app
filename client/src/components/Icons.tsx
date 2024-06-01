@@ -304,7 +304,7 @@ export const Icons = {
       <line x1="21" x2="9" y1="12" y2="12" />
     </svg>
   ),
-  user: (props: IconProps) => (
+  chat: (props: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
@@ -316,10 +316,9 @@ export const Icons = {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-user"
+      className="lucide lucide-message-circle"
     >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
+      <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
     </svg>
   ),
 };

@@ -24,9 +24,9 @@ const Navbar = () => {
           </Link>
         ) : isConnected ? (
           <>
-            <Link to="/dashboard" className="link-nav">
-              <Icons.user />
-              <span className={textClasses}>Tableau de bord</span>
+            <Link to="/messaging" className="link-nav">
+              <Icons.chat />
+              <span className={textClasses}>Messagerie</span>
             </Link>
 
             <Link to="/login" className="link-nav" onClick={logout}>

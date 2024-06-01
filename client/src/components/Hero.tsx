@@ -11,7 +11,7 @@ import Logo from "@/assets/hero.svg";
 
 const Hero = () => {
   return (
-    <section className="bg-primary dark:bg-secondary flex flex-col h-[calc(100dvh-192px)]  p-4 pb-10 pt-0 gap-10 items-center justify-center xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
+    <section className="bg-muted dark:bg-secondary flex flex-col h-[calc(100dvh-192px)]  p-4 pt-0 pb-0 gap-10 items-center justify-center xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
       {/* <Icons.hero /> */}
       <img
         src={Logo}
@@ -24,6 +24,7 @@ const Hero = () => {
             Connectez-vous, Discutez, et Partagez !
           </h1>
         </CardHeader>
+        <span className="w-full border-t" />
         <CardContent>
           <p className="max-w-lg text-center text-lg">
             Créez des salons privés ou publics, discutez avec vos amis et

@@ -171,9 +171,7 @@ const RegisterForm = () => {
                 Continuer avec Google
               </Button>
             </div>
-            {apiError && (
-              <p className="text-rose-500 text-center">{apiError}</p>
-            )}
+            {apiError && <p>{apiError}</p>}
           </form>
         </Form>
       </CardWrapper>

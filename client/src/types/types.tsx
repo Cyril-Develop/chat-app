@@ -1,5 +1,5 @@
 export interface UserState {
-  token: string;
-  setUserToken: (token: string) => void;
-  logout: () => void;
+  user: any;
+  useSetUser: (user: any) => void;
+  useLogout: () => void;
 }

@@ -2,7 +2,7 @@ import RegisterForm from "@/components/auth/register-form";
 
 const Register = () => {
   return (
-    <div className="flex justify-center items-center sm:h-[calc(100vh-96px)] px-2 relative py-2">
+    <div className="page">
       <RegisterForm />
     </div>
   );

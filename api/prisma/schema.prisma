@@ -14,7 +14,7 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid()) @db.Char(36)
   createdAt DateTime @default(now())
   lastname  String   @db.VarChar(255)
   firstname String   @db.VarChar(255)

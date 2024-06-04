@@ -44,8 +44,6 @@ export const registerByEmail = async ({
     }
     return data;
   } catch (error : any) {
-
-    
     throw new Error(error.message);
   }
 };
@@ -71,6 +69,7 @@ export const loginByEmail = async ({ email, password }: loginByEmailProps) => {
     if(!response.ok) {
       throw new Error(data.error);
     }
+
     return data;
   } catch (error : any) {
     throw new Error(error.message);

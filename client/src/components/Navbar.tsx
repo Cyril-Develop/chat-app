@@ -1,46 +1,39 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import { Link, useLocation } from "react-router-dom";
 import { useUserStore } from "@/store/user.store";
 import { Icons } from "@/components/Icons";
+import DropDown from "@/components/DropDown";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
-  const isConnected = useUserStore((state) => state.token) ? true : false;
-  const logout = useUserStore((state) => state.logout);
-
+  const isConnected = useUserStore((state) => state.user) ? true : false;
   const { pathname } = useLocation();
 
-  const textClasses = "hidden sm:block";
-
   return (
-    <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-primary-foreground sm:px-10">
-      <Link to="/">
+    <nav className="bg-primary flex items-center justify-between gap-4 h-24 px-2 dark:bg-primary-foreground md:px-10">
+      <Link to="/" title="Accueil" className="h-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md ring-offset-background">
         <Icons.logo />
       </Link>
-      <div className="flex items-center gap-2 sm:gap-6">
+      <div className="flex items-center gap-2 md:gap-5">
         {pathname !== "/" ? (
           <Link to="/" className="link-nav">
             <Icons.home />
-            <span className={textClasses}>Accueil</span>
+            <span className="hidden-text">Accueil</span>
           </Link>
-        ) : isConnected ? (
-          <>
-            <Link to="/messaging" className="link-nav">
-              <Icons.chat />
-              <span className={textClasses}>Messagerie</span>
-            </Link>
-
-            <Link to="/login" className="link-nav" onClick={logout}>
-              <Icons.logout />
-              <span className={textClasses}>Se déconnecter</span>
-            </Link>
-          </>
         ) : (
-          <Link to="/login" className="link-nav">
-            <Icons.login />
-            <span className={textClasses}>Se connecter</span>
+          <Link to="/messaging" className="link-nav" title="Messagerie">
+            <Icons.chat />
+            <span className="hidden-text">Messagerie</span>
           </Link>
         )}
-        <ModeToggle />
+
+        {isConnected ? (
+          <DropDown />
+        ) : (
+          <Link to="/login" className="link-nav" title="Se connecter">
+            <Icons.login />
+            <span className="hidden-text">Se connecter</span>
+          </Link>
+        )}
       </div>
     </nav>
   );

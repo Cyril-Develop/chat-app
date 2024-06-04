@@ -26,6 +26,13 @@ exports.register = async (req, res) => {
   }
 };
 
+const createToken = (user) => {
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    // token 5 minutes valid
+    expiresIn: "60s",
+  });
+};
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -39,11 +46,10 @@ exports.login = async (req, res) => {
     } else if (user.password !== password) {
       return res.status(401).json({ error: "Mot de passe incorrect" });
     }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      // token 5 minutes valid
-      expiresIn: "60s"
-    });
-    res.status(200).json(token);
+
+    const token = createToken(user);
+    const { lastname, firstname, id } = user;
+    res.status(200).json({  token, lastname, firstname, id});
   } catch (err) {
     console.error("Error logging in user:", err);
     res.status(500).json({

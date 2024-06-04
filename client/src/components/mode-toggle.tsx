@@ -1,24 +1,26 @@
 import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/components/theme-provider";
 
-export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
+interface ThemeModProps {
+  theme: string;
+}
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
+export function ThemeMod({ theme }: ThemeModProps) {
   return (
-    <Button variant="link" size="icon" onClick={toggleTheme}>
+    <>
       {theme === "light" ? (
-        <Icons.sun className="h-[1.6rem] w-[1.6rem]" />
+        <>
+          <Icons.sun className="h-[1.6rem] w-[1.6rem]" />
+          Mode clair
+        </>
       ) : (
-        <Icons.moon className="h-[1.6rem] w-[1.6rem]" />
+        <>
+          <Icons.moon className="h-[1.6rem] w-[1.6rem]" />
+          Mode sombre
+        </>
       )}
       <span className="sr-only">
-        {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+        {theme === "light" ? "Passer en mode sombre" : "Passer en mode clair"}
       </span>
-    </Button>
+    </>
   );
 }

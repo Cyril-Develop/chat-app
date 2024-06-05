@@ -1,14 +1,12 @@
 import Hero from "@/components/Hero";
-import Modal from "@/components/Modal";
 import Footer from "@/components/Footer";
 
 const Home = () => {
   return (
-    <>
+    <div className="page_footer">
       <Hero />
-      {/* <Modal /> */}
       <Footer />
-    </>
+    </div>
   );
 };
 

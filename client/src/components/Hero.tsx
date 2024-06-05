@@ -10,11 +10,11 @@ import Logo from "@/assets/hero.svg";
 
 const Hero = () => {
   return (
-    <section className="bg-muted dark:bg-secondary flex flex-col h-[calc(100dvh-192px)]  p-4 pt-0 pb-0 gap-5 items-center justify-center xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
+    <section className="bg-muted w-full dark:bg-secondary flex flex-col min-h-[calc(100dvh-192px)]  p-4  gap-5 items-center justify-center xl:py-10 xl:flex-row xl:gap-10 2xl:gap-32 2xl:p-20 2xl:py-10 2xl:justify-center">
       <img
         src={Logo}
         alt="hero"
-        className="w-11/12 md:w-2/4 lg:w-1/3 sm:w-3/4"
+        className="min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4"
       />
       <Card>
         <CardHeader>

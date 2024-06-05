@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useUserStore } from "@/store/user.store";
 import { Icons } from "@/components/Icons";
 import DropDown from "@/components/DropDown";
-import { Button } from "./ui/button";
+import ModeToggle from "./mode-toggle";
 
 const Navbar = () => {
   const isConnected = useUserStore((state) => state.user) ? true : false;
@@ -10,7 +10,11 @@ const Navbar = () => {
 
   return (
     <nav className="bg-primary flex items-center justify-between gap-4 h-24 px-2 dark:bg-primary-foreground md:px-10">
-      <Link to="/" title="Accueil" className="h-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md ring-offset-background">
+      <Link
+        to="/"
+        title="Accueil"
+        className="h-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md ring-offset-background"
+      >
         <Icons.logo />
       </Link>
       <div className="flex items-center gap-2 md:gap-5">
@@ -26,6 +30,7 @@ const Navbar = () => {
           </Link>
         )}
 
+
         {isConnected ? (
           <DropDown />
         ) : (
@@ -34,6 +39,7 @@ const Navbar = () => {
             <span className="hidden-text">Se connecter</span>
           </Link>
         )}
+        <ModeToggle />
       </div>
     </nav>
   );

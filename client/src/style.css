@@ -53,6 +53,10 @@
   @apply bg-muted dark:bg-secondary flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] px-2 relative py-2;
 }
 
+.page_footer{
+  @apply bg-muted dark:bg-secondary flex flex-col justify-center items-center ;
+}
+
 .link-form {
   @apply text-primary underline p-1 rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:no-underline focus:no-underline;
 }
@@ -63,6 +67,10 @@
 
 .hidden-text {
   @apply hidden md:block;
+}
+
+.error{
+  @apply text-center text-red-600 dark:text-red-400;
 }
 
 .animate-spin {

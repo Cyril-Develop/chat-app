@@ -20,7 +20,7 @@ const buttonVariants = cva(
         btnMenu: "flex gap-2 text-md justify-start",
       },
       size: {
-        menu: "h-full w-full",
+        menu: "h-full",
         default: "h-full p-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md p-6",

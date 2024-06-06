@@ -9,11 +9,13 @@ import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import EditProfile from "./edit-profile";
 import Alert from "@/components/Alert";
-import { deleteAccount } from "@/services/Auth";
+import { deleteAccount } from "@/services/User";
+import { toast } from "./ui/use-toast";
+import { Siren, OctagonAlert, Check } from "lucide-react";
 
 const DropDown = () => {
   const logout = useUserStore((state) => state.useLogout);
-  const { id } = useUserStore((state) => state.user);
+  const { token } = useUserStore((state) => state.user);
 
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
@@ -36,6 +38,36 @@ const DropDown = () => {
 
   const handleDeleteAccountClose = () => {
     setIsDeleteAccountOpen(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount(token);
+      toast({
+        title: "Compte supprimé",
+        description: "Votre compte a été supprimé avec succès.",
+        variant: "success",
+        logo: <Check size={30} />,
+      });
+      logout();
+    } catch (error: any) {
+      if (error.message === "Token expiré !") {
+        toast({
+          title: "Token Expiré,",
+          description: "Veuillez vous reconnecter.",
+          variant: "destructive",
+          logo: <Siren size={30} />,
+        });
+        logout();
+      } else if (error.message === "Action non autorisée !") {
+        toast({
+          title: "Token invalide,",
+          description: error.message,
+          variant: "destructive",
+          logo: <OctagonAlert size={30} />,
+        });
+      } else console.log(error.message);
+    }
   };
 
   return (
@@ -72,7 +104,7 @@ const DropDown = () => {
           description="Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
           button="Supprimer"
           buttonVariant="destructive"
-          deleteAccount={() => deleteAccount(id)}
+          action={handleDeleteAccount}
         />
       )}
     </>

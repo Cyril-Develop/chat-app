@@ -11,13 +11,9 @@ const ModeToggle = () => {
   return (
     <Button variant="btn" onClick={toggleTheme}>
       {theme === "light" ? (
-        <>
-          <Icons.sun className="h-[1.6rem] w-[1.6rem]" />
-        </>
+        <Icons.sun className="h-[1.6rem] w-[1.6rem]" />
       ) : (
-        <>
-          <Icons.moon className="h-[1.6rem] w-[1.6rem]" />
-        </>
+        <Icons.moon className="h-[1.6rem] w-[1.6rem]" />
       )}
       <span className="sr-only">
         {theme === "light" ? "Passer en mode sombre" : "Passer en mode clair"}

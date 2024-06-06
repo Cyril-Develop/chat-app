@@ -8,7 +8,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Link } from "react-router-dom";
 
 interface AlertProps {
   onClose: () => void;
@@ -23,7 +22,7 @@ interface AlertProps {
     | "btn"
     | "linkForm"
     | "btnMenu";
-  deleteAccount: () => void;
+  action: () => void;
 }
 
 function Alert({
@@ -32,7 +31,7 @@ function Alert({
   description,
   button,
   buttonVariant,
-  deleteAccount,
+  action,
 }: AlertProps) {
   return (
     <AlertDialog open={true} onOpenChange={onClose}>
@@ -43,7 +42,7 @@ function Alert({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction variant={buttonVariant} onClick={deleteAccount}>
+          <AlertDialogAction variant={buttonVariant} onClick={action}>
             {button}
           </AlertDialogAction>
         </AlertDialogFooter>

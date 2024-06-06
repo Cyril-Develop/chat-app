@@ -33,7 +33,7 @@ const Hero = () => {
         </CardContent>
         <CardFooter>
           <Button className="mx-auto text-lg" size={"lg"}>
-            <Link to="/messaging">Commencer</Link>
+            <Link to="/chat">Commencer</Link>
           </Button>
         </CardFooter>
       </Card>

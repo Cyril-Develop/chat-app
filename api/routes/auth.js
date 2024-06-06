@@ -3,9 +3,7 @@ const router = express.Router();
 
 const authCtrl = require("../controllers/auth");
 
-
-router.post('/register', authCtrl.register);
-router.post('/login', authCtrl.login);
-router.delete('/delete:id', authCtrl.deleteAccount);
+router.post("/register", authCtrl.register);
+router.post("/login", authCtrl.login);
 
 module.exports = router;

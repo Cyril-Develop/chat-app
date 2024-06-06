@@ -7,10 +7,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Messaging from "./pages/Messaging";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Chat from "./pages/chat/Chat";
 import Home from "./pages/home/Home";
+import NotFound from "./pages/NotFound";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -20,11 +21,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </>
   );
 };
-
-// const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-//   const isConnected = useUserStore((state) => state.user) ? true : false;
-//   return isConnected ? children : <Navigate to="/login" />;
-// };
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -41,19 +37,14 @@ function App() {
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
         {
-          path: "/messaging",
-          // element: (
-          //   <PrivateRoute>
-          //     <Messaging />
-          //   </PrivateRoute>
-          // ),
-          element: user ? <Messaging /> : <Navigate to="/login" />,
-        },
-        {
-          path: "*",
-          element: <Home />,
+          path: "/chat",
+          element: user ? <Chat /> : <Navigate to="/login" />,
         },
       ],
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
 

@@ -24,6 +24,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/pages/Messaging.tsx"],
+  "include": ["src", "src/pages/chat/Chat.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

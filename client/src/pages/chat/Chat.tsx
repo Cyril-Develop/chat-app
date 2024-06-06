@@ -1,11 +1,11 @@
 import { useUserStore } from "@/store/user.store";
 import Logo from "@/assets/chatting.svg";
 
-const Messaging = () => {
+const Chat = () => {
   const { lastname, firstname } = useUserStore((state) => state.user);
 
   return (
-    <div className="page flex-col lg:flex-row">
+    <div className="page_chat">
       <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 p-2">
         <h1 className="text-3xl font-semibold">Messagerie</h1>
         <p className="text-lg">
@@ -45,4 +45,4 @@ const Messaging = () => {
   );
 };
 
-export default Messaging;
+export default Chat;

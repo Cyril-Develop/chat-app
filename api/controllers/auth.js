@@ -1,5 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-const { log } = require("console");
 const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
@@ -30,7 +29,7 @@ exports.register = async (req, res) => {
 const createToken = (user) => {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     // token 5 minutes valid
-    expiresIn: "60s",
+    expiresIn: "1h",
   });
 };
 
@@ -53,25 +52,6 @@ exports.login = async (req, res) => {
     res.status(200).json({  token, lastname, firstname, id});
   } catch (err) {
     console.error("Error logging in user:", err);
-    res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
-    });
-  }
-};
-
-exports.deleteAccount = async (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log(req.params);
-    console.log(id);
-    await prisma.user.delete({
-      where: {
-        id,
-      },
-    });
-    res.status(204).end();
-  } catch (err) {
-    console.error("Error deleting user:", err);
     res.status(500).json({
       error: "Une erreur est survenue... Veuillez réessayer plus tard",
     });

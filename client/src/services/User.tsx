@@ -3,7 +3,7 @@ interface EditProfileProps {
   firstname: string;
 }
 
-export const EditProfile = async (data: EditProfileProps) => {
+export const editProfile = async (data: EditProfileProps) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/edit-profile`,
@@ -20,6 +20,28 @@ export const EditProfile = async (data: EditProfileProps) => {
       throw new Error(res.error);
     }
     return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const deleteAccount = async (token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error);
+    }
+    return data;
   } catch (error: any) {
     throw new Error(error.message);
   }

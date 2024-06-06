@@ -18,21 +18,20 @@ const Navbar = () => {
         <Icons.logo />
       </Link>
       <div className="flex items-center gap-2 md:gap-5">
-        {pathname !== "/" ? (
+        {pathname !== "/" && (
           <Link to="/" className="link-nav">
             <Icons.home />
             <span className="hidden-text">Accueil</span>
           </Link>
-        ) : (
-          <Link to="/messaging" className="link-nav" title="Messagerie">
-            <Icons.chat />
-            <span className="hidden-text">Messagerie</span>
-          </Link>
         )}
 
-
         {isConnected ? (
-          <DropDown />
+          <>
+           <Link to="/chat" className="link-nav" title="Messagerie">
+           <Icons.chat />
+           <span className="hidden-text">Messagerie</span>
+         </Link>
+          <DropDown /></>
         ) : (
           <Link to="/login" className="link-nav" title="Se connecter">
             <Icons.login />

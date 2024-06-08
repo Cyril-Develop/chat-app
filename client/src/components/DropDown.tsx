@@ -12,8 +12,10 @@ import Alert from "@/components/Alert";
 import { deleteAccount } from "@/services/User";
 import { toast } from "./ui/use-toast";
 import { Siren, OctagonAlert, Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const DropDown = () => {
+  const navigate = useNavigate();
   const logout = useUserStore((state) => state.useLogout);
   const { token } = useUserStore((state) => state.user);
 
@@ -74,13 +76,19 @@ const DropDown = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex items-center gap-2 p-2 text-xl font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:text-secondary-foreground text-primary-foreground dark:text-foreground">
-          <Icons.settings className="w-6 h-6" />
-          <span className="hidden-text">Paramètres</span>
+          <Icons.menu className="w-6 h-6" />
+          <span className="hidden-text" title="Menu">
+            Menu
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={handleEditProfileClick}>
+          {/* <DropdownMenuItem onClick={handleEditProfileClick}>
             <Icons.user className="w-6 h-6" />
             Modifier le profil
+          </DropdownMenuItem> */}
+          <DropdownMenuItem onClick={() => navigate("/settings")}>
+            <Icons.settings className="w-6 h-6" />
+            Paramètres
           </DropdownMenuItem>
           <DropdownMenuItem onClick={logout}>
             <Icons.logout />

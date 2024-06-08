@@ -27,8 +27,10 @@ interface EditProfileProps {
   onClose: () => void;
 }
 
-const EditProfile = ({ onClose } : EditProfileProps) => {
-  const { lastname, firstname } = useUserStore((state) => state.user);
+const EditProfile = ({ onClose }: EditProfileProps) => {
+  const { lastname, firstname, email } = useUserStore((state) => state.user);
+
+  console.log(lastname, firstname, email);
 
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -37,6 +39,7 @@ const EditProfile = ({ onClose } : EditProfileProps) => {
     defaultValues: {
       lastname: lastname,
       firstname: firstname,
+      email: email,
     },
     resolver: zodResolver(LoginFormSchema),
   });
@@ -51,8 +54,8 @@ const EditProfile = ({ onClose } : EditProfileProps) => {
         <DialogHeader>
           <DialogTitle>Modifier le profil</DialogTitle>
           <DialogDescription>
-            Apportez des modifications à votre profil ici.
-            Cliquez sur Confirmer lorsque vous avez terminé.
+            Apportez des modifications à votre profil ici. Cliquez sur Confirmer
+            lorsque vous avez terminé.
           </DialogDescription>
         </DialogHeader>
 
@@ -84,6 +87,42 @@ const EditProfile = ({ onClose } : EditProfileProps) => {
                     <FormLabel>Prénom</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        className="bg-slate-200 disabled:cursor-default"
+                        disabled
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        className="bg-slate-200 disabled:cursor-default"
+                        disabled
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

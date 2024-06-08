@@ -33,7 +33,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/messaging");
+      navigate("/chat");
     }
   }, [user]);
 

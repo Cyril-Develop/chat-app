@@ -28,8 +28,7 @@ const RegisterForm = () => {
 
   const form = useForm({
     defaultValues: {
-      lastname: "",
-      firstname: "",
+      username: "",
       email: "",
       password: "",
     },
@@ -40,8 +39,8 @@ const RegisterForm = () => {
     setLoading(true);
     setApiError("");
     try {
-      const { lastname, firstname, email, password } = form.getValues();
-      await registerByEmail({ lastname, firstname, email, password });
+      const { username, email, password } = form.getValues();
+      await registerByEmail({ username, email, password });
 
       toast({
         title: "Compte créé avec succès,",
@@ -51,7 +50,14 @@ const RegisterForm = () => {
       });
       form.reset();
     } catch (error: any) {
-      if (error.message.includes("Email déjà utilisé")) {
+      console.log(error.message);
+      
+      if (error.message.includes("Nom d'utilisateur déjà utilisé")) {
+        form.setError("username", {
+          type: "manual",
+          message: error.message,
+        });
+      } else if (error.message.includes("Email déjà utilisé")) {
         form.setError("email", {
           type: "manual",
           message: error.message,
@@ -79,35 +85,20 @@ const RegisterForm = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4  sm:space-y-8"
           >
-            <div className="space-y-4  sm:space-y-8">
-              <div className="flex gap-4 justify-between flex-col sm:gap-8 sm:flex-row ">
-                <FormField
-                  control={form.control}
-                  name="lastname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nom</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="text" placeholder="Doe" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="firstname"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Prénom</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="text" placeholder="John" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+            <div className="flex gap-4 justify-between flex-col sm:gap-8 ">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nom ou Pseudo</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" placeholder="John Doe" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"

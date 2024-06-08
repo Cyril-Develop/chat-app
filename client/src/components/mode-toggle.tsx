@@ -9,7 +9,7 @@ const ModeToggle = () => {
   };
 
   return (
-    <Button variant="btn" onClick={toggleTheme}>
+    <Button variant="btn" onClick={toggleTheme} title="Changer de thème">
       {theme === "light" ? (
         <Icons.sun className="h-[1.6rem] w-[1.6rem]" />
       ) : (

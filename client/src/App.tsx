@@ -12,6 +12,9 @@ import Register from "./pages/auth/Register";
 import Chat from "./pages/chat/Chat";
 import Home from "./pages/home/Home";
 import NotFound from "./pages/NotFound";
+import Settings from "./pages/settings/Settings";
+import Profile from "./pages/settings/Profile";
+import Account from "./pages/settings/Account";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -39,6 +42,36 @@ function App() {
         {
           path: "/chat",
           element: user ? <Chat /> : <Navigate to="/login" />,
+        },
+        {
+          path: "/settings",
+          element: user ? (
+            <Settings>
+              <Profile />
+            </Settings>
+          ) : (
+            <Navigate to="/login" />
+          ),
+        },
+        {
+          path: "/settings/profile",
+          element: user ? (
+            <Settings>
+              <Profile />
+            </Settings>
+          ) : (
+            <Navigate to="/login" />
+          ),
+        },
+        {
+          path: "/settings/account",
+          element: user ? (
+            <Settings>
+              <Account />
+            </Settings>
+          ) : (
+            <Navigate to="/login" />
+          ),
         },
       ],
     },

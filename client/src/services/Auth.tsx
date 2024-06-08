@@ -15,15 +15,13 @@
 // };
 
 interface registerByEmailProps {
-  lastname: string;
-  firstname: string;
+  username: string;
   email: string;
   password: string;
 }
 
 export const registerByEmail = async ({
-  lastname,
-  firstname,
+  username,
   email,
   password,
 }: registerByEmailProps) => {
@@ -35,7 +33,7 @@ export const registerByEmail = async ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ lastname, firstname, email, password }),
+        body: JSON.stringify({ username, email, password }),
       }
     );
     const data = await response.json();

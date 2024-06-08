@@ -2,7 +2,7 @@ import { useUserStore } from "@/store/user.store";
 import Logo from "@/assets/chatting.svg";
 
 const Chat = () => {
-  const { lastname, firstname } = useUserStore((state) => state.user);
+  const { username } = useUserStore((state) => state.user);
 
   return (
     <div className="page_chat">
@@ -22,7 +22,7 @@ const Chat = () => {
           <h1 className="text-2xl">
             Bienvenue{" "}
             <span className="font-semibold text-primary text-3xl">
-              {firstname} {lastname}
+              {username}
             </span>{" "}
             !
           </h1>

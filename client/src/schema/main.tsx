@@ -25,11 +25,21 @@ const passwordSchema = z
   })
   .min(8, { message: "Minimum 8 caractères" });
 
+const usernameSchema = z
+  .string()
+  .min(1, { message: "Le nom d'utilisateur est requis" })
+  .min(2, { message: "Minimum 2 caractères" })
+  .max(15, { message: "Maximum 15 caractères" });
+
 export const RegisterFormSchema = z.object({
-  lastname: lastnameSchema,
-  firstname: firstnameSchema,
+  username: usernameSchema,
   email: emailSchema,
   password: passwordSchema,
+});
+
+export const ProfileFormSchema = z.object({
+  username: usernameSchema,
+  email: emailSchema,
 });
 
 export const LoginFormSchema = z.object({

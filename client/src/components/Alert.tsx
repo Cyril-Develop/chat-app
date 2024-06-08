@@ -7,34 +7,25 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 interface AlertProps {
-  onClose: () => void;
   title: string;
   description: string;
-  button: string;
-  buttonVariant:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "btn"
-    | "linkForm"
-    | "btnMenu";
+  buttonTitle: string;
   action: () => void;
 }
 
-function Alert({
-  onClose,
-  title,
-  description,
-  button,
-  buttonVariant,
-  action,
-}: AlertProps) {
+function Alert({ title, description, buttonTitle, action }: AlertProps) {
   return (
-    <AlertDialog open={true} onOpenChange={onClose}>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button size={"lg"} className="text-lg" variant="destructive">Supprimer le compte</Button>
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
@@ -42,8 +33,11 @@ function Alert({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction variant={buttonVariant} onClick={action}>
-            {button}
+          <AlertDialogAction
+            onClick={action}
+            className={cn(buttonVariants({ variant: "destructive" }))}
+          >
+            {buttonTitle}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

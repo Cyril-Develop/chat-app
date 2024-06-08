@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,19 +15,18 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { useUserStore } from "@/store/user.store";
-import { ProfileFormSchema } from "@/schema/main";
+import { AccountFormSchema } from "@/schema/main";
 
 export function AccountForm() {
   const [apiError, setApiError] = useState("");
-  const { username, email } = useUserStore((state) => state.user);
+  const { email } = useUserStore((state) => state.user);
 
   const [defaultValues] = useState({
-    username: username,
     email: email,
   });
 
   const form = useForm({
-    resolver: zodResolver(ProfileFormSchema),
+    resolver: zodResolver(AccountFormSchema),
     defaultValues,
   });
 
@@ -44,48 +44,31 @@ export function AccountForm() {
         <div className="space-y-4  sm:space-y-8">
           <FormField
             control={form.control}
-            name="lastname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nom</FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" placeholder="Doe" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="firstname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Prénom</FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" placeholder="John" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} type="email" />
+                  <Input
+                    {...field}
+                    type="email"
+                    disabled
+                    className="disabled:cursor-default"
+                  />
                 </FormControl>
                 <FormMessage />
+                <FormDescription>
+                  Votre addresse email actuelle.
+                </FormDescription>
               </FormItem>
             )}
           />
         </div>
-        <div className="flex flex-col gap-4">
-          <Button type="submit">Mettre à jour le compte</Button>
-        </div>
+
+        <Button type="submit" size={"lg"} variant="default" className="text-lg">
+          Enregistrer les modifications
+        </Button>
+
         {apiError && <p className="error">{apiError}</p>}
       </form>
     </Form>

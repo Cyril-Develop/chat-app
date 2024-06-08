@@ -8,11 +8,11 @@ interface SettingsLayoutProps {
 const Settings = ({ children }: SettingsLayoutProps) => {
   const sidebarNavItems = [
     {
-      title: "Profile",
+      title: "Profil",
       href: "/settings/profile",
     },
     {
-      title: "Account",
+      title: "Compte",
       href: "/settings/account",
     }
   ];

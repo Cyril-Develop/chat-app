@@ -17,7 +17,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   return (
     <nav
       className={cn(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
+        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-4",
         className
       )}
       {...props}
@@ -27,11 +27,11 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           key={item.href}
           to={item.href}
           className={cn(
-            buttonVariants({ variant: "secondary" }),
+            buttonVariants({ variant: "outline" }),
             pathname === item.href
-              ? "bg-muted hover:bg-muted"
-              : "hover:bg-transparent hover:underline",
-            "justify-start"
+              ? "bg-muted hover:bg-muted cursor-default"
+              : "hover:bg-primary hover:text-primary-foreground",
+            "justify-start text-base"
           )}
         >
           {item.title}

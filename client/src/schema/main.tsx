@@ -1,16 +1,16 @@
 import { z } from "zod";
 
-const lastnameSchema = z
-  .string()
-  .min(1, { message: "Le nom est requis" })
-  .min(2, { message: "Minimum 2 caractères" })
-  .max(15, { message: "Maximum 15 caractères" });
+// const lastnameSchema = z
+//   .string()
+//   .min(1, { message: "Le nom est requis" })
+//   .min(2, { message: "Minimum 2 caractères" })
+//   .max(15, { message: "Maximum 15 caractères" });
 
-const firstnameSchema = z
-  .string()
-  .min(1, { message: "Le prénom est requis" })
-  .min(2, { message: "Minimum 2 caractères" })
-  .max(15, { message: "Maximum 15 caractères" });
+// const firstnameSchema = z
+//   .string()
+//   .min(1, { message: "Le prénom est requis" })
+//   .min(2, { message: "Minimum 2 caractères" })
+//   .max(15, { message: "Maximum 15 caractères" });
 
 const emailSchema = z
   .string()
@@ -31,15 +31,21 @@ const usernameSchema = z
   .min(2, { message: "Minimum 2 caractères" })
   .max(15, { message: "Maximum 15 caractères" });
 
+const bioSchema = z.string().max(150, { message: "Maximum 150 caractères" });
+
 export const RegisterFormSchema = z.object({
   username: usernameSchema,
   email: emailSchema,
   password: passwordSchema,
 });
 
+export const AccountFormSchema = z.object({
+  email: emailSchema,
+});
+
 export const ProfileFormSchema = z.object({
   username: usernameSchema,
-  email: emailSchema,
+  bio: bioSchema,
 });
 
 export const LoginFormSchema = z.object({

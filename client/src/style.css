@@ -61,6 +61,10 @@
   @apply bg-muted dark:bg-secondary flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative flex-col lg:flex-row;
 }
 
+.input-style{
+  @apply flex font-normal items-center h-11 w-full rounded-md border border-input bg-background px-3 text-base ring-offset-background  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-muted cursor-pointer;
+}
+
 .link-form {
   @apply text-primary underline p-1 rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:no-underline focus:no-underline;
 }

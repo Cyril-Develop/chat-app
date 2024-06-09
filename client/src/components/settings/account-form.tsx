@@ -23,6 +23,7 @@ export function AccountForm() {
 
   const [defaultValues] = useState({
     email: email,
+    newEmail: "",
   });
 
   const form = useForm({
@@ -60,6 +61,24 @@ export function AccountForm() {
                 <FormDescription>
                   Votre addresse email actuelle.
                 </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="newEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nouvelle adresse email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="john.doe@gmail.com"
+                  />
+                </FormControl>
+                <FormMessage />
+                <FormDescription>Modifiez votre adresse email.</FormDescription>
               </FormItem>
             )}
           />

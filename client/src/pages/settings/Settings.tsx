@@ -1,5 +1,8 @@
 import { SidebarNav } from "@/components/settings/sidebar-nav";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import ImageAccount from "@/assets/account.svg";
+import ImageProfile from "@/assets/profile.svg";
+import ImageSettings from "@/components/image-settings";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
@@ -14,7 +17,18 @@ const Settings = ({ children }: SettingsLayoutProps) => {
     {
       title: "Compte",
       href: "/settings/account",
-    }
+    },
+  ];
+
+  const imageSettings = [
+    {
+      href: "/settings/profile",
+      img: ImageProfile,
+    },
+    {
+      href: "/settings/account",
+      img: ImageAccount,
+    },
   ];
 
   return (
@@ -32,8 +46,9 @@ const Settings = ({ children }: SettingsLayoutProps) => {
           <aside className="lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">
-            {children}
+          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="hidden lg:block min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4">
+            <ImageSettings logo={imageSettings} />
           </div>
         </div>
       </div>

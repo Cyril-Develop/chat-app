@@ -17,6 +17,11 @@ const emailSchema = z
   .min(1, { message: "L'email est requis" })
   .email({ message: "L'email n'est pas valide" });
 
+const newEmailSchema = z
+  .string()
+  .min(1, { message: "Le nouvel email est requis" })
+  .email({ message: "Le nouvel email n'est pas valide" });
+
 const passwordSchema = z
   .string()
   .min(1, { message: "Le mot de passe est requis" })
@@ -41,6 +46,7 @@ export const RegisterFormSchema = z.object({
 
 export const AccountFormSchema = z.object({
   email: emailSchema,
+  newEmail: newEmailSchema
 });
 
 export const ProfileFormSchema = z.object({

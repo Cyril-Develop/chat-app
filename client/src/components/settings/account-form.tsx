@@ -69,7 +69,7 @@ export function AccountForm() {
             name="newEmail"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nouvelle adresse email</FormLabel>
+                <FormLabel>Modifier votre adresse email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -78,7 +78,6 @@ export function AccountForm() {
                   />
                 </FormControl>
                 <FormMessage />
-                <FormDescription>Modifiez votre adresse email.</FormDescription>
               </FormItem>
             )}
           />

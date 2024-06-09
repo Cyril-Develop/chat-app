@@ -1,10 +1,10 @@
 import { useLocation } from "react-router-dom";
 
-interface ImageSettingsProps {
+interface ImageProviderProps {
   logo: { href: string; img: string }[];
 }
 
-const ImageSettings = ({ logo }: ImageSettingsProps) => {
+const ImageProvider = ({ logo }: ImageProviderProps) => {
   const { pathname } = useLocation();
   return (
     <>
@@ -18,4 +18,4 @@ const ImageSettings = ({ logo }: ImageSettingsProps) => {
   );
 };
 
-export default ImageSettings;
+export default ImageProvider;

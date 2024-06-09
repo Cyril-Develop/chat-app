@@ -2,7 +2,8 @@ import { SidebarNav } from "@/components/settings/sidebar-nav";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import ImageAccount from "@/assets/account.svg";
 import ImageProfile from "@/assets/profile.svg";
-import ImageSettings from "@/components/image-settings";
+import ImageSettings from "@/components/image-provider";
+import { Icons } from "@/components/Icons";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
@@ -33,9 +34,12 @@ const Settings = ({ children }: SettingsLayoutProps) => {
 
   return (
     <>
-      <div className="space-y-6 p-10 pb-16">
+      <div className="space-y-6 p-4 md:p-10">
         <div className="space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">Paramètres</h2>
+          <h2 className="flex items-center gap-1 text-2xl font-bold tracking-tight">
+            <Icons.settings className="w-6 h-6" />
+            Paramètres
+          </h2>
           <p className="text-muted-foreground">
             Gérez les paramètres de votre compte et définissez vos préférences
             de messagerie.

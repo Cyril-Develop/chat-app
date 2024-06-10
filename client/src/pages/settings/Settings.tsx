@@ -4,6 +4,7 @@ import ImageAccount from "@/assets/account.svg";
 import ImageProfile from "@/assets/profile.svg";
 import ImageSettings from "@/components/image-provider";
 import { Icons } from "@/components/Icons";
+import ProfileCard from "@/components/profile-card";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;

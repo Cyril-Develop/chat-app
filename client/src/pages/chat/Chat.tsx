@@ -6,7 +6,7 @@ const Chat = () => {
 
   return (
     <div className="page_chat">
-      <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 p-2">
+      <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 px-10">
         <h1 className="text-3xl font-semibold">Messagerie</h1>
         <p className="text-lg">
           Bienvenue sur notre plateforme de messagerie sécurisée. Créez des
@@ -33,7 +33,7 @@ const Chat = () => {
         </div>
       </div>
 
-      <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground w-1/4 h-full p-2">
+      <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground w-1/4 h-full px-10">
         <h1 className="text-3xl font-semibold">Messagerie</h1>
         <p className="text-lg">
           Bienvenue sur notre plateforme de messagerie sécurisée. Créez des

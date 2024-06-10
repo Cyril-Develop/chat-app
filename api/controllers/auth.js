@@ -50,8 +50,8 @@ exports.login = async (req, res) => {
     }
 
     const token = createToken(user);
-    const { username, id } = user;
-    res.status(200).json({ token, username, id, email });
+    const { username, id, bio } = user;
+    res.status(200).json({ token, username, id, bio, email });
   } catch (err) {
     console.error("Error logging in user:", err);
     res.status(500).json({

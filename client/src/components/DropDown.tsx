@@ -3,6 +3,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
@@ -22,10 +23,20 @@ const DropDown = () => {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => navigate("/")}>
+            <Icons.home />
+            Accueil
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/chat")}>
+            <Icons.chat />
+            Messagerie
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate("/settings/profile")}>
             <Icons.settings className="w-6 h-6" />
             Paramètres
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={logout}>
             <Icons.logout />
             Se déconnecter

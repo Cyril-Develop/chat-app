@@ -7,10 +7,9 @@ import {
 import AuthHeader from "@/components/auth/auth-header";
 import BackButton from "./back-button";
 
-
 interface CardWrapperProps {
   title: string;
-  description: string; 
+  description: string;
   backButtonHref: string;
   backButtonLabel: string;
   children: React.ReactNode;
@@ -26,9 +25,9 @@ const CardWrapper = ({
   text,
 }: CardWrapperProps) => {
   return (
-    <Card className="max-w-lg w-full h-fit p-4 md:p-10">
+    <Card className="max-w-lg w-full h-fit p-2 sm:p-4">
       <CardHeader>
-        <AuthHeader title={title} description={description}/>
+        <AuthHeader title={title} description={description} />
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter>

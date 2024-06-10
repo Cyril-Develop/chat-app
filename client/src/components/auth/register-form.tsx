@@ -83,15 +83,15 @@ const RegisterForm = () => {
           <form
             noValidate
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4  sm:space-y-8"
+            className="space-y-4  md:space-y-8"
           >
-            <div className="flex gap-4 justify-between flex-col sm:gap-8 ">
+            <div className="flex gap-4 justify-between flex-col md:gap-8 ">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom ou Pseudo</FormLabel>
+                    <FormLabel>Nom d'utilisateur</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" placeholder="John Doe" />
                     </FormControl>

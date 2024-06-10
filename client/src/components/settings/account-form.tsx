@@ -40,9 +40,9 @@ export function AccountForm() {
       <form
         noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4  sm:space-y-8"
+        className="space-y-6"
       >
-        <div className="space-y-4  sm:space-y-8">
+        <div className="space-y-6">
           <FormField
             control={form.control}
             name="email"
@@ -83,7 +83,7 @@ export function AccountForm() {
           />
         </div>
 
-        <Button type="submit" size={"lg"} variant="default" className="text-lg">
+        <Button type="submit" size={"lg"} variant="default" className="text-lg w-full sm:w-auto">
           Enregistrer les modifications
         </Button>
 

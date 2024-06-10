@@ -96,7 +96,7 @@ const ProfileForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" size={"lg"} variant="default" className="text-lg">
+        <Button type="submit" size={"lg"} variant="default" className="text-lg w-full sm:w-auto">
           Enregistrer les modifications
         </Button>
       </form>

@@ -24,7 +24,7 @@ function Alert({ title, description, buttonTitle, action }: AlertProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size={"lg"} className="text-lg" variant="destructive">Supprimer le compte</Button>
+        <Button size={"lg"} className="text-lg w-full sm:w-auto" variant="destructive">Supprimer le compte</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

@@ -50,7 +50,7 @@
 }
 
 .page_form {
-  @apply bg-muted dark:bg-secondary flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative p-2;
+  @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative p-4;
 }
 
 .page_footer {

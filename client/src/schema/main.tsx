@@ -33,10 +33,16 @@ const passwordSchema = z
 const usernameSchema = z
   .string()
   .min(1, { message: "Le nom d'utilisateur est requis" })
-  .min(2, { message: "Minimum 2 caractères" })
+  .min(3, { message: "Minimum 3 caractères" })
   .max(15, { message: "Maximum 15 caractères" });
 
 const bioSchema = z.string().max(150, { message: "Maximum 150 caractères" });
+
+export const notificationsFormSchema = z.object({
+  type: z.enum(["all", "none"], {
+    required_error: "Vous devez sélectionner un type de notification.",
+  }),
+});
 
 export const RegisterFormSchema = z.object({
   username: usernameSchema,
@@ -46,12 +52,13 @@ export const RegisterFormSchema = z.object({
 
 export const AccountFormSchema = z.object({
   email: emailSchema,
-  newEmail: newEmailSchema
+  newEmail: newEmailSchema,
 });
 
 export const ProfileFormSchema = z.object({
   username: usernameSchema,
   bio: bioSchema,
+  image: z.instanceof(File).nullable()
 });
 
 export const LoginFormSchema = z.object({

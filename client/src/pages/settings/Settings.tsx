@@ -2,6 +2,7 @@ import { SidebarNav } from "@/components/settings/sidebar-nav";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import ImageAccount from "@/assets/account.svg";
 import ImageProfile from "@/assets/profile.svg";
+import ImageNotification from "@/assets/notification.svg";
 import ImageSettings from "@/components/image-provider";
 import { Icons } from "@/components/Icons";
 import ProfileCard from "@/components/profile-card";
@@ -20,6 +21,10 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       title: "Compte",
       href: "/settings/account",
     },
+    {
+      title: "Notifications",
+      href: "/settings/notifications",
+    }
   ];
 
   const imageSettings = [
@@ -31,6 +36,10 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       href: "/settings/account",
       img: ImageAccount,
     },
+    {
+      href: "/settings/notifications",
+      img: ImageNotification,
+    }
   ];
 
   return (

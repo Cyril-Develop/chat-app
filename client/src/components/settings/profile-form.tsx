@@ -15,24 +15,57 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { ProfileFormSchema } from "@/schema/main";
-import { useUserStore } from "@/store/user.store";
+import { Siren } from "lucide-react";
+import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
+import { UserInfos } from "@/types/types";
 import { useState } from "react";
 
-const ProfileForm = () => {
-  const { username, bio } = useUserStore((state) => state.user);
-  const [defaultValues] = useState({
-    username: username,
-    bio: bio,
-    image: "",
-  });
+interface ProfileFormValues {
+  username: string;
+  bio: string;
+  image: File | null;
+}
 
-  const form = useForm({
+interface ProfileFormProps {
+  user: UserInfos;
+}
+
+const ProfileForm = ({ user }: ProfileFormProps) => {
+  const defaultValues = {
+    username: user.username,
+    bio: user.bio ?? "",
+    image: null,
+  };
+
+  const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
     defaultValues,
   });
 
+  const [imageUploaded, setImageUploaded] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File | null = e.target.files?.[0] ?? null;
+    setImageUploaded(file);
+    form.setValue("image", file);
+  };
+
   const onSubmit = async () => {
     console.log("submitting");
+    if (
+      form.getValues().username === user?.username &&
+      form.getValues().bio === user?.bio &&
+      form.getValues().image === null
+    ) {
+      toast({
+        title: "Erreur",
+        description: "Aucune modification n'a été apportée.",
+        variant: "destructive",
+        logo: <Siren size={30} />,
+      });
+    } else {
+      console.log(form.getValues());
+    }
   };
 
   return (
@@ -63,11 +96,31 @@ const ProfileForm = () => {
               <p className="text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Image
               </p>
-              <FormLabel className="input-style">
+              <FormLabel
+                className="input-style"
+                tabIndex={0}
+                aria-label="Sélectionner une image"
+                onKeyDown={handleKeydown}
+                onClick={() => handleLabelClick("fileInput")}
+              >
                 Sélectionner une image
+                {imageUploaded && (
+                  <img
+                    src={URL.createObjectURL(imageUploaded)}
+                    alt="preview image"
+                    className="w-11 h-11 rounded-full object-cover"
+                  />
+                )}
               </FormLabel>
               <FormControl>
-                <Input {...field} type="file" className="hidden" />
+                <Input
+                  {...field}
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.svg"
+                  className="hidden"
+                  value={undefined}
+                  onChange={handleFileChange}
+                />
               </FormControl>
               <FormMessage />
               <FormDescription>
@@ -86,6 +139,7 @@ const ProfileForm = () => {
                 <Textarea
                   placeholder="Parle nous un peu de toi..."
                   className="resize-none"
+                  maxLength={150}
                   {...field}
                 />
               </FormControl>
@@ -96,7 +150,12 @@ const ProfileForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" size={"lg"} variant="default" className="text-lg w-full sm:w-auto">
+        <Button
+          type="submit"
+          size={"lg"}
+          variant="default"
+          className="text-lg w-full sm:w-auto"
+        >
           Enregistrer les modifications
         </Button>
       </form>

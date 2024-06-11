@@ -5,9 +5,9 @@ import { UserState } from "@/types/types";
 export const useUserStore = create(
   persist<UserState>(
     (set) => ({
-      user: null,
-      useSetUser: (user) => set({ user }),
-      useLogout: () => set({ user: null }),
+      token: null,
+      setToken: (token: string) => set({ token }),
+      logout: () => set({ token: null }),
     }),
     {
       name: "user-storage",

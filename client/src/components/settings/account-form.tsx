@@ -16,13 +16,18 @@ import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { useUserStore } from "@/store/user.store";
 import { AccountFormSchema } from "@/schema/main";
+import useUser from "@/hooks/use-user";
+import { UserInfos } from "@/types/types";
 
-export function AccountForm() {
+interface AccountFormValues {
+  user: UserInfos;
+}
+
+export function AccountForm({ user }: AccountFormValues) {
   const [apiError, setApiError] = useState("");
-  const { email } = useUserStore((state) => state.user);
 
   const [defaultValues] = useState({
-    email: email,
+    email: user.email,
     newEmail: "",
   });
 
@@ -33,6 +38,7 @@ export function AccountForm() {
 
   const onSubmit = async () => {
     console.log("submitting");
+    console.log(form.getValues());
   };
 
   return (
@@ -83,7 +89,12 @@ export function AccountForm() {
           />
         </div>
 
-        <Button type="submit" size={"lg"} variant="default" className="text-lg w-full sm:w-auto">
+        <Button
+          type="submit"
+          size={"lg"}
+          variant="default"
+          className="text-lg w-full sm:w-auto"
+        >
           Enregistrer les modifications
         </Button>
 

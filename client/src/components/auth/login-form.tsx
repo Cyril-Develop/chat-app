@@ -26,16 +26,16 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const setUser = useUserStore((state) => state.useSetUser);
-  const user = useUserStore((state) => state.user);
+  const setToken = useUserStore((state) => state.setToken);
+  const token = useUserStore((state) => state.token);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate("/chat");
     }
-  }, [user]);
+  }, [token]);
 
   const form = useForm({
     defaultValues: {
@@ -50,8 +50,8 @@ const LoginForm = () => {
     setApiError("");
     try {
       const { email, password } = form.getValues();
-      const user = await loginByEmail({ email, password });
-      setUser(user);
+      const token = await loginByEmail({ email, password });
+      setToken(token);
       form.reset();
     } catch (error: any) {
       setApiError(error.message);

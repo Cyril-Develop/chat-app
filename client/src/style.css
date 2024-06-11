@@ -71,7 +71,7 @@
 }
 
 .input-style {
-  @apply flex font-normal items-center h-11 w-full rounded-md border border-input bg-background px-3 text-base ring-offset-background  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-muted cursor-pointer;
+  @apply flex gap-4 font-normal items-center w-fit rounded-md border border-input bg-background p-2 text-base ring-offset-background  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-muted cursor-pointer;
 }
 
 .link-form {

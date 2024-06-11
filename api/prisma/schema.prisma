@@ -14,13 +14,14 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement()) 
-  createdAt DateTime @default(now())
-  username  String   @unique
-  bio       String?  @db.VarChar(150)
-  email     String   @unique
-  password  String   @db.VarChar(255)
-  role      Role     @default(USER)
+  id            Int      @id @default(autoincrement()) 
+  createdAt     DateTime @default(now())
+  username      String   @unique
+  bio           String?  @db.VarChar(150)
+  email         String   @unique
+  profileImage  String   @default("/images/profile/default-profile-image.jpg")
+  password      String   @db.VarChar(255)
+  role          Role     @default(USER)
 }
 
 enum Role {

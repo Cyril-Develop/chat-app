@@ -5,7 +5,7 @@ import DropDown from "@/components/DropDown";
 import ModeToggle from "./mode-toggle";
 
 const Navbar = () => {
-  const isConnected = useUserStore((state) => state.user) ? true : false;
+  const isConnected = useUserStore((state) => state.token) ? true : false;
 
   return (
     <nav className="bg-primary flex items-center justify-between gap-4 h-24 px-2 dark:bg-primary-foreground md:px-10">

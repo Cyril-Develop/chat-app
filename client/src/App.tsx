@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Settings from "./pages/settings/Settings";
 import Profile from "./pages/settings/Profile";
 import Account from "./pages/settings/Account";
+import Notification from "./pages/settings/Notification";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -26,7 +27,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const user = useUserStore((state) => state.user);
+  const token = useUserStore((state) => state.token);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -41,11 +42,11 @@ function App() {
         { path: "/login", element: <Login /> },
         {
           path: "/chat",
-          element: user ? <Chat /> : <Navigate to="/login" />,
+          element: token ? <Chat /> : <Navigate to="/login" />,
         },
         {
           path: "/settings",
-          element: user ? (
+          element: token ? (
             <Settings>
               <Profile />
             </Settings>
@@ -55,7 +56,7 @@ function App() {
         },
         {
           path: "/settings/profile",
-          element: user ? (
+          element: token ? (
             <Settings>
               <Profile />
             </Settings>
@@ -65,9 +66,19 @@ function App() {
         },
         {
           path: "/settings/account",
-          element: user ? (
+          element: token ? (
             <Settings>
               <Account />
+            </Settings>
+          ) : (
+            <Navigate to="/login" />
+          ),
+        },
+        {
+          path: "/settings/notifications",
+          element: token ? (
+            <Settings>
+              <Notification />
             </Settings>
           ) : (
             <Navigate to="/login" />

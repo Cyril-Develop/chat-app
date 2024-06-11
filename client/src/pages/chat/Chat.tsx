@@ -1,9 +1,8 @@
-import { useUserStore } from "@/store/user.store";
 import Logo from "@/assets/chatting.svg";
+import useUser from "@/hooks/use-user";
 
 const Chat = () => {
-  const { username } = useUserStore((state) => state.user);
-
+  const user = useUser();
   return (
     <div className="page_chat">
       <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 px-10">
@@ -22,7 +21,7 @@ const Chat = () => {
           <h1 className="text-2xl">
             Bienvenue{" "}
             <span className="font-semibold text-primary text-3xl">
-              {username}
+              {user?.username}
             </span>{" "}
             !
           </h1>

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const DropDown = () => {
   const navigate = useNavigate();
-  const logout = useUserStore((state) => state.useLogout);
+  const logout = useUserStore((state) => state.logout);
 
   return (
     <>

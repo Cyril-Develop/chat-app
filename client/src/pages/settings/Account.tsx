@@ -3,7 +3,6 @@ import { AccountForm } from "@/components/settings/account-form";
 import Alert from "@/components/Alert";
 import handleDeleteAccount from "@/utils/delete-account";
 import { useUserStore } from "@/store/user.store";
-import { Icons } from "@/components/Icons";
 import useFetchUser from "@/hooks/fetch-user";
 
 export default function SettingsAccountPage() {
@@ -13,7 +12,7 @@ export default function SettingsAccountPage() {
 
   return (
     <div className="space-y-6">
-      {data ? (
+      {data && (
         <>
           <div>
             <h3 className="text-lg font-medium">Compte</h3>
@@ -31,8 +30,6 @@ export default function SettingsAccountPage() {
             action={() => handleDeleteAccount(logout, token || "")}
           />
         </>
-      ) : (
-        <Icons.spinner className="animate-spin" />
       )}
     </div>
   );

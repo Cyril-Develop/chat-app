@@ -15,17 +15,13 @@ const useFetchUser = () => {
 
   useEffect(() => {
     if (isError && error) {
-      if (error.message === "Token expiré !") {
-        toast({
-          title: "Token Expiré,",
-          description: "Veuillez vous reconnecter.",
-          variant: "destructive",
-          logo: <Siren size={30} />,
-        });
-        logout();
-      } else {
-        console.log(error);
-      }
+      toast({
+        title: "Erreur",
+        description: error.message,
+        variant: "destructive",
+        logo: <Siren size={30} />,
+      });
+      logout();
     }
   }, [isError, error, logout]);
 

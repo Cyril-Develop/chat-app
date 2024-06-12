@@ -21,18 +21,19 @@ export const getUser = async (token: string) => {
 };
 
 interface EditProfileProps {
-  lastname: string;
-  firstname: string;
+  username?: string;
+  bio?: string;
 }
 
-export const editProfile = async (data: EditProfileProps) => {
+export const editProfile = async (data: EditProfileProps, token: string) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/edit-profile`,
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       }

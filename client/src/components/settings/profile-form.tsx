@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,6 +18,7 @@ import { Siren } from "lucide-react";
 import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
 import { UserInfos } from "@/types/types";
 import { useState } from "react";
+import { useEditUserMutation } from "@/hooks/edit-profil";
 
 interface ProfileFormValues {
   username: string;
@@ -33,9 +33,11 @@ interface ProfileFormProps {
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
     username: user.username,
-    bio: user?.bio || "",
+    bio: user.bio || "",
     image: null,
   };
+
+  const mutation = useEditUserMutation();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
@@ -51,13 +53,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   };
 
   const onSubmit = async () => {
-    console.log("submitting");
-    console.log(form.getValues().bio, user?.bio);
     if (
-      form.getValues().username === user?.username &&
-      form.getValues().bio === user?.bio &&
-      form.getValues().image === null
-      
+      (form.getValues().username === user.username &&
+        form.getValues().bio === user.bio) ||
+      (form.getValues().username === user.username &&
+        form.getValues().bio === "" &&
+        form.getValues().image === null)
     ) {
       toast({
         title: "Erreur",
@@ -66,7 +67,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         logo: <Siren size={30} />,
       });
     } else {
-      console.log(form.getValues());
+      mutation.mutate(form.getValues());
     }
   };
 

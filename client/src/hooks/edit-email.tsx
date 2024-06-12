@@ -8,7 +8,6 @@ export const useEditEmailMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const queryClient = useQueryClient();
 
-
   return useMutation({
     mutationFn: (email: string) => editEmail(email, token || ""),
     onSuccess: () => {
@@ -29,7 +28,12 @@ export const useEditEmailMutation = () => {
         });
         logout();
       } else {
-        console.log(error.message);
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+          logo: <Siren size={30} />,
+        });
       }
     },
   });

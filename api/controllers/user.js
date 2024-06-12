@@ -29,23 +29,28 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const id = req.auth.userId;
-    const { username, email, bio } = req.body;
+    const { username, bio } = req.body;
+    
+    let updatedFields = {};
+    if (username !== undefined) {
+      updatedFields.username = username;
+    }
+    if (bio !== undefined) {
+      updatedFields.bio = bio;
+    }
+
     const user = await prisma.user.update({
       where: {
         id,
       },
-      data: {
-        username,
-        email,
-        bio
-      },
+      data: updatedFields,
       select: {
         id: true,
-        email: true,
         username: true,
         bio: true
       },
     });
+
     res.status(200).json(user);
   } catch (err) {
     console.error("Error updating user:", err);
@@ -54,6 +59,7 @@ exports.updateUser = async (req, res) => {
     });
   }
 };
+
 
 exports.updateEmail = async (req, res) => {
   try {

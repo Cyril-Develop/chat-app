@@ -3,17 +3,17 @@ import { AccountForm } from "@/components/settings/account-form";
 import Alert from "@/components/Alert";
 import handleDeleteAccount from "@/utils/delete-account";
 import { useUserStore } from "@/store/user.store";
-import useUser from "@/hooks/use-user";
 import { Icons } from "@/components/Icons";
+import useFetchUser from "@/hooks/fetch-user";
 
 export default function SettingsAccountPage() {
-  const logout = useUserStore((state) => state.useLogout);
-  const { token } = useUserStore((state) => state.token);
-  const user = useUser();
+  const logout = useUserStore((state) => state.logout);
+  const { token } = useUserStore((state) => state);
+  const { data } = useFetchUser();
 
   return (
     <div className="space-y-6">
-      {user ? (
+      {data ? (
         <>
           <div>
             <h3 className="text-lg font-medium">Compte</h3>
@@ -22,13 +22,13 @@ export default function SettingsAccountPage() {
             </p>
           </div>
           <Separator />
-          <AccountForm user={user} />
+          <AccountForm user={data} />
           <Separator />
           <Alert
             title="Supprimer le compte"
             description="Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
             buttonTitle="Supprimer"
-            action={() => handleDeleteAccount(logout, token)}
+            action={() => handleDeleteAccount(logout, token || "")}
           />
         </>
       ) : (

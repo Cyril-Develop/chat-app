@@ -33,7 +33,7 @@ interface ProfileFormProps {
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
     username: user.username,
-    bio: user.bio ?? "",
+    bio: user?.bio || "",
     image: null,
   };
 
@@ -52,10 +52,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
 
   const onSubmit = async () => {
     console.log("submitting");
+    console.log(form.getValues().bio, user?.bio);
     if (
       form.getValues().username === user?.username &&
       form.getValues().bio === user?.bio &&
       form.getValues().image === null
+      
     ) {
       toast({
         title: "Erreur",

@@ -1,8 +1,9 @@
 import Logo from "@/assets/chatting.svg";
-import useUser from "@/hooks/use-user";
+import useFetchUser from "@/hooks/fetch-user";
 
 const Chat = () => {
-  const user = useUser();
+  const { data } = useFetchUser();
+
   return (
     <div className="page_chat">
       <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 px-10">
@@ -21,7 +22,7 @@ const Chat = () => {
           <h1 className="text-2xl">
             Bienvenue{" "}
             <span className="font-semibold text-primary text-3xl">
-              {user?.username}
+              {data?.username}
             </span>{" "}
             !
           </h1>

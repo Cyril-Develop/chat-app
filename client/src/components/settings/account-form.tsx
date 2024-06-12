@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,12 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { useUserStore } from "@/store/user.store";
+import { useEffect, useState } from "react";
 import { AccountFormSchema } from "@/schema/main";
-import useUser from "@/hooks/use-user";
 import { UserInfos } from "@/types/types";
+import { useEditEmailMutation } from "@/hooks/edit-email";
+import { toast } from "../ui/use-toast";
 
 interface AccountFormValues {
   user: UserInfos;
@@ -25,6 +23,7 @@ interface AccountFormValues {
 
 export function AccountForm({ user }: AccountFormValues) {
   const [apiError, setApiError] = useState("");
+  const mutation = useEditEmailMutation();
 
   const [defaultValues] = useState({
     email: user.email,
@@ -36,10 +35,27 @@ export function AccountForm({ user }: AccountFormValues) {
     defaultValues,
   });
 
-  const onSubmit = async () => {
-    console.log("submitting");
-    console.log(form.getValues());
+  const onSubmit = (data: { newEmail: string }) => {
+    const newEmail = data.newEmail;
+    if (newEmail === user.email) {
+      toast({
+        title: "Erreur",
+        description:
+          "Vous ne pouvez pas utiliser votre adresse email actuelle.",
+        variant: "destructive",
+      });
+      return;
+    }
+    mutation.mutate(newEmail);
   };
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      form.reset({ email: mutation.data.email, newEmail: "" });
+    } else if (mutation.isError) {
+      setApiError(mutation.error.message);
+    }
+  }, [mutation.isSuccess, form]);
 
   return (
     <Form {...form}>

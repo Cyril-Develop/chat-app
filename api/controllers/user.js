@@ -1,4 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
+const moment = require("moment");
+require('moment/locale/fr');
 const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
@@ -14,9 +16,13 @@ exports.getUser = async (req, res) => {
         email: true,
         username: true,
         bio: true,
+        createdAt: true,
         profileImage: true,
       },
     });
+    if (user) {
+      user.createdAt = moment(user.createdAt).locale("fr").format("DD MMMM YYYY");
+    }
     res.status(200).json(user);
   } catch (err) {
     console.error("Error getting user:", err);
@@ -30,7 +36,7 @@ exports.updateUser = async (req, res) => {
   try {
     const id = req.auth.userId;
     const { username, bio } = req.body;
-    
+
     let updatedFields = {};
     if (username !== undefined) {
       updatedFields.username = username;
@@ -47,7 +53,7 @@ exports.updateUser = async (req, res) => {
       select: {
         id: true,
         username: true,
-        bio: true
+        bio: true,
       },
     });
 
@@ -59,7 +65,6 @@ exports.updateUser = async (req, res) => {
     });
   }
 };
-
 
 exports.updateEmail = async (req, res) => {
   try {

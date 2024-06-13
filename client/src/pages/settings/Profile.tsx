@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import ProfileForm from "@/components/settings/profile-form";
-import PreviewCard from "@/components/preview-card";
+import PreviewCard from "@/components/settings/preview-card";
 import useFetchUser from "@/hooks/fetch-user";
 
 const ProfilePage = () => {

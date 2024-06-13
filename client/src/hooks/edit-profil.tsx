@@ -9,7 +9,7 @@ export const useEditUserMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: {}) => editProfile(data, token || ""),
+    mutationFn: (formData: FormData) => editProfile(formData, token || ""),
     onSuccess: () => {
       toast({
         title: "Profil modifié avec succès !",

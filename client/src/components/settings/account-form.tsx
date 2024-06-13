@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { AccountFormSchema } from "@/schema/main";
 import { UserInfos } from "@/types/types";
 import { useEditEmailMutation } from "@/hooks/edit-email";
-import { toast } from "../ui/use-toast";
 
 interface AccountFormValues {
   user: UserInfos;
@@ -37,13 +36,9 @@ export function AccountForm({ user }: AccountFormValues) {
 
   const onSubmit = (data: { newEmail: string }) => {
     const newEmail = data.newEmail;
+    setApiError("");
     if (newEmail === user.email) {
-      toast({
-        title: "Erreur",
-        description:
-          "Vous ne pouvez pas utiliser votre adresse email actuelle.",
-        variant: "destructive",
-      });
+      setApiError("Vous ne pouvez pas utiliser votre adresse email actuelle.");
       return;
     }
     mutation.mutate(newEmail);

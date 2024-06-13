@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -52,13 +52,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
     form.setValue("image", file);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: ProfileFormValues) => {
+    const { username, bio, image } = data;
+
     if (
-      (form.getValues().username === user.username &&
-        form.getValues().bio === user.bio) ||
-      (form.getValues().username === user.username &&
-        form.getValues().bio === "" &&
-        form.getValues().image === null)
+      (username === user.username && bio === user.bio && !image) ||
+      (username === user.username && bio === "" && !image)
     ) {
       toast({
         title: "Erreur",
@@ -67,7 +66,16 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         logo: <Siren size={30} />,
       });
     } else {
-      mutation.mutate(form.getValues());
+      const formData = new FormData();
+
+      formData.append("username", username);
+      formData.append("bio", bio);
+      if (image) {
+        formData.append("image", image);
+      }
+
+      mutation.mutate(formData);
+      setImageUploaded(null);
     }
   };
 

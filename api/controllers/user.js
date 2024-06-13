@@ -1,7 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const moment = require("moment");
-require('moment/locale/fr');
-const jwt = require("jsonwebtoken");
+require("moment/locale/fr");
+const fs = require("fs");
+const path = require("path");
 
 const prisma = new PrismaClient();
 
@@ -21,7 +22,9 @@ exports.getUser = async (req, res) => {
       },
     });
     if (user) {
-      user.createdAt = moment(user.createdAt).locale("fr").format("DD MMMM YYYY");
+      user.createdAt = moment(user.createdAt)
+        .locale("fr")
+        .format("DD MMMM YYYY");
     }
     res.status(200).json(user);
   } catch (err) {
@@ -32,17 +35,38 @@ exports.getUser = async (req, res) => {
   }
 };
 
+// Update user's username, bio and profile image
 exports.updateUser = async (req, res) => {
   try {
     const id = req.auth.userId;
     const { username, bio } = req.body;
 
     let updatedFields = {};
-    if (username !== undefined) {
+    if (username) {
       updatedFields.username = username;
     }
-    if (bio !== undefined) {
+    if (bio) {
       updatedFields.bio = bio;
+    }
+    // Get image profile
+    const currentUser = await prisma.user.findUnique({
+      where: { id },
+      select: { profileImage: true },
+    });
+
+    if (req.file) {
+      if (currentUser.profileImage) {
+        const oldImagePath = path.join(
+          "images/profile",
+          currentUser.profileImage
+        );
+        if (currentUser.profileImage !== "default.jpg") {
+          fs.unlink(oldImagePath, (err) => {
+            if (err) console.error("Error deleting old image:", err);
+          });
+        }
+      }
+      updatedFields.profileImage = req.file.filename;
     }
 
     const user = await prisma.user.update({
@@ -54,6 +78,7 @@ exports.updateUser = async (req, res) => {
         id: true,
         username: true,
         bio: true,
+        profileImage: true,
       },
     });
 

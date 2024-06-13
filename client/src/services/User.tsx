@@ -20,22 +20,16 @@ export const getUser = async (token: string) => {
   }
 };
 
-interface EditProfileProps {
-  username?: string;
-  bio?: string;
-}
-
-export const editProfile = async (data: EditProfileProps, token: string) => {
+export const editProfile = async (formData: FormData, token: string) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: formData,
       }
     );
     const res = await response.json();

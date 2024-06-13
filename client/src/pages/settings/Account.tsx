@@ -1,0 +1,36 @@
+import { Separator } from "@/components/ui/separator";
+import { AccountForm } from "@/components/settings/account-form";
+import Alert from "@/components/Alert";
+import handleDeleteAccount from "@/utils/delete-account";
+import { useUserStore } from "@/store/user.store";
+import useFetchUser from "@/hooks/fetch-user";
+
+export default function SettingsAccountPage() {
+  const logout = useUserStore((state) => state.logout);
+  const { token } = useUserStore((state) => state);
+  const { data } = useFetchUser();
+
+  return (
+    <div className="space-y-6">
+      {data && (
+        <>
+          <div>
+            <h3 className="text-lg font-medium">Compte</h3>
+            <p className="text-muted-foreground">
+              Mettez à jour les informations de votre compte.
+            </p>
+          </div>
+          <Separator />
+          <AccountForm user={data} />
+          <Separator />
+          <Alert
+            title="Supprimer le compte"
+            description="Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
+            buttonTitle="Supprimer"
+            action={() => handleDeleteAccount(logout, token || "")}
+          />
+        </>
+      )}
+    </div>
+  );
+}

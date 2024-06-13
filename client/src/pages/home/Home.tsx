@@ -1,9 +1,13 @@
-
+import Hero from "@/components/Hero";
+import Footer from "@/components/Footer";
 
 const Home = () => {
   return (
-    <div className="bg-red-600">Hello from Home</div>
-  )
-}
+    <div className="page_footer">
+      <Hero />
+      <Footer />
+    </div>
+  );
+};
 
-export default Home
+export default Home;

@@ -42,10 +42,10 @@ export const editProfile = async (formData: FormData, token: string) => {
   }
 };
 
-export const editEmail = async (email: string, token: string) => {
+export const editAccount = async (email: string, token: string) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/email`,
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/account`,
       {
         method: "PATCH",
         headers: {
@@ -64,6 +64,29 @@ export const editEmail = async (email: string, token: string) => {
     throw new Error(error.message);
   }
 };
+
+export const editNotification = async (notification: string, token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/notifications`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ notification }),
+      }
+    );
+    const res = await response.json();
+    if (!response.ok) {
+      throw new Error(res.error);
+    }
+    return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
 
 export const deleteAccount = async (token: string) => {
   try {

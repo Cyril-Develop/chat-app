@@ -41,7 +41,7 @@ const bioSchema = z.string()
 .max(150, { message: "Maximum 150 caractères" });
 
 export const notificationsFormSchema = z.object({
-  type: z.enum(["all", "none"], {
+  type: z.enum(["accept", "refuse"], {
     required_error: "Vous devez sélectionner un type de notification.",
   }),
 });

@@ -8,7 +8,8 @@ const userCtrl = require("../controllers/user");
 
 router.get("/", checkToken, userCtrl.getUser);
 router.patch("/", checkToken, multer, resize, userCtrl.updateUser);
-router.patch("/email", checkToken, userCtrl.updateEmail);
+router.patch("/notifications", checkToken, userCtrl.updateNotification);
+router.patch("/account", checkToken, userCtrl.updateAccount);
 router.delete("/", checkToken, userCtrl.deleteAccount);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
@@ -114,7 +114,8 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 onKeyDown={handleKeydown}
                 onClick={() => handleLabelClick("fileInput")}
               >
-                Sélectionner une image
+                {imageUploaded ? "Image chargée" : "Sélectionner une image"}
+
                 {imageUploaded && (
                   <img
                     src={URL.createObjectURL(imageUploaded)}
@@ -161,14 +162,11 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          size={"lg"}
-          variant="default"
-          className="text-lg w-full sm:w-auto"
-        >
-          Enregistrer les modifications
-        </Button>
+        <ButtonForm
+          loading={mutation.isPending}
+          defaultValue="Enregistrer les modifications"
+          spinnerValue="Envoie en cours"
+        />
       </form>
     </Form>
   );

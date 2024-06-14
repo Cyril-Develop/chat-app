@@ -14,11 +14,12 @@ exports.getUser = async (req, res) => {
       },
       select: {
         id: true,
+        createdAt: true,
         email: true,
         username: true,
         bio: true,
-        createdAt: true,
         profileImage: true,
+        notification: true,
       },
     });
     if (user) {
@@ -60,6 +61,7 @@ exports.updateUser = async (req, res) => {
           "images/profile",
           currentUser.profileImage
         );
+        console.log("oldImagePath", oldImagePath);
         if (currentUser.profileImage !== "default.jpg") {
           fs.unlink(oldImagePath, (err) => {
             if (err) console.error("Error deleting old image:", err);
@@ -91,7 +93,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.updateEmail = async (req, res) => {
+exports.updateAccount = async (req, res) => {
   try {
     const id = req.auth.userId;
     const { email } = req.body;
@@ -114,6 +116,29 @@ exports.updateEmail = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     console.error("Error updating email:", err);
+    res.status(500).json({
+      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+    });
+  }
+};
+
+exports.updateNotification = async (req, res) => {
+  try {
+    const id = req.auth.userId;
+    const { notification } = req.body;
+
+    const user = await prisma.user.update({
+      where: { id },
+      data: { notification },
+      select: {
+        id: true,
+        notification: true,
+      },
+    });
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("Error updating notification:", err);
     res.status(500).json({
       error: "Une erreur est survenue... Veuillez réessayer plus tard",
     });

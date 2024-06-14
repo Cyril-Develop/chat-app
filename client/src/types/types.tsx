@@ -11,4 +11,5 @@ export interface UserInfos {
   bio: string;
   profileImage: string;
   createdAt: string;
+  notification: string;
 }

@@ -2,14 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { BadgeCheck, Siren } from "lucide-react";
 import { useUserStore } from "@/store/user.store";
-import { editEmail } from "@/services/User";
+import { editAccount } from "@/services/User";
 
-export const useEditEmailMutation = () => {
+export const useEditAccountMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (email: string) => editEmail(email, token || ""),
+    mutationFn: (email: string) => editAccount(email, token || ""),
     onSuccess: () => {
       toast({
         title: "Adresse email modifiée avec succès !",

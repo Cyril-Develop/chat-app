@@ -7,7 +7,7 @@ import { toast } from "@/components/ui/use-toast";
 import Line from "@/components/auth/line";
 import ShowPassord from "@/components/auth/show-password";
 import { Icons } from "@/components/Icons";
-
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
@@ -51,7 +51,7 @@ const RegisterForm = () => {
       form.reset();
     } catch (error: any) {
       console.log(error.message);
-      
+
       if (error.message.includes("Nom d'utilisateur déjà utilisé")) {
         form.setError("username", {
           type: "manual",
@@ -135,20 +135,11 @@ const RegisterForm = () => {
               />
             </div>
             <div className="flex flex-col gap-4">
-              <Button
-                type="submit"
-                className="w-full text-lg"
-                disabled={loading}
-                size={"lg"}
-              >
-                {loading ? (
-                  <p className="flex items-center gap-1">
-                    Envoie en cours <Icons.spinner className="animate-spin" />{" "}
-                  </p>
-                ) : (
-                  "Créer un compte"
-                )}
-              </Button>
+              <ButtonForm
+                loading={loading}
+                defaultValue="Créer un compte"
+                spinnerValue="Envoie en cours"
+              />
               <Line />
 
               <Button

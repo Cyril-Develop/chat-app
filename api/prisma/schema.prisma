@@ -16,11 +16,12 @@ generator client {
 model User {
   id            Int      @id @default(autoincrement()) 
   createdAt     DateTime @default(now())
+  email         String   @unique
+  password      String   @db.VarChar(255)
   username      String   @unique
   bio           String?  @db.VarChar(150)
-  email         String   @unique
-  profileImage  String   @default("/images/profile/default-profile-image.jpg")
-  password      String   @db.VarChar(255)
+  profileImage  String   @default("default.jpg")
+  notification  String   @default("accept")
   role          Role     @default(USER)
 }
 

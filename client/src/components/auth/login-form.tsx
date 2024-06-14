@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
@@ -115,20 +116,11 @@ const LoginForm = () => {
             />
           </div>
           <div className="flex flex-col gap-4">
-            <Button
-              type="submit"
-              className="w-full text-lg"
-              disabled={loading}
-              size={"lg"}
-            >
-              {loading ? (
-                <p className="flex items-center gap-1">
-                  Connexion <Icons.spinner className="animate-spin" />{" "}
-                </p>
-              ) : (
-                "Se connecter"
-              )}
-            </Button>
+            <ButtonForm
+              loading={loading}
+              defaultValue="Se connecter"
+              spinnerValue="Connexion"
+            />
 
             <Line />
 

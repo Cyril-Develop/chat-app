@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { AccountFormSchema } from "@/schema/main";
 import { UserInfos } from "@/types/types";
-import { useEditEmailMutation } from "@/hooks/edit-email";
+import { useEditAccountMutation } from "@/hooks/edit-account";
 
 interface AccountFormValues {
   user: UserInfos;
@@ -22,7 +22,7 @@ interface AccountFormValues {
 
 export function AccountForm({ user }: AccountFormValues) {
   const [apiError, setApiError] = useState("");
-  const mutation = useEditEmailMutation();
+  const mutation = useEditAccountMutation();
 
   const [defaultValues] = useState({
     email: user.email,
@@ -100,14 +100,11 @@ export function AccountForm({ user }: AccountFormValues) {
           />
         </div>
 
-        <Button
-          type="submit"
-          size={"lg"}
-          variant="default"
-          className="text-lg w-full sm:w-auto"
-        >
-          Enregistrer les modifications
-        </Button>
+        <ButtonForm
+          loading={mutation.isPending}
+          defaultValue="Enregistrer les modifications"
+          spinnerValue="Envoie en cours"
+        />
 
         {apiError && <p className="error">{apiError}</p>}
       </form>

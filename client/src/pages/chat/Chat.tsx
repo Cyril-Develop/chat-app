@@ -1,5 +1,6 @@
 import Logo from "@/assets/chatting.svg";
 import useFetchUser from "@/hooks/fetch-user";
+import { SearchUser } from "@/components/chat/search-user";
 
 const Chat = () => {
   const { data } = useFetchUser();
@@ -7,6 +8,7 @@ const Chat = () => {
   return (
     <div className="page_chat">
       <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 px-10">
+        <SearchUser />
         <h1 className="text-3xl font-semibold">Messagerie</h1>
         <p className="text-lg">
           Bienvenue sur notre plateforme de messagerie sécurisée. Créez des

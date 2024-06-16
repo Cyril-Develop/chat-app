@@ -3,6 +3,7 @@ import { toast } from "@/components/ui/use-toast";
 import { BadgeCheck, Siren } from "lucide-react";
 import { useUserStore } from "@/store/user.store";
 import { editProfile } from "@/services/User";
+import expiredToken from "@/utils/expired-token";
 
 export const useEditUserMutation = () => {
   const { token, logout } = useUserStore((state) => state);
@@ -20,13 +21,7 @@ export const useEditUserMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        toast({
-          title: "Token Expiré,",
-          description: "Veuillez vous reconnecter.",
-          variant: "destructive",
-          logo: <Siren size={30} />,
-        });
-        logout();
+        expiredToken(logout);
       } else {
         toast({
           title: "Erreur",

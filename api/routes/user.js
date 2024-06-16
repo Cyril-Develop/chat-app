@@ -7,6 +7,7 @@ const resize = require("../middlewares/resize");
 const userCtrl = require("../controllers/user");
 
 router.get("/", checkToken, userCtrl.getUser);
+router.get('/all', checkToken, userCtrl.getAllUsers);
 router.patch("/", checkToken, multer, resize, userCtrl.updateUser);
 router.patch("/notifications", checkToken, userCtrl.updateNotification);
 router.patch("/account", checkToken, userCtrl.updateAccount);

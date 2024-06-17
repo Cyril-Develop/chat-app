@@ -112,7 +112,7 @@ const LoginForm = () => {
                     />
                   </FormControl>
                   <FormDescription>
-                    <a href="#" className="text-primary">
+                    <a href="#" className="link-form">
                       Mot de passe oublié ?
                     </a>
                   </FormDescription>

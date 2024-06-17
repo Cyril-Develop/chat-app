@@ -18,6 +18,7 @@ const buttonVariants = cva(
         btn: "text-secondary hover:bg-secondary hover:text-foreground dark:text-foreground",
         linkForm: "hover:text-primary",
         btnMenu: "flex gap-2 text-md justify-start",
+        btnChat: "text-primary underline p-1 rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:no-underline focus:no-underline text-lg",
       },
       size: {
         menu: "h-full",

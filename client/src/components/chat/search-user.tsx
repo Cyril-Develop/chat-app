@@ -17,14 +17,14 @@ import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { cn } from "@/lib/utils";
 
-const socket = io("http://localhost:4000");
+const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
 
 export const SearchUser = () => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<{ id: string; username: string }[]>(
-    []
-  );
+  const [results, setResults] = useState<
+    { id: string; username: string; profileImage: string }[]
+  >([]);
 
   useEffect(() => {
     socket.on("searchResults", (data) => {
@@ -76,8 +76,16 @@ export const SearchUser = () => {
                   key={result.id}
                   value={result.username}
                   onSelect={() => setOpen(false)}
+                  className={cn("flex items-center gap-2")}
                 >
-                  {result.username}
+                  <img
+                    src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
+                      result.profileImage
+                    }`}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
+                  <span>{result.username}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -86,4 +94,4 @@ export const SearchUser = () => {
       </PopoverContent>
     </Popover>
   );
-}
+};

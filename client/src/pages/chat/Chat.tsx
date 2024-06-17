@@ -1,6 +1,9 @@
 import Logo from "@/assets/chatting.svg";
 import useFetchUser from "@/hooks/fetch-user";
 import { SearchUser } from "@/components/chat/search-user";
+import { DialogJoin } from "@/components/dialog/dialog-join";
+import { DialogCreate } from "@/components/dialog/dialog-create";
+import { Separator } from "@/components/ui/separator";
 
 const Chat = () => {
   const { data } = useFetchUser();
@@ -11,9 +14,9 @@ const Chat = () => {
         <SearchUser />
         <h1 className="text-3xl font-semibold">Messagerie</h1>
         <p className="text-lg">
-          Bienvenue sur notre plateforme de messagerie sécurisée. Créez des
-          salons privés ou publics, discutez avec vos amis et rejoignez une
-          communauté dynamique et engageante.
+          Bienvenue sur notre plateforme de messagerie sécurisée. privés ou
+          publics, discutez avec vos amis et rejoignez une communauté dynamique
+          et engageante.
         </p>
       </aside>
 
@@ -29,9 +32,20 @@ const Chat = () => {
             !
           </h1>
           <p className="text-lg text-center">
-            Pour commencer à discuter, veuillez créer ou rejoindre un salon.
+            Pour commencer à discuter vous devez{" "}
+            <DialogCreate
+              btnTrigger="créer"
+              headerTitle="Créer un salon"
+              headerDescription="Saisissez le nom du salon."
+            />
+            ou{" "}
+            <DialogJoin
+              btnTrigger="rejoindre"
+              headerTitle="Rejoindre un salon"
+              headerDescription="Entrez le nom du salon pour le rejoindre. S'il est privé, un mot de passe vous sera demandé."
+            />
+            un salon.
           </p>
-          <div className="h-px w-1/2 bg-secondary-foreground mt-2"></div>
         </div>
       </div>
 

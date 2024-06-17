@@ -7,6 +7,7 @@ import {
   FormItem,
   FormMessage,
   FormField,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -110,6 +111,11 @@ const LoginForm = () => {
                       field={field}
                     />
                   </FormControl>
+                  <FormDescription>
+                    <a href="#" className="text-primary">
+                      Mot de passe oublié ?
+                    </a>
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

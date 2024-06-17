@@ -14,38 +14,9 @@ const io = require("socket.io")(server, {
   },
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
-
-  socket.on('search', async (query) => {
-    console.log(`Received search query: ${query}`);
-
-    if (query.length < 3) {
-      socket.emit('searchResults', []);
-      return;
-    }
-
-    try {
-      const users = await prisma.user.findMany({
-        where: {
-          OR: [
-            { username: { contains: query.toLowerCase() } }
-          ],
-        },
-      });
-
-      console.log(`Found users: ${JSON.stringify(users)}`);
-      socket.emit('searchResults', users);
-    } catch (error) {
-      console.error(`Error fetching users: ${error.message}`);
-      socket.emit('error', 'Error fetching users');
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
+// Import the chat controller and pass io to it
+const chatController = require("./controllers/socket");
+chatController(io);
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

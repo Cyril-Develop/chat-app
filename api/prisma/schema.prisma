@@ -25,6 +25,15 @@ model User {
   role          Role     @default(USER)
 }
 
+model ChatRoom {
+  id          Int       @id @default(autoincrement())
+  name        String
+  isPrivate   Boolean   @default(false)
+  password    String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 enum Role {
   USER
   ADMIN

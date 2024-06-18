@@ -29,8 +29,8 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           className={cn(
             buttonVariants({ variant: "outline" }),
             pathname === item.href
-              ? "bg-muted hover:bg-muted cursor-default"
-              : "hover:bg-primary hover:text-primary-foreground",
+              ? "bg-muted hover:bg-muted cursor-default dark:bg-muted-foreground dark:hover:bg-muted-foreground dark:text-primary-foreground"
+              : "hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary-foreground dark:hover:text-primary",
             "justify-start text-base"
           )}
         >

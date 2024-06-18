@@ -18,7 +18,7 @@ export function DialogCreate({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="btnChat">{btnTrigger}</Button>
+        <Button size="chat" variant="btnChat">{btnTrigger}</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">

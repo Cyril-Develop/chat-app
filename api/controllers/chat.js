@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 exports.createChatRoom = async (req, res) => {
   const { name, password } = req.body;
+  const userId = req.auth.userId;
 
   if (!name) {
     return res.status(400).json({ error: "Le nom du salon est requis" });
@@ -14,10 +15,12 @@ exports.createChatRoom = async (req, res) => {
         name,
         password: password,
         isPrivate: password ? true : false,
+        createdBy: userId,
       },
     });
     res.status(201).json(chatRoom);
   } catch (error) {
+    console.error("Error creating chat room:", error);
     res.status(500).json({ error: "Error creating chat room" });
   }
 };

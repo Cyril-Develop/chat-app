@@ -5,7 +5,6 @@ import ImageProfile from "@/assets/profile.svg";
 import ImageNotification from "@/assets/notification.svg";
 import ImageSettings from "@/components/image-provider";
 import { Icons } from "@/components/Icons";
-import ProfileCard from "@/components/profile-card";
 
 interface SettingsLayoutProps {
   children: React.ReactNode;
@@ -44,7 +43,7 @@ const Settings = ({ children }: SettingsLayoutProps) => {
 
   return (
     <>
-      <div className="space-y-6 p-4 md:p-10">
+      <div className="page_settings">
         <div className="space-y-0.5">
           <h2 className="flex items-center gap-1 text-2xl font-bold tracking-tight">
             <Icons.settings className="w-6 h-6" />

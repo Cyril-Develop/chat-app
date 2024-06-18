@@ -49,6 +49,18 @@
   }
 }
 
+html{
+  max-width: 2500px;
+  /* background-color: hsl(var(--muted)); */
+  margin: 0 auto;
+  width: 100%;
+}
+
+html.dark{
+  background-color: hsl(var(--bg-secondary));
+}
+
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -67,7 +79,11 @@
 }
 
 .page_chat {
-  @apply bg-muted dark:bg-secondary flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative flex-col lg:flex-row;
+  @apply flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative flex-col lg:flex-row;
+}
+
+.page_settings {
+  @apply space-y-6 p-4 md:p-10 dark:bg-secondary min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
 }
 
 .input-style {

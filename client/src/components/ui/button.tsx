@@ -18,7 +18,7 @@ const buttonVariants = cva(
         btn: "text-secondary hover:bg-secondary hover:text-foreground dark:text-foreground",
         linkForm: "hover:text-primary",
         btnMenu: "flex gap-2 text-md justify-start",
-        btnChat: "text-primary underline p-1 rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:no-underline focus:no-underline text-lg",
+        btnChat: "text-primary no-underline rounded-md px-1 ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring  underline-offset-4 hover:underline focus:no-underline",
       },
       size: {
         menu: "h-full",
@@ -26,7 +26,8 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md p-6",
         icon: "h-10 w-10",
-        box: "h-auto"
+        box: "h-11",
+        chat:"text-lg"
       },
     },
     defaultVariants: {

@@ -40,6 +40,13 @@ exports.getUser = async (req, res) => {
         bio: true,
         profileImage: true,
         notification: true,
+        chatRooms: {
+          select: {
+            id: true,
+            name: true,
+            isPrivate: true,
+          },
+        },
       },
     });
     if (user) {

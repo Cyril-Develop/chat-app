@@ -1,10 +1,8 @@
 import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -16,6 +14,8 @@ import {
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
 
@@ -41,57 +41,63 @@ export const SearchUser = () => {
     setQuery(value);
     if (value.length >= 3) {
       socket.emit("search", value);
+      setOpen(true); // Open the popover if the search query is long enough
     } else {
       setResults([]);
+      setOpen(false); // Close the popover if the search query is too short
     }
   };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          size="box"
-          aria-expanded={open}
-          className="w-[200px] justify-between p-2 text-foreground"
-        >
-          Ajouter un utilisateur
-          <Icons.AddUser />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput
-            placeholder="Rechercher..."
-            onChangeCapture={handleSearch}
+        <div className="w-[200px] flex gap-2 items-center p-3 bg-popover rounded-md">
+          <Label htmlFor="searchUser">
+            <Icons.search style={{ stroke: "#80838B" }} aria-label="Rechercher un utilisateur" />
+          </Label>
+          <Input
+            type="text"
+            placeholder="Rechercher un utilisateur"
+            id="searchUser"
+            value={query}
+            onChange={handleSearch}
+            className="flex h-auto rounded-md text-foreground bg-transparent p-0 text-sm outline-none border-none focus:border-none focus: placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
           />
-          <CommandList>
-            {query.length >= 3 && results.length === 0 && (
-              <CommandEmpty>Aucun utilisateur trouvé</CommandEmpty>
-            )}
-            <CommandGroup className={cn("p-0")}>
-              {results.map((result) => (
-                <CommandItem
-                  key={result.id}
-                  value={result.username}
-                  onSelect={() => setOpen(false)}
-                  className={cn("flex items-center gap-2")}
-                >
-                  <img
-                    src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
-                      result.profileImage
-                    }`}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <span>{result.username}</span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
+        </div>
+      </PopoverTrigger>
+      {query.length >= 3 && (
+        <PopoverContent
+          className="w-[200px] p-0"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
+          <Command>
+            <CommandList>
+              {query.length >= 3 && results.length === 0 && (
+                <CommandEmpty>Aucun utilisateur trouvé</CommandEmpty>
+              )}
+              <CommandGroup className={cn("p-0")}>
+                {results.map((result) => (
+                  <CommandItem
+                    key={result.id}
+                    value={result.username}
+                    onSelect={() => setOpen(false)}
+                    className="flex items-center gap-2 p-2"
+                  >
+                    <img
+                      src={`${
+                        import.meta.env.VITE_REACT_APP_IMAGE_URL
+                      }/profile/${result.profileImage}`}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <span>{result.username}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      )}
     </Popover>
   );
 };

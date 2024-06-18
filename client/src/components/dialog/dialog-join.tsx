@@ -17,11 +17,11 @@ export function DialogJoin({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="btnChat">{btnTrigger}</Button>
+        <Button size="chat" variant="btnChat">{btnTrigger}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
-        <JoinForm btnSubmit="Créer" />
+        <JoinForm btnSubmit="Rejoindre" />
       </DialogContent>
     </Dialog>
   );

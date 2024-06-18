@@ -108,7 +108,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 Image
               </p>
               <FormLabel
-                className="input-style"
+                className="input-style dark:hover:bg-primary-foreground dark:hover:text-primary"
                 tabIndex={0}
                 aria-label="Sélectionner une image"
                 onKeyDown={handleKeydown}

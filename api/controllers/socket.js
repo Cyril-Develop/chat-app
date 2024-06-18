@@ -48,10 +48,10 @@ module.exports = (io) => {
       }
     });
 
-    socket.on("joinRoom", async ({ roomId, password }) => {
+    socket.on("joinRoom", async ({ name, password }) => {
       try {
         const chatRoom = await prisma.chatRoom.findUnique({
-          where: { id: roomId },
+          where: { name: name },
         });
 
         if (!chatRoom) {
@@ -64,7 +64,7 @@ module.exports = (io) => {
           return;
         }
 
-        socket.join(roomId);
+        socket.join(name);
         socket.emit("joinedRoom", chatRoom);
       } catch (error) {
         socket.emit("error", "Error joining chat room");

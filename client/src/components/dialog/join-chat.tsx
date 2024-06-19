@@ -11,21 +11,22 @@ import {
 import ButtonForm from "@/components/button-form";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema } from "@/schema/main";
+import { RoomFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
 
-interface CreateFormProps {
+interface JoinFormProps {
   btnSubmit: string;
+  onSubmitSuccess: () => void;
 }
 
-const CreateForm = ({ btnSubmit }: CreateFormProps) => {
+const JoinForm = ({ btnSubmit, onSubmitSuccess }: JoinFormProps) => {
   const form = useForm({
-    // defaultValues: {
-    //   email: "",
-    //   password: "",
-    // },
-    // resolver: zodResolver(LoginFormSchema),
+    defaultValues: {
+      name: "",
+      password: "",
+    },
+    resolver: zodResolver(RoomFormSchema),
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,9 @@ const CreateForm = ({ btnSubmit }: CreateFormProps) => {
   const onSubmit = async () => {
     setLoading(true);
   };
+
+  //Test
+  const isPrivate = false;
   return (
     <Form {...form}>
       <form
@@ -45,7 +49,7 @@ const CreateForm = ({ btnSubmit }: CreateFormProps) => {
         <div className="space-y-4  sm:space-y-8">
           <FormField
             control={form.control}
-            name="nom"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Nom</FormLabel>
@@ -56,33 +60,36 @@ const CreateForm = ({ btnSubmit }: CreateFormProps) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mot de passe</FormLabel>
-                <FormControl>
-                  <ShowPassord
-                    showPassword={showPassword}
-                    setShowPassword={setShowPassword}
-                    field={field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Si vous saisissez un mot de passe, le salon sera privé et seul
-                  vous et vos amis pourront y accéder.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isPrivate && (
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mot de passe</FormLabel>
+                  <FormControl>
+                    <ShowPassord
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    <a href="#" className="text-primary">
+                      Mot de passe oublié ?
+                    </a>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}
             defaultValue={btnSubmit}
-            spinnerValue="Création en cours..."
+            spinnerValue="Connexion"
           />
         </div>
         {apiError && <p className="error">{apiError}</p>}
@@ -91,4 +98,4 @@ const CreateForm = ({ btnSubmit }: CreateFormProps) => {
   );
 };
 
-export default CreateForm;
+export default JoinForm;

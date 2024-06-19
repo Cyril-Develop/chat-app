@@ -1,6 +1,4 @@
 import { Check, ChevronsUpDown } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -16,12 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
-import useFetchUser from "@/hooks/fetch-user";
+import useFetchChats from "@/hooks/fetch-chats";
 
 export function Room() {
-  const { data } = useFetchUser();
+  const { data } = useFetchChats();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -40,7 +37,8 @@ export function Room() {
           aria-expanded={open}
           className="w-[200px] justify-between p-3"
         >
-          {value ? value : "Rejoindre un salon"}
+          {value ? value : `Rejoindre un salon ${data ? data?.length : ""} `}
+
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -48,10 +46,12 @@ export function Room() {
         <Command>
           <CommandInput placeholder="Rechercher un salon" />
           <CommandList>
-            <CommandEmpty>Aucun salon trouvé.</CommandEmpty>
+            <CommandEmpty className="error p-3">
+              Aucun salon trouvé.
+            </CommandEmpty>
 
             <CommandGroup heading="Salons Publics 💬">
-              {data?.chatRooms.map(
+              {data?.map(
                 (room: Room) =>
                   !room.isPrivate && (
                     <CommandItem
@@ -71,7 +71,7 @@ export function Room() {
             </CommandGroup>
             <CommandSeparator />
             <CommandGroup heading="Salons Privés 🔒">
-              {data?.chatRooms.map(
+              {data?.map(
                 (room: Room) =>
                   room.isPrivate && (
                     <CommandItem

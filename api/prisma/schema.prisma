@@ -14,27 +14,27 @@ generator client {
 }
 
 model User {
-  id            Int        @id @default(autoincrement()) 
-  createdAt     DateTime   @default(now())
-  email         String     @unique
-  password      String     @db.VarChar(255)
-  username      String     @unique
-  bio           String?    @db.VarChar(150)
-  profileImage  String     @default("default.jpg")
-  notification  String     @default("accept")
-  role          Role       @default(USER)
-  chatRooms     ChatRoom[] // Relation avec les salons de chat créés
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  email        String     @unique
+  password     String     @db.VarChar(255)
+  username     String     @unique
+  bio          String?    @db.VarChar(150)
+  profileImage String     @default("default.jpg")
+  notification String     @default("accept")
+  role         Role       @default(USER)
+  chatRooms    ChatRoom[] // Relation avec les salons de chat créés
 }
 
 model ChatRoom {
-  id          Int       @id @default(autoincrement())
-  name        String
-  isPrivate   Boolean   @default(false)
-  password    String?   @db.VarChar(255)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  createdBy   Int       // Relation avec l'utilisateur qui a créé le salon de chat
-  creator     User      @relation(fields: [createdBy], references: [id])
+  id        Int      @id @default(autoincrement())
+  name      String
+  isPrivate Boolean  @default(false)
+  password  String?  @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy Int // Relation avec l'utilisateur qui a créé le salon de chat
+  creator   User     @relation(fields: [createdBy], references: [id])
 }
 
 enum Role {

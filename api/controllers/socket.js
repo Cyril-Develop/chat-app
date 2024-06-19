@@ -28,48 +28,48 @@ module.exports = (io) => {
       }
     });
 
-    socket.on("createRoom", async ({ name, isPrivate, password }) => {
-      if (!name) {
-        socket.emit("error", "Le nom du salon est requis");
-        return;
-      }
+    // socket.on("createRoom", async ({ name, isPrivate, password }) => {
+    //   if (!name) {
+    //     socket.emit("error", "Le nom du salon est requis");
+    //     return;
+    //   }
 
-      try {
-        const chatRoom = await prisma.chatRoom.create({
-          data: {
-            name,
-            isPrivate: isPrivate || false,
-            password: isPrivate ? password : null,
-          },
-        });
-        socket.emit("roomCreated", chatRoom);
-      } catch (error) {
-        socket.emit("error", "Error creating chat room");
-      }
-    });
+    //   try {
+    //     const chatRoom = await prisma.chatRoom.create({
+    //       data: {
+    //         name,
+    //         isPrivate: isPrivate || false,
+    //         password: isPrivate ? password : null,
+    //       },
+    //     });
+    //     socket.emit("roomCreated", chatRoom);
+    //   } catch (error) {
+    //     socket.emit("error", "Error creating chat room");
+    //   }
+    // });
 
-    socket.on("joinRoom", async ({ name, password }) => {
-      try {
-        const chatRoom = await prisma.chatRoom.findUnique({
-          where: { name: name },
-        });
+    // socket.on("joinRoom", async ({ name, password }) => {
+    //   try {
+    //     const chatRoom = await prisma.chatRoom.findUnique({
+    //       where: { name: name },
+    //     });
 
-        if (!chatRoom) {
-          socket.emit("error", "Le salon de discussion n'existe pas");
-          return;
-        }
+    //     if (!chatRoom) {
+    //       socket.emit("error", "Le salon de discussion n'existe pas");
+    //       return;
+    //     }
 
-        if (chatRoom.isPrivate && chatRoom.password !== password) {
-          socket.emit("error", "Incorrect password");
-          return;
-        }
+    //     if (chatRoom.isPrivate && chatRoom.password !== password) {
+    //       socket.emit("error", "Incorrect password");
+    //       return;
+    //     }
 
-        socket.join(name);
-        socket.emit("joinedRoom", chatRoom);
-      } catch (error) {
-        socket.emit("error", "Error joining chat room");
-      }
-    });
+    //     socket.join(name);
+    //     socket.emit("joinedRoom", chatRoom);
+    //   } catch (error) {
+    //     socket.emit("error", "Error joining chat room");
+    //   }
+    // });
 
     socket.on("disconnect", () => {
       console.log("user disconnected");

@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import CreateForm from "@/components/dialog/create-form";
+import CreateForm from "@/components/dialog/create-chat";
+import { useState } from "react";
 
 interface DialogCreate {
   btnTrigger: string;
@@ -15,15 +15,23 @@ export function DialogCreate({
   headerTitle,
   headerDescription,
 }: DialogCreate) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpenChange = (open: boolean) => setIsOpen(open);
+
+  const handleSubmitSuccess = () => handleOpenChange(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="chat" variant="btnChat">{btnTrigger}</Button>
+        <Button size="chat" variant="btnChat">
+          {btnTrigger}
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
-        <CreateForm btnSubmit="Créer" />
+        <CreateForm btnSubmit="Créer" onSubmitSuccess={handleSubmitSuccess} />
       </DialogContent>
     </Dialog>
   );

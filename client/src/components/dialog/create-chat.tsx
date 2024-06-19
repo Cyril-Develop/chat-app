@@ -11,34 +11,45 @@ import {
 import ButtonForm from "@/components/button-form";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema } from "@/schema/main";
+import { RoomFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
+import { useCreateChatMutation } from "@/hooks/create-chat";
 
-interface JoinFormProps {
+interface CreateFormProps {
   btnSubmit: string;
+  onSubmitSuccess: () => void;
 }
 
-const JoinForm = ({ btnSubmit }: JoinFormProps) => {
+const CreateForm = ({ btnSubmit, onSubmitSuccess }: CreateFormProps) => {
   const form = useForm({
-    // defaultValues: {
-    //   email: "",
-    //   password: "",
-    // },
-    // resolver: zodResolver(LoginFormSchema),
+    defaultValues: {
+      name: "",
+      password: "",
+    },
+    resolver: zodResolver(RoomFormSchema),
   });
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
 
+  const mutation = useCreateChatMutation();
+
   const onSubmit = async () => {
     setLoading(true);
+    setApiError("");
+    const { name, password } = form.getValues();
+    try {
+      await mutation.mutateAsync({ name, password });
+      onSubmitSuccess();
+    } catch (error: any) {
+      setApiError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-
-  //Test
-  const isPrivate = false;
   return (
     <Form {...form}>
       <form
@@ -60,7 +71,6 @@ const JoinForm = ({ btnSubmit }: JoinFormProps) => {
               </FormItem>
             )}
           />
-          {isPrivate && 
           <FormField
             control={form.control}
             name="password"
@@ -75,21 +85,19 @@ const JoinForm = ({ btnSubmit }: JoinFormProps) => {
                   />
                 </FormControl>
                 <FormDescription>
-                  <a href="#" className="text-primary">
-                    Mot de passe oublié ?
-                  </a>
+                  Si vous saisissez un mot de passe, le salon sera privé et seul
+                  vous et vos amis pourront y accéder.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-        }
         </div>
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}
             defaultValue={btnSubmit}
-            spinnerValue="Connexion"
+            spinnerValue="Création en cours..."
           />
         </div>
         {apiError && <p className="error">{apiError}</p>}
@@ -98,4 +106,4 @@ const JoinForm = ({ btnSubmit }: JoinFormProps) => {
   );
 };
 
-export default JoinForm;
+export default CreateForm;

@@ -9,12 +9,21 @@ exports.createChatRoom = async (req, res) => {
     return res.status(400).json({ error: "Le nom du salon est requis" });
   }
 
+  // Vérifier si le nom du salon existe déjà
+  const existingChatRoom = await prisma.chatRoom.findFirst({
+    where: { name },
+  });
+
+  if (existingChatRoom) {
+    return res.status(400).json({ error: "Le nom du salon  est déjà pris" });
+  }
+
   try {
     const chatRoom = await prisma.chatRoom.create({
       data: {
         name,
         password: password,
-        isPrivate: password ? true : false,
+        isPrivate: !!password,
         createdBy: userId,
       },
     });
@@ -48,5 +57,14 @@ exports.joinChatRoom = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Error joining chat room" });
+  }
+};
+
+exports.getChatRooms = async (req, res) => {
+  try {
+    const chatRooms = await prisma.chatRoom.findMany();
+    res.status(200).json(chatRooms);
+  } catch (error) {
+    res.status(500).json({ error: "Error getting chat rooms" });
   }
 };

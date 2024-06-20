@@ -47,3 +47,31 @@ export const createChat = async (data: ChatProps, token: string) => {
     throw new Error(error.message);
   }
 };
+
+interface JoinChatProps {
+  roomId: string;
+  password?: string;
+}
+
+export const joinChat = async (data: JoinChatProps, token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/join`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      throw new Error(responseData.error);
+    }
+    return responseData;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

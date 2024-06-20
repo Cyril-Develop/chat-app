@@ -82,6 +82,10 @@ html.dark{
   @apply flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative flex-col lg:flex-row;
 }
 
+.page_chat_unselected {
+  @apply flex flex-col px-4 min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
+}
+
 .page_settings {
   @apply space-y-6 p-4 md:p-10 dark:bg-secondary min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
 }

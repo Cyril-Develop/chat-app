@@ -39,7 +39,7 @@ exports.joinChatRoom = async (req, res) => {
 
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
-      where: { id: roomId },
+      where: { id: roomId }
     });
 
     if (!chatRoom) {
@@ -68,3 +68,23 @@ exports.getChatRooms = async (req, res) => {
     res.status(500).json({ error: "Error getting chat rooms" });
   }
 };
+
+exports.getChatRoom = async (req, res) => {
+  const { roomId } = req.params;
+
+  try {
+    const chatRoom = await prisma.chatRoom.findUnique({
+      where: { id: roomId },
+    });
+
+    if (!chatRoom) {
+      return res
+        .status(404)
+        .json({ error: "le salon de discussion n'existe pas" });
+    }
+
+    res.status(200).json(chatRoom);
+  } catch (error) {
+    res.status(500).json({ error: "Error getting chat room" });
+  }
+}

@@ -4,6 +4,11 @@ export interface UserState {
   logout: () => void;
 }
 
+export interface RoomState {
+  room: string;
+  setRoom: (room: string) => void;
+}
+
 export interface UserInfos {
   id: string;
   username: string;

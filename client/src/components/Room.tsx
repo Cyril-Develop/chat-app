@@ -28,7 +28,7 @@ export function Room() {
   const { setRoom, room } = useRoomStore();
   const mutation = useJoinChatMutation();
 
-  console.log(room);
+
   
 
   interface Room {

@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import useFetchUser from "@/hooks/fetch-user";
 
 const contactList: { name: string }[] = [
   { name: "Alice" },
@@ -40,27 +41,10 @@ const contactList: { name: string }[] = [
 
 export function Contact() {
   const [open, setOpen] = useState(false);
+  const { data } = useFetchUser();
+  console.log(data);
+  
   return (
-    // <Command className="rounded-lg border shadow-md h-auto">
-    //   <CommandInput placeholder="Rechercher un contact" />
-    //   <ScrollArea className="h-auto">
-    //     <CommandList>
-    //       {contactList.length === 0 ? (
-    //         <CommandEmpty>Vous n'avez pas encore de contact.</CommandEmpty>
-    //       ) : (
-    //         <>
-    //           <CommandEmpty>Aucun contact trouvé.</CommandEmpty>
-    //           <CommandGroup heading="Contacts">
-    //             {contactList.map((contact) => (
-    //               <CommandItem key={contact.name}>{contact.name}</CommandItem>
-    //             ))}
-    //           </CommandGroup>
-    //         </>
-    //       )}
-    //     </CommandList>
-    //   </ScrollArea>
-    // </Command>
-
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button

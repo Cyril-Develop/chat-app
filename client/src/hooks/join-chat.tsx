@@ -4,13 +4,10 @@ import { BadgeCheck } from "lucide-react";
 import { useUserStore } from "@/store/user.store";
 import { joinChat } from "@/services/Chat";
 import expiredToken from "@/utils/expired-token";
-import { useRoomStore } from "@/store/room.store";
 
 export const useJoinChatMutation = () => {
   const { token, logout } = useUserStore((state) => state);
-  const { setRoom } = useRoomStore();
   const queryClient = useQueryClient();
-
 
   interface JoinChatProps {
     roomId: string;

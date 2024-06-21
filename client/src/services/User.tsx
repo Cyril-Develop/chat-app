@@ -130,4 +130,32 @@ export const editNotification = async (notification: string, token: string) => {
   } catch (error: any) {
     throw new Error(error.message);
   }
-}
+};
+
+export const addFriend = async (
+  userId: string,
+  friendId: string,
+  token: string
+) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/contact`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId, friendId }), // Assurez-vous que le corps contient les bons champs
+      }
+    );
+
+    const res = await response.json();
+    if (!response.ok) {
+      throw new Error(res.error);
+    }
+    return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

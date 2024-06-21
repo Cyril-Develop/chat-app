@@ -12,5 +12,6 @@ router.patch("/", checkToken, multer, resize, userCtrl.updateUser);
 router.patch("/notifications", checkToken, userCtrl.updateNotification);
 router.patch("/account", checkToken, userCtrl.updateAccount);
 router.delete("/", checkToken, userCtrl.deleteAccount);
+router.post('/add', checkToken, userCtrl.addFriend);
 
 module.exports = router;

@@ -42,19 +42,53 @@ exports.getUser = async (req, res) => {
         notification: true,
         chatRooms: {
           select: {
-            id: true,
-            name: true,
-            isPrivate: true,
+            chatRoom: {
+              select: {
+                id: true,
+                name: true,
+                isPrivate: true,
+              },
+            },
+          },
+        },
+        friends: {
+          select: {
+            friend: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+        },
+        friendOf: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
           },
         },
       },
     });
+
     if (user) {
-      user.createdAt = moment(user.createdAt)
-        .locale("fr")
-        .format("DD MMMM YYYY");
+      user.createdAt = moment(user.createdAt).locale("fr").format("DD MMMM YYYY");
+
+      // Combine friends and friendOf into a single list of friends
+      const friendsList = [
+        ...user.friends.map(f => f.friend),
+        ...user.friendOf.map(f => f.user)
+      ];
+
+      res.status(200).json({ ...user, friendsList });
+    } else {
+      res.status(404).json({ error: "Utilisateur non trouvé" });
     }
-    res.status(200).json(user);
   } catch (err) {
     console.error("Error getting user:", err);
     res.status(500).json({
@@ -188,3 +222,38 @@ exports.updateNotification = async (req, res) => {
     });
   }
 };
+
+exports.addFriend = async (req, res) => {
+  const { userId, friendId } = req.body;
+
+  // Vérifiez que userId et friendId sont présents
+  if (!userId || !friendId) {
+    return res
+      .status(400)
+      .json({ error: "Les identifiants des utilisateurs sont requis." });
+  }
+
+  try {
+    // Utilisation d'une transaction pour assurer l'intégrité des données
+    const friendship = await prisma.$transaction([
+      prisma.friend.create({
+        data: {
+          userId: userId,
+          friendId: friendId,
+        },
+      }),
+      prisma.friend.create({
+        data: {
+          userId: friendId,
+          friendId: userId,
+        },
+      }),
+    ]);
+
+    res.status(201).json(friendship[0]); // Renvoie le premier objet créé
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur lors de l'ajout de l'ami." });
+  }
+};
+

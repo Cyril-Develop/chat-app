@@ -17,6 +17,8 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { addFriend } from "@/services/User";
+
 const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
 
 export const SearchUser = () => {
@@ -48,12 +50,19 @@ export const SearchUser = () => {
     }
   };
 
+  const handleAddFriend = (userId: string) => {
+    
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="w-[200px] flex gap-2 items-center p-3 bg-popover rounded-md">
           <Label htmlFor="searchUser">
-            <Icons.search style={{ stroke: "#80838B" }} aria-label="Rechercher un utilisateur" />
+            <Icons.search
+              style={{ stroke: "#80838B" }}
+              aria-label="Rechercher un utilisateur"
+            />
           </Label>
           <Input
             type="text"

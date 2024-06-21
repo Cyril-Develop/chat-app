@@ -35,30 +35,43 @@ exports.createChatRoom = async (req, res) => {
 };
 
 exports.joinChatRoom = async (req, res) => {
-  const { roomId, password } = req.body;
+  const { roomId, password, userId } = req.body;
 
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
-      where: { id: roomId }
+      where: { id: roomId },
+      select: { id: true, name: true, isPrivate: true, password: true, users: true },
     });
 
     if (!chatRoom) {
-      return res
-        .status(404)
-        .json({ error: "le salon de discussion n'existe pas" });
+      return res.status(404).json({ error: "Le salon de discussion n'existe pas" });
+    }
+
+    if (chatRoom.isPrivate && !password) {
+      return res.status(403).json({ error: "Le mot de passe est requis" });
     }
 
     if (chatRoom.isPrivate && chatRoom.password !== password) {
-      return res.status(403).json({ error: "Incorrect password" });
+      return res.status(403).json({ error: "Mot de passe incorrect" });
     }
 
-    res.status(200).json({
-      message: "Vous avez rejoint le salon de discussion avec succès!",
+    // Ajouter l'utilisateur au salon de discussion
+    const updatedChatRoom = await prisma.chatRoom.update({
+      where: { id: roomId },
+      data: {
+        users: {
+          connect: { id: userId }
+        }
+      },
+      select: { id: true, name: true, users: true }
     });
+
+    res.status(200).json(updatedChatRoom);
   } catch (error) {
-    res.status(500).json({ error: "Error joining chat room" });
+    res.status(500).json({ error: "Erreur lors de la tentative de rejoindre le salon de discussion" });
   }
 };
+
 
 exports.getChatRooms = async (req, res) => {
   try {
@@ -87,4 +100,4 @@ exports.getChatRoom = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Error getting chat room" });
   }
-}
+};

@@ -2,32 +2,32 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
-import { joinChat } from "@/services/Chat";
+import { addContact } from "@/services/User";
 import expiredToken from "@/utils/expired-token";
 
-export const useJoinChatMutation = () => {
+export const useAddContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const queryClient = useQueryClient();
 
-  interface JoinChatProps {
-    roomId: string;
-    password?: string;
-  }
-
   return useMutation({
-    mutationFn: (data: JoinChatProps) => joinChat(data, token || ""),
+    mutationFn: (contactId: string) => addContact(contactId, token || ""),
     onSuccess: () => {
       toast({
-        title: "Salon rejoint avec succès !",
+        title: "Contact ajouté à votre liste d'amis",
         variant: "success",
-        logo: <Icons.check/>,
+        logo: <Icons.check />,
       });
-      queryClient.invalidateQueries({ queryKey: ["chat"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
         expiredToken(logout);
       }
+      toast({
+        title: error.message,
+        variant: "destructive",
+        logo: <Icons.alert />,
+      });
     },
   });
 };

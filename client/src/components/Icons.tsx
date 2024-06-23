@@ -1,12 +1,15 @@
-type IconProps = React.HTMLAttributes<SVGElement>;
+type IconProps = React.HTMLAttributes<SVGElement> & {
+  width?: string | number;
+  height?: string | number;
+};
 
 export const Icons = {
-  home: (props: IconProps) => (
+  home: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -19,7 +22,7 @@ export const Icons = {
       <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
   ),
-  logo: (props: IconProps) => (
+  logo: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +60,7 @@ export const Icons = {
       </defs>
     </svg>
   ),
-  google: (props: IconProps) => (
+  google: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg role="img" viewBox="0 0 24 24" {...props}>
       <path
         fill="currentColor"
@@ -65,11 +68,11 @@ export const Icons = {
       />
     </svg>
   ),
-  spinner: (props: IconProps) => (
+  spinner: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -81,12 +84,12 @@ export const Icons = {
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   ),
-  sun: (props: IconProps) => (
+  sun: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -106,12 +109,12 @@ export const Icons = {
       <path d="m19.07 4.93-1.41 1.41" />
     </svg>
   ),
-  moon: (props: IconProps) => (
+  moon: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -123,12 +126,12 @@ export const Icons = {
       <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
     </svg>
   ),
-  login: (props: IconProps) => (
+  login: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -142,12 +145,12 @@ export const Icons = {
       <line x1="15" x2="3" y1="12" y2="12" />
     </svg>
   ),
-  logout: (props: IconProps) => (
+  logout: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -161,12 +164,12 @@ export const Icons = {
       <line x1="21" x2="9" y1="12" y2="12" />
     </svg>
   ),
-  chat: (props: IconProps) => (
+  chat: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -178,12 +181,12 @@ export const Icons = {
       <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
     </svg>
   ),
-  user: (props: IconProps) => (
+  user: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -196,12 +199,12 @@ export const Icons = {
       <circle cx="12" cy="7" r="4" />
     </svg>
   ),
-  settings: (props: IconProps) => (
+  settings: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -214,12 +217,12 @@ export const Icons = {
       <circle cx="12" cy="12" r="3" />
     </svg>
   ),
-  delete: (props: IconProps) => (
+  delete: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -235,12 +238,12 @@ export const Icons = {
       <line x1="14" x2="14" y1="11" y2="17" />
     </svg>
   ),
-  menu: (props: IconProps) => (
+  menu: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -254,7 +257,7 @@ export const Icons = {
       <line x1="4" x2="20" y1="18" y2="18" />
     </svg>
   ),
-  AddUser: (props: IconProps) => (
+  AddUser: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +277,7 @@ export const Icons = {
       <path d="M22 19h-6" />
     </svg>
   ),
-  search: (props: IconProps) => (
+  search: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
@@ -292,12 +295,12 @@ export const Icons = {
       <path d="m21 21-4.3-4.3" />
     </svg>
   ),
-  send: (props: IconProps) => (
+  send: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -310,12 +313,12 @@ export const Icons = {
       <path d="M22 2 11 13" />
     </svg>
   ),
-  emoji: (props: IconProps) => (
+  emoji: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -328,6 +331,60 @@ export const Icons = {
       <path d="M8 14s1.5 2 4 2 4-2 4-2" />
       <line x1="9" x2="9.01" y1="9" y2="9" />
       <line x1="15" x2="15.01" y1="9" y2="9" />
+    </svg>
+  ),
+  add: ({ width = 24, height = 24, ...props }: IconProps) => (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-plus"
+    >
+      <path d="M5 12h14" />
+      <path d="M12 5v14" />
+    </svg>
+  ),
+  check: ({ width = 24, height = 24, ...props }: IconProps) => (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-check"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  ),
+  alert: ({ width = 24, height = 24, ...props }: IconProps) => (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-triangle-alert"
+    >
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
     </svg>
   ),
 };

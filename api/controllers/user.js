@@ -77,13 +77,24 @@ exports.getUser = async (req, res) => {
     });
 
     if (user) {
-      user.createdAt = moment(user.createdAt).locale("fr").format("DD MMMM YYYY");
+      user.createdAt = moment(user.createdAt)
+        .locale("fr")
+        .format("DD MMMM YYYY");
 
-      // Combine friends and friendOf into a single list of friends
-      const friendsList = [
-        ...user.friends.map(f => f.friend),
-        ...user.friendOf.map(f => f.user)
-      ];
+      // Combine friends and friendOf into a single list of unique friends
+      const friendsList = [];
+
+      user.friends.forEach((f) => {
+        if (!friendsList.some((friend) => friend.id === f.friend.id)) {
+          friendsList.push(f.friend);
+        }
+      });
+
+      user.friendOf.forEach((f) => {
+        if (!friendsList.some((friend) => friend.id === f.user.id)) {
+          friendsList.push(f.user);
+        }
+      });
 
       res.status(200).json({ ...user, friendsList });
     } else {
@@ -223,28 +234,58 @@ exports.updateNotification = async (req, res) => {
   }
 };
 
-exports.addFriend = async (req, res) => {
-  const { userId, friendId } = req.body;
+exports.addContact = async (req, res) => {
+  const { contactId } = req.body;
+
+  const userId = req.auth.userId;
 
   // Vérifiez que userId et friendId sont présents
-  if (!userId || !friendId) {
+  if (!userId || !contactId) {
     return res
       .status(400)
       .json({ error: "Les identifiants des utilisateurs sont requis." });
   }
 
+  if (userId === contactId) {
+    return res
+      .status(400)
+      .json({ error: "Vous ne pouvez pas vous ajouter vous même!" });
+  }
+
   try {
+    // Vérifiez si la relation d'amitié existe déjà
+    const existingFriendship = await prisma.friend.findFirst({
+      where: {
+        OR: [
+          {
+            userId: userId,
+            friendId: contactId,
+          },
+          {
+            userId: contactId,
+            friendId: userId,
+          },
+        ],
+      },
+    });
+
+    if (existingFriendship) {
+      return res
+        .status(400)
+        .json({ error: "Ce contact fait déjà partie de votre liste d'amis." });
+    }
+
     // Utilisation d'une transaction pour assurer l'intégrité des données
     const friendship = await prisma.$transaction([
       prisma.friend.create({
         data: {
           userId: userId,
-          friendId: friendId,
+          friendId: contactId,
         },
       }),
       prisma.friend.create({
         data: {
-          userId: friendId,
+          userId: contactId,
           friendId: userId,
         },
       }),
@@ -257,3 +298,44 @@ exports.addFriend = async (req, res) => {
   }
 };
 
+exports.removeContact = async (req, res) => {
+  const { contactId } = req.body;
+  const userId = req.auth.userId;
+
+  if (!userId || !contactId) {
+    return res
+      .status(400)
+      .json({ error: "Les identifiants des utilisateurs sont requis." });
+  }
+
+  if (userId === contactId) {
+    return res
+      .status(400)
+      .json({ error: "Vous ne pouvez pas vous retirer vous-même!" });
+  }
+
+  try {
+    // Utilisation d'une transaction pour assurer l'intégrité des données
+    await prisma.$transaction([
+      prisma.friend.deleteMany({
+        where: {
+          OR: [
+            {
+              userId: userId,
+              friendId: contactId,
+            },
+            {
+              userId: contactId,
+              friendId: userId,
+            },
+          ],
+        },
+      }),
+    ]);
+
+    res.status(200).json({ message: "Ami retiré avec succès." });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'ami:", error);
+    res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });
+  }
+};

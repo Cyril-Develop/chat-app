@@ -24,7 +24,7 @@ export function DialogCreate({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="chat" variant="btnChat">
+        <Button size="box" >
           {btnTrigger}
         </Button>
       </DialogTrigger>

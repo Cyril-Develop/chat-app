@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useUserStore } from "@/store/user.store";
 import { getChats } from "@/services/Chat";
 import { toast } from "@/components/ui/use-toast";
-import { Siren } from "lucide-react";
+import { Icons } from "@/components/Icons";
 
 const useFetchChats = () => {
   const { token, logout } = useUserStore((state) => state);
@@ -19,7 +19,7 @@ const useFetchChats = () => {
         title: "Erreur",
         description: error.message,
         variant: "destructive",
-        logo: <Siren size={30} />,
+        logo: <Icons.alert/>,
       });
       logout();
     }

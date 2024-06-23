@@ -132,21 +132,41 @@ export const editNotification = async (notification: string, token: string) => {
   }
 };
 
-export const addFriend = async (
-  userId: string,
-  friendId: string,
-  token: string
-) => {
+export const addContact = async (contactId: string, token: string) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/contact`,
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/add`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId, friendId }), // Assurez-vous que le corps contient les bons champs
+        body: JSON.stringify({ contactId }),
+      }
+    );
+
+    const res = await response.json();
+    if (!response.ok) {
+      throw new Error(res.error);
+    }
+    return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const removeContact = async (contactId: string, token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/remove`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contactId }), 
       }
     );
 

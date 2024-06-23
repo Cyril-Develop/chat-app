@@ -35,43 +35,64 @@ exports.createChatRoom = async (req, res) => {
 };
 
 exports.joinChatRoom = async (req, res) => {
-  const { roomId, password, userId } = req.body;
+  const { roomId, password } = req.body;
+  const userId = req.auth.userId;
+
+  console.log(
+    `Requête pour rejoindre le salon: roomId=${roomId}, userId=${userId}`
+  );
 
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
       where: { id: roomId },
-      select: { id: true, name: true, isPrivate: true, password: true, users: true },
+      select: {
+        id: true,
+        name: true,
+        isPrivate: true,
+        password: true,
+        users: true,
+      },
     });
 
     if (!chatRoom) {
-      return res.status(404).json({ error: "Le salon de discussion n'existe pas" });
+      console.log(`Le salon de discussion avec l'ID ${roomId} n'existe pas`);
+      return res
+        .status(404)
+        .json({ error: "Le salon de discussion n'existe pas" });
     }
 
     if (chatRoom.isPrivate && !password) {
+      console.log("Mot de passe requis pour un salon privé");
       return res.status(403).json({ error: "Le mot de passe est requis" });
     }
 
     if (chatRoom.isPrivate && chatRoom.password !== password) {
+      console.log("Mot de passe incorrect");
       return res.status(403).json({ error: "Mot de passe incorrect" });
     }
 
-    // Ajouter l'utilisateur au salon de discussion
-    const updatedChatRoom = await prisma.chatRoom.update({
+    console.log(`Utilisateur ${userId} rejoint le salon ${roomId}`);
+
+    // Ajouter l'utilisateur au salon de discussion via la table de jonction UserChatRoom
+    // const updatedChatRoom = await prisma.userChatRoom.create({
+    //   data: {
+    //     userId: userId,
+    //     chatRoomId: roomId
+    //   },
+    // });
+
+    const chatRoomWithUsers = await prisma.chatRoom.findUnique({
       where: { id: roomId },
-      data: {
-        users: {
-          connect: { id: userId }
-        }
-      },
-      select: { id: true, name: true, users: true }
+      select: { id: true, name: true, users: true },
     });
 
-    res.status(200).json(updatedChatRoom);
+    console.log(`Salon mis à jour: ${JSON.stringify(chatRoomWithUsers)}`);
+    res.status(200).json(chatRoomWithUsers);
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la tentative de rejoindre le salon de discussion" });
+    console.error("Erreur lors de la tentative de rejoindre le salon:", error);
+    res.status(500).json({ error: "Impossible de rejoindre le salon" });
   }
 };
-
 
 exports.getChatRooms = async (req, res) => {
   try {
@@ -88,16 +109,24 @@ exports.getChatRoom = async (req, res) => {
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
       where: { id: roomId },
+      select: {
+        id: true,
+        name: true,
+        isPrivate: true,
+        users: true,
+      },
     });
 
     if (!chatRoom) {
       return res
         .status(404)
-        .json({ error: "le salon de discussion n'existe pas" });
+        .json({ error: "Le salon de discussion n'existe pas" });
     }
 
-    res.status(200).json(chatRoom);
+    res.status(200).json(chatRoom); // Retourne directement l'objet chatRoom
   } catch (error) {
-    res.status(500).json({ error: "Error getting chat room" });
+    console.error("Erreur lors de la récupération du salon de discussion :", error);
+    res.status(500).json({ error: "Erreur lors de la récupération du salon de discussion" });
   }
 };
+

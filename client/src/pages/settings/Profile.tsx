@@ -6,7 +6,7 @@ import useFetchUser from "@/hooks/fetch-user";
 const ProfilePage = () => {
   const { data } = useFetchUser();
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-4 md:pb-10">
       {data && (
         <>
           <div className="flex flex-col gap-4">

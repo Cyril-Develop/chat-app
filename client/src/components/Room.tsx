@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFetchChats from "@/hooks/fetch-chats";
 import { cn } from "@/lib/utils";
 import { useJoinChatMutation } from "@/hooks/join-chat";
@@ -28,9 +28,6 @@ export function Room() {
   const { setRoom, room } = useRoomStore();
   const mutation = useJoinChatMutation();
 
-
-  
-
   interface Room {
     id: string;
     name: string;
@@ -39,8 +36,15 @@ export function Room() {
 
   const roomsFound = data?.length > 0;
 
+  useEffect(() => {
+    if (room) {
+      const roomName = data?.find((r: Room) => r.id === room)?.name;
+      setValue(roomName);
+    }
+  }, [data, room]);
+
   const handleJoinRoom = (roomId: string) => {
-    if(room === roomId) return;
+    if (room === roomId) return;
     setRoom(roomId);
     mutation.mutate({ roomId });
   };
@@ -53,8 +57,13 @@ export function Room() {
           size="box"
           aria-expanded={open}
           className="w-[200px] justify-between p-3"
+          disabled={!roomsFound}
         >
-          {value ? value : `Rejoindre un salon (${data?.length})`}
+          {value
+            ? value
+            : roomsFound
+            ? `Recherche un salon (${data.length})`
+            : "Rechercher un salon"}
 
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
         </Button>
@@ -76,8 +85,7 @@ export function Room() {
                       <CommandItem
                         key={room?.id}
                         className={cn("cursor-pointer")}
-                        onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
+                        onSelect={() => {
                           setOpen(false);
                           handleJoinRoom(room.id);
                         }}
@@ -98,8 +106,7 @@ export function Room() {
                       <CommandItem
                         key={room?.id}
                         className={cn("cursor-pointer")}
-                        onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
+                        onSelect={() => {
                           setOpen(false);
                         }}
                       >

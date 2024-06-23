@@ -20,6 +20,28 @@ export const getChats = async (token: string) => {
   }
 };
 
+export const getChat = async (roomId: string, token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/${roomId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      throw new Error(responseData.error);
+    }
+    return responseData;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
 interface ChatProps {
   name: string;
   password?: string;
@@ -70,6 +92,7 @@ export const joinChat = async (data: JoinChatProps, token: string) => {
     if (!response.ok) {
       throw new Error(responseData.error);
     }
+    
     return responseData;
   } catch (error: any) {
     throw new Error(error.message);

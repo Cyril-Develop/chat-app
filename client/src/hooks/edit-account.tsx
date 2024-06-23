@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
-import { BadgeCheck, Siren } from "lucide-react";
 import { useUserStore } from "@/store/user.store";
 import { editAccount } from "@/services/User";
+import { Icons } from "@/components/Icons";
 import expiredToken from "@/utils/expired-token";
 
 export const useEditAccountMutation = () => {
@@ -15,7 +15,7 @@ export const useEditAccountMutation = () => {
       toast({
         title: "Adresse email modifiée avec succès !",
         variant: "success",
-        logo: <BadgeCheck size={30} />,
+        logo: <Icons.check/>,
       });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
@@ -27,7 +27,7 @@ export const useEditAccountMutation = () => {
           title: "Erreur",
           description: error.message,
           variant: "destructive",
-          logo: <Siren size={30} />,
+          logo: <Icons.alert/>,
         });
       }
     },

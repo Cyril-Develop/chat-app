@@ -55,6 +55,7 @@ model Friend {
   user      User @relation("UserFriends", fields: [userId], references: [id])
   friend    User @relation("FriendUsers", fields: [friendId], references: [id])
   @@id([userId, friendId])
+  @@unique([userId, friendId]) // Assure une relation unique entre userId et friendId
 }
 
 enum Role {

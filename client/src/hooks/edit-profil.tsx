@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
-import { BadgeCheck, Siren } from "lucide-react";
+import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { editProfile } from "@/services/User";
 import expiredToken from "@/utils/expired-token";
@@ -15,7 +15,7 @@ export const useEditUserMutation = () => {
       toast({
         title: "Profil modifié avec succès !",
         variant: "success",
-        logo: <BadgeCheck size={30} />,
+        logo: <Icons.check/>,
       });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
@@ -27,7 +27,7 @@ export const useEditUserMutation = () => {
           title: "Erreur",
           description: error.message,
           variant: "destructive",
-          logo: <Siren size={30} />,
+          logo: <Icons.alert/>,
         });
       }
     },

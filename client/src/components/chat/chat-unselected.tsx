@@ -1,6 +1,5 @@
 import Logo from "@/assets/chatting.svg";
 import { DialogJoin } from "@/components/dialog/dialog-join";
-import { DialogCreate } from "@/components/dialog/dialog-create";
 import useFetchUser from "@/hooks/fetch-user";
 
 const ChatUnselected = () => {
@@ -18,13 +17,7 @@ const ChatUnselected = () => {
           !
         </h1>
         <p className="text-xl text-center">
-          Pour commencer à discuter vous devez{" "}
-          <DialogCreate
-            btnTrigger="créer"
-            headerTitle="Créer un salon"
-            headerDescription="Saisissez le nom du salon."
-          />{" "}
-          ou{" "}
+          Pour commencer à discuter vous devez créer ou{" "}
           <DialogJoin
             btnTrigger="rejoindre"
             headerTitle="Rejoindre un salon"

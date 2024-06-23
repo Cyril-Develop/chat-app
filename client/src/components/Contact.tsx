@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/command";
 import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import {
   Popover,
   PopoverContent,
@@ -16,34 +15,26 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import useFetchUser from "@/hooks/fetch-user";
-
-const contactList: { name: string }[] = [
-  { name: "Alice" },
-  { name: "Bob" },
-  { name: "Charlie" },
-  { name: "David" },
-  { name: "Eve" },
-  { name: "Frank" },
-  { name: "Grace" },
-  { name: "Heidi" },
-  { name: "Ivan" },
-  { name: "Judy" },
-  { name: "Mallory" },
-  { name: "Oscar" },
-  { name: "Peggy" },
-  { name: "Rupert" },
-  { name: "Sybil" },
-  { name: "Trudy" },
-  { name: "Victor" },
-  { name: "Walter" },
-  { name: "Zoe" },
-];
+import { Icons } from "@/components/Icons";
+import { useRemoveContactMutation } from "@/hooks/remove-contact";
 
 export function Contact() {
   const [open, setOpen] = useState(false);
   const { data } = useFetchUser();
-  console.log(data);
-  
+
+  const mutation = useRemoveContactMutation();
+
+  interface ContactProps {
+    username: string;
+    id: string;
+  }
+
+  const handleDelete = (contactId: string) => {
+    mutation.mutate(contactId);
+  };
+
+  const haveContact = data?.friendsList.length > 0;
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -52,34 +43,44 @@ export function Contact() {
           size="box"
           aria-expanded={open}
           className="w-[200px] justify-between p-3"
+          disabled={!haveContact}
         >
           Voir mes contacts
+          {haveContact && `(${data?.friendsList.length})`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 w-[200px]">
-        <Command>
-          <CommandInput placeholder="Rechercher un contact" />
-          <CommandList>
-            {contactList.length === 0 ? (
-              <CommandEmpty className="error p-3">
-                Vous n'avez pas encore de contact.
-              </CommandEmpty>
-            ) : (
-              <>
+      {haveContact && (
+        <PopoverContent className="p-0 w-[200px]">
+          <Command>
+            <>
+              <CommandInput placeholder="Rechercher un contact" />
+              <CommandList>
                 <CommandEmpty className="error p-3">
                   Aucun contact trouvé.
                 </CommandEmpty>
                 <CommandGroup heading="Contacts">
-                  {contactList.map((contact) => (
-                    <CommandItem key={contact.name}>{contact.name}</CommandItem>
+                  {data?.friendsList.map((contact: ContactProps) => (
+                    <CommandItem
+                      key={contact.username}
+                      className="flex items-center justify-between"
+                    >
+                      {contact.username}
+                      <Button
+                        variant="alert"
+                        title="Retirer de la liste de contacts"
+                        onClick={() => handleDelete(contact.id)}
+                      >
+                        <Icons.delete width="18" height="18" />
+                      </Button>
+                    </CommandItem>
                   ))}
                 </CommandGroup>
-              </>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
+              </CommandList>
+            </>
+          </Command>
+        </PopoverContent>
+      )}
     </Popover>
   );
 }

@@ -18,6 +18,23 @@ module.exports = (io) => {
           where: {
             OR: [{ username: { contains: query.toLowerCase() } }],
           },
+          select: {
+            id: true,
+            username: true,
+            bio: true,
+            profileImage: true,
+            friends: {
+              select: {
+                friend: {
+                  select: {
+                    id: true,
+                    username: true,
+                    profileImage: true,
+                  },
+                },
+              },
+            },
+          },
         });
 
         console.log(`Found users: ${JSON.stringify(users)}`);

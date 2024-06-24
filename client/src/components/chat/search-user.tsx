@@ -17,7 +17,8 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAddContactMutation } from "@/hooks/add-contact";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import UserThumbnail from "@/components/user-thumbnail";
 
 const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
 
@@ -76,6 +77,9 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
     mutation.mutate(friendId);
   };
 
+  console.log(results);
+  console.log(userId);
+
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
@@ -103,7 +107,7 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
       </PopoverTrigger>
       {query.length >= 3 && (
         <PopoverContent
-          className="w-[200px] p-0"
+          className="w-[200px] p-0 border-none"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>
@@ -111,25 +115,19 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
               {query.length >= 3 && results.length === 0 && (
                 <CommandEmpty>Aucun contact trouvé</CommandEmpty>
               )}
-              <CommandGroup className={cn("p-0")}>
-                {results.map(
-                  (result) =>
-                    result.id !== userId && (
+              {results.map(
+                (result) =>
+                  result.id !== userId && (
+                    <CommandGroup className={cn("p-0 border shadow-md rounded-md")}>
                       <CommandItem
                         key={result.id}
                         value={result.username}
                         className="flex items-center justify-between p-2"
                       >
-                        <div className="flex items-center gap-2">
-                          <img
-                            src={`${
-                              import.meta.env.VITE_REACT_APP_IMAGE_URL
-                            }/profile/${result.profileImage}`}
-                            alt="Profile"
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
-                          <span>{result.username}</span>
-                        </div>
+                        <UserThumbnail
+                          image={result.profileImage}
+                          username={result.username}
+                        />
 
                         {isFriend(result.friends) ? (
                           <Icons.check className="w-4 h-4" />
@@ -143,9 +141,9 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
                           </Button>
                         )}
                       </CommandItem>
-                    )
-                )}
-              </CommandGroup>
+                    </CommandGroup>
+                  )
+              )}
             </CommandList>
           </Command>
         </PopoverContent>

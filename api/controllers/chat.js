@@ -9,7 +9,6 @@ exports.createChatRoom = async (req, res) => {
     return res.status(400).json({ error: "Le nom du salon est requis" });
   }
 
-  // Vérifier si le nom du salon existe déjà
   const existingChatRoom = await prisma.chatRoom.findFirst({
     where: { name },
   });
@@ -38,20 +37,9 @@ exports.joinChatRoom = async (req, res) => {
   const { roomId, password } = req.body;
   const userId = req.auth.userId;
 
-  console.log(
-    `Requête pour rejoindre le salon: roomId=${roomId}, userId=${userId}`
-  );
-
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
       where: { id: roomId },
-      select: {
-        id: true,
-        name: true,
-        isPrivate: true,
-        password: true,
-        users: true,
-      },
     });
 
     if (!chatRoom) {
@@ -74,20 +62,16 @@ exports.joinChatRoom = async (req, res) => {
     console.log(`Utilisateur ${userId} rejoint le salon ${roomId}`);
 
     // Ajouter l'utilisateur au salon de discussion via la table de jonction UserChatRoom
-    // const updatedChatRoom = await prisma.userChatRoom.create({
-    //   data: {
-    //     userId: userId,
-    //     chatRoomId: roomId
-    //   },
-    // });
-
-    const chatRoomWithUsers = await prisma.chatRoom.findUnique({
-      where: { id: roomId },
-      select: { id: true, name: true, users: true },
+    await prisma.userChatRoom.create({
+      data: {
+        userId: userId,
+        chatRoomId: roomId,
+      },
     });
 
-    console.log(`Salon mis à jour: ${JSON.stringify(chatRoomWithUsers)}`);
-    res.status(200).json(chatRoomWithUsers);
+    res
+      .status(200)
+      .json({ message: "Vous avez rejoint le salon de discussion" });
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre le salon:", error);
     res.status(500).json({ error: "Impossible de rejoindre le salon" });
@@ -104,7 +88,8 @@ exports.getChatRooms = async (req, res) => {
 };
 
 exports.getChatRoom = async (req, res) => {
-  const { roomId } = req.params;
+  const { id } = req.params;
+  const roomId = parseInt(id);
 
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
@@ -112,8 +97,17 @@ exports.getChatRoom = async (req, res) => {
       select: {
         id: true,
         name: true,
-        isPrivate: true,
-        users: true,
+        users: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -123,10 +117,18 @@ exports.getChatRoom = async (req, res) => {
         .json({ error: "Le salon de discussion n'existe pas" });
     }
 
-    res.status(200).json(chatRoom); // Retourne directement l'objet chatRoom
+    // Map the users to return a simplified array of users
+    const users = chatRoom.users.map((userChatRoom) => userChatRoom.user);
+
+    res.status(200).json({ ...chatRoom, users });
   } catch (error) {
-    console.error("Erreur lors de la récupération du salon de discussion :", error);
-    res.status(500).json({ error: "Erreur lors de la récupération du salon de discussion" });
+    console.error(
+      "Erreur lors de la récupération du salon de discussion :",
+      error
+    );
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la récupération du salon de discussion" });
   }
 };
 

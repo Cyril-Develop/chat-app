@@ -6,14 +6,14 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
 interface fetchChatProps {
-  roomId: string;
+  roomId: number;
 }
 
 const useFetchChat = ({ roomId }: fetchChatProps) => {
   const { token, logout } = useUserStore((state) => state);
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["chat"],
+    queryKey: ["chat", roomId],
     queryFn: async () => getChat(roomId, token || ""),
   });
 

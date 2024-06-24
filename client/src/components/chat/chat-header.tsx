@@ -7,7 +7,6 @@ interface ChatHeaderProps {
 }
 
 const ChatHeader = ({ roomInfos }: ChatHeaderProps) => {
-  console.log(roomInfos);
 
   return (
     <>

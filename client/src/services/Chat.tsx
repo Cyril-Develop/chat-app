@@ -20,7 +20,7 @@ export const getChats = async (token: string) => {
   }
 };
 
-export const getChat = async (roomId: string, token: string) => {
+export const getChat = async (roomId: number, token: string) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/${roomId}`,
@@ -71,7 +71,7 @@ export const createChat = async (data: ChatProps, token: string) => {
 };
 
 interface JoinChatProps {
-  roomId: string;
+  roomId: number;
   password?: string;
 }
 
@@ -92,7 +92,6 @@ export const joinChat = async (data: JoinChatProps, token: string) => {
     if (!response.ok) {
       throw new Error(responseData.error);
     }
-    
     return responseData;
   } catch (error: any) {
     throw new Error(error.message);

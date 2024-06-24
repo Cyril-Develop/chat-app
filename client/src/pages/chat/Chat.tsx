@@ -7,6 +7,7 @@ import ChatUnselected from "@/components/chat/chat-unselected";
 import { useRoomStore } from "@/store/room.store";
 import useFetchUser from "@/hooks/fetch-user";
 import { DialogCreate } from "@/components/dialog/dialog-create";
+import { RoomUsers } from "@/components/room-users";
 
 const Chat = () => {
   const { room } = useRoomStore();
@@ -47,6 +48,7 @@ const Chat = () => {
           <>
             <h2 className="text-3xl">Utilisateurs </h2>
             <Separator />
+            <RoomUsers roomId={room} />
           </>
         )}
       </aside>

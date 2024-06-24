@@ -10,17 +10,17 @@ export const useJoinChatMutation = () => {
   const queryClient = useQueryClient();
 
   interface JoinChatProps {
-    roomId: string;
+    roomId: number;
     password?: string;
   }
 
   return useMutation({
     mutationFn: (data: JoinChatProps) => joinChat(data, token || ""),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
-        title: "Salon rejoint avec succès !",
+        title: data.message,
         variant: "success",
-        logo: <Icons.check/>,
+        logo: <Icons.check />,
       });
       queryClient.invalidateQueries({ queryKey: ["chat"] });
     },

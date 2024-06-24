@@ -5,8 +5,8 @@ export interface UserState {
 }
 
 export interface RoomState {
-  room: string;
-  setRoom: (room: string) => void;
+  room: number | null;
+  setRoom: (room: number) => void;
 }
 
 export interface UserInfos {

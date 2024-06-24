@@ -5,7 +5,7 @@ import { RoomState } from "@/types/types";
 export const useRoomStore = create(
   persist<RoomState>(
     (set) => ({
-      room: "",
+      room: null,
       setRoom: (room) => set({ room }),
     }),
     {

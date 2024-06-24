@@ -29,7 +29,7 @@ export function Room() {
   const mutation = useJoinChatMutation();
 
   interface Room {
-    id: string;
+    id: number;
     name: string;
     isPrivate: boolean;
   }
@@ -43,7 +43,7 @@ export function Room() {
     }
   }, [data, room]);
 
-  const handleJoinRoom = (roomId: string) => {
+  const handleJoinRoom = (roomId: number) => {
     if (room === roomId) return;
     setRoom(roomId);
     mutation.mutate({ roomId });

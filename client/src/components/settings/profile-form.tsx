@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
@@ -52,13 +52,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
     form.setValue("image", file);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: ProfileFormValues) => {
+    const { username, bio, image } = data;
+
     if (
-      (form.getValues().username === user.username &&
-        form.getValues().bio === user.bio) ||
-      (form.getValues().username === user.username &&
-        form.getValues().bio === "" &&
-        form.getValues().image === null)
+      (username === user.username && bio === user.bio && !image) ||
+      (username === user.username && bio === "" && !image)
     ) {
       toast({
         title: "Erreur",
@@ -67,7 +66,16 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         logo: <Siren size={30} />,
       });
     } else {
-      mutation.mutate(form.getValues());
+      const formData = new FormData();
+
+      formData.append("username", username);
+      formData.append("bio", bio);
+      if (image) {
+        formData.append("image", image);
+      }
+
+      mutation.mutate(formData);
+      setImageUploaded(null);
     }
   };
 
@@ -100,13 +108,14 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 Image
               </p>
               <FormLabel
-                className="input-style"
+                className="input-style dark:hover:bg-primary-foreground dark:hover:text-primary"
                 tabIndex={0}
                 aria-label="Sélectionner une image"
                 onKeyDown={handleKeydown}
                 onClick={() => handleLabelClick("fileInput")}
               >
-                Sélectionner une image
+                {imageUploaded ? "Image chargée" : "Sélectionner une image"}
+
                 {imageUploaded && (
                   <img
                     src={URL.createObjectURL(imageUploaded)}
@@ -153,14 +162,11 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          size={"lg"}
-          variant="default"
-          className="text-lg w-full sm:w-auto"
-        >
-          Enregistrer les modifications
-        </Button>
+        <ButtonForm
+          loading={mutation.isPending}
+          defaultValue="Enregistrer les modifications"
+          spinnerValue="Envoie en cours"
+        />
       </form>
     </Form>
   );

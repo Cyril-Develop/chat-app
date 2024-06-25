@@ -1,45 +1,56 @@
-import Logo from "@/assets/chatting.svg";
-import useFetchUser from "@/hooks/fetch-user";
+import { SearchUser } from "@/components/chat/search-user";
+import { Separator } from "@/components/ui/separator";
+import { RoomSelector } from "@/components/room/room-selector";
+import { Contact } from "@/components/Contact";
+import ChatRoom from "@/components/chat/chat-room";
+import ChatUnselected from "@/components/chat/chat-unselected";
+import { useRoomStore } from "@/store/room.store";
+import useGetUser from "@/hooks/get-user";
+import { DialogCreate } from "@/components/dialog/dialog-create";
+import { RoomUsers } from "@/components/room-users";
 
 const Chat = () => {
-  const { data } = useFetchUser();
+  const { room } = useRoomStore();
+  const { data: user } = useGetUser();
 
   return (
     <div className="page_chat">
-      <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground h-full w-1/4 px-10">
-        <h1 className="text-3xl font-semibold">Messagerie</h1>
-        <p className="text-lg">
-          Bienvenue sur notre plateforme de messagerie sécurisée. Créez des
-          salons privés ou publics, discutez avec vos amis et rejoignez une
-          communauté dynamique et engageante.
-        </p>
+      <aside className="flex flex-col gap-4 pt-4 border-r-2 bg-muted dark:bg-primary-foreground h-full px-10">
+        <h2 className="text-3xl">Contacts</h2>
+        {user && (
+          <>
+            <Separator />
+            <SearchUser userId={user.id} />
+          </>
+        )}
+
+        <Contact />
+        <Separator />
       </aside>
 
-      <div className="bg-muted flex flex-col justify-center items-center w-9/12 h-full p-2 pl-2  xl:p-2 xl:pl-0 xl:flex-row">
-        <img src={Logo} alt="logo-messaging" className="w-full md:w-1/2" />
+      <main className="flex-grow h-full bg-primary-foreground dark:bg-primary-background">
+        {room ? <ChatRoom roomId={room} /> : <ChatUnselected />}
+      </main>
 
-        <div className="flex flex-col items-center gap-2">
-          <h1 className="text-2xl">
-            Bienvenue{" "}
-            <span className="font-semibold text-primary text-3xl">
-              {data?.username}
-            </span>{" "}
-            !
-          </h1>
-          <p className="text-lg text-center">
-            Pour commencer à discuter, veuillez créer ou rejoindre un salon.
-          </p>
-          <div className="h-px w-1/2 bg-secondary-foreground mt-2"></div>
-        </div>
-      </div>
+      <aside className="flex flex-col gap-4 pt-4 border-l-2 bg-muted dark:bg-primary-foreground h-full px-10">
+        <h2 className="text-3xl">Salons</h2>
+        <Separator />
+        <DialogCreate
+          btnTrigger="Créer un salon"
+          headerTitle="Créer un salon"
+          headerDescription="Saisissez le nom du salon."
+        />
+        <RoomSelector />
 
-      <aside className="bg-primary text-secondary dark:bg-primary-foreground dark:text-secondary-foreground w-1/4 h-full px-10">
-        <h1 className="text-3xl font-semibold">Messagerie</h1>
-        <p className="text-lg">
-          Bienvenue sur notre plateforme de messagerie sécurisée. Créez des
-          salons privés ou publics, discutez avec vos amis et rejoignez une
-          communauté dynamique et engageante.
-        </p>
+        <Separator />
+
+        {room && (
+          <>
+            <h2 className="text-3xl">Utilisateurs </h2>
+            <Separator />
+            <RoomUsers roomId={room} />
+          </>
+        )}
       </aside>
     </div>
   );

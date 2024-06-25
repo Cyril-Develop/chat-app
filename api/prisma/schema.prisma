@@ -14,17 +14,53 @@ generator client {
 }
 
 model User {
-  id            Int      @id @default(autoincrement()) 
-  createdAt     DateTime @default(now())
-  username      String   @unique
-  bio           String?  @db.VarChar(150)
-  email         String   @unique
-  profileImage  String   @default("/images/profile/default-profile-image.jpg")
-  password      String   @db.VarChar(255)
-  role          Role     @default(USER)
+  id                Int            @id @default(autoincrement())
+  createdAt         DateTime       @default(now())
+  email             String         @unique
+  password          String         @db.VarChar(255)
+  username          String         @unique
+  bio               String?        @db.VarChar(150)
+  profileImage      String         @default("default.jpg")
+  notification      String         @default("accept")
+  role              Role           @default(USER)
+  chatRooms         UserChatRoom[] // Relation avec les salons de chat créés
+  friends           Friend[]       @relation("UserFriends") // Représente les amis d'un utilisateur
+  friendOf          Friend[]       @relation("FriendUsers")  // Représente les utilisateurs qui ont ajouté l'utilisateur comme ami
+  createdChatRooms  ChatRoom[]     @relation("CreatorChatRooms")
+}
+
+model ChatRoom {
+  id        Int             @id @default(autoincrement())
+  name      String
+  isPrivate Boolean         @default(false)
+  password  String?         @db.VarChar(255)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  createdBy Int
+  creator   User            @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms")
+  users     UserChatRoom[]  // Relation many-to-many
+}
+
+model UserChatRoom {
+  userId     Int
+  chatRoomId Int
+  user       User     @relation(fields: [userId], references: [id])
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  @@id([userId, chatRoomId])
+}
+
+model Friend {
+  userId    Int
+  friendId  Int
+  user      User @relation("UserFriends", fields: [userId], references: [id])
+  friend    User @relation("FriendUsers", fields: [friendId], references: [id])
+  @@id([userId, friendId])
+  @@unique([userId, friendId]) // Assure une relation unique entre userId et friendId
 }
 
 enum Role {
   USER
   ADMIN
 }
+
+

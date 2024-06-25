@@ -1,38 +1,33 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
-import { BadgeCheck, Siren } from "lucide-react";
+import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { editProfile } from "@/services/User";
+import expiredToken from "@/utils/expired-token";
 
 export const useEditUserMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: {}) => editProfile(data, token || ""),
+    mutationFn: (formData: FormData) => editProfile(formData, token || ""),
     onSuccess: () => {
       toast({
         title: "Profil modifié avec succès !",
         variant: "success",
-        logo: <BadgeCheck size={30} />,
+        logo: <Icons.check/>,
       });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        toast({
-          title: "Token Expiré,",
-          description: "Veuillez vous reconnecter.",
-          variant: "destructive",
-          logo: <Siren size={30} />,
-        });
-        logout();
+        expiredToken(logout);
       } else {
         toast({
           title: "Erreur",
           description: error.message,
           variant: "destructive",
-          logo: <Siren size={30} />,
+          logo: <Icons.alert/>,
         });
       }
     },

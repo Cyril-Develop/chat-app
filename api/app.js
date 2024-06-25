@@ -14,9 +14,11 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // Importing routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const chatRoutes = require('./routes/chat');
 
 // Using routes
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use('/chat', chatRoutes);
 
 module.exports = app;

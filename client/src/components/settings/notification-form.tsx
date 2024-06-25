@@ -1,32 +1,45 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
-import { useUserStore } from "@/store/user.store";
+import { useEditNotificationMutation } from "@/hooks/edit-notification";
 import { notificationsFormSchema } from "@/schema/main";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { UserInfos } from "@/types/types";
 
-const NotificationForm = () => {
+interface NotificationFormValues {
+  user: UserInfos;
+}
+
+const NotificationForm = ({ user }: NotificationFormValues) => {
   const [apiError, setApiError] = useState("");
+  const mutation = useEditNotificationMutation();
 
   const form = useForm({
     resolver: zodResolver(notificationsFormSchema),
+    defaultValues: {
+      type: user.notification,
+    },
   });
 
-  const onSubmit = async () => {
-    console.log("submitting");
-    console.log(form.getValues());
+  const onSubmit = (data: { type: string }) => {
+    const notification = data.type;
+
+    if (notification === user.notification) {
+      setApiError("Vous n'avez pas modifié vos préférences.");
+      return;
+    }
+
+    mutation.mutate(notification);
+    setApiError("");
   };
 
   return (
@@ -46,7 +59,7 @@ const NotificationForm = () => {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="all" />
+                      <RadioGroupItem value="accept" />
                     </FormControl>
                     <FormLabel className="font-normal">
                       Tous les nouveaux messages
@@ -54,7 +67,7 @@ const NotificationForm = () => {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="none" />
+                      <RadioGroupItem value="refuse" />
                     </FormControl>
                     <FormLabel className="font-normal">Rien</FormLabel>
                   </FormItem>
@@ -64,15 +77,11 @@ const NotificationForm = () => {
             </FormItem>
           )}
         />
-
-        <Button
-          type="submit"
-          size={"lg"}
-          variant="default"
-          className="text-lg w-full sm:w-auto"
-        >
-          Enregistrer les modifications
-        </Button>
+        <ButtonForm
+          loading={mutation.isPending}
+          defaultValue="Enregistrer les modifications"
+          spinnerValue="Envoie en cours"
+        />
 
         {apiError && <p className="error">{apiError}</p>}
       </form>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
@@ -6,6 +7,7 @@ import {
   FormItem,
   FormMessage,
   FormField,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -109,26 +111,22 @@ const LoginForm = () => {
                       field={field}
                     />
                   </FormControl>
+                  <FormDescription>
+                    <a href="#" className="link-form">
+                      Mot de passe oublié ?
+                    </a>
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
           <div className="flex flex-col gap-4">
-            <Button
-              type="submit"
-              className="w-full text-lg"
-              disabled={loading}
-              size={"lg"}
-            >
-              {loading ? (
-                <p className="flex items-center gap-1">
-                  Connexion <Icons.spinner className="animate-spin" />{" "}
-                </p>
-              ) : (
-                "Se connecter"
-              )}
-            </Button>
+            <ButtonForm
+              loading={loading}
+              defaultValue="Se connecter"
+              spinnerValue="Connexion"
+            />
 
             <Line />
 

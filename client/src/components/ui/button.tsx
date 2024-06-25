@@ -12,12 +12,14 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        alert: "hover:text-destructive",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-black/10",
         btn: "text-secondary hover:bg-secondary hover:text-foreground dark:text-foreground",
         linkForm: "hover:text-primary",
         btnMenu: "flex gap-2 text-md justify-start",
+        btnChat: "text-primary no-underline rounded-md px-1 ring-offset-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring  underline-offset-4 hover:underline focus:no-underline"
       },
       size: {
         menu: "h-full",
@@ -25,6 +27,8 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md p-6",
         icon: "h-10 w-10",
+        box: "h-11",
+        chat:"text-lg"
       },
     },
     defaultVariants: {

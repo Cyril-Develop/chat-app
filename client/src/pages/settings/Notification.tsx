@@ -1,9 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 import NotificationForm from "@/components/settings/notification-form";
-import useFetchUser from "@/hooks/fetch-user";
+import useGetUser from "@/hooks/get-user";
 
 export default function SettingsNotificationsPage() {
-  const { data } = useFetchUser();
+  const { data } = useGetUser();
   return (
     <div className="space-y-6">
       {data && (

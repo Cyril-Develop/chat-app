@@ -1,35 +1,32 @@
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
 import JoinForm from "@/components/dialog/join-chat";
-import { useState } from "react";
 
-interface DialogJoin {
+interface DialogJoinProps {
   btnTrigger: string;
   headerTitle: string;
   headerDescription: string;
+  isOpen: boolean;
+  roomId: number;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function DialogJoin({
-  btnTrigger,
   headerTitle,
   headerDescription,
-}: DialogJoin) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOpenChange = (open: boolean) => setIsOpen(open);
-
-  const handleSubmitSuccess = () => handleOpenChange(false);
+  isOpen,
+  roomId,
+  onOpenChange,
+}: DialogJoinProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button size="chat" variant="btnChat">
-          {btnTrigger}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
-        <JoinForm btnSubmit="Rejoindre" onSubmitSuccess={handleSubmitSuccess} />
+        <JoinForm
+          btnSubmit="Rejoindre"
+          roomId={roomId}
+          onOpenChange={onOpenChange}
+        />
       </DialogContent>
     </Dialog>
   );

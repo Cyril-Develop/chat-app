@@ -1,4 +1,4 @@
-export const getChats = async (token: string) => {
+export const getRooms = async (token: string) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat`,
@@ -20,7 +20,7 @@ export const getChats = async (token: string) => {
   }
 };
 
-export const getChat = async (roomId: number, token: string) => {
+export const getRoom = async (roomId: number, token: string) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/${roomId}`,

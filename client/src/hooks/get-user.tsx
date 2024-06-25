@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useUserStore } from "@/store/user.store";
-import { getChats } from "@/services/Chat";
+import { getUser } from "@/services/User";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
-const useFetchChats = () => {
+const useGetUser = () => {
   const { token, logout } = useUserStore((state) => state);
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["chat"],
-    queryFn: async () => getChats(token || ""),
+    queryKey: ["user"],
+    queryFn: async () => getUser(token || ""),
   });
 
   useEffect(() => {
@@ -28,4 +28,4 @@ const useFetchChats = () => {
   return { data, isLoading };
 };
 
-export default useFetchChats;
+export default useGetUser;

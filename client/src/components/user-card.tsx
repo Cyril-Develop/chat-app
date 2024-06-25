@@ -3,11 +3,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import useFetchUser from "@/hooks/fetch-user";
+import useGetUser from "@/hooks/get-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function UserCard() {
-  const { data } = useFetchUser();
+  const { data } = useGetUser();
 
   return (
     <HoverCard>

@@ -68,3 +68,7 @@ export const RoomFormSchema = z.object({
   name: nameRoomSchema,
   password: z.string().optional(),
 });
+
+export const RoomPasswordSchema = z.object({
+  password: z.string().min(1, { message: "Le mot de passe est requis" }),
+});

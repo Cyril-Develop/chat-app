@@ -1,17 +1,17 @@
 import { SearchUser } from "@/components/chat/search-user";
 import { Separator } from "@/components/ui/separator";
-import { Room } from "@/components/Room";
+import { RoomSelector } from "@/components/room/room-selector";
 import { Contact } from "@/components/Contact";
 import ChatRoom from "@/components/chat/chat-room";
 import ChatUnselected from "@/components/chat/chat-unselected";
 import { useRoomStore } from "@/store/room.store";
-import useFetchUser from "@/hooks/fetch-user";
+import useGetUser from "@/hooks/get-user";
 import { DialogCreate } from "@/components/dialog/dialog-create";
 import { RoomUsers } from "@/components/room-users";
 
 const Chat = () => {
   const { room } = useRoomStore();
-  const { data: user } = useFetchUser();
+  const { data: user } = useGetUser();
 
   return (
     <div className="page_chat">
@@ -40,7 +40,7 @@ const Chat = () => {
           headerTitle="Créer un salon"
           headerDescription="Saisissez le nom du salon."
         />
-        <Room />
+        <RoomSelector />
 
         <Separator />
 

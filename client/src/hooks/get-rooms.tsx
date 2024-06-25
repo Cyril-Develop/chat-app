@@ -1,20 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useUserStore } from "@/store/user.store";
-import { getChat } from "@/services/Chat";
+import { getRooms } from "@/services/Chat";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
-interface fetchChatProps {
-  roomId: number;
-}
-
-const useFetchChat = ({ roomId }: fetchChatProps) => {
+const useGetRooms = () => {
   const { token, logout } = useUserStore((state) => state);
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["chat", roomId],
-    queryFn: async () => getChat(roomId, token || ""),
+    queryKey: ["chat"],
+    queryFn: async () => getRooms(token || ""),
   });
 
   useEffect(() => {
@@ -23,7 +19,7 @@ const useFetchChat = ({ roomId }: fetchChatProps) => {
         title: "Erreur",
         description: error.message,
         variant: "destructive",
-        logo: <Icons.alert />,
+        logo: <Icons.alert/>,
       });
       logout();
     }
@@ -32,4 +28,4 @@ const useFetchChat = ({ roomId }: fetchChatProps) => {
   return { data, isLoading };
 };
 
-export default useFetchChat;
+export default useGetRooms;

@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -6,28 +5,32 @@ import {
   FormItem,
   FormMessage,
   FormField,
-  FormDescription,
 } from "@/components/ui/form";
 import ButtonForm from "@/components/button-form";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { RoomFormSchema } from "@/schema/main";
+import { RoomPasswordSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
+import { useJoinChatMutation } from "@/hooks/join-chat";
+import { useRoomStore } from "@/store/room.store";
 
 interface JoinFormProps {
   btnSubmit: string;
-  onSubmitSuccess: () => void;
+  roomId: number;
+  onOpenChange: (open: boolean) => void;
 }
 
-const JoinForm = ({ btnSubmit, onSubmitSuccess }: JoinFormProps) => {
+const JoinForm = ({ btnSubmit, roomId, onOpenChange }: JoinFormProps) => {
   const form = useForm({
     defaultValues: {
-      name: "",
       password: "",
     },
-    resolver: zodResolver(RoomFormSchema),
+    resolver: zodResolver(RoomPasswordSchema),
   });
+
+  const { setRoom } = useRoomStore();
+  const mutation = useJoinChatMutation();
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -35,10 +38,20 @@ const JoinForm = ({ btnSubmit, onSubmitSuccess }: JoinFormProps) => {
 
   const onSubmit = async () => {
     setLoading(true);
+    setApiError("");
+    try {
+      const { password } = form.getValues();
+      const data = { roomId, password };
+      await mutation.mutateAsync(data);
+      setRoom(roomId);
+      onOpenChange(false);
+    } catch (error: any) {
+      setApiError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  //Test
-  const isPrivate = false;
   return (
     <Form {...form}>
       <form
@@ -49,41 +62,21 @@ const JoinForm = ({ btnSubmit, onSubmitSuccess }: JoinFormProps) => {
         <div className="space-y-4  sm:space-y-8">
           <FormField
             control={form.control}
-            name="name"
+            name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nom</FormLabel>
+                <FormLabel>Mot de passe</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" />
+                  <ShowPassord
+                    showPassword={showPassword}
+                    setShowPassword={setShowPassword}
+                    field={field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {isPrivate && (
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
-                  <FormControl>
-                    <ShowPassord
-                      showPassword={showPassword}
-                      setShowPassword={setShowPassword}
-                      field={field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    <a href="#" className="text-primary">
-                      Mot de passe oublié ?
-                    </a>
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
         </div>
         <div className="flex flex-col gap-4">
           <ButtonForm

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
+import { Icons } from "@/components/Icons";
 import { Input } from "../ui/input";
 
 interface ShowPassordProps {
@@ -34,7 +34,7 @@ const ShowPassord = ({
         className="absolute right-0.5 h-auto  top-1/2 transform -translate-y-1/2 cursor-pointer "
         onClick={() => setShowPassword(!showPassword)}
       >
-        {showPassword ? <EyeOff /> : <Eye />}
+        {showPassword ? <Icons.eyeOff /> : <Icons.eye />}
       </Button>
     </div>
   );

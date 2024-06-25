@@ -3,12 +3,12 @@ import { AccountForm } from "@/components/settings/account-form";
 import Alert from "@/components/Alert";
 import handleDeleteAccount from "@/utils/delete-account";
 import { useUserStore } from "@/store/user.store";
-import useFetchUser from "@/hooks/fetch-user";
+import useGetUser from "@/hooks/get-user";
 
 export default function SettingsAccountPage() {
   const logout = useUserStore((state) => state.logout);
   const { token } = useUserStore((state) => state);
-  const { data } = useFetchUser();
+  const { data } = useGetUser();
 
   return (
     <div className="space-y-6">

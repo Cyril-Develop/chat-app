@@ -1,5 +1,5 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useFetchChat from "@/hooks/get-chat";
+import useGetRoom from "@/hooks/get-room";
 import UserThumbnail from "@/components/user-thumbnail";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
@@ -15,7 +15,7 @@ interface User {
 }
 
 export function RoomUsers({ roomId }: RoomUsersProps) {
-  const { data: roomInfos, isLoading } = useFetchChat({ roomId });
+  const { data: roomInfos, isLoading } = useGetRoom({ roomId });
 
   return (
     <ScrollArea className="h-64 w-48 rounded-md ">

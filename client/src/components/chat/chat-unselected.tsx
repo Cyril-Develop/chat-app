@@ -1,9 +1,9 @@
 import Logo from "@/assets/chatting.svg";
 import { DialogJoin } from "@/components/dialog/dialog-join";
-import useFetchUser from "@/hooks/fetch-user";
+import useGetUser from "@/hooks/get-user";
 
 const ChatUnselected = () => {
-  const { data } = useFetchUser();
+  const { data } = useGetUser();
   return (
     <div className="bg-muted flex flex-col justify-center items-center grow h-full p-2 pl-2  xl:p-2 xl:pl-0 xl:flex-row">
       <img src={Logo} alt="logo-messaging" className="w-full md:w-1/3" />

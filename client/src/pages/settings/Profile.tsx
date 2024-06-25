@@ -1,10 +1,10 @@
 import { Separator } from "@/components/ui/separator";
 import ProfileForm from "@/components/settings/profile-form";
 import PreviewCard from "@/components/settings/preview-card";
-import useFetchUser from "@/hooks/fetch-user";
+import useGetUser from "@/hooks/get-user";
 
 const ProfilePage = () => {
-  const { data } = useFetchUser();
+  const { data } = useGetUser();
   return (
     <div className="space-y-6 pb-4 md:pb-10">
       {data && (

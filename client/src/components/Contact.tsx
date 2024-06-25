@@ -6,7 +6,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { ChevronsUpDown } from "lucide-react";
+import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -14,13 +14,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
-import useFetchUser from "@/hooks/fetch-user";
-import { Icons } from "@/components/Icons";
+import useGetUser from "@/hooks/get-user";
 import { useRemoveContactMutation } from "@/hooks/remove-contact";
 
 export function Contact() {
   const [open, setOpen] = useState(false);
-  const { data } = useFetchUser();
+  const { data } = useGetUser();
 
   const mutation = useRemoveContactMutation();
 
@@ -47,7 +46,7 @@ export function Contact() {
         >
           Voir mes contacts
           {haveContact && `(${data?.friendsList.length})`}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0" />
+          {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>
       {haveContact && (

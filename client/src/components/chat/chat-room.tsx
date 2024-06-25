@@ -1,7 +1,7 @@
 import SendMessage from "@/components/chat/send-message";
 import Message from "@/components/chat/Message";
 import ChatHeader from "./chat-header";
-import useFetchChat from "@/hooks/get-chat";
+import useGetRoom from "@/hooks/get-room";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface ChatRoomProps {
@@ -9,7 +9,7 @@ interface ChatRoomProps {
 }
 
 const ChatRoom = ({ roomId }: ChatRoomProps) => {
-  const { data: roomInfos, isLoading } = useFetchChat({ roomId });
+  const { data: roomInfos, isLoading } = useGetRoom({ roomId });
 
   return (
     <div className="page_chat_unselected">

@@ -2,7 +2,6 @@ import CardWrapper from "@/components/auth/card-wrapper";
 import { RegisterFormSchema } from "@/schema/main";
 import { useForm } from "react-hook-form";
 import { registerByEmail } from "@/services/Auth";
-import { BadgeCheck } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import Line from "@/components/auth/line";
 import ShowPassord from "@/components/auth/show-password";
@@ -46,7 +45,7 @@ const RegisterForm = () => {
         title: "Compte créé avec succès,",
         description: "Vous pouvez maintenant vous connecter.",
         variant: "success",
-        logo: <BadgeCheck size={30} />,
+        logo: <Icons.check className="h-6 w-6" />,
       });
       form.reset();
     } catch (error: any) {

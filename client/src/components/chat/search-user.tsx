@@ -77,9 +77,6 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
     mutation.mutate(friendId);
   };
 
-  console.log(results);
-  console.log(userId);
-
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
@@ -118,9 +115,11 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
               {results.map(
                 (result) =>
                   result.id !== userId && (
-                    <CommandGroup className={cn("p-0 border shadow-md rounded-md")}>
+                    <CommandGroup
+                      className={cn("p-0 border shadow-md rounded-md")}
+                      key={result.id}
+                    >
                       <CommandItem
-                        key={result.id}
                         value={result.username}
                         className="flex items-center justify-between p-2"
                       >

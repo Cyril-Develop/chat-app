@@ -15,7 +15,7 @@ const Chat = () => {
 
   return (
     <div className="page_chat">
-      <aside className="flex flex-col gap-4 pt-4 border-r-2 bg-muted dark:bg-primary-foreground h-full px-10">
+      <aside className="flex flex-col gap-4 pt-4 border-r-2 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-10">
         <h2 className="text-3xl">Contacts</h2>
         {user && (
           <>
@@ -32,7 +32,7 @@ const Chat = () => {
         {room ? <ChatRoom roomId={room} /> : <ChatUnselected />}
       </main>
 
-      <aside className="flex flex-col gap-4 pt-4 border-l-2 bg-muted dark:bg-primary-foreground h-full px-10">
+      <aside className="flex flex-col gap-4 pt-4 border-l-2 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-10">
         <h2 className="text-3xl">Salons</h2>
         <Separator />
         <DialogCreate

@@ -1,4 +1,5 @@
 import { UserInfos } from "@/types/types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface PreviewCardProps {
   user: UserInfos;
@@ -7,11 +8,18 @@ interface PreviewCardProps {
 const PreviewCard = ({ user }: PreviewCardProps) => {
   return (
     <article className="flex gap-4 items-center rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none">
-      <img
-        src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${user.profileImage}`}
-        alt="Profile"
-        className="w-24 h-24 rounded-full object-cover"
-      />
+      <Avatar className="flex items-center w-24 h-24">
+        <AvatarImage
+          src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
+            user.profileImage
+          }`}
+          className="rounded-full object-cover"
+          alt={user.username}
+        />
+        <AvatarFallback>
+          <span>{user.username}</span>
+        </AvatarFallback>
+      </Avatar>
       <div className="flex flex-col gap-2 w-full">
         <div className="flex flex-col justify-center overflow-hidden">
           <h2 className="font-semibold">{user.username}</h2>

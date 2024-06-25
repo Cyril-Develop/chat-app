@@ -15,7 +15,7 @@ const ButtonForm = ({
   return (
     <Button
       type="submit"
-      size={"lg"}
+      size="lg"
       variant="default"
       className="text-lg w-full sm:w-auto"
     >

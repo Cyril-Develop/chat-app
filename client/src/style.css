@@ -49,17 +49,15 @@
   }
 }
 
-html{
+html {
   max-width: 2500px;
-  /* background-color: hsl(var(--muted)); */
   margin: 0 auto;
   width: 100%;
 }
 
-html.dark{
+html.dark {
   background-color: hsl(var(--bg-secondary));
 }
-
 
 .line-clamp-3 {
   display: -webkit-box;
@@ -82,12 +80,12 @@ html.dark{
   @apply flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative flex-col lg:flex-row;
 }
 
-.page_chat_unselected {
-  @apply flex flex-col px-4 min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
+.page_room {
+  @apply bg-muted dark:bg-secondary px-10 flex flex-col min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
 }
 
 .page_settings {
-  @apply space-y-6 p-4 md:p-10 dark:bg-secondary min-h-[calc(100vh-96px)] sm:min-h-[calc(100vh-96px)];
+  @apply space-y-6 p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100vh-96px)] sm:min-h-[calc(100vh-96px)];
 }
 
 .input-style {
@@ -99,7 +97,7 @@ html.dark{
 }
 
 .link-nav {
-  @apply flex items-center gap-2 p-2 text-xl font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:bg-transparent sm:hover:text-white sm:hover:underline sm:underline-offset-4  text-primary-foreground dark:text-foreground;
+  @apply flex items-center gap-2 p-2 text-xl font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:bg-transparent sm:hover:text-white sm:hover:underline sm:underline-offset-4 text-primary-foreground dark:text-foreground;
 }
 
 .hidden-text {

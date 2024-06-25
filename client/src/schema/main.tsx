@@ -72,3 +72,8 @@ export const RoomFormSchema = z.object({
 export const RoomPasswordSchema = z.object({
   password: z.string().min(1, { message: "Le mot de passe est requis" }),
 });
+
+export const MessageFormSchema = z.object({
+  message: z.string().min(1, { message: "Le message est requis" }),
+  file: z.instanceof(File).nullable(),
+});

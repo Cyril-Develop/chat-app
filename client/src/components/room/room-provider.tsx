@@ -53,8 +53,8 @@ const RoomProvider = ({
       {selectedRoom && (
         <DialogJoin
           btnTrigger={selectedRoom.name}
-          headerTitle={`Rejoindre ${selectedRoom.name}`}
-          headerDescription="Veuillez entrer le mot de passe pour rejoindre le salon"
+          headerTitle={`Rejoindre "${selectedRoom.name}"`}
+          headerDescription="Veuillez entrer le mot de passe pour rejoindre le salon privé."
           isOpen={isDialogOpen}
           roomId={selectedRoom.id}
           onOpenChange={setIsDialogOpen}

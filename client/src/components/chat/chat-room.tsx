@@ -12,7 +12,7 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
   const { data: roomInfos, isLoading } = useGetRoom({ roomId });
 
   return (
-    <div className="page_chat_unselected">
+    <div className="page_room">
       {isLoading ? (
         <>
           <Skeleton className="flex justify-between pt-4 pb-4 text-3xl" />

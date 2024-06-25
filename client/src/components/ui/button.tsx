@@ -28,7 +28,8 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md p-6",
         icon: "h-10 w-10",
         box: "h-11",
-        chat:"text-lg"
+        chat:"text-lg",
+        message: "h-11 w-11",
       },
     },
     defaultVariants: {

@@ -45,7 +45,7 @@ export function Contact() {
           disabled={!haveContact}
         >
           Voir mes contacts
-          {haveContact && `(${data?.friendsList.length})`}
+          {haveContact && ` (${data?.friendsList.length})`}
           {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>

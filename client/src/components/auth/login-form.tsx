@@ -103,7 +103,7 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
+                  <FormLabel htmlFor="password">Mot de passe</FormLabel>
                   <FormControl>
                     <ShowPassord
                       showPassword={showPassword}

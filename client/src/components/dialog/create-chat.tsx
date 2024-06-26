@@ -15,6 +15,7 @@ import { RoomFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
 import { useCreateChatMutation } from "@/hooks/create-chat";
+import { cn } from "@/lib/utils";
 
 interface CreateFormProps {
   btnSubmit: string;
@@ -84,7 +85,7 @@ const CreateForm = ({ btnSubmit, onSubmitSuccess }: CreateFormProps) => {
                     field={field}
                   />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className={cn("text-muted")}>
                   Si vous saisissez un mot de passe, le salon sera privé et seul
                   vous et vos amis pourront y accéder.
                 </FormDescription>

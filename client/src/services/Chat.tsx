@@ -97,3 +97,26 @@ export const joinChat = async (data: JoinChatProps, token: string) => {
     throw new Error(error.message);
   }
 };
+
+export const leaveChat = async (roomId: number, token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/leave`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ roomId }),
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      throw new Error(responseData.error);
+    }
+    return responseData;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

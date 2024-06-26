@@ -21,6 +21,7 @@ export function RoomUsers({ roomId }: RoomUsersProps) {
       <div className="flex flex-col gap-4">
         {roomInfos?.users.map((user: User) => (
           <UserThumbnail
+            size="8"
             key={user.id}
             username={user.username}
             image={user.profileImage}

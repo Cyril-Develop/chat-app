@@ -12,7 +12,7 @@ const ProfilePage = () => {
           <div className="flex flex-col gap-4">
             <h3 className="text-lg font-medium">Profil</h3>
             <PreviewCard user={data} />
-            <p className="text-muted-foreground">
+            <p className="text-gray-600 dark:text-gray-400">
               Voici comment vous apparaissez aux autres membres de la
               communauté.
             </p>

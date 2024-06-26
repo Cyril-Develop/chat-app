@@ -16,7 +16,7 @@ export default function SettingsAccountPage() {
         <>
           <div>
             <h3 className="text-lg font-medium">Compte</h3>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600 dark:text-gray-400">
               Mettez à jour les informations de votre compte.
             </p>
           </div>

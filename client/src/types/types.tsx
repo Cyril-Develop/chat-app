@@ -6,7 +6,7 @@ export interface UserState {
 
 export interface RoomState {
   room: number | null;
-  setRoom: (room: number) => void;
+  setRoom: (room: number | null) => void;
 }
 
 export interface UserInfos {

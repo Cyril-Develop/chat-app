@@ -1,5 +1,4 @@
 import Logo from "@/assets/chatting.svg";
-import { DialogJoin } from "@/components/dialog/dialog-join";
 import useGetUser from "@/hooks/get-user";
 
 const ChatUnselected = () => {
@@ -17,13 +16,7 @@ const ChatUnselected = () => {
           !
         </h1>
         <p className="text-xl text-center">
-          Pour commencer à discuter vous devez créer ou{" "}
-          <DialogJoin
-            btnTrigger="rejoindre"
-            headerTitle="Rejoindre un salon"
-            headerDescription="Saisissez le nom du salon que vous souhaitez rejoindre. S'il est privé, un mot de passe vous sera demandé."
-          />{" "}
-          un salon.
+          Pour commencer à discuter vous devez créer ou rejoindre un salon.
         </p>
       </div>
     </div>

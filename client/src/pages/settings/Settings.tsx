@@ -49,7 +49,7 @@ const Settings = ({ children }: SettingsLayoutProps) => {
             <Icons.settings className="w-6 h-6" />
             Paramètres
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-gray-600 dark:text-gray-400">
             Gérez les paramètres de votre compte et définissez vos préférences
             de messagerie.
           </p>

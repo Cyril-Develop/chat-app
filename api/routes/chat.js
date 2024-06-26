@@ -8,5 +8,6 @@ router.get("/", checkToken, chatCtrl.getChatRooms);
 router.get("/:id", checkToken, chatCtrl.getChatRoom);
 router.post("/create", checkToken, chatCtrl.createChatRoom);
 router.post('/join', checkToken, chatCtrl.joinChatRoom);
+router.post('/leave', checkToken, chatCtrl.leaveChatRoom);
 
 module.exports = router;

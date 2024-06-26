@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import useGetRooms from "@/hooks/get-rooms";
 import { useJoinChatMutation } from "@/hooks/join-chat";
+import { useLeaveChatMutation } from "@/hooks/leave-chat";
 import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
 
@@ -23,7 +24,8 @@ export function RoomSelector() {
   const [value, setValue] = useState("");
 
   const { setRoom, room } = useRoomStore();
-  const mutation = useJoinChatMutation();
+  const joinMutation = useJoinChatMutation();
+  const leaveMutation = useLeaveChatMutation();
 
   interface Room {
     id: number;
@@ -41,9 +43,15 @@ export function RoomSelector() {
   }, [data, room]);
 
   const handleJoinRoom = (roomId: number, password?: string) => {
-    if (room === roomId) return;
-    setRoom(roomId);
-    mutation.mutate({ roomId, password });
+    if (room === roomId) {
+      leaveMutation.mutate(roomId);
+      setRoom(null);
+      setValue("");
+
+    } else {
+      setRoom(roomId);
+      joinMutation.mutate({ roomId, password });
+    }
   };
 
   return (

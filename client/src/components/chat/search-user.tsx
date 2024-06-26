@@ -34,7 +34,7 @@ interface FriendList {
   friend: Friend;
 }
 
-interface Result {
+interface Users {
   id: string;
   username: string;
   profileImage: string;
@@ -48,17 +48,17 @@ interface SearchUserProps {
 export const SearchUser = ({ userId }: SearchUserProps) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Result[]>([]);
+  const [users, setUsers] = useState<Users[]>([]);
 
   const mutation = useAddContactMutation();
 
   useEffect(() => {
-    socket.on("searchResults", (data) => {
-      setResults(data);
+    socket.on("searchUsers", (data) => {
+      setUsers(data);
     });
 
     return () => {
-      socket.off("searchResults");
+      socket.off("searchUsers");
     };
   }, []);
 
@@ -69,7 +69,7 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
       socket.emit("search", value);
       setOpen(true);
     } else {
-      setResults([]);
+      setUsers([]);
     }
   };
 
@@ -109,32 +109,33 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
         >
           <Command>
             <CommandList>
-              {query.length >= 3 && results.length === 0 && (
+              {query.length >= 3 && users.length === 0 && (
                 <CommandEmpty>Aucun contact trouvé</CommandEmpty>
               )}
-              {results.map(
-                (result) =>
-                  result.id !== userId && (
+              {users.map(
+                (user) =>
+                  user.id !== userId && (
                     <CommandGroup
                       className={cn("p-0 border shadow-md rounded-md")}
-                      key={result.id}
+                      key={user.id}
                     >
                       <CommandItem
-                        value={result.username}
+                        value={user.username}
                         className="flex items-center justify-between p-2"
                       >
                         <UserThumbnail
-                          image={result.profileImage}
-                          username={result.username}
+                          size="8"
+                          image={user.profileImage}
+                          username={user.username}
                         />
 
-                        {isFriend(result.friends) ? (
+                        {isFriend(user.friends) ? (
                           <Icons.check className="w-4 h-4" />
                         ) : (
                           <Button
                             variant="linkForm"
                             title="Ajouter à la liste de contacts"
-                            onClick={() => handleAddFriend(result.id)}
+                            onClick={() => handleAddFriend(user.id)}
                           >
                             <Icons.add className="w-4 h-4" />
                           </Button>

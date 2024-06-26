@@ -24,6 +24,7 @@ const ShowPassord = ({
         {...field}
         type={showPassword ? "text" : "password"}
         placeholder="••••••••"
+        id="password"
       />
       <Button
         type="button"

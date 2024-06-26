@@ -19,6 +19,7 @@ import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
 import { UserInfos } from "@/types/types";
 import { useState } from "react";
 import { useEditUserMutation } from "@/hooks/edit-profil";
+import { Icons } from "@/components/Icons";
 
 interface ProfileFormValues {
   username: string;
@@ -114,14 +115,20 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 onKeyDown={handleKeydown}
                 onClick={() => handleLabelClick("fileInput")}
               >
-                {imageUploaded ? "Image chargée" : "Sélectionner une image"}
-
-                {imageUploaded && (
-                  <img
-                    src={URL.createObjectURL(imageUploaded)}
-                    alt="preview image"
-                    className="w-11 h-11 rounded-full object-cover"
-                  />
+                {imageUploaded ? (
+                  <>
+                    Image chargée
+                    <img
+                      src={URL.createObjectURL(imageUploaded)}
+                      alt="preview image"
+                      className="w-11 h-11 rounded-full object-cover"
+                    />
+                  </>
+                ) : (
+                  <>
+                    Sélectionner une image
+                    <Icons.image />
+                  </>
                 )}
               </FormLabel>
               <FormControl>

@@ -59,41 +59,82 @@ exports.joinChatRoom = async (req, res) => {
       return res.status(403).json({ error: "Mot de passe incorrect" });
     }
 
-    console.log(`Utilisateur ${userId} rejoint le salon ${roomId}`);
+    console.log(`Utilisateur ${userId} tente de rejoindre le salon ${roomId}`);
 
-    // Vérifier si l'utilisateur est déjà membre d'un autre salon
+    // Vérifier si l'utilisateur est déjà membre de ce salon
     const existingMembership = await prisma.userChatRoom.findFirst({
-      where: { userId: userId },
+      where: { userId: userId, chatRoomId: roomId },
     });
 
     if (existingMembership) {
-      console.log(`Utilisateur ${userId} quitte le salon ${existingMembership.chatRoomId}`);
-      // Retirer l'utilisateur de l'ancien salon
+      console.log(`Utilisateur ${userId} quitte le salon ${roomId}`);
+      // Retirer l'utilisateur du salon
       await prisma.userChatRoom.delete({
         where: {
           userId_chatRoomId: {
             userId: userId,
-            chatRoomId: existingMembership.chatRoomId,
+            chatRoomId: roomId,
           },
         },
       });
+      return res
+        .status(200)
+        .json({ message: "Vous avez quitté le salon de discussion" });
+    } else {
+      console.log(`Utilisateur ${userId} rejoint le salon ${roomId}`);
+
+      // Ajouter l'utilisateur au nouveau salon de discussion via la table de jonction UserChatRoom
+      await prisma.userChatRoom.create({
+        data: {
+          userId: userId,
+          chatRoomId: roomId,
+        },
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Vous avez rejoint le salon de discussion" });
     }
-
-    // Ajouter l'utilisateur au nouveau salon de discussion via la table de jonction UserChatRoom
-    await prisma.userChatRoom.create({
-      data: {
-        userId: userId,
-        chatRoomId: roomId,
-      },
-    });
-
-    res.status(200).json({ message: "Vous avez rejoint le salon de discussion" });
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre le salon:", error);
     res.status(500).json({ error: "Impossible de rejoindre le salon" });
   }
 };
 
+exports.leaveChatRoom = async (req, res) => {
+  const { roomId } = req.body;
+  const userId = req.auth.userId;
+
+  console.log(`Utilisateur ${userId} quitte le salon ${roomId}`);
+
+  try {
+    const existingMembership = await prisma.userChatRoom.findFirst({
+      where: { userId: userId, chatRoomId: roomId },
+    });
+
+    if (!existingMembership) {
+      return res
+        .status(404)
+        .json({ error: "Vous n'êtes pas membre de ce salon" });
+    }
+
+    await prisma.userChatRoom.delete({
+      where: {
+        userId_chatRoomId: {
+          userId: userId,
+          chatRoomId: roomId,
+        },
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Vous avez quitté le salon de discussion" });
+  } catch (error) {
+    console.error("Erreur lors de la tentative de quitter le salon:", error);
+    res.status(500).json({ error: "Impossible de quitter le salon" });
+  }
+};
 
 exports.getChatRooms = async (req, res) => {
   try {
@@ -148,4 +189,3 @@ exports.getChatRoom = async (req, res) => {
       .json({ error: "Erreur lors de la récupération du salon de discussion" });
   }
 };
-

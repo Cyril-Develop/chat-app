@@ -1,5 +1,5 @@
 import { Icons } from "@/components/Icons";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 
 const ModeToggle = () => {
@@ -9,11 +9,11 @@ const ModeToggle = () => {
   };
 
   return (
-    <Button variant="btn" onClick={toggleTheme} title="Changer de thème">
+    <Button variant="btn" onClick={toggleTheme} title="Modifier le thème">
       {theme === "light" ? (
-        <Icons.sun className="h-[1.6rem] w-[1.6rem]" />
+        <Icons.sun />
       ) : (
-        <Icons.moon className="h-[1.6rem] w-[1.6rem]" />
+        <Icons.moon/>
       )}
       <span className="sr-only">
         {theme === "light" ? "Passer en mode sombre" : "Passer en mode clair"}

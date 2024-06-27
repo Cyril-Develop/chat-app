@@ -3,6 +3,7 @@ const moment = require("moment");
 require("moment/locale/fr");
 const fs = require("fs");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 

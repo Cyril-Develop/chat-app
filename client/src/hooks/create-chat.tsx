@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUserStore } from "@/store/user.store";
 import { createChat } from "@/services/Chat";
-import expiredToken from "@/utils/expired-token";
+import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useJoinChatMutation } from "@/hooks/join-chat";
 import { useRoomStore } from "@/store/room.store";
 
@@ -25,7 +25,7 @@ export const useCreateChatMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        expiredToken(logout);
+        handleTokenExpiration(token || "", logout);
       }
     },
   });

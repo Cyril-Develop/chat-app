@@ -3,7 +3,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { removeContact } from "@/services/User";
-import expiredToken from "@/utils/expired-token";
+import { handleTokenExpiration } from "@/utils/token-expiration";
 
 export const useRemoveContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
@@ -21,13 +21,8 @@ export const useRemoveContactMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        expiredToken(logout);
+        handleTokenExpiration(token || "", logout);
       }
-      toast({
-        title: error.message,
-        variant: "destructive",
-        logo: <Icons.alert />,
-      });
     },
   });
 };

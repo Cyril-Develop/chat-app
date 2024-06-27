@@ -3,7 +3,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { addContact } from "@/services/User";
-import expiredToken from "@/utils/expired-token";
+import { handleTokenExpiration } from "@/utils/token-expiration";
 
 export const useAddContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
@@ -21,7 +21,7 @@ export const useAddContactMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        expiredToken(logout);
+        handleTokenExpiration(token || "", logout);
       }
       toast({
         title: error.message,

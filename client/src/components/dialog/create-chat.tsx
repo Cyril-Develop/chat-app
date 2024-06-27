@@ -77,7 +77,7 @@ const CreateForm = ({ btnSubmit, onSubmitSuccess }: CreateFormProps) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mot de passe</FormLabel>
+                <FormLabel htmlFor="password">Mot de passe</FormLabel>
                 <FormControl>
                   <ShowPassord
                     showPassword={showPassword}
@@ -85,7 +85,7 @@ const CreateForm = ({ btnSubmit, onSubmitSuccess }: CreateFormProps) => {
                     field={field}
                   />
                 </FormControl>
-                <FormDescription className={cn("text-muted")}>
+                <FormDescription className={cn("text-muted-foreground")}>
                   Si vous saisissez un mot de passe, le salon sera privé et seul
                   vous et vos amis pourront y accéder.
                 </FormDescription>

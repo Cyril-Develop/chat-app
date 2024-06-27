@@ -8,10 +8,21 @@ import {
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { useNavigate } from "react-router-dom";
+import useLeaveChatRoom from "@/utils/leave-chat";
 
 const DropDown = () => {
   const navigate = useNavigate();
-  const logout = useUserStore((state) => state.logout);
+  const { token, logout } = useUserStore((state) => state);
+  const leaveChatRoom = useLeaveChatRoom();
+
+  const handleLogout = async () => {
+    try {
+      await leaveChatRoom(token || "");
+      logout();
+    } catch (error) {
+      console.error("Impossible de quitter le salon:", error);
+    }
+  };
 
   return (
     <>
@@ -37,7 +48,7 @@ const DropDown = () => {
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={logout}>
+          <DropdownMenuItem onClick={handleLogout}>
             <Icons.logout />
             Se déconnecter
           </DropdownMenuItem>

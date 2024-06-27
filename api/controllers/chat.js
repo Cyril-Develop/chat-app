@@ -83,6 +83,11 @@ exports.joinChatRoom = async (req, res) => {
     } else {
       console.log(`Utilisateur ${userId} rejoint le salon ${roomId}`);
 
+      // retirer l'utilisateur de tous les autres salons de discussion
+      await prisma.userChatRoom.deleteMany({
+        where: { userId: userId },
+      });
+
       // Ajouter l'utilisateur au nouveau salon de discussion via la table de jonction UserChatRoom
       await prisma.userChatRoom.create({
         data: {
@@ -104,6 +109,10 @@ exports.joinChatRoom = async (req, res) => {
 exports.leaveChatRoom = async (req, res) => {
   const { roomId } = req.body;
   const userId = req.auth.userId;
+
+  console.log(roomId);
+
+  console.log(userId);
 
   console.log(`Utilisateur ${userId} quitte le salon ${roomId}`);
 

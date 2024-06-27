@@ -3,7 +3,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useUserStore } from "@/store/user.store";
 import { editAccount } from "@/services/User";
 import { Icons } from "@/components/Icons";
-import expiredToken from "@/utils/expired-token";
+import { handleTokenExpiration } from "@/utils/token-expiration";
 
 export const useEditAccountMutation = () => {
   const { token, logout } = useUserStore((state) => state);
@@ -15,19 +15,19 @@ export const useEditAccountMutation = () => {
       toast({
         title: "Adresse email modifiée avec succès !",
         variant: "success",
-        logo: <Icons.check/>,
+        logo: <Icons.check />,
       });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        expiredToken(logout);
+        handleTokenExpiration(token || "", logout);
       } else {
         toast({
           title: "Erreur",
           description: error.message,
           variant: "destructive",
-          logo: <Icons.alert/>,
+          logo: <Icons.alert />,
         });
       }
     },

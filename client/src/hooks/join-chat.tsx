@@ -3,7 +3,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { joinChat } from "@/services/Chat";
-import expiredToken from "@/utils/expired-token";
+import { handleTokenExpiration } from "@/utils/token-expiration";
 
 export const useJoinChatMutation = () => {
   const { token, logout } = useUserStore((state) => state);
@@ -26,8 +26,8 @@ export const useJoinChatMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        expiredToken(logout);
-      }
+        handleTokenExpiration(token || "", logout);
+      } 
     },
   });
 };

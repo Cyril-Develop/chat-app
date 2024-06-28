@@ -110,12 +110,6 @@ exports.leaveChatRoom = async (req, res) => {
   const { roomId } = req.body;
   const userId = req.auth.userId;
 
-  console.log(roomId);
-
-  console.log(userId);
-
-  console.log(`Utilisateur ${userId} quitte le salon ${roomId}`);
-
   try {
     const existingMembership = await prisma.userChatRoom.findFirst({
       where: { userId: userId, chatRoomId: roomId },

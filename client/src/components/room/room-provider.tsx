@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RoomList from "@/components/room/room-list";
 import { CommandSeparator } from "@/components/ui/command";
 import { DialogJoin } from "@/components/dialog/dialog-join";
+import { useRoomStore } from "@/store/room.store";
 
 export interface Room {
   id: number;
@@ -22,31 +23,46 @@ const RoomProvider = ({
   setOpen,
   handleJoinRoom,
 }: RoomProviderProps) => {
-  const [selectedRoom, setSelectedRoom] = useState<Omit<Room, 'isPrivate'> | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<Omit<
+    Room,
+    "isPrivate"
+  > | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { room: storedRoomId } = useRoomStore();
+
+  useEffect(() => {
+    if (!isDialogOpen) {
+      setSelectedRoom(null);
+    }
+  }, [isDialogOpen]);
 
   const handlePublicRoomSelect = (room: Room) => {
-    setOpen(false);
     handleJoinRoom(room.id);
   };
 
   const handlePrivateRoomSelect = (room: Room) => {
     setSelectedRoom({ id: room.id, name: room.name });
-    setIsDialogOpen(true);
+
+    if (storedRoomId !== room.id) {
+      setIsDialogOpen(true);
+    } else {
+      setOpen(false);
+      handleJoinRoom(room.id);
+    }
   };
 
   return (
     <>
       <RoomList
         heading="Salons Publics 💬"
-        rooms={data.filter(room => !room.isPrivate)}
+        rooms={data.filter((room) => !room.isPrivate)}
         onSelect={handlePublicRoomSelect}
         value={value}
       />
       <CommandSeparator />
       <RoomList
         heading="Salons Privés 🔒"
-        rooms={data.filter(room => room.isPrivate)}
+        rooms={data.filter((room) => room.isPrivate)}
         onSelect={handlePrivateRoomSelect}
         value={value}
       />

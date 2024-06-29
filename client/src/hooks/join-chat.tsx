@@ -26,7 +26,7 @@ export const useJoinChatMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        handleTokenExpiration(token || "", logout);
+        handleTokenExpiration(logout);
       } 
     },
   });

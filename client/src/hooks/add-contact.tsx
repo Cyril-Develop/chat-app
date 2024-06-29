@@ -21,7 +21,7 @@ export const useAddContactMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        handleTokenExpiration(token || "", logout);
+        handleTokenExpiration(logout);
       }
       toast({
         title: error.message,

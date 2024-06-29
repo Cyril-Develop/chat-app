@@ -21,7 +21,7 @@ export const useRemoveContactMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        handleTokenExpiration(token || "", logout);
+        handleTokenExpiration(logout);
       }
     },
   });

@@ -38,7 +38,7 @@ model ChatRoom {
   updatedAt DateTime        @updatedAt
   createdBy Int
   creator   User            @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms")
-  users     UserChatRoom[]  // Relation many-to-many
+  users     UserChatRoom[]  
 }
 
 model UserChatRoom {

@@ -15,10 +15,12 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const chatRoutes = require('./routes/chat');
+const messageRoutes = require('./routes/message');
 
 // Using routes
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use('/chat', chatRoutes);
+app.use('/message', messageRoutes);
 
 module.exports = app;

@@ -22,7 +22,7 @@ export const useEditNotificationMutation = () => {
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
-        handleTokenExpiration(token || "", logout);
+        handleTokenExpiration(logout);
       } else {
         toast({
           title: "Erreur",

@@ -81,7 +81,7 @@ html.dark {
 }
 
 .page_room {
-  @apply bg-muted dark:bg-secondary px-10 flex flex-col min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
+  @apply bg-muted dark:bg-secondary px-5 xl:px-10 flex flex-col min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
 }
 
 .page_settings {

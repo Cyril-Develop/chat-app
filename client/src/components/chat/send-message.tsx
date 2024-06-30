@@ -17,13 +17,29 @@ import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { MessageFormSchema } from "@/schema/main";
+import { useSendMessageMutation } from "@/hooks/send-message";
+
+interface SendMessageProps {
+  room: {
+    id: number;
+    name: string;
+    users: {
+      id: number;
+      username: string;
+      profileImage: string;
+    }[];
+  };
+}
 
 interface MessageFormProps {
   message: string;
   file: File | null;
 }
 
-const SendMessage = () => {
+const SendMessage = ({ room }: SendMessageProps) => {
+
+  const mutation = useSendMessageMutation();
+
   const [openEmoji, setOpenEmoji] = useState(false);
 
   const form = useForm<MessageFormProps>({
@@ -49,7 +65,11 @@ const SendMessage = () => {
   };
 
   const onSubmit = (data: MessageFormProps) => {
-    console.log(data);
+    mutation.mutate({
+      roomId: room.id,
+      content: data.message,
+    });
+    form.reset();
   };
 
   return (

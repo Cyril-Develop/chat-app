@@ -4,7 +4,6 @@ import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { editProfile } from "@/services/User";
 import { handleTokenExpiration } from "@/utils/token-expiration";
-import { useRoomStore } from "@/store/room.store";
 
 export const useEditUserMutation = () => {
   const { token, logout } = useUserStore((state) => state);

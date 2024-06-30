@@ -1,9 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
-const moment = require("moment");
-require("moment/locale/fr");
 const fs = require("fs");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 
@@ -78,10 +75,6 @@ exports.getUser = async (req, res) => {
     });
 
     if (user) {
-      user.createdAt = moment(user.createdAt)
-        .locale("fr")
-        .format("DD MMMM YYYY");
-
       // Combine friends and friendOf into a single list of unique friends
       const friendsList = [];
 

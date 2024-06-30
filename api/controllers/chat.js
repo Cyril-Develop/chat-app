@@ -169,6 +169,23 @@ exports.getChatRoom = async (req, res) => {
             },
           },
         },
+        messages: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+          orderBy: { 
+            createdAt: 'asc' 
+          },
+        },
       },
     });
 

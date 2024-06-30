@@ -75,6 +75,7 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
 
   const handleAddFriend = (friendId: string) => {
     mutation.mutate(friendId);
+    setQuery("");
   };
 
   const isFriend = (friends: FriendList[]) => {
@@ -124,7 +125,7 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
                         className="flex items-center justify-between p-2"
                       >
                         <UserThumbnail
-                          size="8"
+                          imageSize="8"
                           image={user.profileImage}
                           username={user.username}
                         />

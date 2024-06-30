@@ -3,13 +3,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface UserThumbnailProps {
   image: string;
   username: string;
-  size: string;
+  imageSize: string;
+  textSize?: string;
 }
 
-const UserThumbnail = ({ image, username, size }: UserThumbnailProps) => {
+const UserThumbnail = ({
+  image,
+  username,
+  imageSize,
+  textSize,
+}: UserThumbnailProps) => {
   return (
     <div className="flex items-center gap-2">
-      <Avatar className={`w-${size} h-${size} rounded-full object-cover`}>
+      <Avatar
+        className={`w-${imageSize} h-${imageSize} rounded-full object-cover`}
+      >
         <AvatarImage
           src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${image}`}
           alt={username}
@@ -18,7 +26,7 @@ const UserThumbnail = ({ image, username, size }: UserThumbnailProps) => {
           <span>{username}</span>
         </AvatarFallback>
       </Avatar>
-      <span>{username}</span>
+      <span className={textSize}>{username}</span>
     </div>
   );
 };

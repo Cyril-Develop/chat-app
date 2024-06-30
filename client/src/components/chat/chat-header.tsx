@@ -1,17 +1,17 @@
 import { Separator } from "@/components/ui/separator";
 
 interface ChatHeaderProps {
-  roomInfos: {
+  room: {
     name: string;
   };
 }
 
-const ChatHeader = ({ roomInfos }: ChatHeaderProps) => {
+const ChatHeader = ({ room }: ChatHeaderProps) => {
 
   return (
     <>
       <div className="flex justify-between pt-4 pb-4 text-3xl">
-        <h1>{roomInfos.name}</h1>
+        <h1>{room.name}</h1>
       </div>
       <Separator />
     </>

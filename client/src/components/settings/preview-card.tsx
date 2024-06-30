@@ -1,5 +1,6 @@
 import { UserInfos } from "@/types/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import moment from "moment/min/moment-with-locales";
 
 interface PreviewCardProps {
   user: UserInfos;
@@ -26,7 +27,7 @@ const PreviewCard = ({ user }: PreviewCardProps) => {
           <p className="line-clamp-3">{user.bio}</p>
         </div>
         <p className="text-xs italic text-right text-muted-foreground">
-          Depuis le {user.createdAt}
+          Depuis le {moment(user.createdAt).locale("fr").format("DD MMMM YYYY")}
         </p>
       </div>
     </article>

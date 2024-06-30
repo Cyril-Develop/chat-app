@@ -1,5 +1,5 @@
 import SendMessage from "@/components/chat/send-message";
-import Message from "@/components/chat/Message";
+import MessagesProvider from "@/components/message/messages-provider";
 import ChatHeader from "./chat-header";
 import useGetRoom from "@/hooks/get-room";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,7 +9,7 @@ interface ChatRoomProps {
 }
 
 const ChatRoom = ({ roomId }: ChatRoomProps) => {
-  const { data: roomInfos, isLoading } = useGetRoom({ roomId });
+  const { data: room, isLoading } = useGetRoom({ roomId });
 
   return (
     <div className="page_room">
@@ -21,9 +21,9 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
         </>
       ) : (
         <>
-          <ChatHeader roomInfos={roomInfos} />
-          <Message />
-          <SendMessage />
+          <ChatHeader room={room} />
+          <MessagesProvider room={room} />
+          <SendMessage room={room}/>
         </>
       )}
     </div>

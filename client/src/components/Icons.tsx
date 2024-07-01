@@ -1,6 +1,8 @@
 type IconProps = React.HTMLAttributes<SVGElement> & {
   width?: string | number;
   height?: string | number;
+  fill?: string;
+  stroke?: string;
 };
 
 export const Icons = {
@@ -474,5 +476,22 @@ export const Icons = {
       <circle cx="9" cy="9" r="2" />
       <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
     </svg>
-  )
+  ),
+  circle: ({ width = 24, height = 24, fill, stroke, ...props }: IconProps) => (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill={fill}
+      stroke={stroke}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-circle"
+    >
+      <circle cx="12" cy="12" r="10" />
+    </svg>
+  ),
 };

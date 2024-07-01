@@ -62,7 +62,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                       <RadioGroupItem value="accept" />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Tous les nouveaux messages
+                      Tous les nouveaux messages privés
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">

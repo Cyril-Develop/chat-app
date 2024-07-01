@@ -2,9 +2,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import useGetRoom from "@/hooks/get-room";
 import UserThumbnail from "@/components/user-thumbnail";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useUserStore } from "@/store/user.store";
+import StatutIndicator from "@/components/statut-indicator";
 
 interface RoomUsersProps {
   roomId: number;
+  currentUser: number;
 }
 
 interface User {
@@ -13,19 +16,22 @@ interface User {
   profileImage: string;
 }
 
-export function RoomUsers({ roomId }: RoomUsersProps) {
+export function RoomUsers({ roomId, currentUser }: RoomUsersProps) {
+  const { statut } = useUserStore();
   const { data: roomInfos, isLoading } = useGetRoom({ roomId });
 
   return (
     <ScrollArea className="h-64 w-48 rounded-md">
       <div className="flex flex-col gap-4">
         {roomInfos?.users.map((user: User) => (
-          <UserThumbnail
-            size="8"
-            key={user.id}
-            username={user.username}
-            image={user.profileImage}
-          />
+          <div key={user.id} className="relative">
+            {currentUser === user.id && <StatutIndicator statut={statut} />}
+            <UserThumbnail
+              imageSize="8"
+              username={user.username}
+              image={user.profileImage}
+            />
+          </div>
         ))}
       </div>
     </ScrollArea>

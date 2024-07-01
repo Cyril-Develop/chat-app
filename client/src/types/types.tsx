@@ -1,6 +1,8 @@
 export interface UserState {
   token: string | null;
+  statut: "online" | "busy" | "away";
   setToken: (token: string) => void;
+  setStatut: (status: "online" | "busy" | "away") => void;
   logout: () => void;
 }
 

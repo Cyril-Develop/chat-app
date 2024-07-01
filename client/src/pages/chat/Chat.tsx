@@ -12,7 +12,7 @@ import { RoomUsers } from "@/components/room-users";
 const Chat = () => {
   const { room } = useRoomStore();
   const { data: user } = useGetUser();
-
+  
   return (
     <div className="page_chat">
       <aside className="flex flex-col gap-4 pt-4 border-r-2 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-5 xl:px-10">
@@ -42,11 +42,11 @@ const Chat = () => {
           />
           <RoomSelector />
         </div>
-        {room && (
+        {room && user && (
           <div className="flex flex-col gap-4">
             <h2 className="text-3xl">Utilisateurs </h2>
             <Separator />
-            <RoomUsers roomId={room} />
+            <RoomUsers roomId={room} currentUser={user.id} />
           </div>
         )}
       </aside>

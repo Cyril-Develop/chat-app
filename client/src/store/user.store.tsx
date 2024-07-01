@@ -6,7 +6,9 @@ export const useUserStore = create(
   persist<UserState>(
     (set) => ({
       token: null,
+      statut: "online",
       setToken: (token: string) => set({ token }),
+      setStatut: (statut: "online" | "busy" | "away") => set({ statut }),
       logout: () => set({ token: null }),
     }),
     {

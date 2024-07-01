@@ -17,7 +17,7 @@ interface MessagesProviderProps {
 
 const MessagesProvider = ({ room } : MessagesProviderProps) => {
 
-  return <div className="grow flex flex-col gap-8 mt-4 mb-4 overflow-y-scroll">
+  return <div className="grow flex flex-col gap-8 mt-4 mb-4 overflow-y-scroll scrollbar-webkit scrollbar-firefox ">
     {room.messages.map((message) => (
       <Message key={message.id} message={message} />
     ))}

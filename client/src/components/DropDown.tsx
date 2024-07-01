@@ -4,14 +4,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuSub,
+  DropdownMenuPortal,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/Icons";
 import { useNavigate } from "react-router-dom";
 import { useHandleLogout } from "@/hooks/logout";
+import { useUserStore } from "@/store/user.store";
 
 const DropDown = () => {
   const navigate = useNavigate();
   const handleLogout = useHandleLogout();
+  const { statut, setStatut } = useUserStore();
 
   return (
     <>
@@ -22,16 +29,68 @@ const DropDown = () => {
             Menu
           </span>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => navigate("/")}>
-            <Icons.home />
-            Accueil
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate("/chat")}>
-            <Icons.chat />
-            Messagerie
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => navigate("/")}>
+              <Icons.home />
+              Accueil
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/chat")}>
+              <Icons.chat />
+              Messagerie
+            </DropdownMenuItem>
+              <DropdownMenuSeparator />
+          </DropdownMenuGroup>
+
+          <DropdownMenuGroup>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <span>Status</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onClick={() => setStatut("online")}>
+                    <Icons.circle
+                      width={14}
+                      height={14}
+                      fill="green"
+                      stroke="green"
+                      
+                    />
+                    En ligne
+                    {statut === "online" && (
+                      <Icons.check width={14} height={14} />
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setStatut("busy")}>
+                    <Icons.circle
+                      width={14}
+                      height={14}
+                      fill="red"
+                      stroke="red"
+                    />
+                    Occupé
+                    {statut === "busy" && (
+                      <Icons.check width={14} height={14} />
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setStatut("away")}>
+                    <Icons.circle
+                      width={14}
+                      height={14}
+                      fill="orange"
+                      stroke="orange"
+                    />
+                    Absent
+                    {statut === "away" && (
+                      <Icons.check width={14} height={14} />
+                    )}
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+          </DropdownMenuGroup>
           <DropdownMenuItem onClick={() => navigate("/settings/profile")}>
             <Icons.settings className="w-6 h-6" />
             Paramètres

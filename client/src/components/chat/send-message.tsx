@@ -80,7 +80,8 @@ const SendMessage = ({ room }: SendMessageProps) => {
         className="flex gap-4 mt-4 mb-4 relative"
       >
         {openEmoji && (
-          <div className="absolute bottom-full right-0">
+          <div className="absolute bottom-20 pb-2 right-0">
+            <Button type="button" className="relative top-2 z-10 rounded-bl-none" onClick={() => setOpenEmoji(false)}>Fermer</Button>
             <EmojiPicker onEmojiClick={handleEmojiClick} />
           </div>
         )}

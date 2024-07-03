@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronLeft, Circle } from "lucide-react";
+import { Check, Circle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -31,7 +31,6 @@ const DropdownMenuSubTrigger = React.forwardRef<
     )}
     {...props}
   >
-    <ChevronLeft className="w-6 h-6" />
     {children}
   </DropdownMenuPrimitive.SubTrigger>
 ));

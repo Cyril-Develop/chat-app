@@ -1,16 +1,12 @@
-interface StatusIndicatorProps {
-  statut: "online" | "busy" | "away";
+interface StatutIndicatorProps {
+  status: "online" | "offline";
 }
 
-const StatutIndicator = ({ statut }: StatusIndicatorProps) => {
+const StatutIndicator = ({ status }: StatutIndicatorProps) => {
   return (
     <div
       className={`absolute bottom-0 left-6 z-10 w-3 h-3 flex items-center justify-center rounded-full ${
-        statut === "online"
-          ? "bg-green-500"
-          : statut === "busy"
-          ? "bg-red-500"
-          : "bg-orange-500"
+        status === "online" ? "bg-green-500" : "bg-black"
       }`}
     ></div>
   );

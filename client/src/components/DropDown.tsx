@@ -13,12 +13,10 @@ import {
 import { Icons } from "@/components/Icons";
 import { useNavigate } from "react-router-dom";
 import { useHandleLogout } from "@/hooks/logout";
-import { useUserStore } from "@/store/user.store";
 
 const DropDown = () => {
   const navigate = useNavigate();
   const handleLogout = useHandleLogout();
-  const { statut, setStatut } = useUserStore();
 
   return (
     <>
@@ -40,52 +38,38 @@ const DropDown = () => {
               <Icons.chat />
               Messagerie
             </DropdownMenuItem>
-              <DropdownMenuSeparator />
+            <DropdownMenuSeparator />
           </DropdownMenuGroup>
 
           <DropdownMenuGroup>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <span>Status</span>
+                <Icons.circle
+                  className="w-6 h-6"
+                  fill="white"
+                  stroke="black"
+                />
+                Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem onClick={() => setStatut("online")}>
+                  <DropdownMenuItem>
                     <Icons.circle
                       width={14}
                       height={14}
                       fill="green"
                       stroke="green"
-                      
                     />
-                    En ligne
-                    {statut === "online" && (
-                      <Icons.check width={14} height={14} />
-                    )}
+                    En ligne // <Icons.check width={14} height={14} />
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setStatut("busy")}>
+                  <DropdownMenuItem>
                     <Icons.circle
                       width={14}
                       height={14}
-                      fill="red"
-                      stroke="red"
+                      fill="white"
+                      stroke="black"
                     />
-                    Occupé
-                    {statut === "busy" && (
-                      <Icons.check width={14} height={14} />
-                    )}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setStatut("away")}>
-                    <Icons.circle
-                      width={14}
-                      height={14}
-                      fill="orange"
-                      stroke="orange"
-                    />
-                    Absent
-                    {statut === "away" && (
-                      <Icons.check width={14} height={14} />
-                    )}
+                    Invisible
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>

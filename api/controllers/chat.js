@@ -98,7 +98,7 @@ exports.joinChatRoom = async (req, res) => {
 
       return res
         .status(200)
-        .json({ message: "Vous avez rejoint le salon de discussion" });
+        .json({ message: "Vous avez rejoint le salon de discussion", roomId });
     }
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre le salon:", error);
@@ -132,7 +132,7 @@ exports.leaveChatRoom = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Vous avez quitté le salon de discussion" });
+      .json({ message: "Vous avez quitté le salon de discussion", roomId });
   } catch (error) {
     console.error("Erreur lors de la tentative de quitter le salon:", error);
     res.status(500).json({ error: "Impossible de quitter le salon" });
@@ -182,8 +182,8 @@ exports.getChatRoom = async (req, res) => {
               },
             },
           },
-          orderBy: { 
-            createdAt: 'asc' 
+          orderBy: {
+            createdAt: "asc",
           },
         },
       },

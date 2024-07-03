@@ -19,7 +19,7 @@ export const useCreateChatMutation = () => {
   return useMutation({
     mutationFn: (data: ChatProps) => createChat(data, token || ""),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["chat"] });
+      queryClient.invalidateQueries({ queryKey: ["chat", data.roomId] });
       joinChatMutation.mutate({ roomId: data.id });
       setRoom(data.id);
     },

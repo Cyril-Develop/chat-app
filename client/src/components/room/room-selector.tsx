@@ -43,6 +43,7 @@ export function RoomSelector() {
   }, [data, room]);
 
   const handleJoinRoom = (roomId: number, password?: string) => {
+
     setOpen(false);
     if (room === roomId) {
       leaveMutation.mutate(roomId);

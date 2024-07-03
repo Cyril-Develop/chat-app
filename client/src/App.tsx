@@ -16,6 +16,8 @@ import Settings from "./pages/settings/Settings";
 import Profile from "./pages/settings/Profile";
 import Account from "./pages/settings/Account";
 import Notification from "./pages/settings/Notification";
+import { useSocketStore } from "@/store/socket.store";
+import { useEffect } from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -28,6 +30,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 function App() {
   const token = useUserStore((state) => state.token);
+  const { connectSocket, disconnectSocket } = useSocketStore();
+
+  useEffect(() => {
+    if (token) {
+      connectSocket(token);
+    } else {
+      disconnectSocket();
+    }
+  }, [token, connectSocket, disconnectSocket]);
+
   const router = createBrowserRouter([
     {
       path: "/",

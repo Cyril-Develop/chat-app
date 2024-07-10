@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import useGetUser from "@/hooks/get-user";
 import { useRemoveContactMutation } from "@/hooks/remove-contact";
+import UserCard from "@/components/user-card";
 
 export function Contact() {
   const [open, setOpen] = useState(false);
@@ -24,12 +25,19 @@ export function Contact() {
   const mutation = useRemoveContactMutation();
 
   interface ContactProps {
-    username: string;
     id: string;
+    username: string;
+    bio: string;
+    profileImage: string;
+    createdAt: string;
   }
 
   const handleDelete = (contactId: string) => {
     mutation.mutate(contactId);
+  };
+
+  const handlePrivateMessage = () => {
+    console.log("Private message");
   };
 
   const haveContact = data?.friendsList.length > 0;
@@ -64,14 +72,26 @@ export function Contact() {
                       key={contact.username}
                       className="flex items-center justify-between"
                     >
-                      {contact.username}
-                      <Button
-                        variant="alert"
-                        title="Retirer de la liste de contacts"
-                        onClick={() => handleDelete(contact.id)}
-                      >
-                        <Icons.delete width="18" height="18" />
-                      </Button>
+                      <UserCard user={contact} />
+
+                      <div className="flex gap-4">
+                        <Button
+                          variant="linkForm"
+                          title="Envoyer un message"
+                          className="p-0"
+                          onClick={() => handlePrivateMessage()}
+                        >
+                          <Icons.chat width="16" height="16" />
+                        </Button>
+                        <Button
+                          variant="alert"
+                          title="Retirer de la liste de contacts"
+                          className="p-0"
+                          onClick={() => handleDelete(contact.id)}
+                        >
+                          <Icons.delete width="16" height="16" />
+                        </Button>
+                      </div>
                     </CommandItem>
                   ))}
                 </CommandGroup>

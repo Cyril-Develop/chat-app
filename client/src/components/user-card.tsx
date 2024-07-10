@@ -3,34 +3,40 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import useGetUser from "@/hooks/get-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import moment from "moment/min/moment-with-locales";
 
-function UserCard() {
-  const { data } = useGetUser();
+interface User {
+  id: string;
+  username: string;
+  bio: string;
+  profileImage: string;
+  createdAt: string;
+}
 
+function UserCard({ user }: { user: User }) {
   return (
     <HoverCard>
-      <HoverCardTrigger>{data?.username}</HoverCardTrigger>
-      <HoverCardContent className="w-80">
+      <HoverCardTrigger>{user?.username}</HoverCardTrigger>
+      <HoverCardContent className="w-60  absolute top-4" >
         <div className="flex space-x-4">
           <Avatar>
             <AvatarImage
               src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
-                data?.profileImage
+                user?.profileImage
               }`}
             />
             <AvatarFallback>
-              <span>{data?.username}</span>
+              <span>{user?.username}</span>
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-col justify-center overflow-hidden">
-              <h4 className="text-sm font-semibold">{data?.username}</h4>
-              <p className="line-clamp-3 text-sm font-normal">{data?.bio}</p>
+              <h4 className="text-sm font-semibold">{user?.username}</h4>
+              <p className="line-clamp-3 text-sm font-normal">{user?.bio}</p>
             </div>
             <p className="text-xs italic text-muted-foreground">
-              Depuis le {data?.createdAt}
+              Depuis le {moment(user?.createdAt).locale("fr").format("DD MMMM YYYY")}
             </p>
           </div>
         </div>

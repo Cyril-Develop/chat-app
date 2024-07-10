@@ -11,16 +11,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState, useEffect } from "react";
-import io from "socket.io-client";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAddContactMutation } from "@/hooks/add-contact";
 import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
-
-//const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
+import useGetUsers from "@/hooks/get-users";
 
 interface SearchUserProps {
   userId: string;
@@ -49,25 +47,23 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [users, setUsers] = useState<Users[]>([]);
+  const { data } = useGetUsers();
 
   const mutation = useAddContactMutation();
-
-  // useEffect(() => {
-  //   socket.on("searchUsers", (data) => {
-  //     setUsers(data);
-  //   });
-
-  //   return () => {
-  //     socket.off("searchUsers");
-  //   };
-  // }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
     if (value.length >= 3) {
-      //socket.emit("search", value);
       setOpen(true);
+
+      const filteredUsers = data?.filter((user: Users) =>
+        user.username.toLowerCase().includes(value.toLowerCase())
+      );
+
+      if (filteredUsers) {
+        setUsers(filteredUsers);
+      }
     } else {
       setUsers([]);
     }
@@ -131,14 +127,14 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
                         />
 
                         {isFriend(user.friends) ? (
-                          <Icons.check className="w-4 h-4" />
+                          <Icons.check width={16} height={16} />
                         ) : (
                           <Button
                             variant="linkForm"
                             title="Ajouter à la liste de contacts"
                             onClick={() => handleAddFriend(user.id)}
                           >
-                            <Icons.add className="w-4 h-4" />
+                            <Icons.add width={16} height={16} />
                           </Button>
                         )}
                       </CommandItem>

@@ -13,6 +13,28 @@ exports.getAllUsers = async (req, res) => {
         username: true,
         bio: true,
         profileImage: true,
+        friends: {
+          select: {
+            friend: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true
+              },
+            },
+          },
+        },
+        friendOf: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true
+              },
+            },
+          },
+        },
       },
     });
     res.status(200).json(users);
@@ -56,6 +78,8 @@ exports.getUser = async (req, res) => {
                 id: true,
                 username: true,
                 profileImage: true,
+                createdAt: true,
+                bio: true,
               },
             },
           },

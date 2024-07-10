@@ -1,5 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import EmojiPicker from "emoji-picker-react";
@@ -18,6 +19,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { MessageFormSchema } from "@/schema/main";
 import { useSendMessageMutation } from "@/hooks/send-message";
+import { cn } from "@/lib/utils";
+import { useSocketStore } from "@/store/socket.store";
+import useGetUser from "@/hooks/get-user";
+import { getUserId } from "@/utils/get-userId";
 
 interface SendMessageProps {
   room: {
@@ -37,8 +42,9 @@ interface MessageFormProps {
 }
 
 const SendMessage = ({ room }: SendMessageProps) => {
-
   const mutation = useSendMessageMutation();
+  const { socket } = useSocketStore();
+  const { data: user } = useGetUser();
 
   const [openEmoji, setOpenEmoji] = useState(false);
 
@@ -64,7 +70,16 @@ const SendMessage = ({ room }: SendMessageProps) => {
     }
   };
 
+  const userId = getUserId();
+
   const onSubmit = (data: MessageFormProps) => {
+    socket?.emit("sendMessage", {
+      userId,
+      username: user.username,
+      profileImage: user.profileImage,
+      roomId: room.id,
+      message: data.message,
+    });
     mutation.mutate({
       roomId: room.id,
       content: data.message,
@@ -81,7 +96,13 @@ const SendMessage = ({ room }: SendMessageProps) => {
       >
         {openEmoji && (
           <div className="absolute bottom-20 pb-2 right-0">
-            <Button type="button" className="relative top-2 z-10 rounded-bl-none" onClick={() => setOpenEmoji(false)}>Fermer</Button>
+            <Button
+              type="button"
+              className="relative top-2 z-10 rounded-bl-none"
+              onClick={() => setOpenEmoji(false)}
+            >
+              Fermer
+            </Button>
             <EmojiPicker onEmojiClick={handleEmojiClick} />
           </div>
         )}
@@ -92,11 +113,13 @@ const SendMessage = ({ room }: SendMessageProps) => {
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <Input
+                <Textarea
                   {...field}
-                  type="text"
                   placeholder="Message..."
                   aria-label="Envoyer un message"
+                  className={cn(
+                    "resize-none min-h-[44px] h-11 scrollbar-webkit scrollbar-firefox"
+                  )}
                 />
               </FormControl>
               <FormDescription>

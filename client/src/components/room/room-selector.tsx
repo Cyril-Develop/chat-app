@@ -22,7 +22,6 @@ export function RoomSelector() {
   const { data } = useGetRooms();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-
   const { setRoom, room } = useRoomStore();
   const joinMutation = useJoinChatMutation();
   const leaveMutation = useLeaveChatMutation();
@@ -43,13 +42,11 @@ export function RoomSelector() {
   }, [data, room]);
 
   const handleJoinRoom = (roomId: number, password?: string) => {
-
     setOpen(false);
     if (room === roomId) {
       leaveMutation.mutate(roomId);
       setRoom(null);
       setValue("");
-
     } else {
       setRoom(roomId);
       joinMutation.mutate({ roomId, password });

@@ -1,27 +1,34 @@
 import Message from "@/components/message/Message";
+import { useEffect, useRef } from "react";
 
 interface MessagesProviderProps {
-  room: {
-    messages: {
+  messages: {
+    id: number;
+    content: string;
+    createdAt: string;
+    user: {
       id: number;
-      content: string;
-      createdAt: string;
-      user: {
-        id: number;
-        username: string;
-        profileImage: string;
-      };
-    }[];
-  }
+      username: string;
+      profileImage: string;
+    };
+  }[];
 }
 
-const MessagesProvider = ({ room } : MessagesProviderProps) => {
+const MessagesProvider = ({ messages }: MessagesProviderProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  return <div className="grow flex flex-col gap-8 mt-4 mb-4 overflow-y-scroll scrollbar-webkit scrollbar-firefox ">
-    {room.messages.map((message) => (
-      <Message key={message.id} message={message} />
-    ))}
-  </div>;
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  return (
+    <div className="grow flex flex-col gap-8 mt-4 mb-4 overflow-y-scroll scrollbar-webkit scrollbar-firefox">
+      {messages?.map((message) => (
+        <Message key={message.id} message={message} />
+      ))}
+      <span ref={scrollRef} />
+    </div>
+  );
 };
 
 export default MessagesProvider;

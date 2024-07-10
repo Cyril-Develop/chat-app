@@ -59,8 +59,6 @@ exports.joinChatRoom = async (req, res) => {
       return res.status(403).json({ error: "Mot de passe incorrect" });
     }
 
-    console.log(`Utilisateur ${userId} tente de rejoindre le salon ${roomId}`);
-
     // Vérifier si l'utilisateur est déjà membre de ce salon
     const existingMembership = await prisma.userChatRoom.findFirst({
       where: { userId: userId, chatRoomId: roomId },
@@ -81,8 +79,6 @@ exports.joinChatRoom = async (req, res) => {
         .status(200)
         .json({ message: "Vous avez quitté le salon de discussion" });
     } else {
-      console.log(`Utilisateur ${userId} rejoint le salon ${roomId}`);
-
       // retirer l'utilisateur de tous les autres salons de discussion
       await prisma.userChatRoom.deleteMany({
         where: { userId: userId },

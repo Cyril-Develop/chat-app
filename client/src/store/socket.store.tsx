@@ -1,7 +1,5 @@
-
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
-import { useUserStore } from "./user.store";
 import { jwtDecode } from "jwt-decode";
 
 interface CustomPayload {
@@ -10,7 +8,7 @@ interface CustomPayload {
 
 interface SocketStore {
   socket: Socket | null;
-  onlineUsers: number[];
+  users: number[];
   connectSocket: (token: string) => void;
   disconnectSocket: () => void;
 }
@@ -20,7 +18,7 @@ export const useSocketStore = create<SocketStore>((set) => {
 
   return {
     socket: null,
-    onlineUsers: [],
+    users: [],
     connectSocket: (token) => {
       if (socket) return;
 
@@ -28,17 +26,17 @@ export const useSocketStore = create<SocketStore>((set) => {
         auth: { token },
       });
 
-      const decodedToken = jwtDecode<CustomPayload>(token); // Decode the token
-
-      const userId = decodedToken.id; // Assume the token contains a userId field
+      const decodedToken = jwtDecode<CustomPayload>(token);
+      const userId = decodedToken.id;
+      
 
       socket.on("connect", () => {
         console.log("Connected to server");
-        socket?.emit("addNewUser", userId);
+        socket?.emit("addUser", userId);
       });
 
-      socket.on("getOnlineUsers", (users) => {
-        set({ onlineUsers: users });
+      socket.on("getUsers", (users) => {
+        set({ users });
       });
 
       socket.on("disconnect", () => {
@@ -49,11 +47,9 @@ export const useSocketStore = create<SocketStore>((set) => {
       set({ socket });
     },
     disconnectSocket: () => {
-      if (socket) {
-        socket.disconnect();
-        socket = null;
-        set({ socket: null, onlineUsers: [] });
-      }
+      socket?.disconnect();
+      socket = null;
+      set({ socket: null, users: [] });
     },
   };
 });

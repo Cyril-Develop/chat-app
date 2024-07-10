@@ -14,9 +14,9 @@ export const useSendMessageMutation = () => {
 
   return useMutation({
     mutationFn: (data: SendMessageProps) => sendMessage(data, token || ""),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chat"] });
-    },
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["chat"] });
+    // },
     onError: (error) => {
       if (error.message === "Token expiré !") {
         handleTokenExpiration(logout);

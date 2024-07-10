@@ -5,19 +5,14 @@ import { useUserStore } from "@/store/user.store";
 import { useRoomStore } from "@/store/room.store";
 import { joinChat } from "@/services/Chat";
 import { handleTokenExpiration } from "@/utils/token-expiration";
-import io from 'socket.io-client';
 import { useSocketStore } from "@/store/socket.store";
-
-
+import useGetUser from "./get-user";
 
 export const useJoinChatMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
-  const { socket } = useSocketStore();
-  const queryClient = useQueryClient();
-
-
-
+  const { socket } = useSocketStore((state) => state);
+  const { data: currentUser } = useGetUser();
 
   interface JoinChatProps {
     roomId: number;
@@ -33,8 +28,13 @@ export const useJoinChatMutation = () => {
         logo: <Icons.check />,
       });
       setRoom(variables.roomId);
-      //queryClient.invalidateQueries({ queryKey: ["chat", variables.roomId] });
-      socket?.emit("joinRoom", variables.roomId);
+      socket?.emit(
+        "joinRoom",
+        variables.roomId,
+        currentUser.id,
+        currentUser.username,
+        currentUser.profileImage
+      );
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

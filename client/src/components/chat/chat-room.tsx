@@ -3,13 +3,61 @@ import MessagesProvider from "@/components/message/messages-provider";
 import ChatHeader from "./chat-header";
 import useGetRoom from "@/hooks/get-room";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSocketStore } from "@/store/socket.store";
+import { useEffect, useState } from "react";
 
 interface ChatRoomProps {
   roomId: number;
+  currentUser: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+}
+
+interface Message {
+  id: number;
+  content: string;
+  createdAt: number;
+  user: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
 }
 
 const ChatRoom = ({ roomId }: ChatRoomProps) => {
+  const { socket } = useSocketStore();
   const { data: room, isLoading } = useGetRoom({ roomId });
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [arrivalMessage, setArrivalMessage] = useState<Message | null>(null);
+
+  useEffect(() => {
+    if (room) {
+      setMessages(room.messages);
+    }
+  }, [room]);
+
+  useEffect(() => {
+    socket?.on("getMessage", (data) => {
+      setArrivalMessage({
+        id: Date.now(),
+        content: data.message,
+        createdAt: Date.now(),
+        user: {
+          id: data.userId,
+          username: data.username,
+          profileImage: data.profileImage,
+        },
+      });
+    });
+  }, [room]);
+
+  useEffect(() => {
+    if (arrivalMessage) {
+      setMessages((prev) => [...prev, arrivalMessage]);
+    }
+  }, [arrivalMessage]);
 
   return (
     <div className="page_room">
@@ -22,8 +70,8 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
       ) : (
         <>
           <ChatHeader room={room} />
-          <MessagesProvider room={room} />
-          <SendMessage room={room}/>
+          <MessagesProvider messages={messages} />
+          <SendMessage room={room} />
         </>
       )}
     </div>

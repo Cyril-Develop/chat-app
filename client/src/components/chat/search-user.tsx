@@ -20,7 +20,7 @@ import { useAddContactMutation } from "@/hooks/add-contact";
 import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 
-const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
+//const socket = io(`${import.meta.env.VITE_REACT_APP_BASE_URL}`);
 
 interface SearchUserProps {
   userId: string;
@@ -52,21 +52,21 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
 
   const mutation = useAddContactMutation();
 
-  useEffect(() => {
-    socket.on("searchUsers", (data) => {
-      setUsers(data);
-    });
+  // useEffect(() => {
+  //   socket.on("searchUsers", (data) => {
+  //     setUsers(data);
+  //   });
 
-    return () => {
-      socket.off("searchUsers");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("searchUsers");
+  //   };
+  // }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
     if (value.length >= 3) {
-      socket.emit("search", value);
+      //socket.emit("search", value);
       setOpen(true);
     } else {
       setUsers([]);

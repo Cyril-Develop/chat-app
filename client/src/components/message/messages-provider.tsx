@@ -22,7 +22,7 @@ const MessagesProvider = ({ messages }: MessagesProviderProps) => {
   }, [messages]);
 
   return (
-    <div className="grow flex flex-col gap-8 mt-4 mb-4 overflow-y-scroll scrollbar-webkit scrollbar-firefox">
+    <div className="grow mt-4 mb-4 overflow-y-scroll scrollbar-webkit scrollbar-firefox">
       {messages?.map((message) => (
         <Message key={message.id} message={message} />
       ))}

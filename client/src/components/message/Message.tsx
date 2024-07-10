@@ -2,6 +2,8 @@ import moment from "moment/min/moment-with-locales";
 import UserThumbnail from "@/components/user-thumbnail";
 import { Icons } from "@/components/Icons";
 import { Button } from "../ui/button";
+import { getUserId } from "@/utils/get-userId";
+import { useDeleteMessageMutation } from "@/hooks/delete-message";
 
 interface MessageProps {
   message: {
@@ -16,14 +18,16 @@ interface MessageProps {
   };
 }
 
-const handleDelete = () => {
-  console.log("Message deleted");
-};
-
 const Message = ({ message }: MessageProps) => {
+  const userId = getUserId();
+  const mutation = useDeleteMessageMutation();
+
+  const handleDelete = (messageId: number) => {
+    mutation.mutate(messageId);
+  };
 
   return (
-    <div className="w-fit flex flex-col gap-2">
+    <div className="w-fit flex flex-col gap-2 py-4 pl-4">
       <UserThumbnail
         image={message.user.profileImage}
         username={message.user.username}
@@ -39,14 +43,16 @@ const Message = ({ message }: MessageProps) => {
         <span className="text-xs text-gray-600 dark:text-gray-400">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
-        <Button
-          variant="alert"
-          title="Supprimer le message"
-          className="p-0"
-          onClick={() => handleDelete()}
-        >
-          <Icons.delete width={16} height={16} />
-        </Button>
+        {userId === message.user.id && (
+          <Button
+            variant="alert"
+            title="Supprimer le message"
+            className="p-0"
+            onClick={() => handleDelete(message.id)}
+          >
+            <Icons.delete width={16} height={16} />
+          </Button>
+        )}
       </div>
     </div>
   );

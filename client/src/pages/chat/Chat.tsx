@@ -23,11 +23,9 @@ const Chat = () => {
     if (room && userId) {
       const prevRoom = prevRoomRef.current;
       if (prevRoom) {
-        console.log("Leaving room:", prevRoom);
         socket?.emit("leaveRoom", prevRoom, userId);
       }
 
-      console.log("Joining room:", room);
       socket?.emit(
         "joinRoom",
         room,

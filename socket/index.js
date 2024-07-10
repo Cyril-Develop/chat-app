@@ -50,7 +50,6 @@ io.on("connection", (socket) => {
     addUserInRoom(id, roomId, username, profileImage);
 
     const usersInThisRoom = getUsersInRoom(roomId);
-    console.log("join room", usersInThisRoom);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
@@ -58,24 +57,30 @@ io.on("connection", (socket) => {
   socket.on("leaveRoom", (roomId, id) => {
     removeUserInRoom(id, roomId);
     socket.leave(roomId);
-
     const usersInThisRoom = getUsersInRoom(roomId);
-    console.log("leave room", usersInThisRoom);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
   // send test message
   socket.on(
     "sendMessage",
-    ({ userId, username, profileImage, roomId, message }) => {
+    ({ userId, username, profileImage, roomId, message, id, createdAt }) => {
       io.to(roomId).emit("getMessage", {
         userId,
         username,
         profileImage,
         message,
+        id,
+        createdAt,
       });
     }
   );
+
+  // delete message
+  socket.on("messageDeleted", (messageId, roomId) => {
+    console.log("messageId", messageId, "roomId", roomId);
+    io.to(roomId).emit("messageDeleted", messageId);
+  });
 
   //when disconnect
   socket.on("disconnect", () => {

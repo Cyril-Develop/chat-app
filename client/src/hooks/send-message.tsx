@@ -1,11 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/store/user.store";
 import { sendMessage } from "@/services/Message";
 import { handleTokenExpiration } from "@/utils/token-expiration";
+import { useSocketStore } from "@/store/socket.store";
 
 export const useSendMessageMutation = () => {
   const { token, logout } = useUserStore((state) => state);
-  const queryClient = useQueryClient();
+  const { socket } = useSocketStore();
 
   interface SendMessageProps {
     roomId: number;
@@ -14,9 +15,17 @@ export const useSendMessageMutation = () => {
 
   return useMutation({
     mutationFn: (data: SendMessageProps) => sendMessage(data, token || ""),
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["chat"] });
-    // },
+    onSuccess : (data) => {
+      socket?.emit("sendMessage", {
+        id : data.id,
+        userId : data.user.id,
+        username: data.user.username,
+        profileImage: data.user.profileImage,
+        roomId: data.chatRoomId,
+        message: data.content,
+        createdAt: data.createdAt,
+      });
+    },
     onError: (error) => {
       if (error.message === "Token expiré !") {
         handleTokenExpiration(logout);

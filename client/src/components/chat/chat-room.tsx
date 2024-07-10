@@ -41,9 +41,9 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
   useEffect(() => {
     socket?.on("getMessage", (data) => {
       setArrivalMessage({
-        id: Date.now(),
+        id: data.id,
         content: data.message,
-        createdAt: Date.now(),
+        createdAt: data.createdAt,
         user: {
           id: data.userId,
           username: data.username,
@@ -51,7 +51,13 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
         },
       });
     });
-  }, [room]);
+
+    socket?.on("messageDeleted", (messageId) => {
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg.id !== messageId)
+      );
+    });
+  }, [room, socket]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -70,7 +76,9 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
       ) : (
         <>
           <ChatHeader room={room} />
-          <MessagesProvider messages={messages} />
+
+          <MessagesProvider messages={messages} setMessages={setMessages} />
+
           <SendMessage room={room} />
         </>
       )}

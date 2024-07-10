@@ -20,9 +20,6 @@ import { useForm } from "react-hook-form";
 import { MessageFormSchema } from "@/schema/main";
 import { useSendMessageMutation } from "@/hooks/send-message";
 import { cn } from "@/lib/utils";
-import { useSocketStore } from "@/store/socket.store";
-import useGetUser from "@/hooks/get-user";
-import { getUserId } from "@/utils/get-userId";
 
 interface SendMessageProps {
   room: {
@@ -43,9 +40,6 @@ interface MessageFormProps {
 
 const SendMessage = ({ room }: SendMessageProps) => {
   const mutation = useSendMessageMutation();
-  const { socket } = useSocketStore();
-  const { data: user } = useGetUser();
-
   const [openEmoji, setOpenEmoji] = useState(false);
 
   const form = useForm<MessageFormProps>({
@@ -70,16 +64,7 @@ const SendMessage = ({ room }: SendMessageProps) => {
     }
   };
 
-  const userId = getUserId();
-
   const onSubmit = (data: MessageFormProps) => {
-    socket?.emit("sendMessage", {
-      userId,
-      username: user.username,
-      profileImage: user.profileImage,
-      roomId: room.id,
-      message: data.message,
-    });
     mutation.mutate({
       roomId: room.id,
       content: data.message,

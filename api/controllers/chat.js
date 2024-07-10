@@ -43,19 +43,16 @@ exports.joinChatRoom = async (req, res) => {
     });
 
     if (!chatRoom) {
-      console.log(`Le salon de discussion avec l'ID ${roomId} n'existe pas`);
       return res
         .status(404)
         .json({ error: "Le salon de discussion n'existe pas" });
     }
 
     if (chatRoom.isPrivate && !password) {
-      console.log("Mot de passe requis pour un salon privé");
       return res.status(403).json({ error: "Le mot de passe est requis" });
     }
 
     if (chatRoom.isPrivate && chatRoom.password !== password) {
-      console.log("Mot de passe incorrect");
       return res.status(403).json({ error: "Mot de passe incorrect" });
     }
 
@@ -65,7 +62,6 @@ exports.joinChatRoom = async (req, res) => {
     });
 
     if (existingMembership) {
-      console.log(`Utilisateur ${userId} quitte le salon ${roomId}`);
       // Retirer l'utilisateur du salon
       await prisma.userChatRoom.delete({
         where: {

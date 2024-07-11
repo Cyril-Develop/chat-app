@@ -150,6 +150,7 @@ exports.getChatRoom = async (req, res) => {
       select: {
         id: true,
         name: true,
+        createdBy: true,
         users: {
           select: {
             user: {

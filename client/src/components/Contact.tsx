@@ -42,6 +42,9 @@ export function Contact() {
 
   const haveContact = data?.friendsList.length > 0;
 
+  //console.log(data?.friendsList);
+  
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

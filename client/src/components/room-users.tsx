@@ -7,6 +7,7 @@ interface User {
   id: number;
   username: string;
   profileImage: string;
+  
 }
 
 export function RoomUsers() {

@@ -17,6 +17,7 @@ import { useJoinChatMutation } from "@/hooks/join-chat";
 import { useLeaveChatMutation } from "@/hooks/leave-chat";
 import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
+import { useSocketStore } from "@/store/socket.store";
 
 export function RoomSelector() {
   const { data } = useGetRooms();
@@ -25,6 +26,9 @@ export function RoomSelector() {
   const { setRoom, room } = useRoomStore();
   const joinMutation = useJoinChatMutation();
   const leaveMutation = useLeaveChatMutation();
+  const [rooms, setRooms] = useState([]);
+  const [newRoom, setNewRoom] = useState(false);
+  const { socket } = useSocketStore();
 
   interface Room {
     id: number;
@@ -32,14 +36,49 @@ export function RoomSelector() {
     isPrivate: boolean;
   }
 
+  useEffect(() => {
+    if (data) {
+      setRooms(data);
+    }
+  }, [data]);
+
+  //console.log(rooms);
+  console.log(newRoom);
+
+  useEffect(() => {
+    socket?.on("getRooms", (data) => {
+      setNewRoom({
+        id: data.id,
+        name: data.name,
+        isPrivate: data.isPrivate,
+        password: data.password,
+        updatedAt: data.updatedAt,
+        createdAt: data.createdAt,
+        createdBy: data.createdBy,
+      });
+    });
+
+    // socket?.on("messageDeleted", (messageId) => {
+    //   setMessages((prevMessages) =>
+    //     prevMessages.filter((msg) => msg.id !== messageId)
+    //   );
+    // });
+  }, [room, socket]);
+
+  useEffect(() => {
+    if (newRoom) {
+      setRooms((prev) => [...prev, newRoom]);
+    }
+  }, [newRoom]);
+
   const roomsFound = data?.length > 0;
 
   useEffect(() => {
     if (room) {
-      const roomName = data?.find((r: Room) => r.id === room)?.name;
+      const roomName = rooms?.find((r: Room) => r.id === room)?.name;
       setValue(roomName);
     }
-  }, [data, room]);
+  }, [rooms, room]);
 
   const handleJoinRoom = (roomId: number, password?: string) => {
     setOpen(false);
@@ -66,7 +105,7 @@ export function RoomSelector() {
           {value
             ? value
             : roomsFound
-            ? `Recherche un salon (${data.length})`
+            ? `Recherche un salon (${rooms.length})`
             : "Rechercher un salon"}
 
           {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
@@ -83,7 +122,7 @@ export function RoomSelector() {
               </CommandEmpty>
 
               <RoomProvider
-                data={data}
+                data={rooms}
                 value={value}
                 setOpen={setOpen}
                 handleJoinRoom={handleJoinRoom}

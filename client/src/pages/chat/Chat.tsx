@@ -74,7 +74,7 @@ const Chat = () => {
           <div className="flex flex-col gap-4">
             <h2 className="text-3xl">Utilisateurs</h2>
             <Separator />
-            <RoomUsers roomId={room} />
+            <RoomUsers />
           </div>
         )}
       </aside>

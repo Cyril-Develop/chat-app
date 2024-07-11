@@ -44,6 +44,23 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
+  // Create room
+  socket.on(
+    "createRoom",
+    (id, name, isPrivate, password, updatedAt, createdAt, createdBy) => {
+      socket.join(id);
+      io.emit("getRooms", {
+        id,
+        name,
+        isPrivate,
+        password,
+        updatedAt,
+        createdAt,
+        createdBy,
+      });
+    }
+  );
+
   // join room
   socket.on("joinRoom", (roomId, id, username, profileImage) => {
     socket.join(roomId);
@@ -80,6 +97,22 @@ io.on("connection", (socket) => {
   socket.on("messageDeleted", (messageId, roomId) => {
     console.log("messageId", messageId, "roomId", roomId);
     io.to(roomId).emit("messageDeleted", messageId);
+  });
+
+  // add friend
+  socket.on("addFriend", (userId, friendId) => {
+    const friendSocketId = users.find((user) => user.userId === friendId);
+    if (friendSocketId) {
+      io.to(friendSocketId.socketId).emit("addFriend", userId);
+    }
+  });
+
+  // remove friend
+  socket.on("removeFriend", (userId, friendId) => {
+    const friendSocketId = users.find((user) => user.userId === friendId);
+    if (friendSocketId) {
+      io.to(friendSocketId.socketId).emit("removeFriend", userId);
+    }
   });
 
   //when disconnect

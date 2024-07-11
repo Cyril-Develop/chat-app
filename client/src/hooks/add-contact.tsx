@@ -4,20 +4,25 @@ import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { addContact } from "@/services/User";
 import { handleTokenExpiration } from "@/utils/token-expiration";
+import { useSocketStore } from "@/store/socket.store";
 
 export const useAddContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
-  const queryClient = useQueryClient();
+  const { socket } = useSocketStore();
+  //const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (contactId: string) => addContact(contactId, token || ""),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
+      
       toast({
         title: "Contact ajouté à votre liste d'amis",
         variant: "success",
         logo: <Icons.check />,
       });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      //queryClient.invalidateQueries({ queryKey: ["user"] });
+      //socket?.emit("addFriend", contactId);
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

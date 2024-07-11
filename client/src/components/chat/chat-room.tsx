@@ -26,7 +26,7 @@ interface Message {
   };
 }
 
-const ChatRoom = ({ roomId }: ChatRoomProps) => {
+const ChatRoom = ({ roomId, currentUser }: ChatRoomProps) => {
   const { socket } = useSocketStore();
   const { data: room, isLoading } = useGetRoom({ roomId });
   const [messages, setMessages] = useState<Message[]>([]);
@@ -75,7 +75,7 @@ const ChatRoom = ({ roomId }: ChatRoomProps) => {
         </>
       ) : (
         <>
-          <ChatHeader room={room} />
+          <ChatHeader room={room} currentUser={currentUser} />
 
           <MessagesProvider messages={messages} setMessages={setMessages} />
 

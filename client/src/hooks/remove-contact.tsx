@@ -7,7 +7,7 @@ import { handleTokenExpiration } from "@/utils/token-expiration";
 
 export const useRemoveContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
-  const queryClient = useQueryClient();
+ // const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (contactId: string) => removeContact(contactId, token || ""),
@@ -17,7 +17,7 @@ export const useRemoveContactMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      // queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

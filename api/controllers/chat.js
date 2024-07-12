@@ -165,7 +165,8 @@ exports.getChatRoom = async (req, res) => {
         messages: {
           select: {
             id: true,
-            content: true,
+            message: true,
+            image: true,
             createdAt: true,
             user: {
               select: {

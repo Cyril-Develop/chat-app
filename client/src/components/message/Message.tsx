@@ -8,8 +8,9 @@ import { useDeleteMessageMutation } from "@/hooks/delete-message";
 interface MessageProps {
   message: {
     id: number;
-    content: string;
+    message: string;
     createdAt: string;
+    image?: string;
     user: {
       id: number;
       username: string;
@@ -36,7 +37,7 @@ const Message = ({ message }: MessageProps) => {
       />
 
       <p className="bg-primary-foreground p-3 border rounded-md">
-        {message.content}
+        {message.message}
       </p>
 
       <div className="flex justify-between min-w-52">

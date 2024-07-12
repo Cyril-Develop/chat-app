@@ -132,6 +132,8 @@ exports.updateUser = async (req, res) => {
     const id = req.auth.userId;
     const { username, bio } = req.body;
 
+    console.log(username, bio);
+
     let updatedFields = {};
     if (username) {
       updatedFields.username = username;

@@ -17,8 +17,9 @@ interface ChatRoomProps {
 
 interface Message {
   id: number;
-  content: string;
-  createdAt: number;
+  message: string;
+  image?: string;
+  createdAt: string;
   user: {
     id: number;
     username: string;
@@ -42,7 +43,8 @@ const ChatRoom = ({ roomId, currentUser }: ChatRoomProps) => {
     socket?.on("getMessage", (data) => {
       setArrivalMessage({
         id: data.id,
-        content: data.message,
+        message: data.message,
+        image: data.image,
         createdAt: data.createdAt,
         user: {
           id: data.userId,
@@ -77,7 +79,7 @@ const ChatRoom = ({ roomId, currentUser }: ChatRoomProps) => {
         <>
           <ChatHeader room={room} currentUser={currentUser} />
 
-          <MessagesProvider messages={messages} setMessages={setMessages} />
+          <MessagesProvider messages={messages} />
 
           <SendMessage room={room} />
         </>

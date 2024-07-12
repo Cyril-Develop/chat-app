@@ -65,10 +65,16 @@ const SendMessage = ({ room }: SendMessageProps) => {
   };
 
   const onSubmit = (data: MessageFormProps) => {
-    mutation.mutate({
-      roomId: room.id,
-      content: data.message,
-    });
+    const { message, file } = data;
+    const roomId = room.id;
+    const formData = new FormData();
+
+    formData.append("message", message);
+    formData.append("roomId", roomId);
+    if (file) {
+      formData.append("image", file);
+    }
+    mutation.mutate(formData);
     form.reset();
   };
 

@@ -27,31 +27,34 @@ exports.getMessages = async (req, res) => {
 };
 
 exports.sendMessage = async (req, res) => {
-  const { roomId, content } = req.body;
+  console.log(req.body);
+  const { roomId, message } = req.body;
   const userId = req.auth.userId;
+  const image = req.file; 
 
-  console.log(roomId, content, userId);
+  console.log(roomId, userId, message, image);
 
   // Vérifiez que toutes les informations nécessaires sont présentes
-  if (!userId || !roomId || !content) {
-    return res.status(400).json({ error: 'userId, roomId, and content are required.' });
-  }
+  // if (!userId || !roomId || !content) {
+  //   return res.status(400).json({ error: 'userId, roomId, and content are required.' });
+  // }
 
   try {
     // Vérifiez si l'utilisateur et le salon de chat existent
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    const chatRoom = await prisma.chatRoom.findUnique({ where: { id: roomId } });
+    const chatRoom = await prisma.chatRoom.findUnique({ where: { id: Number(roomId) } });
 
     if (!user || !chatRoom) {
       return res.status(404).json({ error: 'User or ChatRoom not found.' });
     }
 
     // Créez le message
-    const message = await prisma.message.create({
+    const newMessage = await prisma.message.create({
       data: {
-        content: content,
+        message: message,
+        image: image,
         userId: userId,
-        chatRoomId: roomId,
+        chatRoomId: Number(roomId),
       },
       include: {
         user: true,
@@ -60,7 +63,7 @@ exports.sendMessage = async (req, res) => {
     });
 
     // Retournez le message créé
-    return res.status(201).json(message);
+    return res.status(201).json(newMessage);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal server error.' });

@@ -15,15 +15,14 @@ const Chat = () => {
   const { room } = useRoomStore();
   const { data: currentUser } = useGetUser();
   const { socket } = useSocketStore();
-  const userId = currentUser?.id;
 
   const prevRoomRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (room && userId) {
+    if (room && currentUser) {
       const prevRoom = prevRoomRef.current;
       if (prevRoom) {
-        socket?.emit("leaveRoom", prevRoom, userId);
+        socket?.emit("leaveRoom", prevRoom, currentUser?.id);
       }
 
       socket?.emit(
@@ -36,7 +35,7 @@ const Chat = () => {
 
       prevRoomRef.current = room;
     }
-  }, [room, socket, userId, currentUser]);
+  }, [room, socket, currentUser]);
 
   return (
     <div className="page_chat">

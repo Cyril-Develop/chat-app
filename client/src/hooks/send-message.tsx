@@ -8,21 +8,17 @@ export const useSendMessageMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { socket } = useSocketStore();
 
-  interface SendMessageProps {
-    roomId: number;
-    content: string;
-  }
-
   return useMutation({
-    mutationFn: (data: SendMessageProps) => sendMessage(data, token || ""),
-    onSuccess : (data) => {
+    mutationFn: (formData: FormData) => sendMessage(formData, token || ""),
+    onSuccess: (data) => {
       socket?.emit("sendMessage", {
-        id : data.id,
-        userId : data.user.id,
+        id: data.id,
+        userId: data.user.id,
         username: data.user.username,
         profileImage: data.user.profileImage,
         roomId: data.chatRoomId,
-        message: data.content,
+        message: data.message,
+        image: data.image,
         createdAt: data.createdAt,
       });
     },

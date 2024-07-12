@@ -42,9 +42,6 @@ export function RoomSelector() {
     }
   }, [data]);
 
-  //console.log(rooms);
-  console.log(newRoom);
-
   useEffect(() => {
     socket?.on("getRooms", (data) => {
       setNewRoom({

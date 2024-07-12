@@ -81,7 +81,7 @@ io.on("connection", (socket) => {
   // send test message
   socket.on(
     "sendMessage",
-    ({ userId, username, profileImage, roomId, message, id, createdAt }) => {
+    ({ userId, username, profileImage, roomId, message, id, createdAt, image }) => {
       io.to(roomId).emit("getMessage", {
         userId,
         username,
@@ -89,7 +89,9 @@ io.on("connection", (socket) => {
         message,
         id,
         createdAt,
+        image
       });
+      console.log("message", message, "roomId", roomId, "userId", userId, "id", id, "createdAt", createdAt, "image", image);
     }
   );
 

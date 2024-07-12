@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 interface MessagesProviderProps {
   messages: {
     id: number;
-    content: string;
+    message: string;
     createdAt: string;
+    image?: string;
     user: {
       id: number;
       username: string;

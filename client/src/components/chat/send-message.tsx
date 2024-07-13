@@ -41,6 +41,7 @@ interface MessageFormProps {
 const SendMessage = ({ room }: SendMessageProps) => {
   const mutation = useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
 
   const form = useForm<MessageFormProps>({
     resolver: zodResolver(MessageFormSchema),
@@ -60,44 +61,64 @@ const SendMessage = ({ room }: SendMessageProps) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      form.setValue("file", e.target.files[0]);
+      setImage(e.target.files[0]);
     }
   };
 
   const onSubmit = (data: MessageFormProps) => {
-    const { message, file } = data;
-    const roomId = room.id;
+    const { message } = data;
+
+    if (message === "" && !image) return;
+
+    const roomId = room.id.toString();
     const formData = new FormData();
 
     formData.append("message", message);
     formData.append("roomId", roomId);
-    if (file) {
-      formData.append("image", file);
+    if (image) {
+      formData.append("image", image);
     }
     mutation.mutate(formData);
     form.reset();
+    setImage(null);
   };
 
   return (
     <Form {...form}>
-      <Separator />
+      <Separator className="mb-4" />
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex gap-4 mt-4 mb-4 relative"
+        className="relative flex flex-col sm:flex-row  gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
         {openEmoji && (
-          <div className="absolute bottom-20 pb-2 right-0">
+          <div className="absolute z-20 bottom-32 sm:bottom-20 right-0 sm:right-2 ">
             <Button
               type="button"
-              className="relative top-2 z-10 rounded-bl-none"
+              className="relative left-0 top-1 rounded-bl-none rounded-br-none"
               onClick={() => setOpenEmoji(false)}
             >
               Fermer
             </Button>
-            <EmojiPicker onEmojiClick={handleEmojiClick} />
+            <EmojiPicker onEmojiClick={handleEmojiClick} width={280} />
           </div>
         )}
 
+        {image && (
+          <div className="relative w-fit">
+            <img
+              src={URL.createObjectURL(image)}
+              alt="Image jointe au message"
+              className="h-20 w-20 object-cover rounded-md"
+            />
+            <Button
+              type="button"
+              className="absolute top-0 right-0 z-10 p-0 h-6 w-6"
+              onClick={() => setImage(null)}
+            >
+              <Icons.close width={16} height={16} />
+            </Button>
+          </div>
+        )}
         <FormField
           control={form.control}
           name="message"
@@ -113,56 +134,55 @@ const SendMessage = ({ room }: SendMessageProps) => {
                   )}
                 />
               </FormControl>
-              <FormDescription>
-                Appuyez sur la touche "Entrée" pour envoyer votre message.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="file"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 h-11 w-11 cursor-pointer"
-                tabIndex={0}
-                aria-label="Joindre un fichier"
-                onKeyDown={handleKeydown}
-                onClick={() => handleLabelClick("fileInput")}
-              >
-                <Icons.paperClip />
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="file"
-                  accept=".jpg,.jpeg,.png,.svg"
-                  className="hidden"
-                  value={undefined}
-                  onChange={handleFileChange}
-                  id="fileInput"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button
-          type="button"
-          size="message"
-          onClick={() => setOpenEmoji(!openEmoji)}
-        >
-          <Icons.emoji
-            aria-label={openEmoji ? "Fermer les emojis" : "Ouvrir les emojis"}
+        <div className="flex gap-2">
+          <FormField
+            control={form.control}
+            name="file"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 p-2 w-11 h-11 cursor-pointer"
+                  tabIndex={0}
+                  aria-label="Joindre un fichier"
+                  onKeyDown={handleKeydown}
+                  onClick={() => handleLabelClick("fileInput")}
+                >
+                  <Icons.image />
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.svg"
+                    className="hidden"
+                    value={undefined}
+                    onChange={handleFileChange}
+                    id="fileInput"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Button>
-        <Button type="submit" size="message">
-          <Icons.send aria-label="Envoyer" />
-        </Button>
+
+          <Button
+            type="button"
+            size="message"
+            onClick={() => setOpenEmoji(!openEmoji)}
+          >
+            <Icons.emoji
+              aria-label={openEmoji ? "Fermer les emojis" : "Ouvrir les emojis"}
+            />
+          </Button>
+          <Button type="submit" size="message" className="ml-auto">
+            <Icons.send aria-label="Envoyer" />
+          </Button>
+        </div>
       </form>
     </Form>
   );

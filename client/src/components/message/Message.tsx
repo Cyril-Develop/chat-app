@@ -27,8 +27,14 @@ const Message = ({ message }: MessageProps) => {
     mutation.mutate(messageId);
   };
 
+  const isMyMessage = message.user.id === userId;
+
   return (
-    <div className="w-fit flex flex-col gap-2 py-4 pl-4">
+    <div
+      className={`w-fit flex flex-col gap-2 py-3 pl-3 xl:py-4 xl:pl-8 ${
+        isMyMessage && "ml-auto pr-3 xl:pr-8"
+      } `}
+    >
       <UserThumbnail
         image={message.user.profileImage}
         username={message.user.username}
@@ -37,9 +43,17 @@ const Message = ({ message }: MessageProps) => {
       />
 
       <div className="flex flex-col gap-2">
-        <p className="bg-primary-foreground p-3 border rounded-md w-full">
-          {message.message}
-        </p>
+        {message.message && (
+          <p
+            className={` p-3 border rounded-md w-full ${
+              isMyMessage
+                ? "bg-primary text-secondary"
+                : "bg-primary-foreground"
+            }`}
+          >
+            {message.message}
+          </p>
+        )}
         {message.image && (
           <img
             src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/message/${
@@ -51,7 +65,7 @@ const Message = ({ message }: MessageProps) => {
         )}
       </div>
 
-      <div className="flex justify-between min-w-32">
+      <div className="flex justify-between min-w-44">
         <span className="text-xs text-gray-600 dark:text-gray-400">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>

@@ -28,7 +28,7 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
         box: "h-11",
         chat:"text-lg",
-        message: "h-11 w-11",
+        message: "h-11 p-2 w-11",
       },
     },
     defaultVariants: {

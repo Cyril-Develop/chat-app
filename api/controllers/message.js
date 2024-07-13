@@ -1,15 +1,19 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const fs = require("fs");
+const path = require("path");
 
 exports.getMessages = async (req, res) => {
   const { chatRoomId } = req.body;
 
   try {
     // Vérifiez si le salon de chat existe
-    const chatRoom = await prisma.chatRoom.findUnique({ where: { id: chatRoomId } });
+    const chatRoom = await prisma.chatRoom.findUnique({
+      where: { id: chatRoomId },
+    });
 
     if (!chatRoom) {
-      return res.status(404).json({ error: 'ChatRoom not found.' });
+      return res.status(404).json({ error: "ChatRoom not found." });
     }
 
     // Récupérez les messages du salon de chat
@@ -22,37 +26,30 @@ exports.getMessages = async (req, res) => {
     return res.status(200).json(messages);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal server error.' });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
 exports.sendMessage = async (req, res) => {
-  console.log(req.body);
   const { roomId, message } = req.body;
   const userId = req.auth.userId;
-  const image = req.file; 
-
-  console.log(roomId, userId, message, image);
-
-  // Vérifiez que toutes les informations nécessaires sont présentes
-  // if (!userId || !roomId || !content) {
-  //   return res.status(400).json({ error: 'userId, roomId, and content are required.' });
-  // }
 
   try {
     // Vérifiez si l'utilisateur et le salon de chat existent
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    const chatRoom = await prisma.chatRoom.findUnique({ where: { id: Number(roomId) } });
+    const chatRoom = await prisma.chatRoom.findUnique({
+      where: { id: Number(roomId) },
+    });
 
     if (!user || !chatRoom) {
-      return res.status(404).json({ error: 'User or ChatRoom not found.' });
+      return res.status(404).json({ error: "User or ChatRoom not found." });
     }
 
     // Créez le message
     const newMessage = await prisma.message.create({
       data: {
         message: message,
-        image: image,
+        image: req.file ? req.file.filename : "",
         userId: userId,
         chatRoomId: Number(roomId),
       },
@@ -66,7 +63,7 @@ exports.sendMessage = async (req, res) => {
     return res.status(201).json(newMessage);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal server error.' });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };
 
@@ -74,34 +71,47 @@ exports.deleteMessage = async (req, res) => {
   const { messageId } = req.body;
   const userId = req.auth.userId;
 
-  console.log(messageId, userId);
-
   // Vérifiez que toutes les informations nécessaires sont présentes
   if (!userId || !messageId) {
-    return res.status(400).json({ error: 'userId and messageId are required.' });
+    return res
+      .status(400)
+      .json({ error: "userId and messageId are required." });
   }
 
   try {
     // Vérifiez si l'utilisateur et le message existent
     const user = await prisma.user.findUnique({ where: { id: userId } });
-    const message = await prisma.message.findUnique({ where: { id: messageId } });
+    const message = await prisma.message.findUnique({
+      where: { id: messageId },
+    });
 
     if (!user || !message) {
-      return res.status(404).json({ error: 'User or Message not found.' });
+      return res.status(404).json({ error: "User or Message not found." });
+    }
+
+    if (message.image) {
+      const imageToDelete = path.join("images/message", message.image);
+      fs.unlink(imageToDelete, (err) => {
+        if (err) console.error("Error deleting old image:", err);
+      });
     }
 
     // Vérifiez si l'utilisateur est l'auteur du message
     if (message.userId !== userId) {
-      return res.status(403).json({ error: 'You are not allowed to delete this message.' });
+      return res
+        .status(403)
+        .json({ error: "You are not allowed to delete this message." });
     }
 
     // Supprimez le message
     await prisma.message.delete({ where: { id: messageId } });
 
     // Retournez un message de succès
-    return res.status(200).json({ message: 'Message deleted successfully.', messageId });
+    return res
+      .status(200)
+      .json({ message: "Message deleted successfully.", messageId });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal server error.' });
+    return res.status(500).json({ error: "Internal server error." });
   }
 };

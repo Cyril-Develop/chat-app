@@ -153,7 +153,6 @@ exports.updateUser = async (req, res) => {
           "images/profile",
           currentUser.profileImage
         );
-        console.log("oldImagePath", oldImagePath);
         if (currentUser.profileImage !== "default.jpg") {
           fs.unlink(oldImagePath, (err) => {
             if (err) console.error("Error deleting old image:", err);

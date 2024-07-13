@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const checkToken = require("../middlewares/check-token");
 const multer = require("../middlewares/multer");
-const resize = require("../middlewares/resize");
+const resize = require("../middlewares/resize/image-profile");
 
 const userCtrl = require("../controllers/user");
 

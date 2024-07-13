@@ -16,8 +16,8 @@ const ChatHeader = ({ room, currentUser }: ChatHeaderProps) => {
   return (
     <>
       <div className="flex justify-between pt-4 pb-4 text-3xl">
-        <h1>{room.name}</h1>
-        {room.createdBy === currentUser?.id && (
+        <h1>{room?.name}</h1>
+        {room?.createdBy === currentUser?.id && (
           <Button
             variant="linkForm"
             title="Supprimer le salon"

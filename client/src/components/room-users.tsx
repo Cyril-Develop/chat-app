@@ -2,32 +2,33 @@ import UserThumbnail from "@/components/user-thumbnail";
 import StatutIndicator from "@/components/statut-indicator";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useState } from "react";
+import { useUserStore } from "@/store/user.store";
 
 interface User {
   id: number;
   username: string;
   profileImage: string;
-  
 }
 
 export function RoomUsers() {
+  const { statut } = useUserStore((state) => state);
   const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
   const { socket, users } = useSocketStore();
 
   useEffect(() => {
-    socket?.on("getUserInRoom", (user: User) => {
+    socket?.on("getUserInRoom", (user) => {
       setUsersInRoom(user);
     });
 
     return () => {
       socket?.off("getUserInRoom");
     };
-  }, [socket, usersInRoom]);
+  }, [socket, statut]);
 
   return (
     <div className="h-64 w-48 rounded-md">
       <div className="flex flex-col gap-4">
-        {usersInRoom.map((user) => (
+        {usersInRoom?.map((user) => (
           <div key={user.id} className="relative">
             {users.some((u) => u.userId === user.id) ? (
               <StatutIndicator status="online" />

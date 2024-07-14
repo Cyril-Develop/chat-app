@@ -8,7 +8,7 @@ interface CustomPayload {
 
 interface SocketStore {
   socket: Socket | null;
-  users: number[];
+  users: { userId: number; socketId: string; statut: string }[];
   connectSocket: (token: string) => void;
   disconnectSocket: () => void;
 }

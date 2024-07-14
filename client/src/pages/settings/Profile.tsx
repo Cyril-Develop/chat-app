@@ -6,7 +6,7 @@ import useGetUser from "@/hooks/get-user";
 const ProfilePage = () => {
   const { data } = useGetUser();
   return (
-    <div className="space-y-6 pb-4 md:pb-10">
+    <div className="space-y-6 md:pb-10">
       {data && (
         <>
           <div>

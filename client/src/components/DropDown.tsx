@@ -13,10 +13,21 @@ import {
 import { Icons } from "@/components/Icons";
 import { useNavigate } from "react-router-dom";
 import { useHandleLogout } from "@/hooks/logout";
+import { useUserStore } from "@/store/user.store";
+import { useEffect } from "react";
+import { useSocketStore } from "@/store/socket.store";
+import { getUserId } from "@/utils/get-userId";
 
 const DropDown = () => {
   const navigate = useNavigate();
   const handleLogout = useHandleLogout();
+  const { statut, setStatut } = useUserStore((state) => state);
+  const { socket } = useSocketStore();
+  const userId = getUserId();
+
+  useEffect(() => {
+    socket?.emit("changeStatut", userId, statut);
+  }, [socket, statut, userId]);
 
   return (
     <>
@@ -44,32 +55,29 @@ const DropDown = () => {
           <DropdownMenuGroup>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <Icons.circle
-                  className="w-6 h-6"
-                  fill="white"
-                  stroke="black"
-                />
+                <Icons.circle className="w-6 h-6" fill="white" stroke="black" />
                 Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setStatut("online")}>
                     <Icons.circle
                       width={14}
                       height={14}
-                      fill="green"
-                      stroke="green"
+                      fill="#22c55e"
+                      stroke="#22c55e"
                     />
-                    En ligne // <Icons.check width={14} height={14} />
+                    En ligne
+                    {statut === "online" && (
+                      <Icons.check width={14} height={14} />
+                    )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Icons.circle
-                      width={14}
-                      height={14}
-                      fill="white"
-                      stroke="black"
-                    />
+                  <DropdownMenuItem onClick={() => setStatut("invisible")}>
+                    <Icons.ghost width={14} height={14} />
                     Invisible
+                    {statut === "invisible" && (
+                      <Icons.check width={14} height={14} />
+                    )}
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>

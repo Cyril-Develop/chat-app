@@ -10,18 +10,20 @@ let userInRoom = [];
 
 const addUser = (userId, socketId) => {
   if (!users.some((user) => user.userId === userId)) {
-    users.push({ userId, socketId });
+    users.push({ userId, socketId, statut: "online" });
   }
 };
 
 const addUserInRoom = (id, roomId, username, profileImage) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
-    userInRoom.push({ id, username, profileImage, roomId });
+    userInRoom.push({ id, username, profileImage, roomId, statut: "online" });
   }
 };
 
 const getUsersInRoom = (roomId) => {
-  return userInRoom.filter((user) => user.roomId === roomId);
+  return userInRoom.filter(
+    (user) => user.roomId === roomId && user.statut === "online"
+  );
 };
 
 const removeUserInRoom = (id, roomId) => {
@@ -35,16 +37,13 @@ const removeUser = (socketId) => {
 };
 
 io.on("connection", (socket) => {
-  // when connect
   console.log("new connection", socket.id);
 
-  // Take userId and socketId from user
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
   });
 
-  // Create room
   socket.on(
     "createRoom",
     (id, name, isPrivate, password, updatedAt, createdAt, createdBy) => {
@@ -61,7 +60,6 @@ io.on("connection", (socket) => {
     }
   );
 
-  // join room
   socket.on("joinRoom", (roomId, id, username, profileImage) => {
     socket.join(roomId);
     addUserInRoom(id, roomId, username, profileImage);
@@ -70,7 +68,21 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
-  // leave room
+  socket.on("changeStatut", (userId, statut) => {
+    const user = users.find((u) => u.userId === userId);
+    if (user) {
+      user.statut = statut;
+      const userInRoomEntry = userInRoom.find((u) => u.id === userId);
+      if (userInRoomEntry) {
+        userInRoomEntry.statut = statut;
+        io.to(userInRoomEntry.roomId).emit(
+          "getUserInRoom",
+          getUsersInRoom(userInRoomEntry.roomId)
+        );
+      }
+    }
+  });
+
   socket.on("leaveRoom", (roomId, id) => {
     removeUserInRoom(id, roomId);
     socket.leave(roomId);
@@ -78,10 +90,18 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
-  // send test message
   socket.on(
     "sendMessage",
-    ({ userId, username, profileImage, roomId, message, id, createdAt, image }) => {
+    ({
+      userId,
+      username,
+      profileImage,
+      roomId,
+      message,
+      id,
+      createdAt,
+      image,
+    }) => {
       io.to(roomId).emit("getMessage", {
         userId,
         username,
@@ -89,19 +109,15 @@ io.on("connection", (socket) => {
         message,
         id,
         createdAt,
-        image
+        image,
       });
-      console.log("message", message, "roomId", roomId, "userId", userId, "id", id, "createdAt", createdAt, "image", image);
     }
   );
 
-  // delete message
   socket.on("messageDeleted", (messageId, roomId) => {
-    console.log("messageId", messageId, "roomId", roomId);
     io.to(roomId).emit("messageDeleted", messageId);
   });
 
-  // add friend
   socket.on("addFriend", (userId, friendId) => {
     const friendSocketId = users.find((user) => user.userId === friendId);
     if (friendSocketId) {
@@ -109,7 +125,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // remove friend
   socket.on("removeFriend", (userId, friendId) => {
     const friendSocketId = users.find((user) => user.userId === friendId);
     if (friendSocketId) {
@@ -117,7 +132,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
     removeUser(socket.id);

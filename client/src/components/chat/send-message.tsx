@@ -4,11 +4,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { MessageFormSchema } from "@/schema/main";
 import { useSendMessageMutation } from "@/hooks/send-message";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/store/user.store";
 
 interface SendMessageProps {
   room: {
@@ -39,9 +39,11 @@ interface MessageFormProps {
 }
 
 const SendMessage = ({ room }: SendMessageProps) => {
+  const { statut } = useUserStore((state) => state);
   const mutation = useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<MessageFormProps>({
     resolver: zodResolver(MessageFormSchema),
@@ -65,10 +67,16 @@ const SendMessage = ({ room }: SendMessageProps) => {
     }
   };
 
+  const noContent = !form.getValues("message") && !image;
+
   const onSubmit = (data: MessageFormProps) => {
     const { message } = data;
 
-    if (message === "" && !image) return;
+    if (noContent) return;
+    if (statut === "invisible") {
+      setError("Vous ne pouvez pas envoyer de message en mode fantôme");
+      return;
+    }
 
     const roomId = room.id.toString();
     const formData = new FormData();
@@ -81,11 +89,28 @@ const SendMessage = ({ room }: SendMessageProps) => {
     mutation.mutate(formData);
     form.reset();
     setImage(null);
+    setError(null);
   };
 
   return (
     <Form {...form}>
       <Separator className="mb-4" />
+      {image && (
+        <div className="relative w-fit">
+          <img
+            src={URL.createObjectURL(image)}
+            alt="Image jointe au message"
+            className="h-20 w-20 object-cover rounded-md"
+          />
+          <Button
+            type="button"
+            className="absolute top-0 right-0 z-10 p-0 h-6 w-6"
+            onClick={() => setImage(null)}
+          >
+            <Icons.close width={16} height={16} />
+          </Button>
+        </div>
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative flex flex-col sm:flex-row  gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
@@ -97,28 +122,12 @@ const SendMessage = ({ room }: SendMessageProps) => {
               className="relative left-0 top-1 rounded-bl-none rounded-br-none"
               onClick={() => setOpenEmoji(false)}
             >
-              Fermer
+              <Icons.close width="18" height="18" />
             </Button>
             <EmojiPicker onEmojiClick={handleEmojiClick} width={280} />
           </div>
         )}
 
-        {image && (
-          <div className="relative w-fit">
-            <img
-              src={URL.createObjectURL(image)}
-              alt="Image jointe au message"
-              className="h-20 w-20 object-cover rounded-md"
-            />
-            <Button
-              type="button"
-              className="absolute top-0 right-0 z-10 p-0 h-6 w-6"
-              onClick={() => setImage(null)}
-            >
-              <Icons.close width={16} height={16} />
-            </Button>
-          </div>
-        )}
         <FormField
           control={form.control}
           name="message"
@@ -179,11 +188,17 @@ const SendMessage = ({ room }: SendMessageProps) => {
               aria-label={openEmoji ? "Fermer les emojis" : "Ouvrir les emojis"}
             />
           </Button>
-          <Button type="submit" size="message" className="ml-auto">
+          <Button
+            type="submit"
+            size="message"
+            className="ml-auto"
+            disabled={noContent}
+          >
             <Icons.send aria-label="Envoyer" />
           </Button>
         </div>
       </form>
+      {error && statut === "invisible" && <p className="error">{error}</p>}
     </Form>
   );
 };

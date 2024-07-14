@@ -38,7 +38,7 @@ const Chat = () => {
   }, [room, socket, currentUser]);
 
   return (
-    <div className="page_chat">
+    <div className="page_chat ">
       <aside className="hidden lg:flex flex-col gap-4 pt-4 border-r-2 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex">
         <h2 className="text-3xl">Contacts</h2>
         {currentUser && (

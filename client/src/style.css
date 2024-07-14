@@ -52,7 +52,7 @@
 html {
   max-width: 2500px;
   margin: 0 auto;
-  width: 100%;
+  width: 100%; 
 }
 
 html.dark {
@@ -61,6 +61,7 @@ html.dark {
 
 .line-clamp-3 {
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -69,7 +70,7 @@ html.dark {
 }
 
 .page_form {
-  @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative p-4;
+  @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100vh-96px)] relative p-4;
 }
 
 .page_footer {
@@ -77,15 +78,15 @@ html.dark {
 }
 
 .page_chat {
-  @apply flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)] relative flex-col lg:flex-row;
+  @apply flex justify-center items-center min-h-[calc(100vh-96px)] sm:h-[calc(100dvh-96px)] relative flex-col lg:flex-row;
 }
 
 .page_room {
-  @apply bg-muted dark:bg-secondary py-4 px-4 xl:px-10 flex flex-col min-h-[calc(100vh-96px)] sm:h-[calc(100vh-96px)];
+  @apply bg-muted dark:bg-secondary py-4 px-4 xl:px-10 flex flex-col h-dvh sm:h-[calc(100dvh-96px)];
 }
 
 .page_settings {
-  @apply space-y-6 p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100vh-96px)] sm:min-h-[calc(100vh-96px)];
+  @apply space-y-6 p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
 }
 
 .input-style {

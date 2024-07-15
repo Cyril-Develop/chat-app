@@ -9,7 +9,7 @@ const ModeToggle = () => {
   };
 
   return (
-    <Button variant="btn" onClick={toggleTheme} title="Modifier le thème">
+    <Button variant="btn" size="menu" onClick={toggleTheme} title="Modifier le thème">
       {theme === "light" ? (
         <Icons.sun />
       ) : (

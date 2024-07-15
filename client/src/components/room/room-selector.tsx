@@ -27,13 +27,17 @@ export function RoomSelector() {
   const joinMutation = useJoinChatMutation();
   const leaveMutation = useLeaveChatMutation();
   const [rooms, setRooms] = useState([]);
-  const [newRoom, setNewRoom] = useState(false);
+  const [newRoom, setNewRoom] = useState<Room | null>(null);
   const { socket } = useSocketStore();
 
   interface Room {
     id: number;
     name: string;
     isPrivate: boolean;
+    password: string;
+    updatedAt: string;
+    createdAt: string;
+    createdBy: number;
   }
 
   useEffect(() => {
@@ -54,12 +58,6 @@ export function RoomSelector() {
         createdBy: data.createdBy,
       });
     });
-
-    // socket?.on("messageDeleted", (messageId) => {
-    //   setMessages((prevMessages) =>
-    //     prevMessages.filter((msg) => msg.id !== messageId)
-    //   );
-    // });
   }, [room, socket]);
 
   useEffect(() => {
@@ -102,7 +100,7 @@ export function RoomSelector() {
           {value
             ? value
             : roomsFound
-            ? `Recherche un salon (${rooms.length})`
+            ? `Rechercher un salon (${rooms.length})`
             : "Rechercher un salon"}
 
           {open ? <Icons.chevronUp /> : <Icons.chevronDown />}

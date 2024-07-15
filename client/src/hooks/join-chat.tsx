@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
@@ -9,7 +9,7 @@ import { useSocketStore } from "@/store/socket.store";
 import useGetUser from "./get-user";
 
 export const useJoinChatMutation = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token, logout, statut } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
   const { socket } = useSocketStore((state) => state);
   const { data: currentUser } = useGetUser();
@@ -33,7 +33,8 @@ export const useJoinChatMutation = () => {
         variables.roomId,
         currentUser.id,
         currentUser.username,
-        currentUser.profileImage
+        currentUser.profileImage,
+        statut
       );
     },
     onError: (error) => {

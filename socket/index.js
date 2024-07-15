@@ -10,13 +10,13 @@ let userInRoom = [];
 
 const addUser = (userId, socketId) => {
   if (!users.some((user) => user.userId === userId)) {
-    users.push({ userId, socketId, statut: "online" });
+    users.push({ userId, socketId });
   }
 };
 
-const addUserInRoom = (id, roomId, username, profileImage) => {
+const addUserInRoom = (id, roomId, username, profileImage, statut) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
-    userInRoom.push({ id, username, profileImage, roomId, statut: "online" });
+    userInRoom.push({ id, username, profileImage, roomId, statut });
   }
 };
 
@@ -60,26 +60,23 @@ io.on("connection", (socket) => {
     }
   );
 
-  socket.on("joinRoom", (roomId, id, username, profileImage) => {
+  socket.on("joinRoom", (roomId, id, username, profileImage, status) => {
     socket.join(roomId);
-    addUserInRoom(id, roomId, username, profileImage);
+    addUserInRoom(id, roomId, username, profileImage, status);
 
     const usersInThisRoom = getUsersInRoom(roomId);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
   socket.on("changeStatut", (userId, statut) => {
-    const user = users.find((u) => u.userId === userId);
-    if (user) {
-      user.statut = statut;
-      const userInRoomEntry = userInRoom.find((u) => u.id === userId);
-      if (userInRoomEntry) {
-        userInRoomEntry.statut = statut;
-        io.to(userInRoomEntry.roomId).emit(
-          "getUserInRoom",
-          getUsersInRoom(userInRoomEntry.roomId)
-        );
-      }
+    const userInRoomEntry = userInRoom.find((u) => u.id === userId);
+
+    if (userInRoomEntry) {
+      userInRoomEntry.statut = statut;
+      io.to(userInRoomEntry.roomId).emit(
+        "getUserInRoom",
+        getUsersInRoom(userInRoomEntry.roomId)
+      );
     }
   });
 
@@ -118,18 +115,27 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("messageDeleted", messageId);
   });
 
-  socket.on("addFriend", (userId, friendId) => {
-    const friendSocketId = users.find((user) => user.userId === friendId);
-    if (friendSocketId) {
-      io.to(friendSocketId.socketId).emit("addFriend", userId);
+  socket.on('addFriend', (userId, friendId, friendName) => {
+    console.log(userId, friendId, friendName);
+
+    const userSocket = users.find((user) => user.userId === userId);
+    const friendSocket = users.find((user) => user.userId === friendId);
+
+    const friend = { id: friendId, username: friendName };
+
+    console.log("userSocket"+ userSocket, "friendSocket"+friendSocket);
+
+    if (userSocket) {
+      io.to(userSocket.socketId).emit('getNewFriend', friend);
+    }
+
+    if (friendSocket) {
+      io.to(friendSocket.socketId).emit('getNewFriend', { id: userId, username: friendName });
     }
   });
 
-  socket.on("removeFriend", (userId, friendId) => {
-    const friendSocketId = users.find((user) => user.userId === friendId);
-    if (friendSocketId) {
-      io.to(friendSocketId.socketId).emit("removeFriend", userId);
-    }
+  socket.on("removeFriend", (friendId) => {
+    io.emit("removeFriend", friendId);
   });
 
   socket.on("disconnect", () => {

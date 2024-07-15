@@ -1,7 +1,7 @@
 export interface UserState {
   token: string | null;
-  statut: "online" |"invisible";
-  setStatut: (statut: "online" |"invisible") => void;
+  statut: "online" | "spy";
+  setStatut: (statut: "online" | "spy") => void;
   setToken: (token: string) => void;
   logout: () => void;
 }
@@ -19,4 +19,21 @@ export interface UserInfos {
   profileImage: string;
   createdAt: string;
   notification: string;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  profileImage: string;
+  roomId: number;
+  statut: string;
+}
+
+export interface RoomUsersProps {
+  usersInRoom: User[];
+  users: {
+    userId: number;
+    socketId: string;
+    statut: string;
+  }[];
 }

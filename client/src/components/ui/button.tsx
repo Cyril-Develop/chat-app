@@ -21,12 +21,12 @@ const buttonVariants = cva(
         btnMenu: "flex gap-2 text-md justify-start"
       },
       size: {
-        menu: "h-full",
+        menu: "h-full p-1 md:p-2",
         default: "h-full p-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md p-6",
         icon: "h-10 w-10",
-        box: "h-11",
+        box: "h-11 w-[200px]",
         chat:"text-lg",
         message: "h-11 p-2 w-11",
       },

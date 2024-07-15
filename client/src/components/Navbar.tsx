@@ -3,9 +3,14 @@ import { useUserStore } from "@/store/user.store";
 import { Icons } from "@/components/Icons";
 import DropDown from "@/components/DropDown";
 import ModeToggle from "./mode-toggle";
+import { SheetLeft } from "@/components/sheet/sheet-left";
+import { SheetRight } from "@/components/sheet/sheet-right";
+import useWindowWidth from "@/hooks/window-width";
 
 const Navbar = () => {
   const isConnected = useUserStore((state) => state.token) ? true : false;
+
+  const windowWidth = useWindowWidth();
 
   return (
     <nav className="bg-primary flex items-center justify-between gap-4 h-24 px-2 dark:bg-primary-foreground md:px-10">
@@ -17,6 +22,12 @@ const Navbar = () => {
         <Icons.logo />
       </Link>
       <div className="flex items-center gap-2 md:gap-5">
+        {windowWidth < 1024 && (
+          <>
+            <SheetLeft />
+            <SheetRight />
+          </>
+        )}
         {isConnected ? (
           <DropDown />
         ) : (

@@ -13,37 +13,62 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetUser from "@/hooks/get-user";
 import { useRemoveContactMutation } from "@/hooks/remove-contact";
-import UserCard from "@/components/user-card";
+import { useSocketStore } from "@/store/socket.store";
 
 export function Contact() {
   const [open, setOpen] = useState(false);
+  const [friends, setFriends] = useState<ContactProps[]>([]);
+  const [newFriend, setNewFriend] = useState();
   const { data } = useGetUser();
+  const { socket } = useSocketStore();
 
   const mutation = useRemoveContactMutation();
 
   interface ContactProps {
     id: string;
     username: string;
-    bio: string;
-    profileImage: string;
-    createdAt: string;
   }
+
+  useEffect(() => {
+    socket?.on("getNewFriend", (data) => {
+      setNewFriend(data);
+    });
+
+    socket?.on("removeFriend", (friendId) => {
+      setFriends((prevFriends) =>
+        prevFriends.filter((friend) => friend.id !== friendId)
+      );
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    if (newFriend) {
+      setFriends((prev) => [...prev, newFriend]);
+    }
+  }, [newFriend]);
 
   const handleDelete = (contactId: string) => {
     mutation.mutate(contactId);
   };
 
+  console.log("friends", newFriend);
+
+
+  
+
   const handlePrivateMessage = () => {
     console.log("Private message");
   };
 
-  const haveContact = data?.friendsList.length > 0;
-
-  //console.log(data?.friendsList);
-  
+  useEffect(() => {
+    if (data?.friendsList) {
+      setFriends(data.friendsList);
+    }
+  }, [data]);
+  const haveContact = friends.length > 0;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -56,7 +81,7 @@ export function Contact() {
           disabled={!haveContact}
         >
           Voir mes contacts
-          {haveContact && ` (${data?.friendsList.length})`}
+          {haveContact && ` (${friends.length})`}
           {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>
@@ -70,12 +95,12 @@ export function Contact() {
                   Aucun contact trouvé.
                 </CommandEmpty>
                 <CommandGroup heading="Contacts">
-                  {data?.friendsList.map((contact: ContactProps) => (
+                  {friends.map((friend: ContactProps) => (
                     <CommandItem
-                      key={contact.username}
+                      key={friend.username}
                       className="flex items-center justify-between"
                     >
-                      <UserCard user={contact} />
+                      {friend.username}
 
                       <div className="flex gap-4">
                         <Button
@@ -90,7 +115,7 @@ export function Contact() {
                           variant="alert"
                           title="Retirer de la liste de contacts"
                           className="p-0"
-                          onClick={() => handleDelete(contact.id)}
+                          onClick={() => handleDelete(friend.id)}
                         >
                           <Icons.delete width="16" height="16" />
                         </Button>

@@ -17,6 +17,7 @@ import { useUserStore } from "@/store/user.store";
 import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { getUserId } from "@/utils/get-userId";
+import { cn } from "@/lib/utils";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -32,11 +33,14 @@ const DropDown = () => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center gap-2 p-2 text-xl font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:text-secondary-foreground text-primary-foreground dark:text-foreground">
-          <Icons.menu className="w-6 h-6" />
-          <span className="hidden-text" title="Menu">
-            Menu
-          </span>
+        <DropdownMenuTrigger
+          title="Menu"
+          className={cn(
+            "flex items-center gap-2 p-1 md:p-2 font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:text-secondary-foreground text-primary-foreground dark:text-foreground"
+          )}
+        >
+          <Icons.menu />
+          <span className="hidden-text">Menu</span>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>
@@ -55,36 +59,29 @@ const DropDown = () => {
           <DropdownMenuGroup>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <Icons.circle className="w-6 h-6" fill="white" stroke="black" />
+                <Icons.circle fill="white" stroke="black" />
                 Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   <DropdownMenuItem onClick={() => setStatut("online")}>
-                    <Icons.circle
-                      width={14}
-                      height={14}
-                      fill="#22c55e"
-                      stroke="#22c55e"
-                    />
+                    <Icons.circle fill="#22c55e" stroke="none" />
                     En ligne
                     {statut === "online" && (
                       <Icons.check width={14} height={14} />
                     )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setStatut("invisible")}>
-                    <Icons.ghost width={14} height={14} />
-                    Invisible
-                    {statut === "invisible" && (
-                      <Icons.check width={14} height={14} />
-                    )}
+                  <DropdownMenuItem onClick={() => setStatut("spy")}>
+                    <Icons.spy width={26} height={26} />
+                    Espion
+                    {statut === "spy" && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuItem onClick={() => navigate("/settings/profile")}>
-            <Icons.settings className="w-6 h-6" />
+            <Icons.settings />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator />

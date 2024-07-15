@@ -102,7 +102,7 @@ html.dark {
 }
 
 .hidden-text {
-  @apply hidden md:block;
+  @apply hidden lg:block;
 }
 
 .error {

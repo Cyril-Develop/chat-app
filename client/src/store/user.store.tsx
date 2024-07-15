@@ -7,7 +7,7 @@ export const useUserStore = create(
     (set) => ({
       token: null,
       statut: "online",
-      setStatut: (statut: "online" |"invisible") => set({ statut }),
+      setStatut: (statut: "online" |"spy") => set({ statut }),
       setToken: (token: string) => set({ token }),
       logout: () => set({ token: null }),
     }),

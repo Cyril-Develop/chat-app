@@ -31,8 +31,8 @@ const Message = ({ message }: MessageProps) => {
 
   return (
     <div
-      className={`w-fit flex flex-col gap-2 py-3 pl-3 xl:py-4 xl:pl-8 ${
-        isMyMessage && "ml-auto pr-3 xl:pr-8"
+      className={`w-fit flex flex-col gap-2 p-3 xl:py-4  ${
+        isMyMessage ? "ml-auto xl:mr-8" : "xl:ml-8"
       } `}
     >
       <UserThumbnail
@@ -42,10 +42,10 @@ const Message = ({ message }: MessageProps) => {
         textSize="text-sm"
       />
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 max-w-[235px] 2xl:max-w-[500px]">
         {message.message && (
           <p
-            className={` p-3 border rounded-md w-full ${
+            className={` p-3 border rounded-md break-words whitespace-pre-wrap  ${
               isMyMessage
                 ? "bg-primary text-secondary"
                 : "bg-primary-foreground"

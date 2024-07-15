@@ -255,62 +255,48 @@ exports.updateNotification = async (req, res) => {
 
 exports.addContact = async (req, res) => {
   const { contactId } = req.body;
-
   const userId = req.auth.userId;
 
-  // Vérifiez que userId et friendId sont présents
   if (!userId || !contactId) {
-    return res
-      .status(400)
-      .json({ error: "Les identifiants des utilisateurs sont requis." });
+    return res.status(400).json({ error: "Les identifiants des utilisateurs sont requis." });
   }
 
   if (userId === contactId) {
-    return res
-      .status(400)
-      .json({ error: "Vous ne pouvez pas vous ajouter vous même!" });
+    return res.status(400).json({ error: "Vous ne pouvez pas vous ajouter vous-même!" });
   }
 
   try {
-    // Vérifiez si la relation d'amitié existe déjà
     const existingFriendship = await prisma.friend.findFirst({
       where: {
         OR: [
-          {
-            userId: userId,
-            friendId: contactId,
-          },
-          {
-            userId: contactId,
-            friendId: userId,
-          },
+          { userId: userId, friendId: contactId },
+          { userId: contactId, friendId: userId },
         ],
       },
     });
 
     if (existingFriendship) {
-      return res
-        .status(400)
-        .json({ error: "Ce contact fait déjà partie de votre liste d'amis." });
+      return res.status(400).json({ error: "Ce contact fait déjà partie de votre liste d'amis." });
     }
 
-    // Utilisation d'une transaction pour assurer l'intégrité des données
     const friendship = await prisma.$transaction([
       prisma.friend.create({
-        data: {
-          userId: userId,
-          friendId: contactId,
-        },
+        data: { userId: userId, friendId: contactId },
+        include: { friend: true },
       }),
       prisma.friend.create({
-        data: {
-          userId: contactId,
-          friendId: userId,
-        },
+        data: { userId: contactId, friendId: userId },
+        include: { friend: true },
       }),
     ]);
 
-    res.status(201).json(friendship[0]); // Renvoie le premier objet créé
+    const user1 = await prisma.user.findUnique({ where: { id: userId } });
+    const user2 = await prisma.user.findUnique({ where: { id: contactId } });
+
+    res.status(201).json({
+      user: user1,
+      friend: user2,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erreur lors de l'ajout de l'ami." });
@@ -352,7 +338,7 @@ exports.removeContact = async (req, res) => {
       }),
     ]);
 
-    res.status(200).json({ message: "Ami retiré avec succès." });
+    res.status(200).json({ message: "Ami retiré avec succès.", contactId, userId });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
     res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });

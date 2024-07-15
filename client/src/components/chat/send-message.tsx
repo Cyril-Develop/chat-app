@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import EmojiPicker from "emoji-picker-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Form,
   FormControl,
@@ -73,8 +73,8 @@ const SendMessage = ({ room }: SendMessageProps) => {
     const { message } = data;
 
     if (noContent) return;
-    if (statut === "invisible") {
-      setError("Vous ne pouvez pas envoyer de message en mode fantôme");
+    if (statut === "spy") {
+      setError("Vous ne pouvez pas envoyer de message en mode espion");
       return;
     }
 
@@ -104,6 +104,7 @@ const SendMessage = ({ room }: SendMessageProps) => {
           />
           <Button
             type="button"
+            title="Supprimer l'image"
             className="absolute top-0 right-0 z-10 p-0 h-6 w-6"
             onClick={() => setImage(null)}
           >
@@ -198,7 +199,7 @@ const SendMessage = ({ room }: SendMessageProps) => {
           </Button>
         </div>
       </form>
-      {error && statut === "invisible" && <p className="error">{error}</p>}
+      {error && statut === "spy" && <p className="error">{error}</p>}
     </Form>
   );
 };

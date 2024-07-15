@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
@@ -9,20 +9,18 @@ import { useSocketStore } from "@/store/socket.store";
 export const useAddContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { socket } = useSocketStore();
-  //const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (contactId: string) => addContact(contactId, token || ""),
     onSuccess: (data) => {
-      console.log(data);
-      
       toast({
         title: "Contact ajouté à votre liste d'amis",
         variant: "success",
         logo: <Icons.check />,
       });
-      //queryClient.invalidateQueries({ queryKey: ["user"] });
-      //socket?.emit("addFriend", contactId);
+      console.log("data", data);
+      
+      socket?.emit("addFriend", data.userId, data.friend.id, data.friend.username);
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

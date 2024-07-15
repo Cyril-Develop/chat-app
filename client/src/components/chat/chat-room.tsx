@@ -1,4 +1,4 @@
-import SendMessage from "@/components/chat/send-message";
+import SendMessage from "@/components/message/send-message";
 import MessagesProvider from "@/components/message/messages-provider";
 import ChatHeader from "./chat-header";
 import useGetRoom from "@/hooks/get-room";

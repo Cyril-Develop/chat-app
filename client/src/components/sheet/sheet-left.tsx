@@ -30,7 +30,7 @@ export function SheetLeft() {
         <SheetHeader className={cn("text-left")}>
           <SheetTitle>Contacts</SheetTitle>
           <Separator />
-          <SheetDescription>
+          <SheetDescription className="text-gray-600 dark:text-gray-400">
             Recherchez et discutez avec vos amis.
           </SheetDescription>
         </SheetHeader>

@@ -17,7 +17,7 @@ import { ProfileFormSchema } from "@/schema/main";
 import { Siren } from "lucide-react";
 import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
 import { UserInfos } from "@/types/types";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEditUserMutation } from "@/hooks/edit-profil";
 import { Icons } from "@/components/Icons";
 
@@ -46,6 +46,11 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   });
 
   const [imageUploaded, setImageUploaded] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const resetInputRef = () => {
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file: File | null = e.target.files?.[0] ?? null;
@@ -77,6 +82,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
 
       mutation.mutate(formData);
       setImageUploaded(null);
+      resetInputRef();
     }
   };
 
@@ -138,6 +144,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                   accept=".jpg,.jpeg,.png,.svg"
                   className="hidden"
                   value={undefined}
+                  ref={fileInputRef}
                   onChange={handleFileChange}
                 />
               </FormControl>

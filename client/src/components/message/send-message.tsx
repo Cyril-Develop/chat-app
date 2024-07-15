@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import EmojiPicker from "emoji-picker-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Form,
   FormControl,
@@ -44,6 +44,7 @@ const SendMessage = ({ room }: SendMessageProps) => {
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<MessageFormProps>({
     resolver: zodResolver(MessageFormSchema),
@@ -67,7 +68,15 @@ const SendMessage = ({ room }: SendMessageProps) => {
     }
   };
 
+  const deleteImage = () => {
+    setImage(null);
+    resetInputRef();
+  };
+
   const noContent = !form.getValues("message") && !image;
+  const resetInputRef = () => {
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const onSubmit = (data: MessageFormProps) => {
     const { message } = data;
@@ -86,10 +95,17 @@ const SendMessage = ({ room }: SendMessageProps) => {
     if (image) {
       formData.append("image", image);
     }
-    mutation.mutate(formData);
-    form.reset();
-    setImage(null);
-    setError(null);
+    mutation.mutate(formData, {
+      onSuccess: () => {
+        form.reset();
+        setImage(null);
+        resetInputRef();
+        setError(null);
+      },
+      onError: () => {
+        setError("Une erreur s'est produite lors de l'envoi du message");
+      },
+    });
   };
 
   return (
@@ -106,7 +122,7 @@ const SendMessage = ({ room }: SendMessageProps) => {
             type="button"
             title="Supprimer l'image"
             className="absolute top-0 right-0 z-10 p-0 h-6 w-6"
-            onClick={() => setImage(null)}
+            onClick={deleteImage}
           >
             <Icons.close width={16} height={16} />
           </Button>
@@ -173,6 +189,7 @@ const SendMessage = ({ room }: SendMessageProps) => {
                     value={undefined}
                     onChange={handleFileChange}
                     id="fileInput"
+                    ref={fileInputRef}
                   />
                 </FormControl>
                 <FormMessage />

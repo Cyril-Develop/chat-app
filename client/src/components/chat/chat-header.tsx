@@ -1,9 +1,11 @@
 import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/Icons";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { useDeleteChatMutation } from "@/hooks/delete-room";
 
 interface ChatHeaderProps {
   room: {
+    id: number;
     name: string;
     createdBy: number;
   };
@@ -13,18 +15,24 @@ interface ChatHeaderProps {
 }
 
 const ChatHeader = ({ room, currentUser }: ChatHeaderProps) => {
+  const isMyRoom = room?.createdBy === currentUser?.id;
+
+  const deleteChatMutation = useDeleteChatMutation();
+
+  const handleDeleteChat = () => {
+    deleteChatMutation.mutate(room.id);
+  };
+
   return (
     <>
       <div className="flex justify-between pb-4 text-3xl">
         <h1>{room?.name}</h1>
-        {room?.createdBy === currentUser?.id && (
+        {isMyRoom && (
           <Button
-            variant="linkForm"
+            variant="alert"
             title="Supprimer le salon"
             className="p-0"
-            onClick={() => {
-              console.log("clicked");
-            }}
+            onClick={handleDeleteChat}
           >
             <Icons.delete width="18" height="18" />
           </Button>

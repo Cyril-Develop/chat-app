@@ -15,25 +15,10 @@ import { RoomUsers } from "@/components/room-users";
 import { RoomSelector } from "@/components/room/room-selector";
 import { useRoomStore } from "@/store/room.store";
 import { cn } from "@/lib/utils";
-import { useSocketStore } from "@/store/socket.store";
-import { useEffect, useState } from "react";
-import { User } from "@/types/types";
 
 export function SheetRight() {
   const { data: currentUser } = useGetUser();
   const { room } = useRoomStore();
-  const { socket, users } = useSocketStore();
-  const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
-
-  useEffect(() => {
-    socket?.on("getUserInRoom", (user) => {
-      setUsersInRoom(user);
-    });
-
-    return () => {
-      socket?.off("getUserInRoom");
-    };
-  }, [socket]);
 
   return (
     <Sheet>
@@ -69,7 +54,7 @@ export function SheetRight() {
               Utilisateurs présents dans le salon.
             </SheetDescription>
 
-            <RoomUsers usersInRoom={usersInRoom} users={users} />
+            <RoomUsers />
           </SheetHeader>
         )}
       </SheetContent>

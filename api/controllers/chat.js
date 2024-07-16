@@ -203,3 +203,31 @@ exports.getChatRoom = async (req, res) => {
       .json({ error: "Erreur lors de la récupération du salon de discussion" });
   }
 };
+
+exports.deleteChatRoom = async (req, res) => {
+  const { roomId } = req.body;
+
+  try {
+    await prisma.$transaction(async (prisma) => {
+      // Supprimer les messages liés à ce ChatRoom
+      await prisma.message.deleteMany({
+        where: { chatRoomId: roomId },
+      });
+
+      // Supprimer les utilisateurs de la room
+      await prisma.userChatRoom.deleteMany({
+        where: { chatRoomId: roomId },
+      });
+
+      // Supprimer le ChatRoom lui-même
+      await prisma.chatRoom.delete({
+        where: { id: roomId },
+      });
+    });
+
+    res.status(200).json({ message: 'Salon de discussion supprimé avec succès.', roomId });
+  } catch (error) {
+    console.error('Erreur lors de la suppression du salon de discussion :', error);
+    res.status(500).json({ error: 'Erreur lors de la suppression du salon de discussion.' });
+  }
+};

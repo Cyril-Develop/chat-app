@@ -26,7 +26,7 @@ export function RoomSelector() {
   const { setRoom, room } = useRoomStore();
   const joinMutation = useJoinChatMutation();
   const leaveMutation = useLeaveChatMutation();
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [newRoom, setNewRoom] = useState<Room | null>(null);
   const { socket } = useSocketStore();
 
@@ -58,6 +58,15 @@ export function RoomSelector() {
         createdBy: data.createdBy,
       });
     });
+
+    // If a room is deleted, remove it from the list and reset the room state of each users
+    socket?.on("deleteRoom", (deletedRoomId) => {
+      if (room === deletedRoomId) {
+        setRoom(null); 
+        setValue("");
+      }
+      setRooms((prevRoom) => prevRoom.filter((room) => room.id !== deletedRoomId));
+    });
   }, [room, socket]);
 
   useEffect(() => {
@@ -70,7 +79,7 @@ export function RoomSelector() {
 
   useEffect(() => {
     if (room) {
-      const roomName = rooms?.find((r: Room) => r.id === room)?.name;
+      const roomName = rooms?.find((r: Room) => r.id === room)?.name || "";
       setValue(roomName);
     }
   }, [rooms, room]);

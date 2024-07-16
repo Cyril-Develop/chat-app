@@ -36,14 +36,17 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
+// SOCKET CONNECTION
 io.on("connection", (socket) => {
   console.log("new connection", socket.id);
 
+  // ADD USER ONLINE
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
   });
 
+  // CREATE ROOM
   socket.on(
     "createRoom",
     (id, name, isPrivate, password, updatedAt, createdAt, createdBy) => {
@@ -60,6 +63,7 @@ io.on("connection", (socket) => {
     }
   );
 
+  // JOIN ROOM
   socket.on("joinRoom", (roomId, id, username, profileImage, status) => {
     socket.join(roomId);
     addUserInRoom(id, roomId, username, profileImage, status);
@@ -68,6 +72,17 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
+  // DELETE ROOM
+  socket.on("deleteRoom", (id) => {
+    io.emit("deleteRoom", id);
+  });
+
+  // GET USERS IN ROOM
+  socket.on("requestUserInRoom", (roomId) => {
+    io.to(roomId).emit("getUserInRoom", getUsersInRoom(roomId));
+  });
+
+  // CHANGE STATUT
   socket.on("changeStatut", (userId, statut) => {
     const userInRoomEntry = userInRoom.find((u) => u.id === userId);
 
@@ -80,6 +95,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  // LEAVE ROOM
   socket.on("leaveRoom", (roomId, id) => {
     removeUserInRoom(id, roomId);
     socket.leave(roomId);
@@ -87,6 +103,7 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
+  // SEND MESSAGE
   socket.on(
     "sendMessage",
     ({
@@ -111,11 +128,13 @@ io.on("connection", (socket) => {
     }
   );
 
+  // DELETE MESSAGE
   socket.on("messageDeleted", (messageId, roomId) => {
     io.to(roomId).emit("messageDeleted", messageId);
   });
 
-  socket.on('addFriend', (userId, friendId, friendName) => {
+  // ADD FRIEND
+  socket.on("addFriend", (userId, friendId, friendName) => {
     console.log(userId, friendId, friendName);
 
     const userSocket = users.find((user) => user.userId === userId);
@@ -123,21 +142,26 @@ io.on("connection", (socket) => {
 
     const friend = { id: friendId, username: friendName };
 
-    console.log("userSocket"+ userSocket, "friendSocket"+friendSocket);
+    console.log("userSocket" + userSocket, "friendSocket" + friendSocket);
 
     if (userSocket) {
-      io.to(userSocket.socketId).emit('getNewFriend', friend);
+      io.to(userSocket.socketId).emit("getNewFriend", friend);
     }
 
     if (friendSocket) {
-      io.to(friendSocket.socketId).emit('getNewFriend', { id: userId, username: friendName });
+      io.to(friendSocket.socketId).emit("getNewFriend", {
+        id: userId,
+        username: friendName,
+      });
     }
   });
 
+  // REMOVE FRIEND
   socket.on("removeFriend", (friendId) => {
     io.emit("removeFriend", friendId);
   });
 
+  // DISCONNECT
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
     removeUser(socket.id);

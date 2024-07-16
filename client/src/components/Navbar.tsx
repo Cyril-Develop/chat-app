@@ -9,8 +9,8 @@ import useWindowWidth from "@/hooks/window-width";
 
 const Navbar = () => {
   const isConnected = useUserStore((state) => state.token) ? true : false;
-
   const windowWidth = useWindowWidth();
+  const isMobileView = windowWidth < 1024;
 
   return (
     <nav className="bg-primary flex items-center justify-between gap-4 h-24 px-2 dark:bg-primary-foreground md:px-10">
@@ -22,7 +22,7 @@ const Navbar = () => {
         <Icons.logo />
       </Link>
       <div className="flex items-center gap-2 md:gap-5">
-        {windowWidth < 1024 && (
+        {isMobileView && isConnected && (
           <>
             <SheetLeft />
             <SheetRight />

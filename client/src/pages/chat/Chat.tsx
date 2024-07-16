@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { SearchUser } from "@/components/chat/search-user";
 import { Separator } from "@/components/ui/separator";
 import { RoomSelector } from "@/components/room/room-selector";
@@ -11,24 +11,12 @@ import { DialogCreate } from "@/components/dialog/dialog-create";
 import { RoomUsers } from "@/components/room-users";
 import { useSocketStore } from "@/store/socket.store";
 import { useUserStore } from "@/store/user.store";
-import { User } from "@/types/types";
 
 const Chat = () => {
   const { room } = useRoomStore();
   const { statut } = useUserStore((state) => state);
   const { data: currentUser } = useGetUser();
-  const { socket, users } = useSocketStore();
-  const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
-
-  useEffect(() => {
-    socket?.on("getUserInRoom", (user) => {
-      setUsersInRoom(user);
-    });
-
-    return () => {
-      socket?.off("getUserInRoom");
-    };
-  }, [socket, statut]);
+  const { socket } = useSocketStore();
 
   const prevRoomRef = useRef<number | null>(null);
 
@@ -88,7 +76,7 @@ const Chat = () => {
           <div className="flex flex-col gap-4">
             <h2 className="text-3xl">Utilisateurs</h2>
             <Separator />
-            <RoomUsers usersInRoom={usersInRoom} users={users} />
+            <RoomUsers />
           </div>
         )}
       </aside>

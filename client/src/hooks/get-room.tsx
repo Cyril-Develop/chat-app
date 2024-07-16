@@ -11,23 +11,26 @@ interface GetRoomProps {
 
 const useGetRoom = ({ roomId }: GetRoomProps) => {
   const { token, logout } = useUserStore((state) => state);
+  
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["chat", roomId],
     queryFn: async () => getRoom(roomId, token || ""),
+
+    
   });
 
-  useEffect(() => {
-    if (isError && error) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-        logo: <Icons.alert />,
-      });
-      logout();
-    }
-  }, [isError, error, logout]);
+  // useEffect(() => {
+  //   if (isError && error) {
+  //     toast({
+  //       title: "Erreur",
+  //       description: error.message,
+  //       variant: "destructive",
+  //       logo: <Icons.alert />,
+  //     });
+  //     logout();
+  //   }
+  // }, [isError, error, logout]);
 
   return { data, isLoading };
 };

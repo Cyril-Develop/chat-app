@@ -20,7 +20,7 @@ const RoomList = ({ heading, rooms, onSelect, value }: RoomListProps) => (
     {rooms.map((room) => (
       <CommandItem
         key={room?.id}
-        className={cn("cursor-pointer flex gap-2")}
+        className={cn("cursor-pointer flex gap-2 h-11")}
         onSelect={() => onSelect(room)}
       >
         {room?.name}

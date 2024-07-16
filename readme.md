@@ -1,6 +1,6 @@
 # Chat en temps réel
 
-![home](./screenshot/home.webp)
+![home](./screenshot/chat.webp)
 ![account](./screenshot/profile.webp)
 
 ## Technologies :

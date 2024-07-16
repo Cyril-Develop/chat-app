@@ -82,7 +82,7 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="w-[200px] flex gap-2 items-center p-3 bg-popover rounded-md">
+        <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background border border-input rounded-md">
           <Label htmlFor="searchUser">
             <Icons.search
               style={{ stroke: "#80838B" }}
@@ -95,13 +95,13 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
             id="searchUser"
             value={query}
             onChange={handleSearch}
-            className="flex h-auto rounded-md text-foreground bg-transparent p-0 text-sm outline-none border-none focus:border-none focus: placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="flex h-auto rounded-md text-foreground p-0 text-sm outline-none border-none focus:border-none focus: placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         </div>
       </PopoverTrigger>
       {query.length >= 3 && (
         <PopoverContent
-          className="w-[200px] p-0 border-none"
+          className="w-[200px] p-0"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>
@@ -113,12 +113,12 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
                 (user) =>
                   user.id !== userId && (
                     <CommandGroup
-                      className={cn("p-0 border shadow-md rounded-md")}
+                      className={cn("p-0")}
                       key={user.id}
                     >
                       <CommandItem
                         value={user.username}
-                        className="flex items-center justify-between p-2"
+                        className="flex items-center justify-between p-2 h-11"
                       >
                         <UserThumbnail
                           imageSize="8"

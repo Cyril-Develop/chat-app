@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { getUserId } from "@/utils/get-userId";
 import { cn } from "@/lib/utils";
+import { useTheme } from "./theme-provider";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const DropDown = () => {
   const { statut, setStatut } = useUserStore((state) => state);
   const { socket } = useSocketStore();
   const userId = getUserId();
+  const { theme } = useTheme();
 
   useEffect(() => {
     socket?.emit("changeStatut", userId, statut);
@@ -59,7 +61,7 @@ const DropDown = () => {
           <DropdownMenuGroup>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <Icons.circle fill="white" stroke="black" />
+                <Icons.circle fill="none" stroke={theme === "dark" ? "#fff" : "#000"} />
                 Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
@@ -72,7 +74,7 @@ const DropDown = () => {
                     )}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setStatut("spy")}>
-                    <Icons.spy width={26} height={26} />
+                    <Icons.spy width={26} height={26} stroke={theme === "dark" ? "#fff" : "#000"}/>
                     Espion
                     {statut === "spy" && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>

@@ -545,7 +545,7 @@ export const Icons = {
       <path
         d="m8.383 17.101c0 .877.669 2.185 1.524 2.271.718 3.611 3.089 6.585 6.093 6.628 2.982.042 5.417-3.017 6.094-6.629.853-.087 1.52-1.395 1.52-2.271"
         fill="none"
-        stroke="#000"
+        stroke={stroke}
         strokeLinecap="round"
         strokeMiterlimit="10"
         strokeWidth="2"
@@ -553,7 +553,7 @@ export const Icons = {
       <path
         d="m8.84 18.966s-1.958.699-3.84 3.264l4 2.77-1 2h16l-1-2 4-2.769c-1.882-2.565-3.84-3.264-3.84-3.264"
         fill="none"
-        stroke="#000"
+        stroke={stroke}
         strokeLinecap="round"
         strokeMiterlimit="10"
         strokeWidth="2"
@@ -562,7 +562,7 @@ export const Icons = {
       <path d="m20.23 18.368c.031 1.019-.666 2.029-1.915 2.105-.881.054-1.891-.39-1.891-1.635 0-.864.678-.995 1.891-1.088s1.891-.172 1.915.618z" />
       <g
         fill="none"
-        stroke="#000"
+        stroke={stroke}
         strokeLinecap="round"
         strokeMiterlimit="10"
         strokeWidth="2"

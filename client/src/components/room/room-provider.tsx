@@ -51,21 +51,28 @@ const RoomProvider = ({
     }
   };
 
+  const privateRooms = data.filter((room) => room.isPrivate);
+  const publicRooms = data.filter((room) => !room.isPrivate);
+
   return (
     <>
-      <RoomList
-        heading="Salons Publics 💬"
-        rooms={data.filter((room) => !room.isPrivate)}
-        onSelect={handlePublicRoomSelect}
-        value={value}
-      />
+      {publicRooms && publicRooms.length > 0 && (
+        <RoomList
+          heading="Salons Publics 💬"
+          rooms={publicRooms}
+          onSelect={handlePublicRoomSelect}
+          value={value}
+        />
+      )}
       <CommandSeparator />
-      <RoomList
-        heading="Salons Privés 🔒"
-        rooms={data.filter((room) => room.isPrivate)}
-        onSelect={handlePrivateRoomSelect}
-        value={value}
-      />
+      {privateRooms && privateRooms.length > 0 && (
+        <RoomList
+          heading="Salons Privés 🔒"
+          rooms={privateRooms}
+          onSelect={handlePrivateRoomSelect}
+          value={value}
+        />
+      )}
       {selectedRoom && (
         <DialogJoin
           btnTrigger={selectedRoom.name}

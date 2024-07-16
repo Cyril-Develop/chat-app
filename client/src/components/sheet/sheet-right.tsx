@@ -37,7 +37,7 @@ export function SheetRight() {
           <SheetDescription className="text-gray-600 dark:text-gray-400">
             Créer ou rejoignez un salon pour discuter.
           </SheetDescription>
-          <div className="flex flex-col gap-4 pb-8">
+          <div className="flex flex-col gap-4">
             <DialogCreate
               btnTrigger="Créer un salon"
               headerTitle="Créer un salon"
@@ -47,7 +47,7 @@ export function SheetRight() {
           </div>
         </SheetHeader>
         {room && currentUser && (
-          <SheetHeader className={cn("text-left")}>
+          <SheetHeader className={cn("text-left mt-4")}>
             <SheetTitle>Utilisateurs</SheetTitle>
             <Separator />
             <SheetDescription className="text-gray-600 dark:text-gray-400">

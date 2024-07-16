@@ -102,7 +102,7 @@ export function Contact() {
                     >
                       {friend.username}
 
-                      <div className="flex gap-4">
+                      <div className="flex gap-4 h-8">
                         <Button
                           variant="linkForm"
                           title="Envoyer un message"

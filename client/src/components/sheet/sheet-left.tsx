@@ -34,10 +34,10 @@ export function SheetLeft() {
             Recherchez et discutez avec vos amis.
           </SheetDescription>
         </SheetHeader>
-        <aside className="flex flex-col gap-4 pt-4">
+        <div className="flex flex-col gap-4 pt-2">
           {currentUser && <SearchUser userId={currentUser.id} />}
           <Contact />
-        </aside>
+        </div>
       </SheetContent>
     </Sheet>
   );

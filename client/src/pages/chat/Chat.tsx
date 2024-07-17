@@ -3,14 +3,15 @@ import ChatRoom from "@/components/chat/chat-room";
 import ChatUnselected from "@/components/chat/chat-unselected";
 import { SearchUser } from "@/components/chat/search-user";
 import { DialogCreate } from "@/components/dialog/dialog-create";
+import { RoomUsers } from "@/components/room-users";
 import { RoomSelector } from "@/components/room/room-selector";
-import { RoomUsers } from "@/components/room/room-users";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-user";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useUserStore } from "@/store/user.store";
 import { useEffect, useRef } from "react";
+import ContactRequest from "@/components/notification/contact-request";
 
 const Chat = () => {
   const { room } = useRoomStore();
@@ -47,10 +48,13 @@ const Chat = () => {
         {currentUser && (
           <>
             <Separator />
-            <SearchUser userId={currentUser.id} />
+            <SearchUser currentUser={currentUser} />
           </>
         )}
         <Contact />
+        <h2 className="text-3xl">Notifications</h2>
+        <Separator />
+        <ContactRequest />
       </aside>
 
       <main className="w-full lg:flex-grow h-full bg-primary-foreground dark:bg-primary-background">

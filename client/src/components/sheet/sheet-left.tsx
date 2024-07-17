@@ -13,6 +13,7 @@ import { Contact } from "@/components/Contact";
 import { SearchUser } from "@/components/chat/search-user";
 import useGetUser from "@/hooks/get-user";
 import { cn } from "@/lib/utils";
+import ContactRequest from "@/components/notification/contact-request";
 
 export function SheetLeft() {
   const { data: currentUser } = useGetUser();
@@ -38,6 +39,14 @@ export function SheetLeft() {
           {currentUser && <SearchUser userId={currentUser.id} />}
           <Contact />
         </div>
+        <SheetHeader className={cn("text-left mt-4")}>
+          <SheetTitle>Notifications</SheetTitle>
+          <Separator />
+          <SheetDescription className="text-gray-600 dark:text-gray-400">
+            Acceptez ou refusez les demandes de contact.
+          </SheetDescription>
+        </SheetHeader>
+        <ContactRequest />
       </SheetContent>
     </Sheet>
   );

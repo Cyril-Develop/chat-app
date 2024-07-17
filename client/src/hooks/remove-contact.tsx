@@ -18,7 +18,7 @@ export const useRemoveContactMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
-      socket?.emit("removeFriend", data.contactId);
+      socket?.emit("removeFriend", data.userId, data.contactId);
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

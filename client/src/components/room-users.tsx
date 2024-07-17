@@ -5,6 +5,7 @@ import { useSocketStore } from "@/store/socket.store";
 import useWindowWidth from "@/hooks/window-width";
 import { useRoomStore } from "@/store/room.store";
 import { User } from "@/types/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function RoomUsers() {
   const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
@@ -31,7 +32,7 @@ export function RoomUsers() {
   }, [socket, windowWidth]);
 
   return (
-    <div className="h-64 w-48 rounded-md">
+    <ScrollArea className="h-72">
       <div className="flex flex-col gap-4">
         {usersInRoom?.map((user) => (
           <div key={user.id} className="relative">
@@ -48,6 +49,6 @@ export function RoomUsers() {
           </div>
         ))}
       </div>
-    </div>
+    </ScrollArea>
   );
 }

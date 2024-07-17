@@ -14,7 +14,7 @@ const UserThumbnail = ({
   textSize,
 }: UserThumbnailProps) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       <Avatar
         className={`w-${imageSize} h-${imageSize} rounded-full object-cover`}
       >

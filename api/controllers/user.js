@@ -204,12 +204,10 @@ exports.updateAccount = async (req, res) => {
       },
     });
 
-    res
-      .status(200)
-      .json({
-        message: "Adresse email modifiée avec succès.",
-        email: user.email,
-      });
+    res.status(200).json({
+      message: "Adresse email modifiée avec succès.",
+      email: user.email,
+    });
   } catch (err) {
     console.error("Error updating email:", err);
     res.status(500).json({
@@ -305,6 +303,7 @@ exports.addContact = async (req, res) => {
     const user2 = await prisma.user.findUnique({ where: { id: contactId } });
 
     res.status(201).json({
+      message: "Contact ajouté avec succès.",
       user: user1,
       friend: user2,
     });
@@ -351,7 +350,11 @@ exports.removeContact = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Contact retiré de votre liste d'amis.", contactId, userId });
+      .json({
+        message: "Contact retiré de votre liste d'amis.",
+        contactId,
+        userId,
+      });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
     res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });

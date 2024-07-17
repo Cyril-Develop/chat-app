@@ -19,9 +19,11 @@ import { useAddContactMutation } from "@/hooks/add-contact";
 import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
+import { useSocketStore } from "@/store/socket.store";
 
-interface SearchUserProps {
-  userId: string;
+interface CurrentUser {
+  id: string;
+  username: string;
 }
 
 interface Friend {
@@ -39,17 +41,14 @@ interface Users {
   friends: FriendList[];
 }
 
-interface SearchUserProps {
-  userId: string;
-}
-
-export const SearchUser = ({ userId }: SearchUserProps) => {
+export const SearchUser = ({ currentUser }: { currentUser: CurrentUser }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [users, setUsers] = useState<Users[]>([]);
+  const [contacts, setcontacts] = useState<Users[]>([]);
   const { data } = useGetUsers();
-
-  const mutation = useAddContactMutation();
+  const { socket } = useSocketStore();
+  const userId = currentUser?.id;
+  const currentUserName = currentUser?.username;
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -62,18 +61,23 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
       );
 
       if (filteredUsers) {
-        setUsers(filteredUsers);
+        setcontacts(filteredUsers);
       }
     } else {
-      setUsers([]);
+      setcontacts([]);
     }
   };
 
-  const handleAddFriend = (friendId: string) => {
-    mutation.mutate(friendId);
+  const handleAddFriend = (contactId: string, contactName: string) => {
+    socket?.emit(
+      "sendFriendRequest",
+      userId,
+      contactId,
+      currentUserName,
+      contactName
+    );
     setQuery("");
   };
-
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
@@ -106,33 +110,32 @@ export const SearchUser = ({ userId }: SearchUserProps) => {
         >
           <Command>
             <CommandList>
-              {query.length >= 3 && users.length === 0 && (
+              {query.length >= 3 && contacts.length === 0 && (
                 <CommandEmpty>Aucun contact trouvé</CommandEmpty>
               )}
-              {users.map(
-                (user) =>
-                  user.id !== userId && (
-                    <CommandGroup
-                      className={cn("p-0")}
-                      key={user.id}
-                    >
+              {contacts.map(
+                (contact) =>
+                  contact.id !== userId && (
+                    <CommandGroup className={cn("p-0")} key={contact.id}>
                       <CommandItem
-                        value={user.username}
+                        value={contact.username}
                         className="flex items-center justify-between p-2 h-11"
                       >
                         <UserThumbnail
                           imageSize="8"
-                          image={user.profileImage}
-                          username={user.username}
+                          image={contact.profileImage}
+                          username={contact.username}
                         />
 
-                        {isFriend(user.friends) ? (
+                        {isFriend(contact.friends) ? (
                           <Icons.check width={16} height={16} />
                         ) : (
                           <Button
                             variant="linkForm"
                             title="Ajouter à la liste de contacts"
-                            onClick={() => handleAddFriend(user.id)}
+                            onClick={() =>
+                              handleAddFriend(contact.id, contact.username)
+                            }
                           >
                             <Icons.add width={16} height={16} />
                           </Button>

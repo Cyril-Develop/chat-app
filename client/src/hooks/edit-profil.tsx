@@ -11,9 +11,9 @@ export const useEditUserMutation = () => {
 
   return useMutation({
     mutationFn: (formData: FormData) => editProfile(formData, token || ""),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
-        title: "Profil modifié avec succès !",
+        title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });

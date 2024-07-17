@@ -16,7 +16,7 @@ export const useDeleteMessageMutation = () => {
     mutationFn: (messageId: number) => deleteMessage(messageId, token || ""),
     onSuccess: (data) => {
       toast({
-        title: "message supprimé avec succès !",
+        title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });

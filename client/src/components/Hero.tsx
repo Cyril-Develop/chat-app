@@ -18,9 +18,9 @@ const Hero = () => {
       />
       <Card>
         <CardHeader>
-          <h1 className="text-center text-2xl font-semibold">
+          <h2 className="text-center text-2xl font-semibold">
             Connectez-vous, Discutez, et Partagez !
-          </h1>
+          </h2>
         </CardHeader>
         <span className="w-full border-t" />
         <CardContent>

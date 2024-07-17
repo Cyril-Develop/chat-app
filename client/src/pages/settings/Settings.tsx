@@ -23,22 +23,25 @@ const Settings = ({ children }: SettingsLayoutProps) => {
     {
       title: "Notifications",
       href: "/settings/notifications",
-    }
+    },
   ];
 
   const imageSettings = [
     {
       href: "/settings/profile",
       img: ImageProfile,
+      alt: "profile",
     },
     {
       href: "/settings/account",
       img: ImageAccount,
+      alt: "account",
     },
     {
       href: "/settings/notifications",
       img: ImageNotification,
-    }
+      alt: "notification",
+    },
   ];
 
   return (

@@ -6,8 +6,8 @@ const handleDeleteAccount = async (logout: () => void, token: string) => {
   try {
     await deleteAccount(token);
     toast({
-      title: "Compte supprimé",
-      description: "Votre compte a été supprimé avec succès.",
+      title: "Compte supprimé avec succès.",
+      description: "Nous espérons vous revoir bientôt.",
       variant: "success",
       logo: <Check size={30} />,
     });

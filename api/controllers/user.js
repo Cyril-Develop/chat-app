@@ -19,7 +19,7 @@ exports.getAllUsers = async (req, res) => {
               select: {
                 id: true,
                 username: true,
-                profileImage: true
+                profileImage: true,
               },
             },
           },
@@ -30,7 +30,7 @@ exports.getAllUsers = async (req, res) => {
               select: {
                 id: true,
                 username: true,
-                profileImage: true
+                profileImage: true,
               },
             },
           },
@@ -175,7 +175,7 @@ exports.updateUser = async (req, res) => {
       },
     });
 
-    res.status(200).json(user);
+    res.status(200).json({ message: "Profil modifié avec succès.", user });
   } catch (err) {
     console.error("Error updating user:", err);
     res.status(500).json({
@@ -204,7 +204,12 @@ exports.updateAccount = async (req, res) => {
       },
     });
 
-    res.status(200).json(user);
+    res
+      .status(200)
+      .json({
+        message: "Adresse email modifiée avec succès.",
+        email: user.email,
+      });
   } catch (err) {
     console.error("Error updating email:", err);
     res.status(500).json({
@@ -221,7 +226,7 @@ exports.deleteAccount = async (req, res) => {
         id,
       },
     });
-    res.status(200).json({ message: "Compte supprimé avec succès" });
+    res.status(200).json({ message: "Compte supprimé avec succès." });
   } catch (err) {
     console.error("Error deleting user:", err);
     res.status(500).json({
@@ -258,11 +263,15 @@ exports.addContact = async (req, res) => {
   const userId = req.auth.userId;
 
   if (!userId || !contactId) {
-    return res.status(400).json({ error: "Les identifiants des utilisateurs sont requis." });
+    return res
+      .status(400)
+      .json({ error: "Les identifiants des utilisateurs sont requis." });
   }
 
   if (userId === contactId) {
-    return res.status(400).json({ error: "Vous ne pouvez pas vous ajouter vous-même!" });
+    return res
+      .status(400)
+      .json({ error: "Vous ne pouvez pas vous ajouter vous-même!" });
   }
 
   try {
@@ -276,7 +285,9 @@ exports.addContact = async (req, res) => {
     });
 
     if (existingFriendship) {
-      return res.status(400).json({ error: "Ce contact fait déjà partie de votre liste d'amis." });
+      return res
+        .status(400)
+        .json({ error: "Ce contact fait déjà partie de votre liste d'amis." });
     }
 
     const friendship = await prisma.$transaction([
@@ -338,7 +349,9 @@ exports.removeContact = async (req, res) => {
       }),
     ]);
 
-    res.status(200).json({ message: "Ami retiré avec succès.", contactId, userId });
+    res
+      .status(200)
+      .json({ message: "Contact retiré de votre liste d'amis.", contactId, userId });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
     res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });

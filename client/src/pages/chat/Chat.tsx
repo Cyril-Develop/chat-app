@@ -1,16 +1,16 @@
-import { useEffect, useRef } from "react";
-import { SearchUser } from "@/components/chat/search-user";
-import { Separator } from "@/components/ui/separator";
-import { RoomSelector } from "@/components/room/room-selector";
 import { Contact } from "@/components/Contact";
 import ChatRoom from "@/components/chat/chat-room";
 import ChatUnselected from "@/components/chat/chat-unselected";
-import { useRoomStore } from "@/store/room.store";
-import useGetUser from "@/hooks/get-user";
+import { SearchUser } from "@/components/chat/search-user";
 import { DialogCreate } from "@/components/dialog/dialog-create";
-import { RoomUsers } from "@/components/room-users";
+import { RoomSelector } from "@/components/room/room-selector";
+import { RoomUsers } from "@/components/room/room-users";
+import { Separator } from "@/components/ui/separator";
+import useGetUser from "@/hooks/get-user";
+import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useUserStore } from "@/store/user.store";
+import { useEffect, useRef } from "react";
 
 const Chat = () => {
   const { room } = useRoomStore();

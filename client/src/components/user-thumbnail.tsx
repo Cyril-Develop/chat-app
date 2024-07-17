@@ -20,7 +20,7 @@ const UserThumbnail = ({
       >
         <AvatarImage
           src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${image}`}
-          alt={username}
+          alt={`${username} - picture`}
         />
         <AvatarFallback>
           <span>{username}</span>

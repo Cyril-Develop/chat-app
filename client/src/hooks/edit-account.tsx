@@ -11,9 +11,9 @@ export const useEditAccountMutation = () => {
 
   return useMutation({
     mutationFn: (email: string) => editAccount(email, token || ""),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
-        title: "Adresse email modifiée avec succès !",
+        title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });
@@ -22,13 +22,6 @@ export const useEditAccountMutation = () => {
     onError: (error) => {
       if (error.message === "Token expiré !") {
         handleTokenExpiration(logout);
-      } else {
-        toast({
-          title: "Erreur",
-          description: error.message,
-          variant: "destructive",
-          logo: <Icons.alert />,
-        });
       }
     },
   });

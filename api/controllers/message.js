@@ -109,7 +109,7 @@ exports.deleteMessage = async (req, res) => {
     // Retournez un message de succès
     return res
       .status(200)
-      .json({ message: "Message deleted successfully.", messageId });
+      .json({ message: "Message supprimé avec succès.", messageId });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error." });

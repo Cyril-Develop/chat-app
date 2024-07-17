@@ -14,7 +14,7 @@ export const useRemoveContactMutation = () => {
     mutationFn: (contactId: string) => removeContact(contactId, token || ""),
     onSuccess: (data) => {
       toast({
-        title: "Contact retiré de votre liste d'amis",
+        title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });

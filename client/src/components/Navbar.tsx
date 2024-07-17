@@ -14,13 +14,17 @@ const Navbar = () => {
 
   return (
     <nav className="bg-primary flex items-center justify-between gap-4 h-24 px-2 dark:bg-primary-foreground md:px-10">
-      <Link
-        to="/"
-        title="Accueil"
-        className="h-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md ring-offset-background"
-      >
-        <Icons.logo />
-      </Link>
+      <h1 className="font-bold text-xl lg:text-3xl text-primary-foreground dark:text-secondary-foreground ">
+        <Link
+          to="/"
+          title="Accueil"
+          className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md ring-offset-background p-1 md-p2"
+        >
+          <Icons.logo width="26" height="26" />
+          Chat'App
+        </Link>
+      </h1>
+
       <div className="flex items-center gap-2 md:gap-5">
         {isMobileView && isConnected && (
           <>

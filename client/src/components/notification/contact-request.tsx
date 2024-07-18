@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useAddContactMutation } from "@/hooks/add-contact";
 
 interface ContactProps {
-  requesterId: string;
-  requesterName: string;
+  senderId: string;
+  senderName: string;
   contactId: string;
 }
 
@@ -22,13 +22,13 @@ const ContactRequest = () => {
 
     socket?.on("friendRequestRejected", (friendId) => {
       setContactRequests((prevRequests) =>
-        prevRequests.filter((request) => request.requesterId !== friendId)
+        prevRequests.filter((request) => request.senderId !== friendId)
       );
     });
 
     socket?.on("friendRequestAccepted", (friend) => {
       setContactRequests((prevRequests) =>
-        prevRequests.filter((request) => request.requesterId !== friend.id)
+        prevRequests.filter((request) => request.senderId !== friend.id)
       );
     });
     return () => {
@@ -38,19 +38,13 @@ const ContactRequest = () => {
     };
   }, [socket, contactRequests]);
 
-  const handleAcceptFriendRequest = (
-    requesterId: string,
-    contactId: string
-  ) => {
-    socket?.emit("acceptFriendRequest", requesterId, contactId);
-    mutation.mutate(requesterId);
+  const handleAcceptFriendRequest = (senderId: string, contactId: string) => {
+    socket?.emit("acceptFriendRequest", senderId, contactId);
+    mutation.mutate(senderId);
   };
 
-  const handleRejectFriendRequest = (
-    requesterId: string,
-    contactId: string
-  ) => {
-    socket?.emit("rejectFriendRequest", requesterId, contactId);
+  const handleRejectFriendRequest = (senderId: string, contactId: string) => {
+    socket?.emit("rejectFriendRequest", senderId, contactId);
   };
 
   return (
@@ -58,31 +52,25 @@ const ContactRequest = () => {
       <div className="flex flex-col gap-4">
         {contactRequests?.map((contact) => (
           <div
-            key={contact.requesterId}
+            key={contact.senderId}
             className="flex items-center justify-between"
           >
-            <div>{contact.requesterName}</div>
+            <div>{contact.senderName}</div>
             <div className="flex gap-2">
               <Button
                 title="Accepter la demande de contact"
                 onClick={() =>
-                  handleAcceptFriendRequest(
-                    contact.requesterId,
-                    contact.contactId
-                  )
+                  handleAcceptFriendRequest(contact.senderId, contact.contactId)
                 }
               >
                 Accepter
               </Button>
 
               <Button
-                variant="alert"
+                variant="destructive"
                 title="Refuser la demande de contact"
                 onClick={() =>
-                  handleRejectFriendRequest(
-                    contact.requesterId,
-                    contact.contactId
-                  )
+                  handleRejectFriendRequest(contact.senderId, contact.contactId)
                 }
               >
                 Refuser

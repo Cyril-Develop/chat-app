@@ -4,20 +4,7 @@ import { Icons } from "@/components/Icons";
 import { Button } from "../ui/button";
 import { getUserId } from "@/utils/get-userId";
 import { useDeleteMessageMutation } from "@/hooks/delete-message";
-
-interface MessageProps {
-  message: {
-    id: number;
-    message: string;
-    createdAt: string;
-    image?: string;
-    user: {
-      id: number;
-      username: string;
-      profileImage: string;
-    };
-  };
-}
+import { MessageProps } from "@/types/message";
 
 const Message = ({ message }: MessageProps) => {
   const userId = getUserId();

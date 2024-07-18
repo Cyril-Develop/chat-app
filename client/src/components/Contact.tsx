@@ -21,7 +21,6 @@ import {
 export function Contact() {
   const [open, setOpen] = useState(false);
   const [friends, setFriends] = useState<ContactProps[]>([]);
-  //const [friendRequests, setFriendRequests] = useState<ContactProps[]>([]);
   const { data } = useGetUser();
   const { socket } = useSocketStore();
   const mutation = useRemoveContactMutation();
@@ -36,9 +35,6 @@ export function Contact() {
       setFriends(data.friendsList);
     }
   }, [data]);
-
-  console.log(friends);
-  
 
   useEffect(() => {
     socket?.on("friendRequestAccepted", (data: ContactProps) => {

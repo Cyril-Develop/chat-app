@@ -18,6 +18,7 @@ import { useLeaveChatMutation } from "@/hooks/leave-chat";
 import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
 import { useSocketStore } from "@/store/socket.store";
+import { Room } from "@/types/room";
 
 export function RoomSelector() {
   const { data } = useGetRooms();
@@ -29,16 +30,6 @@ export function RoomSelector() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [newRoom, setNewRoom] = useState<Room | null>(null);
   const { socket } = useSocketStore();
-
-  interface Room {
-    id: number;
-    name: string;
-    isPrivate: boolean;
-    password: string;
-    updatedAt: string;
-    createdAt: string;
-    createdBy: number;
-  }
 
   useEffect(() => {
     if (data) {
@@ -62,10 +53,12 @@ export function RoomSelector() {
     // If a room is deleted, remove it from the list and reset the room state of each users
     socket?.on("deleteRoom", (deletedRoomId) => {
       if (room === deletedRoomId) {
-        setRoom(null); 
+        setRoom(null);
         setValue("");
       }
-      setRooms((prevRoom) => prevRoom.filter((room) => room.id !== deletedRoomId));
+      setRooms((prevRoom) =>
+        prevRoom.filter((room) => room.id !== deletedRoomId)
+      );
     });
   }, [room, socket]);
 

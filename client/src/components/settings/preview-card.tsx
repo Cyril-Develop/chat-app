@@ -1,10 +1,6 @@
-import { UserInfos } from "@/types/types";
+import { PreviewCardProps } from "@/types/setting";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import moment from "moment/min/moment-with-locales";
-
-interface PreviewCardProps {
-  user: UserInfos;
-}
 
 const PreviewCard = ({ user }: PreviewCardProps) => {
   return (

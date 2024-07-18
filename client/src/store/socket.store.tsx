@@ -28,7 +28,6 @@ export const useSocketStore = create<SocketStore>((set) => {
 
       const decodedToken = jwtDecode<CustomPayload>(token);
       const userId = decodedToken.id;
-      
 
       socket.on("connect", () => {
         console.log("Connected to server");

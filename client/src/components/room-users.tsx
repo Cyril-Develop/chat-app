@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import useWindowWidth from "@/hooks/window-width";
 import { useRoomStore } from "@/store/room.store";
-import { User } from "@/types/types";
+import { UserInfos } from "@/types/user";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function RoomUsers() {
-  const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
+  const [usersInRoom, setUsersInRoom] = useState<UserInfos[]>([]);
   const { socket, users } = useSocketStore();
   const windowWidth = useWindowWidth();
   const { room } = useRoomStore();
@@ -19,7 +19,7 @@ export function RoomUsers() {
       socket?.emit("requestUserInRoom", room);
     }
 
-    const handleUserInRoom = (userList: User[]) => {
+    const handleUserInRoom = (userList: UserInfos[]) => {
       setUsersInRoom(userList);
     };
 

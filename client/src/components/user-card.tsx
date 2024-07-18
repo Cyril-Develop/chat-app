@@ -5,20 +5,13 @@ import {
 } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import moment from "moment/min/moment-with-locales";
+import { UserInfos } from "@/types/user";
 
-interface User {
-  id: string;
-  username: string;
-  bio: string;
-  profileImage: string;
-  createdAt: string;
-}
-
-function UserCard({ user }: { user: User }) {
+function UserCard({ user }: { user: UserInfos }) {
   return (
     <HoverCard>
       <HoverCardTrigger>{user?.username}</HoverCardTrigger>
-      <HoverCardContent className="w-60  absolute top-4" >
+      <HoverCardContent className="w-60  absolute top-4">
         <div className="flex space-x-4">
           <Avatar>
             <AvatarImage
@@ -36,7 +29,8 @@ function UserCard({ user }: { user: User }) {
               <p className="line-clamp-3 text-sm font-normal">{user?.bio}</p>
             </div>
             <p className="text-xs italic text-muted-foreground">
-              Depuis le {moment(user?.createdAt).locale("fr").format("DD MMMM YYYY")}
+              Depuis le{" "}
+              {moment(user?.createdAt).locale("fr").format("DD MMMM YYYY")}
             </p>
           </div>
         </div>

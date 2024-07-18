@@ -36,7 +36,7 @@ export function SheetLeft() {
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4 pt-2">
-          {currentUser && <SearchUser userId={currentUser.id} />}
+          {currentUser && <SearchUser currentUser={currentUser} />}
           <Contact />
         </div>
         <SheetHeader className={cn("text-left mt-4")}>

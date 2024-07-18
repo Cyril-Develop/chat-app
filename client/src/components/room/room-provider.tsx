@@ -3,19 +3,7 @@ import RoomList from "@/components/room/room-list";
 import { CommandSeparator } from "@/components/ui/command";
 import { DialogJoin } from "@/components/dialog/dialog-join";
 import { useRoomStore } from "@/store/room.store";
-
-export interface Room {
-  id: number;
-  name: string;
-  isPrivate: boolean;
-}
-
-interface RoomProviderProps {
-  data: Room[];
-  value: string;
-  setOpen: (open: boolean) => void;
-  handleJoinRoom: (id: number, password?: string) => void;
-}
+import { RoomProviderProps, Room } from "@/types/room";
 
 const RoomProvider = ({
   data,
@@ -23,11 +11,11 @@ const RoomProvider = ({
   setOpen,
   handleJoinRoom,
 }: RoomProviderProps) => {
-  const [selectedRoom, setSelectedRoom] = useState<Omit<
-    Room,
-    "isPrivate"
-  > | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { room: storedRoomId } = useRoomStore();
 
   useEffect(() => {

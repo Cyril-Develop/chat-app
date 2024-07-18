@@ -20,23 +20,11 @@ import { MessageFormSchema } from "@/schema/main";
 import { useSendMessageMutation } from "@/hooks/send-message";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/store/user.store";
-
-interface SendMessageProps {
-  room: {
-    id: number;
-    name: string;
-    users: {
-      id: number;
-      username: string;
-      profileImage: string;
-    }[];
-  };
-}
-
-interface MessageFormProps {
-  message: string;
-  file: File | null;
-}
+import {
+  SendMessageProps,
+  MessageFormProps,
+  EmojiObject,
+} from "@/types/message";
 
 const SendMessage = ({ room }: SendMessageProps) => {
   const { statut } = useUserStore((state) => state);
@@ -53,10 +41,6 @@ const SendMessage = ({ room }: SendMessageProps) => {
       file: null,
     },
   });
-
-  interface EmojiObject {
-    emoji: string;
-  }
 
   const handleEmojiClick = (emojiObject: EmojiObject) => {
     form.setValue("message", form.getValues("message") + emojiObject.emoji);

@@ -13,12 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { AccountFormSchema } from "@/schema/main";
-import { UserInfos } from "@/types/types";
 import { useEditAccountMutation } from "@/hooks/edit-account";
-
-interface AccountFormValues {
-  user: UserInfos;
-}
+import { AccountFormValues } from "@/types/setting";
 
 export function AccountForm({ user }: AccountFormValues) {
   const [apiError, setApiError] = useState("");

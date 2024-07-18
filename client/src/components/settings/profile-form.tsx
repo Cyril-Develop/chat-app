@@ -16,20 +16,10 @@ import { toast } from "@/components/ui/use-toast";
 import { ProfileFormSchema } from "@/schema/main";
 import { Siren } from "lucide-react";
 import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
-import { UserInfos } from "@/types/types";
+import { ProfileFormProps, ProfileFormValues } from "@/types/setting";
 import { useRef, useState } from "react";
 import { useEditUserMutation } from "@/hooks/edit-profil";
 import { Icons } from "@/components/Icons";
-
-interface ProfileFormValues {
-  username: string;
-  bio: string;
-  image: File | null;
-}
-
-interface ProfileFormProps {
-  user: UserInfos;
-}
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
@@ -164,7 +154,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               <FormControl>
                 <Textarea
                   placeholder="Parle nous un peu de toi..."
-                  className="resize-none"
+                  className="resize-none whitespace-normal"
                   maxLength={150}
                   {...field}
                 />

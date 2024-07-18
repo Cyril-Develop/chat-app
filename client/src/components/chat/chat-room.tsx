@@ -5,27 +5,7 @@ import useGetRoom from "@/hooks/get-room";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useState } from "react";
-
-interface ChatRoomProps {
-  roomId: number;
-  currentUser: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-}
-
-interface Message {
-  id: number;
-  message: string;
-  image?: string;
-  createdAt: string;
-  user: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-}
+import { ChatRoomProps, Message } from "@/types/chat";
 
 const ChatRoom = ({ roomId, currentUser }: ChatRoomProps) => {
   const { socket } = useSocketStore();

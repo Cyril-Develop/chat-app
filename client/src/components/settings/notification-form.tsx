@@ -13,11 +13,7 @@ import { notificationsFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { UserInfos } from "@/types/types";
-
-interface NotificationFormValues {
-  user: UserInfos;
-}
+import { NotificationFormValues } from "@/types/setting";
 
 const NotificationForm = ({ user }: NotificationFormValues) => {
   const [apiError, setApiError] = useState("");

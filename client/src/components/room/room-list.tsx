@@ -1,19 +1,7 @@
 import { CommandGroup, CommandItem } from "@/components/ui/command";
 import { Icons } from "@/components/Icons";
 import { cn } from "@/lib/utils";
-
-interface Room {
-  id: number;
-  name: string;
-  isPrivate: boolean;
-}
-
-interface RoomListProps {
-  heading: string;
-  rooms: Room[];
-  value: string;
-  onSelect: (room: Room) => void;
-}
+import { RoomListProps } from "@/types/room";
 
 const RoomList = ({ heading, rooms, onSelect, value }: RoomListProps) => (
   <CommandGroup heading={heading}>

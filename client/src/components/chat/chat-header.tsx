@@ -2,17 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { useDeleteChatMutation } from "@/hooks/delete-room";
-
-interface ChatHeaderProps {
-  room: {
-    id: number;
-    name: string;
-    createdBy: number;
-  };
-  currentUser: {
-    id: number;
-  };
-}
+import { ChatHeaderProps } from "@/types/chat";
 
 const ChatHeader = ({ room, currentUser }: ChatHeaderProps) => {
   const isMyRoom = room?.createdBy === currentUser?.id;

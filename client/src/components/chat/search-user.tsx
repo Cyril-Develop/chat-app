@@ -15,31 +15,11 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAddContactMutation } from "@/hooks/add-contact";
 import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
 import { useSocketStore } from "@/store/socket.store";
-
-interface CurrentUser {
-  id: string;
-  username: string;
-}
-
-interface Friend {
-  id: string;
-}
-
-interface FriendList {
-  friend: Friend;
-}
-
-interface Users {
-  id: string;
-  username: string;
-  profileImage: string;
-  friends: FriendList[];
-}
+import { CurrentUser, Users, FriendList } from "@/types/chat";
 
 export const SearchUser = ({ currentUser }: { currentUser: CurrentUser }) => {
   const [open, setOpen] = useState(false);
@@ -105,7 +85,7 @@ export const SearchUser = ({ currentUser }: { currentUser: CurrentUser }) => {
       </PopoverTrigger>
       {query.length >= 3 && (
         <PopoverContent
-          className="w-[200px] p-0"
+          className="w-[200px] p-0 border-none"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>

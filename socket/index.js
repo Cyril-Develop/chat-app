@@ -5,9 +5,11 @@ const io = new Server({
   },
 });
 
+// Users connected
 let users = [];
+// Users in room
 let userInRoom = [];
-// Liste pour stocker les demandes d'amis
+// Friend requests
 let friendRequests = [];
 
 const addUser = (userId, socketId) => {
@@ -141,9 +143,9 @@ io.on("connection", (socket) => {
 
     if (friendSocket) {
       const request = {
-        requesterId: userId,
+        senderId: userId,
         contactId: friendId,
-        requesterName: friendName,
+        senderName: friendName,
         contactName: username,
       };
       friendRequests.push(request);
@@ -163,11 +165,11 @@ io.on("connection", (socket) => {
     console.log("friendSocket", friendSocket);
 
     const requestIndex = friendRequests.findIndex(
-      (req) => req.requesterId === userId && req.contactId === friendId
+      (req) => req.senderId === userId && req.contactId === friendId
     );
 
     //récupérer le nom de l'utilisateur qui a envoyé la demande et le nom de l'utilisateur qui a accepté la demande
-    const requesterName = friendRequests[requestIndex].requesterName;
+    const senderName = friendRequests[requestIndex].senderName;
     const contactName = friendRequests[requestIndex].contactName;
 
     if (requestIndex !== -1) {
@@ -183,7 +185,7 @@ io.on("connection", (socket) => {
       if (friendSocket) {
         io.to(friendSocket.socketId).emit("friendRequestAccepted", {
           id: userId,
-          username: requesterName,
+          username: senderName,
         });
       }
     }
@@ -192,7 +194,7 @@ io.on("connection", (socket) => {
   // Refuser une demande d'ami
   socket.on("rejectFriendRequest", (userId, friendId) => {
     const requestIndex = friendRequests.findIndex(
-      (req) => req.requesterId === userId && req.contactId === friendId
+      (req) => req.senderId === userId && req.contactId === friendId
     );
 
     if (requestIndex !== -1) {

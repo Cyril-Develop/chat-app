@@ -53,7 +53,7 @@ const Message = ({ message }: MessageProps) => {
       </div>
 
       <div className="flex justify-between min-w-44">
-        <span className="text-xs text-gray-600 dark:text-gray-400">
+        <span className="text-xs text-description">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
         {userId === message.user.id && (

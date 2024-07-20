@@ -31,7 +31,7 @@ export function SheetLeft() {
         <SheetHeader className={cn("text-left")}>
           <SheetTitle>Contacts</SheetTitle>
           <Separator />
-          <SheetDescription className="text-gray-600 dark:text-gray-400">
+          <SheetDescription className="text-description">
             Recherchez et discutez avec vos amis.
           </SheetDescription>
         </SheetHeader>
@@ -42,7 +42,7 @@ export function SheetLeft() {
         <SheetHeader className={cn("text-left mt-4")}>
           <SheetTitle>Notifications</SheetTitle>
           <Separator />
-          <SheetDescription className="text-gray-600 dark:text-gray-400">
+          <SheetDescription className="text-description">
             Acceptez ou refusez les demandes de contact.
           </SheetDescription>
         </SheetHeader>

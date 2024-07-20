@@ -11,7 +11,7 @@ const ProfilePage = () => {
         <>
           <div>
             <h3 className="text-lg font-medium">Profil</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-description">
               Modifiez la façon dont vous apparaissez aux autres utilisateurs.
             </p>
           </div>

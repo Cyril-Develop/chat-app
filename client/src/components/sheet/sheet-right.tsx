@@ -34,7 +34,7 @@ export function SheetRight() {
         <SheetHeader className={cn("text-left")}>
           <SheetTitle>Salons</SheetTitle>
           <Separator />
-          <SheetDescription className="text-gray-600 dark:text-gray-400">
+          <SheetDescription className="text-description">
             Créer ou rejoignez un salon pour discuter.
           </SheetDescription>
           <div className="flex flex-col gap-4">
@@ -50,7 +50,7 @@ export function SheetRight() {
           <SheetHeader className={cn("text-left mt-4")}>
             <SheetTitle>Utilisateurs</SheetTitle>
             <Separator />
-            <SheetDescription className="text-gray-600 dark:text-gray-400">
+            <SheetDescription className="text-description">
               Utilisateurs présents dans le salon.
             </SheetDescription>
 

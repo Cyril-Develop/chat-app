@@ -10,7 +10,7 @@ export default function SettingsNotificationsPage() {
         <>
           <div>
             <h3 className="text-lg font-medium">Notifications</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-description">
               Configurez la façon dont vous recevez les notifications.
             </p>
           </div>

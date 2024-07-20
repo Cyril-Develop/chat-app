@@ -42,19 +42,23 @@ const Chat = () => {
   }, [room, socket, currentUser]);
 
   return (
-    <div className="page_chat">
-      <aside className="hidden lg:flex flex-col gap-4 pt-4 border-r-2 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex">
-        <h2 className="text-3xl">Contacts</h2>
-        {currentUser && (
-          <>
-            <Separator />
-            <SearchUser currentUser={currentUser} />
-          </>
-        )}
-        <Contact />
-        <h2 className="text-3xl">Notifications</h2>
-        <Separator />
-        <ContactRequest />
+    <div className="chat">
+      <aside className="chat_aside border-r-2">
+        <div className="chat_aside_container">
+          <h2 className="text-3xl">Contacts</h2>
+          {currentUser && (
+            <>
+              <Separator />
+              <SearchUser currentUser={currentUser} />
+            </>
+          )}
+          <Contact />
+        </div>
+        <div className="chat_aside_container">
+          <h2 className="text-3xl">Notifications</h2>
+          <Separator />
+          <ContactRequest />
+        </div>
       </aside>
 
       <main className="w-full lg:flex-grow h-full bg-primary-foreground dark:bg-primary-background">
@@ -65,8 +69,8 @@ const Chat = () => {
         )}
       </main>
 
-      <aside className="hidden lg:flex flex-col gap-8 pt-4 border-l-2 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-5 xl:px-10">
-        <div className="flex flex-col gap-4">
+      <aside className="chat_aside border-l-2">
+        <div className="chat_aside_container">
           <h2 className="text-3xl">Salons</h2>
           <Separator />
           <DialogCreate
@@ -77,7 +81,7 @@ const Chat = () => {
           <RoomSelector />
         </div>
         {room && currentUser && (
-          <div className="flex flex-col gap-4">
+          <div className="chat_aside_container">
             <h2 className="text-3xl">Utilisateurs</h2>
             <Separator />
             <RoomUsers />

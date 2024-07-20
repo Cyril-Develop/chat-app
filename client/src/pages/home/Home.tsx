@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 
 const Home = () => {
   return (
-    <div className="page_footer">
+    <div className="home">
       <Hero />
       <Footer />
     </div>

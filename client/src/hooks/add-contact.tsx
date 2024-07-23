@@ -12,7 +12,7 @@ export const useAddContactMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (contactId: string) => addContact(contactId, token || ""),
+    mutationFn: (contactId: string) => addContact(contactId, token),
     onSuccess: (data) => {
       toast({
         title: data.message,

@@ -8,8 +8,9 @@ interface CustomPayload {
 
 interface SocketStore {
   socket: Socket | null;
-  users: { userId: number; socketId: string; statut: string }[];
-  connectSocket: (token: string) => void;
+  statut: "online" | "spy";
+  users: { userId: number; socketId: string; statut: "online" | "spy" }[];
+  connectSocket: (token: string, statut : "online" | "spy") => void;
   disconnectSocket: () => void;
 }
 
@@ -19,7 +20,7 @@ export const useSocketStore = create<SocketStore>((set) => {
   return {
     socket: null,
     users: [],
-    connectSocket: (token) => {
+    connectSocket: (token, statut) => {
       if (socket) return;
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
@@ -31,7 +32,7 @@ export const useSocketStore = create<SocketStore>((set) => {
 
       socket.on("connect", () => {
         console.log("Connected to server");
-        socket?.emit("addUser", userId);
+        socket?.emit("addUser", userId, statut);
       });
 
       socket.on("getUsers", (users) => {

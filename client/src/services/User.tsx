@@ -1,4 +1,4 @@
-export const getAllUsers = async (token: string) => {
+export const getAllUsers = async (token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/all`,
@@ -20,16 +20,17 @@ export const getAllUsers = async (token: string) => {
   }
 };
 
-export const getUser = async (token: string) => {
+export const getUser = async (userId: number, token: string | null) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
+        body: JSON.stringify({ userId }),
       }
     );
     const data = await response.json();
@@ -42,7 +43,7 @@ export const getUser = async (token: string) => {
   }
 };
 
-export const editProfile = async (formData: FormData, token: string) => {
+export const editProfile = async (formData: FormData, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
@@ -64,7 +65,7 @@ export const editProfile = async (formData: FormData, token: string) => {
   }
 };
 
-export const editAccount = async (email: string, token: string) => {
+export const editAccount = async (email: string, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/account`,
@@ -87,7 +88,7 @@ export const editAccount = async (email: string, token: string) => {
   }
 };
 
-export const deleteAccount = async (token: string) => {
+export const deleteAccount = async (token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
@@ -109,7 +110,10 @@ export const deleteAccount = async (token: string) => {
   }
 };
 
-export const editNotification = async (notification: string, token: string) => {
+export const editNotification = async (
+  notification: string,
+  token: string | null
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/notifications`,
@@ -132,7 +136,7 @@ export const editNotification = async (notification: string, token: string) => {
   }
 };
 
-export const addContact = async (contactId: string, token: string) => {
+export const addContact = async (contactId: string, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/add`,
@@ -156,7 +160,10 @@ export const addContact = async (contactId: string, token: string) => {
   }
 };
 
-export const removeContact = async (contactId: string, token: string) => {
+export const removeContact = async (
+  contactId: number | null,
+  token: string | null
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/remove`,
@@ -166,7 +173,7 @@ export const removeContact = async (contactId: string, token: string) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ contactId }), 
+        body: JSON.stringify({ contactId }),
       }
     );
 

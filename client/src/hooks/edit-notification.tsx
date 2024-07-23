@@ -11,7 +11,7 @@ export const useEditNotificationMutation = () => {
 
   return useMutation({
     mutationFn: (notification: string) =>
-      editNotification(notification, token || ""),
+      editNotification(notification, token),
     onSuccess: () => {
       toast({
         title: "Changement pris en compte !",

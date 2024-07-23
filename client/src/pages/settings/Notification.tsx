@@ -1,9 +1,11 @@
 import { Separator } from "@/components/ui/separator";
 import NotificationForm from "@/components/settings/notification-form";
 import useGetUser from "@/hooks/get-user";
+import { getUserId } from "@/utils/get-userId";
 
 export default function SettingsNotificationsPage() {
-  const { data } = useGetUser();
+  const userId = getUserId();
+  const { data } = useGetUser(userId);
   return (
     <div className="space-y-6">
       {data && (

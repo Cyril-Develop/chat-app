@@ -40,6 +40,12 @@ exports.joinChatRoom = async (req, res) => {
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
       where: { id: roomId },
+      select: {
+        id: true,
+        name: true,
+        password: true,
+        isPrivate: true,
+      },
     });
 
     if (!chatRoom) {
@@ -55,7 +61,6 @@ exports.joinChatRoom = async (req, res) => {
     if (chatRoom.isPrivate && chatRoom.password !== password) {
       return res.status(403).json({ error: "Mot de passe incorrect" });
     }
-
     // Vérifier si l'utilisateur est déjà membre de ce salon
     const existingMembership = await prisma.userChatRoom.findFirst({
       where: { userId: userId, chatRoomId: roomId },
@@ -88,9 +93,11 @@ exports.joinChatRoom = async (req, res) => {
         },
       });
 
-      return res
-        .status(200)
-        .json({ message: "Vous avez rejoint le salon de discussion.", roomId });
+      return res.status(200).json({
+        message: "Vous avez rejoint le salon de discussion.",
+        roomId: chatRoom.id,
+        roomName: chatRoom.name,
+      });
     }
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre le salon:", error);
@@ -225,9 +232,16 @@ exports.deleteChatRoom = async (req, res) => {
       });
     });
 
-    res.status(200).json({ message: 'Salon de discussion supprimé avec succès.', roomId });
+    res
+      .status(200)
+      .json({ message: "Salon de discussion supprimé avec succès.", roomId });
   } catch (error) {
-    console.error('Erreur lors de la suppression du salon de discussion :', error);
-    res.status(500).json({ error: 'Erreur lors de la suppression du salon de discussion.' });
+    console.error(
+      "Erreur lors de la suppression du salon de discussion :",
+      error
+    );
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression du salon de discussion." });
   }
 };

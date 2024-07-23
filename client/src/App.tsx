@@ -6,7 +6,7 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Chat from "./pages/chat/Chat";
@@ -19,6 +19,7 @@ import Notification from "./pages/settings/Notification";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect } from "react";
 
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
@@ -29,12 +30,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const token = useUserStore((state) => state.token);
+  const { token, statut} = useUserStore((state) => state);
   const { connectSocket, disconnectSocket } = useSocketStore();
 
   useEffect(() => {
     if (token) {
-      connectSocket(token);
+      connectSocket(token, statut);
     } else {
       disconnectSocket();
     }

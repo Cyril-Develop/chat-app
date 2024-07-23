@@ -26,16 +26,13 @@ export interface MessagesProviderProps {
   }[];
 }
 
+interface Recipient {
+  type: "room" | "user";
+  id: number;
+}
+
 export interface SendMessageProps {
-  room: {
-    id: number;
-    name: string;
-    users: {
-      id: number;
-      username: string;
-      profileImage: string;
-    }[];
-  };
+  recipient: Recipient;
 }
 
 export interface EmojiObject {

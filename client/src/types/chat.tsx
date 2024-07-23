@@ -1,4 +1,4 @@
-export interface ChatHeaderProps {
+export interface HeaderRoomProps {
   room: {
     id: number;
     name: string;
@@ -9,7 +9,7 @@ export interface ChatHeaderProps {
   };
 }
 
-export interface ChatRoomProps {
+export interface RoomProps {
   roomId: number;
   currentUser: {
     id: number;
@@ -48,4 +48,18 @@ export interface Users {
   username: string;
   profileImage: string;
   friends: FriendList[];
+}
+
+export interface PrivateChatProps {
+  contactId: number;
+}
+
+export interface HeaderChatProps {
+  contactInfos: {
+    id: number;
+    username: string;
+    profileImage: string;
+    bio: string;
+    createdAt: string;
+  };
 }

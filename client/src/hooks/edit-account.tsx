@@ -10,7 +10,7 @@ export const useEditAccountMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (email: string) => editAccount(email, token || ""),
+    mutationFn: (email: string) => editAccount(email, token),
     onSuccess: (data) => {
       toast({
         title: data.message,

@@ -1,14 +1,6 @@
-interface StatutIndicatorProps {
-  status: "online" | "offline";
-}
-
-const StatutIndicator = ({ status }: StatutIndicatorProps) => {
+const StatutIndicator = () => {
   return (
-    <div
-      className={`absolute bottom-0 left-6 z-10 w-3 h-3 flex items-center justify-center rounded-full ${
-        status === "online" ? "bg-green-500" : "bg-slate-500"
-      }`}
-    ></div>
+    <div className="absolute bottom-0 left-6 z-10 w-3 h-3 flex items-center justify-center rounded-full bg-green-500"></div>
   );
 };
 

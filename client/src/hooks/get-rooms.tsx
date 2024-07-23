@@ -10,7 +10,7 @@ const useGetRooms = () => {
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["chat"],
-    queryFn: async () => getRooms(token || ""),
+    queryFn: async () => getRooms(token),
   });
 
   useEffect(() => {

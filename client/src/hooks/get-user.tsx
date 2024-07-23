@@ -5,12 +5,12 @@ import { getUser } from "@/services/User";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
-const useGetUser = () => {
+const useGetUser = (userId: number) => {
   const { token, logout } = useUserStore((state) => state);
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => getUser(token || ""),
+    queryKey: ["user", userId],
+    queryFn: async () => getUser(userId, token),
   });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const useGetUser = () => {
         title: "Erreur",
         description: error.message,
         variant: "destructive",
-        logo: <Icons.alert/>,
+        logo: <Icons.alert />,
       });
       logout();
     }

@@ -9,7 +9,7 @@ export const useSendMessageMutation = () => {
   const { socket } = useSocketStore();
 
   return useMutation({
-    mutationFn: (formData: FormData) => sendMessage(formData, token || ""),
+    mutationFn: (formData: FormData) => sendMessage(formData, token),
     onSuccess: (data) => {
       socket?.emit("sendMessage", {
         id: data.id,

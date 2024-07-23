@@ -1,36 +1,56 @@
-import { Separator } from "@/components/ui/separator";
-import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { useDeleteChatMutation } from "@/hooks/delete-room";
-import { ChatHeaderProps } from "@/types/chat";
+import { useEffect, useState } from "react";
+import { HeaderChatProps } from "@/types/chat";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import DropDown from "@/components/chat/DropDown";
+import StatutIndicator from "@/components/statut-indicator";
+import { useSocketStore } from "@/store/socket.store";
+import {HandleUserStatusChangedProps} from "@/types/user";
 
-const ChatHeader = ({ room, currentUser }: ChatHeaderProps) => {
-  const isMyRoom = room?.createdBy === currentUser?.id;
+const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
+  const { socket, users } = useSocketStore();
+  const [isConnected, setIsConnected] = useState(false);
 
-  const deleteChatMutation = useDeleteChatMutation();
+  useEffect(() => {
+    const user = users.find((user) => user.userId === contactInfos.id);
+    setIsConnected(user?.statut === "online");
 
-  const handleDeleteChat = () => {
-    deleteChatMutation.mutate(room.id);
-  };
+    const handleUserStatusChanged = ({ userId, statut } : HandleUserStatusChangedProps) => {
+      if (userId === contactInfos.id) {
+        setIsConnected(statut === "online");
+      }
+    };
+
+    socket?.on("userStatusChanged", handleUserStatusChanged);
+
+    return () => {
+      socket?.off("userStatusChanged", handleUserStatusChanged);
+    };
+  }, [socket, users, contactInfos.id]);
 
   return (
-    <>
-      <div className="flex justify-between pb-4 text-3xl">
-        <h1>{room?.name}</h1>
-        {isMyRoom && (
-          <Button
-            variant="alert"
-            title="Supprimer le salon"
-            className="p-0"
-            onClick={handleDeleteChat}
-          >
-            <Icons.delete width="18" height="18" />
-          </Button>
-        )}
+    <div className="flex justify-between pb-1 text-md">
+      <div className="flex gap-2">
+        <div className="flex items-center relative">
+          {isConnected && <StatutIndicator />}
+          <Avatar className="w-16 h-16 md:w-10 md:h-10">
+            <AvatarImage
+              src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${contactInfos.profileImage}`}
+              className="rounded-full object-cover"
+              alt={contactInfos.username}
+            />
+            <AvatarFallback>
+              <span>{contactInfos.username}</span>
+            </AvatarFallback>
+          </Avatar>
+        </div>
+        <div className="overflow-hidden">
+          <h2 className="font-semibold">{contactInfos.username}</h2>
+          <p className="line-clamp-3">{contactInfos.bio}</p>
+        </div>
       </div>
-      <Separator />
-    </>
+      <DropDown />
+    </div>
   );
 };
 
-export default ChatHeader;
+export default HeaderChat;

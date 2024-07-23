@@ -11,7 +11,7 @@ export const useRemoveContactMutation = () => {
   const { socket } = useSocketStore();
 
   return useMutation({
-    mutationFn: (contactId: string) => removeContact(contactId, token || ""),
+    mutationFn: (contactId: number | null) => removeContact(contactId, token),
     onSuccess: (data) => {
       toast({
         title: data.message,

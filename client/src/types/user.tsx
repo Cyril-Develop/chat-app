@@ -6,4 +6,10 @@ export interface UserInfos {
   profileImage: string;
   createdAt: string;
   notification: string;
+  statut: string;
+}
+
+export interface HandleUserStatusChangedProps {
+  userId: number;
+  statut: string;
 }

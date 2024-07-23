@@ -1,4 +1,9 @@
+import { SearchUser } from "@/components/chat/search-user";
+import { Contact } from "@/components/Contact";
+import { Icons } from "@/components/Icons";
+import ContactRequest from "@/components/notification/contact-request";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -7,16 +12,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Icons } from "@/components/Icons";
-import { Separator } from "@/components/ui/separator";
-import { Contact } from "@/components/Contact";
-import { SearchUser } from "@/components/chat/search-user";
-import useGetUser from "@/hooks/get-user";
 import { cn } from "@/lib/utils";
-import ContactRequest from "@/components/notification/contact-request";
+import {CurrentUser} from "@/types/chat";
 
-export function SheetLeft() {
-  const { data: currentUser } = useGetUser();
+export function SheetLeft({currentUser} : {currentUser: CurrentUser}) {
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -37,7 +37,7 @@ export function SheetLeft() {
         </SheetHeader>
         <div className="flex flex-col gap-4 pt-2">
           {currentUser && <SearchUser currentUser={currentUser} />}
-          <Contact />
+          <Contact currentUser={currentUser} />
         </div>
         <SheetHeader className={cn("text-left mt-4")}>
           <SheetTitle>Notifications</SheetTitle>

@@ -12,9 +12,9 @@ let userInRoom = [];
 // Friend requests
 let friendRequests = [];
 
-const addUser = (userId, socketId) => {
+const addUser = (userId, socketId, statut) => {
   if (!users.some((user) => user.userId === userId)) {
-    users.push({ userId, socketId });
+    users.push({ userId, socketId, statut });
   }
 };
 
@@ -25,9 +25,7 @@ const addUserInRoom = (id, roomId, username, profileImage, statut) => {
 };
 
 const getUsersInRoom = (roomId) => {
-  return userInRoom.filter(
-    (user) => user.roomId === roomId && user.statut === "online"
-  );
+  return userInRoom.filter((user) => user.roomId === roomId);
 };
 
 const removeUserInRoom = (id, roomId) => {
@@ -45,8 +43,8 @@ io.on("connection", (socket) => {
   console.log("new connection", socket.id);
 
   // ADD USER ONLINE
-  socket.on("addUser", (userId) => {
-    addUser(userId, socket.id);
+  socket.on("addUser", (userId, statut) => {
+    addUser(userId, socket.id, statut);
     io.emit("getUsers", users);
   });
 
@@ -68,35 +66,12 @@ io.on("connection", (socket) => {
   );
 
   // JOIN ROOM
-  socket.on("joinRoom", (roomId, id, username, profileImage, status) => {
+  socket.on("joinRoom", (roomId, id, username, profileImage, statut) => {
     socket.join(roomId);
-    addUserInRoom(id, roomId, username, profileImage, status);
+    addUserInRoom(id, roomId, username, profileImage, statut);
 
     const usersInThisRoom = getUsersInRoom(roomId);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
-  });
-
-  // DELETE ROOM
-  socket.on("deleteRoom", (id) => {
-    io.emit("deleteRoom", id);
-  });
-
-  // GET USERS IN ROOM
-  socket.on("requestUserInRoom", (roomId) => {
-    io.to(roomId).emit("getUserInRoom", getUsersInRoom(roomId));
-  });
-
-  // CHANGE STATUT
-  socket.on("changeStatut", (userId, statut) => {
-    const userInRoomEntry = userInRoom.find((u) => u.id === userId);
-
-    if (userInRoomEntry) {
-      userInRoomEntry.statut = statut;
-      io.to(userInRoomEntry.roomId).emit(
-        "getUserInRoom",
-        getUsersInRoom(userInRoomEntry.roomId)
-      );
-    }
   });
 
   // LEAVE ROOM
@@ -105,6 +80,11 @@ io.on("connection", (socket) => {
     socket.leave(roomId);
     const usersInThisRoom = getUsersInRoom(roomId);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
+  });
+
+  // DELETE ROOM
+  socket.on("deleteRoom", (id) => {
+    io.emit("deleteRoom", id);
   });
 
   // SEND MESSAGE
@@ -135,6 +115,25 @@ io.on("connection", (socket) => {
   // DELETE MESSAGE
   socket.on("messageDeleted", (messageId, roomId) => {
     io.to(roomId).emit("messageDeleted", messageId);
+  });
+
+  // CHANGE STATUT
+  socket.on("changeStatut", (userId, statut) => {
+    // Update the status in the global user list
+    const user = users.find((user) => user.userId === userId);
+    if (user) {
+      user.statut = statut;
+    }
+
+    // Update the status in the room user list
+    const userInRoomEntries = userInRoom.filter((user) => user.id === userId);
+    userInRoomEntries.forEach((entry) => {
+      entry.statut = statut;
+      io.to(entry.roomId).emit("getUserInRoom", getUsersInRoom(entry.roomId));
+    });
+
+    // Notify all clients about the status change
+    io.emit("userStatusChanged", { userId, statut });
   });
 
   // Envoyer une demande d'ami
@@ -223,7 +222,15 @@ io.on("connection", (socket) => {
   // DISCONNECT
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
+    const user = users.find((u) => u.socketId === socket.id);
+    if (user) {
+      userInRoom = userInRoom.map((u) =>
+        u.id === user.userId ? { ...u, statut: "offline" } : u
+      );
+      io.emit("userStatusChanged", { userId: user.userId, statut: "offline" });
+    }
     removeUser(socket.id);
+
     io.emit("getUsers", users);
   });
 });

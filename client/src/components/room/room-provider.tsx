@@ -4,38 +4,44 @@ import { CommandSeparator } from "@/components/ui/command";
 import { DialogJoin } from "@/components/dialog/dialog-join";
 import { useRoomStore } from "@/store/room.store";
 import { RoomProviderProps, Room } from "@/types/room";
+import { useLeaveChatMutation } from "@/hooks/leave-chat";
+import { useJoinChatMutation } from "@/hooks/join-chat";
 
-const RoomProvider = ({
-  data,
-  value,
-  setOpen,
-  handleJoinRoom,
-}: RoomProviderProps) => {
-  const [selectedRoom, setSelectedRoom] = useState<{
+const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
+  const [selectedPrivateRoom, setSelectedPrivateRoom] = useState<{
     id: number;
     name: string;
   } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const { room: storedRoomId } = useRoomStore();
+  const { room } = useRoomStore();
+  const { id: currentRoomId } = room || {};
+  const leaveMutation = useLeaveChatMutation();
+  const joinMutation = useJoinChatMutation();
 
   useEffect(() => {
     if (!isDialogOpen) {
-      setSelectedRoom(null);
+      setSelectedPrivateRoom(null);
     }
   }, [isDialogOpen]);
 
   const handlePublicRoomSelect = (room: Room) => {
-    handleJoinRoom(room.id);
+    if (currentRoomId === room.id) {
+      leaveMutation.mutate(room.id);
+    } else {
+      joinMutation.mutate({ roomId: room.id, roomName: room.name });
+    }
+    setOpen(false);
   };
 
   const handlePrivateRoomSelect = (room: Room) => {
-    setSelectedRoom({ id: room.id, name: room.name });
+    // Set the selected private room to be used in the dialog
+    setSelectedPrivateRoom({ id: room.id, name: room.name });
 
-    if (storedRoomId !== room.id) {
+    if (currentRoomId !== room.id) {
       setIsDialogOpen(true);
     } else {
       setOpen(false);
-      handleJoinRoom(room.id);
+      leaveMutation.mutate(room.id);
     }
   };
 
@@ -61,13 +67,13 @@ const RoomProvider = ({
           value={value}
         />
       )}
-      {selectedRoom && (
+      {selectedPrivateRoom && (
         <DialogJoin
-          btnTrigger={selectedRoom.name}
-          headerTitle={`Rejoindre "${selectedRoom.name}"`}
+          btnTrigger={selectedPrivateRoom.name}
+          headerTitle={`Rejoindre "${selectedPrivateRoom.name}"`}
           headerDescription="Veuillez entrer le mot de passe pour rejoindre le salon privé."
           isOpen={isDialogOpen}
-          roomId={selectedRoom.id}
+          roomId={selectedPrivateRoom.id}
           onOpenChange={setIsDialogOpen}
         />
       )}

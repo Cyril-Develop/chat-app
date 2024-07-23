@@ -6,15 +6,16 @@ import { leaveChat } from "@/services/Chat";
 import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
 import { getUserId } from "@/utils/get-userId";
+import { useRoomStore } from "@/store/room.store";
 
 export const useLeaveChatMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { socket } = useSocketStore();
-
+  const { setRoom } = useRoomStore();
   const userId = getUserId();
 
   return useMutation({
-    mutationFn: (roomId: number) => leaveChat(roomId, token || ""),
+    mutationFn: (roomId: number) => leaveChat(roomId, token),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -22,6 +23,7 @@ export const useLeaveChatMutation = () => {
         logo: <Icons.check />,
       });
       socket?.emit("leaveRoom", data.roomId, userId);
+      setRoom(null);
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

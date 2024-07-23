@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSocketStore } from "@/store/socket.store";
-import useGetUser from "@/hooks/get-user";
-import { useRemoveContactMutation } from "@/hooks/remove-contact";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,28 +15,29 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useRoomStore } from "@/store/room.store";
+import { useLeaveChatMutation } from "@/hooks/leave-chat";
+import { FriendProps, ContactProps } from "@/types/contact";
+import { useContactStore } from "@/store/contact.store";
 
-export function Contact() {
+export function Contact({ currentUser }: ContactProps) {
   const [open, setOpen] = useState(false);
-  const [friends, setFriends] = useState<ContactProps[]>([]);
-  const { data } = useGetUser();
+  const [friends, setFriends] = useState<FriendProps[]>([]);
   const { socket } = useSocketStore();
-  const mutation = useRemoveContactMutation();
-
-  interface ContactProps {
-    id: string;
-    username: string;
-  }
+  const { room } = useRoomStore();
+  const { id: roomId } = room || {};
+  const { contactId, setContactId } = useContactStore();
+  const leaveChatMutation = useLeaveChatMutation();
 
   useEffect(() => {
-    if (data?.friendsList) {
-      setFriends(data.friendsList);
+    if (currentUser?.friendsList) {
+      setFriends(currentUser.friendsList);
     }
-  }, [data]);
+  }, [currentUser]);
 
   useEffect(() => {
-    socket?.on("friendRequestAccepted", (data: ContactProps) => {
-      setFriends((prevFriends) => [...prevFriends, data]);
+    socket?.on("friendRequestAccepted", (currentUser: FriendProps) => {
+      setFriends((prevFriends) => [...prevFriends, currentUser]);
     });
 
     socket?.on("friendRemoved", (friendId) => {
@@ -48,12 +47,16 @@ export function Contact() {
     });
   }, [socket]);
 
-  const handleDelete = (contactId: string) => {
-    mutation.mutate(contactId);
-  };
+  const handlePrivateChat = (friendId: number) => {
+    if (contactId === friendId) {
+      setContactId(null);
+      setOpen(false);
+      return;
+    }
 
-  const handlePrivateMessage = () => {
-    console.log("Private message");
+    roomId && leaveChatMutation.mutate(roomId);
+    setContactId(friendId);
+    setOpen(false);
   };
 
   const haveContact = friends.length > 0;
@@ -88,24 +91,14 @@ export function Contact() {
                     className="flex items-center justify-between"
                   >
                     {friend.username}
-                    <div className="flex gap-4 h-8">
-                      <Button
-                        variant="linkForm"
-                        title="Envoyer un message"
-                        className="p-0"
-                        onClick={handlePrivateMessage}
-                      >
-                        <Icons.chat width="16" height="16" />
-                      </Button>
-                      <Button
-                        variant="alert"
-                        title="Retirer de la liste de contacts"
-                        className="p-0"
-                        onClick={() => handleDelete(friend.id)}
-                      >
-                        <Icons.delete width="16" height="16" />
-                      </Button>
-                    </div>
+                    <Button
+                      variant="linkForm"
+                      title="Voir le contact"
+                      className="p-0"
+                      onClick={() => handlePrivateChat(friend.id)}
+                    >
+                      <Icons.user width="16" height="16" />
+                    </Button>
                   </CommandItem>
                 ))}
               </CommandGroup>

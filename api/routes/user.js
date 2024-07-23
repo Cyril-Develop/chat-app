@@ -6,7 +6,7 @@ const resize = require("../middlewares/resize/image-profile");
 
 const userCtrl = require("../controllers/user");
 
-router.get("/", checkToken, userCtrl.getUser);
+router.post("/", checkToken, userCtrl.getUser);
 router.get('/all', checkToken, userCtrl.getAllUsers);
 router.patch("/", checkToken, multer, resize, userCtrl.updateUser);
 router.patch("/notifications", checkToken, userCtrl.updateNotification);
@@ -16,3 +16,4 @@ router.post('/add', checkToken, userCtrl.addContact);
 router.delete('/remove', checkToken, userCtrl.removeContact);
 
 module.exports = router;
+

@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { getUserId } from "@/utils/get-userId";
 import { cn } from "@/lib/utils";
-import { useTheme } from "./theme-provider";
+import { useTheme } from "@/components/theme-provider";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -45,14 +45,14 @@ const DropDown = () => {
           <span className="hidden-text">Menu</span>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent>
+        <DropdownMenuContent className={cn("mt-5")}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => navigate("/")}>
-              <Icons.home />
+              <Icons.home width={18} height={18} />
               Accueil
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate("/chat")}>
-              <Icons.chat />
+              <Icons.chat width={18} height={18} />
               Messagerie
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -61,20 +61,34 @@ const DropDown = () => {
           <DropdownMenuGroup>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <Icons.circle fill="none" stroke={theme === "dark" ? "#fff" : "#000"} />
+                <Icons.circle
+                  width={18}
+                  height={18}
+                  fill="none"
+                  stroke={theme === "dark" ? "#fff" : "#000"}
+                />
                 Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   <DropdownMenuItem onClick={() => setStatut("online")}>
-                    <Icons.circle fill="#22c55e" stroke="none" />
+                    <Icons.circle
+                      width={18}
+                      height={18}
+                      fill="#22c55e"
+                      stroke="none"
+                    />
                     En ligne
                     {statut === "online" && (
                       <Icons.check width={14} height={14} />
                     )}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setStatut("spy")}>
-                    <Icons.spy width={26} height={26} stroke={theme === "dark" ? "#fff" : "#000"}/>
+                    <Icons.spy
+                      width={18}
+                      height={18}
+                      stroke={theme === "dark" ? "#fff" : "#000"}
+                    />
                     Espion
                     {statut === "spy" && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>
@@ -83,12 +97,12 @@ const DropDown = () => {
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuItem onClick={() => navigate("/settings/profile")}>
-            <Icons.settings />
+            <Icons.settings width={18} height={18} />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
-            <Icons.logout />
+            <Icons.logout width={18} height={18} />
             Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuContent>

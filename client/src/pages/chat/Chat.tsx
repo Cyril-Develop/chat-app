@@ -1,8 +1,9 @@
-import { Contact } from "@/components/Contact";
-import ChatRoom from "@/components/chat/chat-room";
+import Room from "@/components/room/room";
 import ChatUnselected from "@/components/chat/chat-unselected";
 import { SearchUser } from "@/components/chat/search-user";
+import { Contact } from "@/components/Contact";
 import { DialogCreate } from "@/components/dialog/dialog-create";
+import ContactRequest from "@/components/notification/contact-request";
 import { RoomUsers } from "@/components/room-users";
 import { RoomSelector } from "@/components/room/room-selector";
 import { Separator } from "@/components/ui/separator";
@@ -11,14 +12,18 @@ import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useUserStore } from "@/store/user.store";
 import { useEffect, useRef } from "react";
-import ContactRequest from "@/components/notification/contact-request";
+import PrivateChat from "@/components/chat/private-chat";
+import { getUserId } from "@/utils/get-userId";
+import { useContactStore } from "@/store/contact.store";
 
 const Chat = () => {
   const { room } = useRoomStore();
+  const { id : roomId } = room || {};
   const { statut } = useUserStore((state) => state);
-  const { data: currentUser } = useGetUser();
+  const userId = getUserId()
+  const { data: currentUser } = useGetUser(userId);
   const { socket } = useSocketStore();
-
+  const { contactId } = useContactStore();
   const prevRoomRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -30,14 +35,14 @@ const Chat = () => {
 
       socket?.emit(
         "joinRoom",
-        room,
+        roomId,
         currentUser.id,
         currentUser.username,
         currentUser.profileImage,
         statut
       );
 
-      prevRoomRef.current = room;
+      prevRoomRef.current = room.id;
     }
   }, [room, socket, currentUser]);
 
@@ -52,7 +57,7 @@ const Chat = () => {
               <SearchUser currentUser={currentUser} />
             </>
           )}
-          <Contact />
+          <Contact currentUser={currentUser} />
         </div>
         <div className="chat_aside_container">
           <h2 className="text-3xl">Notifications</h2>
@@ -62,8 +67,10 @@ const Chat = () => {
       </aside>
 
       <main className="w-full lg:flex-grow h-full bg-primary-foreground dark:bg-primary-background">
-        {room ? (
-          <ChatRoom roomId={room} currentUser={currentUser} />
+        {roomId ? (
+          <Room roomId={roomId} currentUser={currentUser} />
+        ) : contactId ? (
+          <PrivateChat contactId={contactId} />
         ) : (
           <ChatUnselected />
         )}

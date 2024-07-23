@@ -26,7 +26,9 @@ import {
   EmojiObject,
 } from "@/types/message";
 
-const SendMessage = ({ room }: SendMessageProps) => {
+
+
+const SendMessage = ({ recipient }: SendMessageProps) => {
   const { statut } = useUserStore((state) => state);
   const mutation = useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
@@ -71,14 +73,19 @@ const SendMessage = ({ room }: SendMessageProps) => {
       return;
     }
 
-    const roomId = room.id.toString();
     const formData = new FormData();
-
     formData.append("message", message);
-    formData.append("roomId", roomId);
+
+    if (recipient.type === "room") {
+      formData.append("roomId", recipient.id.toString());
+    } else {
+      formData.append("userId", recipient.id.toString());
+    }
+
     if (image) {
       formData.append("image", image);
     }
+
     mutation.mutate(formData, {
       onSuccess: () => {
         form.reset();

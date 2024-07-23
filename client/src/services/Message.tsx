@@ -1,4 +1,4 @@
-export const sendMessage = async (formData: FormData, token: string) => {
+export const sendMessage = async (formData: FormData, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message`,
@@ -20,7 +20,7 @@ export const sendMessage = async (formData: FormData, token: string) => {
   }
 };
 
-export const deleteMessage = async (messageId: number, token: string) => {
+export const deleteMessage = async (messageId: number, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message/`,

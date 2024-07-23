@@ -15,7 +15,7 @@ const useGetRoom = ({ roomId }: GetRoomProps) => {
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["chat", roomId],
-    queryFn: async () => getRoom(roomId, token || ""),
+    queryFn: async () => getRoom(roomId, token),
 
     
   });

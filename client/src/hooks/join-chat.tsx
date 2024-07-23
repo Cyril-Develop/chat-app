@@ -7,30 +7,33 @@ import { joinChat } from "@/services/Chat";
 import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
 import useGetUser from "./get-user";
+import { getUserId } from "@/utils/get-userId";
 
 export const useJoinChatMutation = () => {
   const { token, logout, statut } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
   const { socket } = useSocketStore((state) => state);
-  const { data: currentUser } = useGetUser();
+  const userId = getUserId();
+  const { data: currentUser } = useGetUser(userId);
 
   interface JoinChatProps {
     roomId: number;
+    roomName?: string;
     password?: string;
   }
 
   return useMutation({
-    mutationFn: (data: JoinChatProps) => joinChat(data, token || ""),
-    onSuccess: (data, variables) => {
+    mutationFn: (data: JoinChatProps) => joinChat(data, token),
+    onSuccess: (data) => {
       toast({
         title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });
-      setRoom(variables.roomId);
+      setRoom({ id: data.roomId, name: data.roomName });
       socket?.emit(
         "joinRoom",
-        variables.roomId,
+        data.roomId,
         currentUser.id,
         currentUser.username,
         currentUser.profileImage,

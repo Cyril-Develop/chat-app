@@ -11,7 +11,7 @@ export const useDeleteChatMutation = () => {
   const { socket } = useSocketStore();
 
   return useMutation({
-    mutationFn: (roomId: number) => deleteChat(roomId, token || ""),
+    mutationFn: (roomId: number) => deleteChat(roomId, token),
     onSuccess: (data) => {
       toast({
         title: data.message,

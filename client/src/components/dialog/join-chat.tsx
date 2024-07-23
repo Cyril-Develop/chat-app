@@ -13,7 +13,6 @@ import { RoomPasswordSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
 import { useJoinChatMutation } from "@/hooks/join-chat";
-import { useRoomStore } from "@/store/room.store";
 
 interface JoinFormProps {
   btnSubmit: string;
@@ -29,7 +28,6 @@ const JoinForm = ({ btnSubmit, roomId, onOpenChange }: JoinFormProps) => {
     resolver: zodResolver(RoomPasswordSchema),
   });
 
-  const { setRoom } = useRoomStore();
   const mutation = useJoinChatMutation();
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +41,6 @@ const JoinForm = ({ btnSubmit, roomId, onOpenChange }: JoinFormProps) => {
       const { password } = form.getValues();
       const data = { roomId, password };
       await mutation.mutateAsync(data);
-      setRoom(roomId);
       onOpenChange(false);
     } catch (error: any) {
       setApiError(error.message);

@@ -10,7 +10,7 @@ const useGetUsers = () => {
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["users"],
-    queryFn: async () => getAllUsers(token || ""),
+    queryFn: async () => getAllUsers(token),
   });
 
   useEffect(() => {

@@ -13,8 +13,6 @@ import {
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
 import useGetRooms from "@/hooks/get-rooms";
-import { useJoinChatMutation } from "@/hooks/join-chat";
-import { useLeaveChatMutation } from "@/hooks/leave-chat";
 import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
 import { useSocketStore } from "@/store/socket.store";
@@ -22,11 +20,9 @@ import { Room } from "@/types/room";
 
 export function RoomSelector() {
   const { data } = useGetRooms();
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [openRoomSelector, setOpenRoomSelector] = useState(false);
   const { setRoom, room } = useRoomStore();
-  const joinMutation = useJoinChatMutation();
-  const leaveMutation = useLeaveChatMutation();
+  const { id: currentRoomId, name: currentRoomName } = room || {};
   const [rooms, setRooms] = useState<Room[]>([]);
   const [newRoom, setNewRoom] = useState<Room | null>(null);
   const { socket } = useSocketStore();
@@ -52,9 +48,8 @@ export function RoomSelector() {
 
     // If a room is deleted, remove it from the list and reset the room state of each users
     socket?.on("deleteRoom", (deletedRoomId) => {
-      if (room === deletedRoomId) {
+      if (currentRoomId === deletedRoomId) {
         setRoom(null);
-        setValue("");
       }
       setRooms((prevRoom) =>
         prevRoom.filter((room) => room.id !== deletedRoomId)
@@ -70,42 +65,23 @@ export function RoomSelector() {
 
   const roomsFound = data?.length > 0;
 
-  useEffect(() => {
-    if (room) {
-      const roomName = rooms?.find((r: Room) => r.id === room)?.name || "";
-      setValue(roomName);
-    }
-  }, [rooms, room]);
-
-  const handleJoinRoom = (roomId: number, password?: string) => {
-    setOpen(false);
-    if (room === roomId) {
-      leaveMutation.mutate(roomId);
-      setRoom(null);
-      setValue("");
-    } else {
-      setRoom(roomId);
-      joinMutation.mutate({ roomId, password });
-    }
-  };
-
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={openRoomSelector} onOpenChange={setOpenRoomSelector}>
       <PopoverTrigger asChild>
         <Button
           role="combobox"
           size="box"
-          aria-expanded={open}
+          aria-expanded={openRoomSelector}
           className="w-[200px] justify-between p-3"
           disabled={!roomsFound}
         >
-          {value
-            ? value
+          {currentRoomName
+            ? currentRoomName
             : roomsFound
             ? `Rechercher un salon (${rooms.length})`
             : "Rechercher un salon"}
 
-          {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
+          {openRoomSelector ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>
       {roomsFound && (
@@ -120,9 +96,8 @@ export function RoomSelector() {
 
               <RoomProvider
                 data={rooms}
-                value={value}
-                setOpen={setOpen}
-                handleJoinRoom={handleJoinRoom}
+                value={currentRoomName ?? ""}
+                setOpen={setOpenRoomSelector}
               />
             </CommandList>
           </Command>

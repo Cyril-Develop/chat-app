@@ -1,13 +1,13 @@
 import SendMessage from "@/components/message/send-message";
 import MessagesProvider from "@/components/message/messages-provider";
-import ChatHeader from "./chat-header";
+import RoomHeader from "@/components/room/room-header";
 import useGetRoom from "@/hooks/get-room";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useState } from "react";
-import { ChatRoomProps, Message } from "@/types/chat";
+import { RoomProps, Message } from "@/types/chat";
 
-const ChatRoom = ({ roomId, currentUser }: ChatRoomProps) => {
+const Room = ({ roomId, currentUser }: RoomProps) => {
   const { socket } = useSocketStore();
   const { data: room, isLoading } = useGetRoom({ roomId });
   const [messages, setMessages] = useState<Message[]>([]);
@@ -57,15 +57,15 @@ const ChatRoom = ({ roomId, currentUser }: ChatRoomProps) => {
         </>
       ) : (
         <>
-          <ChatHeader room={room} currentUser={currentUser} />
+          <RoomHeader room={room} currentUser={currentUser} />
 
           <MessagesProvider messages={messages} />
 
-          <SendMessage room={room} />
+          <SendMessage recipient={{ type: "room", id: roomId }}  />
         </>
       )}
     </div>
   );
 };
 
-export default ChatRoom;
+export default Room;

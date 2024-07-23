@@ -4,11 +4,13 @@ import Alert from "@/components/Alert";
 import handleDeleteAccount from "@/utils/delete-account";
 import { useUserStore } from "@/store/user.store";
 import useGetUser from "@/hooks/get-user";
+import { getUserId } from "@/utils/get-userId";
 
 export default function SettingsAccountPage() {
   const logout = useUserStore((state) => state.logout);
   const { token } = useUserStore((state) => state);
-  const { data } = useGetUser();
+  const userId = getUserId();
+  const { data } = useGetUser(userId);
 
   return (
     <div className="space-y-6">

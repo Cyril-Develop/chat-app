@@ -12,12 +12,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import useGetUser from "@/hooks/get-user";
 import { cn } from "@/lib/utils";
 import { useRoomStore } from "@/store/room.store";
 
 export function SheetRight() {
-  const { data: currentUser } = useGetUser();
   const { room } = useRoomStore();
 
   return (
@@ -46,7 +44,7 @@ export function SheetRight() {
             <RoomSelector />
           </div>
         </SheetHeader>
-        {room && currentUser && (
+        {room && (
           <SheetHeader className={cn("text-left mt-4")}>
             <SheetTitle>Utilisateurs</SheetTitle>
             <Separator />

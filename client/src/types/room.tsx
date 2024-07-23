@@ -19,5 +19,4 @@ export interface RoomProviderProps {
   data: Room[];
   value: string;
   setOpen: (open: boolean) => void;
-  handleJoinRoom: (id: number, password?: string) => void;
 }

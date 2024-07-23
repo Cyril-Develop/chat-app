@@ -4,12 +4,13 @@ import { useUserStore } from "@/store/user.store";
 
 export const useHandleLogout = () => {
   const { room, setRoom } = useRoomStore();
+  const { id : roomId } = room || {};
   const { token, logout } = useUserStore((state) => state);
 
   const handleLogout = async () => {
     try {
       if (room) {
-        await leaveChat(room, token || "");
+        await leaveChat(roomId, token);
         setRoom(null);
       }
       logout();

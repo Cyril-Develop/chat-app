@@ -15,7 +15,7 @@ const buttonVariants = cva(
         alert: "hover:text-destructive",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-black/10",
+        secondary: "bg-secondary text-secondary-foreground hover:text-primary",
         btn: "text-secondary hover:bg-secondary hover:text-foreground dark:text-foreground",
         linkForm: "hover:text-primary",
         btnMenu: "flex gap-2 text-md justify-start",

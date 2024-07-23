@@ -18,7 +18,7 @@ export const useCreateChatMutation = () => {
   }
 
   return useMutation({
-    mutationFn: (data: ChatProps) => createChat(data, token || ""),
+    mutationFn: (data: ChatProps) => createChat(data, token),
     onSuccess: (data) => {
       joinChatMutation.mutate({ roomId: data.id });
       setRoom(data.id);

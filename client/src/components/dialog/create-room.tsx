@@ -35,14 +35,14 @@ const CreateForm = ({ btnSubmit, onSubmitSuccess }: CreateFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const mutation = useCreateRoomMutation();
+  const createRoom = useCreateRoomMutation();
 
   const onSubmit = async () => {
     setLoading(true);
     setApiError("");
     const { name, password } = form.getValues();
     try {
-      await mutation.mutateAsync({ name, password });
+      await createRoom.mutateAsync({ name, password });
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);

@@ -10,13 +10,13 @@ import { CreateRoomProps } from "@/types/room";
 export const useCreateRoomMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
-  const joinRoomMutation = useJoinRoomMutation();
+  const joinRoom = useJoinRoomMutation();
   const { socket } = useSocketStore();
 
   return useMutation({
     mutationFn: (data: CreateRoomProps) => createRoom(data, token),
     onSuccess: (data) => {
-      joinRoomMutation.mutate({ roomId: data.id });
+      joinRoom.mutate({ roomId: data.id });
       setRoom(data.id);
       socket?.emit(
         "createRoom",

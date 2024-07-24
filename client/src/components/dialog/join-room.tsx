@@ -28,7 +28,7 @@ const JoinForm = ({ btnSubmit, roomId, onOpenChange }: JoinFormProps) => {
     resolver: zodResolver(RoomPasswordSchema),
   });
 
-  const joinRoomMutation = useJoinRoomMutation();
+  const joinRoom = useJoinRoomMutation();
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +40,7 @@ const JoinForm = ({ btnSubmit, roomId, onOpenChange }: JoinFormProps) => {
     try {
       const { password } = form.getValues();
       const data = { roomId, password };
-      await joinRoomMutation.mutateAsync(data);
+      await joinRoom.mutateAsync(data);
       onOpenChange(false);
     } catch (error: any) {
       setApiError(error.message);

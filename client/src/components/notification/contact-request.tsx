@@ -13,7 +13,7 @@ interface ContactProps {
 const ContactRequest = () => {
   const [contactRequests, setContactRequests] = useState<ContactProps[]>([]);
   const { socket } = useSocketStore();
-  const mutation = useAddContactMutation();
+  const addContact = useAddContactMutation();
 
   useEffect(() => {
     socket?.on("receiveFriendRequest", (data: ContactProps) => {
@@ -40,7 +40,7 @@ const ContactRequest = () => {
 
   const handleAcceptFriendRequest = (senderId: string, contactId: string) => {
     socket?.emit("acceptFriendRequest", senderId, contactId);
-    mutation.mutate(senderId);
+    addContact.mutate(senderId);
   };
 
   const handleRejectFriendRequest = (senderId: string, contactId: string) => {

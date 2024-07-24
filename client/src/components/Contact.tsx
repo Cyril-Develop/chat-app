@@ -27,7 +27,7 @@ export function Contact({ currentUser }: ContactProps) {
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
   const { contactId, setContactId } = useContactStore();
-  const leaveRoomMutation = useLeaveRoomMutation();
+  const leaveRoom = useLeaveRoomMutation();
 
   useEffect(() => {
     if (currentUser?.friendsList) {
@@ -50,7 +50,7 @@ export function Contact({ currentUser }: ContactProps) {
   const handlePrivateChat = (friendId: number) => {
     // Leave current room if any
     if (roomId) {
-      leaveRoomMutation.mutate(roomId);
+      leaveRoom.mutate(roomId);
     }
     // Toggle private chat
     if (contactId === friendId) {

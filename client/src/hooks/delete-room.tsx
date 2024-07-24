@@ -6,7 +6,7 @@ import { useSocketStore } from "@/store/socket.store";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
-export const useDeleteChatMutation = () => {
+export const useDeleteRoomMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { socket } = useSocketStore();
 

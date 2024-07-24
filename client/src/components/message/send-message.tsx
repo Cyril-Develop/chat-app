@@ -28,7 +28,7 @@ import {
 
 const SendMessage = ({ recipient }: SendMessageProps) => {
   const { statut } = useUserStore((state) => state);
-  const mutation = useSendMessageMutation();
+  const sendMessage = useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -84,7 +84,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
       formData.append("image", image);
     }
 
-    mutation.mutate(formData, {
+    sendMessage.mutate(formData, {
       onSuccess: () => {
         form.reset();
         setImage(null);

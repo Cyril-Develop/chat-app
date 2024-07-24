@@ -28,7 +28,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
     image: null,
   };
 
-  const mutation = useEditUserMutation();
+  const editUser = useEditUserMutation();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
@@ -70,7 +70,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         formData.append("image", image);
       }
 
-      mutation.mutate(formData);
+      editUser.mutate(formData);
       setImageUploaded(null);
       resetInputRef();
     }
@@ -167,7 +167,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           )}
         />
         <ButtonForm
-          loading={mutation.isPending}
+          loading={editUser.isPending}
           defaultValue="Enregistrer les modifications"
           spinnerValue="Envoie en cours"
         />

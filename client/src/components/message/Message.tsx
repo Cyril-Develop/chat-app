@@ -8,10 +8,10 @@ import { MessageProps } from "@/types/message";
 
 const Message = ({ message }: MessageProps) => {
   const userId = getUserId();
-  const mutation = useDeleteMessageMutation();
+  const deleteMessage = useDeleteMessageMutation();
 
   const handleDelete = (messageId: number) => {
-    mutation.mutate(messageId);
+    deleteMessage.mutate(messageId);
   };
 
   const isMyMessage = message.user.id === userId;

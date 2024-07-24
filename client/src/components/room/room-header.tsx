@@ -1,16 +1,16 @@
 import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
-import { useDeleteChatMutation } from "@/hooks/delete-room";
+import { useDeleteRoomMutation } from "@/hooks/delete-room";
 import { HeaderRoomProps } from "@/types/chat";
 
 const HeaderRoom = ({ room, currentUser }: HeaderRoomProps) => {
   const isMyRoom = room?.createdBy === currentUser?.id;
 
-  const deleteChatMutation = useDeleteChatMutation();
+  const deleteRoom = useDeleteRoomMutation();
 
   const handleDeleteChat = () => {
-    deleteChatMutation.mutate(room.id);
+    deleteRoom.mutate(room.id);
   };
 
   return (

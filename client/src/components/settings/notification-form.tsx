@@ -17,7 +17,7 @@ import { NotificationFormValues } from "@/types/setting";
 
 const NotificationForm = ({ user }: NotificationFormValues) => {
   const [apiError, setApiError] = useState("");
-  const mutation = useEditNotificationMutation();
+  const editNotification = useEditNotificationMutation();
 
   const form = useForm({
     resolver: zodResolver(notificationsFormSchema),
@@ -34,7 +34,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
       return;
     }
 
-    mutation.mutate(notification);
+    editNotification.mutate(notification);
     setApiError("");
   };
 
@@ -74,7 +74,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
           )}
         />
         <ButtonForm
-          loading={mutation.isPending}
+          loading={editNotification.isPending}
           defaultValue="Enregistrer les modifications"
           spinnerValue="Envoie en cours"
         />

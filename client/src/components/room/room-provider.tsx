@@ -15,8 +15,8 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { room } = useRoomStore();
   const { id: currentRoomId } = room || {};
-  const leaveMutation = useLeaveRoomMutation();
-  const joinMutation = useJoinRoomMutation();
+  const leaveRoom = useLeaveRoomMutation();
+  const joinRoom = useJoinRoomMutation();
 
   useEffect(() => {
     if (!isDialogOpen) {
@@ -26,9 +26,9 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
 
   const handlePublicRoomSelect = (room: Room) => {
     if (currentRoomId === room.id) {
-      leaveMutation.mutate(room.id);
+      leaveRoom.mutate(room.id);
     } else {
-      joinMutation.mutate({ roomId: room.id, roomName: room.name });
+      joinRoom.mutate({ roomId: room.id, roomName: room.name });
     }
     setOpen(false);
   };
@@ -41,7 +41,7 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
       setIsDialogOpen(true);
     } else {
       setOpen(false);
-      leaveMutation.mutate(room.id);
+      leaveRoom.mutate(room.id);
     }
   };
 

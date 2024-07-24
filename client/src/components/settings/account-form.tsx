@@ -18,7 +18,7 @@ import { AccountFormValues } from "@/types/setting";
 
 export function AccountForm({ user }: AccountFormValues) {
   const [apiError, setApiError] = useState("");
-  const mutation = useEditAccountMutation();
+  const editAccount = useEditAccountMutation();
 
   const [defaultValues] = useState({
     email: user.email,
@@ -37,16 +37,16 @@ export function AccountForm({ user }: AccountFormValues) {
       setApiError("Vous ne pouvez pas utiliser votre adresse email actuelle.");
       return;
     }
-    mutation.mutate(newEmail);
+    editAccount.mutate(newEmail);
   };
 
   useEffect(() => {
-    if (mutation.isSuccess) {
-      form.reset({ email: mutation.data.email, newEmail: "" });
-    } else if (mutation.isError) {
-      setApiError(mutation.error.message);
+    if (editAccount.isSuccess) {
+      form.reset({ email: editAccount.data.email, newEmail: "" });
+    } else if (editAccount.isError) {
+      setApiError(editAccount.error.message);
     }
-  }, [mutation.isSuccess, form]);
+  }, [editAccount.isSuccess, form]);
 
   return (
     <Form {...form}>
@@ -97,7 +97,7 @@ export function AccountForm({ user }: AccountFormValues) {
         </div>
 
         <ButtonForm
-          loading={mutation.isPending}
+          loading={editAccount.isPending}
           defaultValue="Enregistrer les modifications"
           spinnerValue="Envoie en cours"
         />

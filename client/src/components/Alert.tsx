@@ -9,7 +9,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -17,22 +16,31 @@ interface AlertProps {
   title: string;
   description: string;
   buttonTitle: string;
+  trigger?: React.ReactNode;
   action: () => void;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
 }
 
-function Alert({ title, description, buttonTitle, action }: AlertProps) {
+function Alert({
+  title,
+  description,
+  buttonTitle,
+  action,
+  trigger,
+  open,
+  setOpen,
+}: AlertProps) {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button size={"lg"} className="text-lg w-full sm:w-auto" variant="destructive">Supprimer le compte</Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel onClick={() => setOpen?.(false)}>Annuler</AlertDialogCancel>
           <AlertDialogAction
             onClick={action}
             className={cn(buttonVariants({ variant: "destructive" }))}

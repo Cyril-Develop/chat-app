@@ -30,13 +30,20 @@ export interface Message {
   };
 }
 
-export interface CurrentUser {
-  id: string;
-  username: string;
+export interface SheetLeftProps {
+  currentUser: { 
+    id: number;
+    username: string;
+    friendsList: { id: number; username: string }[] 
+  };
+}
+
+export interface SearchUserProps {
+  id: number; username: string ;
 }
 
 export interface Friend {
-  id: string;
+  id: number;
 }
 
 export interface FriendList {
@@ -44,7 +51,7 @@ export interface FriendList {
 }
 
 export interface Users {
-  id: string;
+  id: number;
   username: string;
   profileImage: string;
   friends: FriendList[];

@@ -13,8 +13,8 @@ const Navbar = () => {
   const isConnected = useUserStore((state) => state.token) ? true : false;
   const windowWidth = useWindowWidth();
   const isMobileView = windowWidth < 1024;
- //const userId = getUserId();
-  //const { data: currentUser } = useGetUser(userId);
+  const userId = getUserId();
+  const { data: currentUser } = useGetUser(userId);
 
   return (
     <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-primary-foreground md:px-10">
@@ -32,8 +32,8 @@ const Navbar = () => {
       <div className="flex items-center gap-2 md:gap-5">
         {isMobileView && isConnected && (
           <>
-            {/* <SheetLeft currentUser={currentUser} /> */}
-            <SheetRight/>
+            <SheetLeft currentUser={currentUser} />
+            <SheetRight />
           </>
         )}
         {isConnected ? (

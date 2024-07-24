@@ -1,3 +1,5 @@
+import { RegisterByEmailProps, LoginByEmailProps } from "@/types/auth";
+
 // export const googleLogin = async () => {
 //   try {
 //     const response = await fetch(
@@ -14,17 +16,11 @@
 //   }
 // };
 
-interface registerByEmailProps {
-  username: string;
-  email: string;
-  password: string;
-}
-
 export const registerByEmail = async ({
   username,
   email,
   password,
-}: registerByEmailProps) => {
+}: RegisterByEmailProps) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/register`,
@@ -46,12 +42,7 @@ export const registerByEmail = async ({
   }
 };
 
-interface loginByEmailProps {
-  email: string;
-  password: string;
-}
-
-export const loginByEmail = async ({ email, password }: loginByEmailProps) => {
+export const loginByEmail = async ({ email, password }: LoginByEmailProps) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/login`,

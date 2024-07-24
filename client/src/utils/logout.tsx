@@ -1,4 +1,4 @@
-import { leaveChat } from "@/services/Chat";
+import { leaveRoom } from "@/services/Chat";
 
 const leaveChatRoom = async (
   token: string,
@@ -7,7 +7,7 @@ const leaveChatRoom = async (
 ) => {
   try {
     if (room) {
-      await leaveChat(room, token || "");
+      await leaveRoom(room, token);
       setRoom(null);
     }
   } catch (error) {

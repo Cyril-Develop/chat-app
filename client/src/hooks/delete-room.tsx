@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/store/user.store";
-import { deleteChat } from "@/services/Chat";
+import { deleteRoom } from "@/services/Chat";
 import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
 import { toast } from "@/components/ui/use-toast";
@@ -11,7 +11,7 @@ export const useDeleteChatMutation = () => {
   const { socket } = useSocketStore();
 
   return useMutation({
-    mutationFn: (roomId: number) => deleteChat(roomId, token),
+    mutationFn: (roomId: number) => deleteRoom(roomId, token),
     onSuccess: (data) => {
       toast({
         title: data.message,

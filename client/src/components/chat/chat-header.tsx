@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DropDown from "@/components/chat/DropDown";
 import StatutIndicator from "@/components/statut-indicator";
 import { useSocketStore } from "@/store/socket.store";
-import {HandleUserStatusChangedProps} from "@/types/user";
+import { HandleUserStatusChangedProps } from "@/types/user";
 
 const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   const { socket, users } = useSocketStore();
@@ -14,7 +14,10 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
     const user = users.find((user) => user.userId === contactInfos.id);
     setIsConnected(user?.statut === "online");
 
-    const handleUserStatusChanged = ({ userId, statut } : HandleUserStatusChangedProps) => {
+    const handleUserStatusChanged = ({
+      userId,
+      statut,
+    }: HandleUserStatusChangedProps) => {
       if (userId === contactInfos.id) {
         setIsConnected(statut === "online");
       }
@@ -28,13 +31,15 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   }, [socket, users, contactInfos.id]);
 
   return (
-    <div className="flex justify-between pb-1 text-md">
+    <div className="flex justify-between pb-2 text-md">
       <div className="flex gap-2">
-        <div className="flex items-center relative">
+        <div className="flex relative w-10 h-10">
           {isConnected && <StatutIndicator />}
-          <Avatar className="w-16 h-16 md:w-10 md:h-10">
+          <Avatar>
             <AvatarImage
-              src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${contactInfos.profileImage}`}
+              src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
+                contactInfos.profileImage
+              }`}
               className="rounded-full object-cover"
               alt={contactInfos.username}
             />
@@ -43,9 +48,9 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
             </AvatarFallback>
           </Avatar>
         </div>
-        <div className="overflow-hidden">
+        <div>
           <h2 className="font-semibold">{contactInfos.username}</h2>
-          <p className="line-clamp-3">{contactInfos.bio}</p>
+          <p className="text-sm">{contactInfos.bio}</p>
         </div>
       </div>
       <DropDown />

@@ -4,8 +4,8 @@ import { CommandSeparator } from "@/components/ui/command";
 import { DialogJoin } from "@/components/dialog/dialog-join";
 import { useRoomStore } from "@/store/room.store";
 import { RoomProviderProps, Room } from "@/types/room";
-import { useLeaveChatMutation } from "@/hooks/leave-chat";
-import { useJoinChatMutation } from "@/hooks/join-chat";
+import { useLeaveRoomMutation } from "@/hooks/leave-room";
+import { useJoinRoomMutation } from "@/hooks/join-room";
 
 const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
   const [selectedPrivateRoom, setSelectedPrivateRoom] = useState<{
@@ -15,8 +15,8 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const { room } = useRoomStore();
   const { id: currentRoomId } = room || {};
-  const leaveMutation = useLeaveChatMutation();
-  const joinMutation = useJoinChatMutation();
+  const leaveMutation = useLeaveRoomMutation();
+  const joinMutation = useJoinRoomMutation();
 
   useEffect(() => {
     if (!isDialogOpen) {

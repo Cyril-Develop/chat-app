@@ -20,3 +20,14 @@ export interface RoomProviderProps {
   value: string;
   setOpen: (open: boolean) => void;
 }
+
+export interface CreateRoomProps {
+  name: string;
+  password?: string;
+}
+
+export interface JoinRoomProps {
+  roomId: number;
+  roomName?: string;
+  password?: string;
+}

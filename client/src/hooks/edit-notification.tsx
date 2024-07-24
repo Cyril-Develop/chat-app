@@ -10,8 +10,7 @@ export const useEditNotificationMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (notification: string) =>
-      editNotification(notification, token),
+    mutationFn: (notification: string) => editNotification(notification, token),
     onSuccess: () => {
       toast({
         title: "Changement pris en compte !",

@@ -26,8 +26,6 @@ import {
   EmojiObject,
 } from "@/types/message";
 
-
-
 const SendMessage = ({ recipient }: SendMessageProps) => {
   const { statut } = useUserStore((state) => state);
   const mutation = useSendMessageMutation();
@@ -166,6 +164,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
                   className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 p-2 w-11 h-11 cursor-pointer"
                   tabIndex={0}
                   aria-label="Joindre une image"
+                  title="Joindre une image"
                   onKeyDown={handleKeydown}
                   onClick={() => handleLabelClick("fileInput")}
                 >
@@ -191,6 +190,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
           <Button
             type="button"
             size="message"
+            title={openEmoji ? "Fermer les emojis" : "Ouvrir les emojis"}
             onClick={() => setOpenEmoji(!openEmoji)}
           >
             <Icons.emoji
@@ -200,6 +200,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
           <Button
             type="submit"
             size="message"
+            title="Envoyer"
             className="ml-auto"
             disabled={noContent}
           >

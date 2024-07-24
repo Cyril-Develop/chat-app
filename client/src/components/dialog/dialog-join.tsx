@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import JoinForm from "@/components/dialog/join-chat";
+import JoinForm from "@/components/dialog/join-room";
 
 interface DialogJoinProps {
   btnTrigger: string;

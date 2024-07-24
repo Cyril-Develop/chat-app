@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { RoomFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
-import { useCreateChatMutation } from "@/hooks/create-chat";
+import { useCreateRoomMutation } from "@/hooks/create-room";
 import { cn } from "@/lib/utils";
 
 interface CreateFormProps {
@@ -35,7 +35,7 @@ const CreateForm = ({ btnSubmit, onSubmitSuccess }: CreateFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const mutation = useCreateChatMutation();
+  const mutation = useCreateRoomMutation();
 
   const onSubmit = async () => {
     setLoading(true);

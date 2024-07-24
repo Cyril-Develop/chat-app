@@ -8,7 +8,7 @@ export interface UserState {
 
 export interface Room {
   id: number | null;
-  name: string | null;
+  name: string | null
 }
 
 export interface RoomState {

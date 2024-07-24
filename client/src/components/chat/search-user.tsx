@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
 import { useSocketStore } from "@/store/socket.store";
-import { CurrentUser, Users, FriendList } from "@/types/chat";
+import { SearchUserProps, Users, FriendList } from "@/types/chat";
 
-export const SearchUser = ({ currentUser }: { currentUser: CurrentUser }) => {
+export const SearchUser = ({ currentUser }: { currentUser: SearchUserProps }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [contacts, setcontacts] = useState<Users[]>([]);
@@ -48,7 +48,7 @@ export const SearchUser = ({ currentUser }: { currentUser: CurrentUser }) => {
     }
   };
 
-  const handleAddFriend = (contactId: string, contactName: string) => {
+  const handleAddFriend = (contactId: number, contactName: string) => {
     socket?.emit(
       "sendFriendRequest",
       userId,

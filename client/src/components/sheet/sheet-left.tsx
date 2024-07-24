@@ -13,10 +13,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import {CurrentUser} from "@/types/chat";
+import { SheetLeftProps } from "@/types/chat";
 
-export function SheetLeft({currentUser} : {currentUser: CurrentUser}) {
-
+export function SheetLeft({ currentUser }: SheetLeftProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>

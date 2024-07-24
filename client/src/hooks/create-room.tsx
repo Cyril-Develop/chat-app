@@ -1,26 +1,22 @@
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/store/user.store";
-import { createChat } from "@/services/Chat";
+import { createRoom } from "@/services/Chat";
 import { handleTokenExpiration } from "@/utils/token-expiration";
-import { useJoinChatMutation } from "@/hooks/join-chat";
+import { useJoinRoomMutation } from "@/hooks/join-room";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
+import { CreateRoomProps } from "@/types/room";
 
-export const useCreateChatMutation = () => {
+export const useCreateRoomMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
-  const joinChatMutation = useJoinChatMutation();
+  const joinRoomMutation = useJoinRoomMutation();
   const { socket } = useSocketStore();
 
-  interface ChatProps {
-    name: string;
-    password?: string;
-  }
-
   return useMutation({
-    mutationFn: (data: ChatProps) => createChat(data, token),
+    mutationFn: (data: CreateRoomProps) => createRoom(data, token),
     onSuccess: (data) => {
-      joinChatMutation.mutate({ roomId: data.id });
+      joinRoomMutation.mutate({ roomId: data.id });
       setRoom(data.id);
       socket?.emit(
         "createRoom",

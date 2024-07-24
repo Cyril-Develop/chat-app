@@ -16,7 +16,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useRoomStore } from "@/store/room.store";
-import { useLeaveChatMutation } from "@/hooks/leave-chat";
+import { useLeaveRoomMutation } from "@/hooks/leave-room";
 import { FriendProps, ContactProps } from "@/types/contact";
 import { useContactStore } from "@/store/contact.store";
 
@@ -27,7 +27,7 @@ export function Contact({ currentUser }: ContactProps) {
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
   const { contactId, setContactId } = useContactStore();
-  const leaveChatMutation = useLeaveChatMutation();
+  const leaveRoomMutation = useLeaveRoomMutation();
 
   useEffect(() => {
     if (currentUser?.friendsList) {
@@ -48,15 +48,20 @@ export function Contact({ currentUser }: ContactProps) {
   }, [socket]);
 
   const handlePrivateChat = (friendId: number) => {
+    // Leave current room if any
+    if (roomId) {
+      leaveRoomMutation.mutate(roomId);
+    }
+    // Toggle private chat
     if (contactId === friendId) {
+      // Close private chat if already open
       setContactId(null);
       setOpen(false);
-      return;
+    } else {
+      // Open private chat with the selected friend
+      setContactId(friendId);
+      setOpen(false);
     }
-
-    roomId && leaveChatMutation.mutate(roomId);
-    setContactId(friendId);
-    setOpen(false);
   };
 
   const haveContact = friends.length > 0;

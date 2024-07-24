@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import CreateForm from "@/components/dialog/create-chat";
+import CreateForm from "@/components/dialog/create-room";
 import { useState } from "react";
 
 interface DialogCreate {

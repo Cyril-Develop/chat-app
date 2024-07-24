@@ -1,3 +1,5 @@
+import { CreateRoomProps, JoinRoomProps } from "@/types/room";
+
 export const getRooms = async (token: string | null) => {
   try {
     const response = await fetch(
@@ -42,12 +44,7 @@ export const getRoom = async (roomId: number, token: string | null) => {
   }
 };
 
-interface ChatProps {
-  name: string;
-  password?: string;
-}
-
-export const createChat = async (data: ChatProps, token: string | null) => {
+export const createRoom = async (data: CreateRoomProps, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/create`,
@@ -70,12 +67,7 @@ export const createChat = async (data: ChatProps, token: string | null) => {
   }
 };
 
-interface JoinChatProps {
-  roomId: number;
-  password?: string;
-}
-
-export const joinChat = async (data: JoinChatProps, token: string | null) => {
+export const joinRoom = async (data: JoinRoomProps, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/join`,
@@ -98,7 +90,7 @@ export const joinChat = async (data: JoinChatProps, token: string | null) => {
   }
 };
 
-export const leaveChat = async (roomId: number, token: string | null) => {
+export const leaveRoom = async (roomId: number, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/leave`,
@@ -121,7 +113,7 @@ export const leaveChat = async (roomId: number, token: string | null) => {
   }
 };
 
-export const deleteChat = async (roomId: number, token: string | null) => {
+export const deleteRoom = async (roomId: number, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/`,

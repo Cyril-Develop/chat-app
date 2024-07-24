@@ -4,7 +4,7 @@ import { SearchUser } from "@/components/chat/search-user";
 import { Contact } from "@/components/Contact";
 import { DialogCreate } from "@/components/dialog/dialog-create";
 import ContactRequest from "@/components/notification/contact-request";
-import { RoomUsers } from "@/components/room-users";
+import { RoomUsers } from "@/components/room/room-users";
 import { RoomSelector } from "@/components/room/room-selector";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-user";

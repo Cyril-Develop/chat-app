@@ -140,7 +140,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               </FormControl>
               <FormMessage />
               <FormDescription>
-                Votre image de profil apparaîtra sur votre carte de profil.
+                L'image doit être au format JPG, JPEG, PNG ou SVG.
               </FormDescription>
             </FormItem>
           )}
@@ -154,14 +154,14 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               <FormControl>
                 <Textarea
                   placeholder="Parle nous un peu de toi..."
-                  className="resize-none whitespace-normal"
+                  className="resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox"
                   maxLength={150}
                   {...field}
                 />
               </FormControl>
               <FormMessage />
               <FormDescription>
-                Votre bio apparaîtra sur votre carte de profil.
+                Votre bio apparaîtra sur votre profil.
               </FormDescription>
             </FormItem>
           )}

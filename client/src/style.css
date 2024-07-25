@@ -59,14 +59,15 @@ html.dark {
   background-color: hsl(var(--bg-secondary));
 }
 
-.line-clamp-3 {
+.line-clamp {
   display: -webkit-box;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+  overflow-wrap: break-word;
 }
 
 /* FORM */

@@ -98,7 +98,7 @@ export function Contact({ currentUser }: ContactProps) {
                     {friend.username}
                     <Button
                       variant="linkForm"
-                      title="Voir le contact"
+                      aria-label="contact"
                       className="p-0"
                       onClick={() => handlePrivateChat(friend.id)}
                     >

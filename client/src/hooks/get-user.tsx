@@ -5,10 +5,11 @@ import { getUser } from "@/services/User";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
-const useGetUser = (userId: number) => {
+const useGetUser = (userId: number | undefined) => {
   const { token, logout } = useUserStore((state) => state);
 
   const { isLoading, isError, data, error } = useQuery({
+    enabled: !!userId,
     queryKey: ["user", userId],
     queryFn: async () => getUser(userId, token),
   });

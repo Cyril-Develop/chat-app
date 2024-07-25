@@ -7,6 +7,7 @@ interface CustomPayload {
 
 export const getUserId = () => {
   const { token } = useUserStore();
+  if(!token) return;
   const decodedToken = jwtDecode<CustomPayload>(token || "");
   return decodedToken.id;
 };

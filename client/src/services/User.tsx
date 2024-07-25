@@ -20,7 +20,7 @@ export const getAllUsers = async (token: string | null) => {
   }
 };
 
-export const getUser = async (userId: number, token: string | null) => {
+export const getUser = async (userId: number | undefined, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/`,

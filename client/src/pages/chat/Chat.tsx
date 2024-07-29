@@ -60,8 +60,6 @@ const Chat = () => {
           <Contact currentUser={currentUser} />
         </div>
         <div className="chat_aside_container">
-          <h2 className="text-3xl">Notifications</h2>
-          <Separator />
           <ContactRequest />
         </div>
       </aside>

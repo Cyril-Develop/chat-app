@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +21,11 @@ import useGetUsers from "@/hooks/get-users";
 import { useSocketStore } from "@/store/socket.store";
 import { SearchUserProps, Users, FriendList } from "@/types/chat";
 
-export const SearchUser = ({ currentUser }: { currentUser: SearchUserProps }) => {
+export const SearchUser = ({
+  currentUser,
+}: {
+  currentUser: SearchUserProps;
+}) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [contacts, setcontacts] = useState<Users[]>([]);
@@ -58,6 +62,32 @@ export const SearchUser = ({ currentUser }: { currentUser: SearchUserProps }) =>
     );
     setQuery("");
   };
+
+  useEffect(() => {
+    if (socket) {
+      const handleFriendRemoved = (friendId: number) => {
+        setcontacts((prevContacts) =>
+          prevContacts.map((contact) =>
+            contact.id === friendId
+              ? {
+                  ...contact,
+                  friends: contact.friends.filter(
+                    (friend) => friend.friend.id !== userId
+                  ),
+                }
+              : contact
+          )
+        );
+      };
+
+      socket.on("friendRemoved", handleFriendRemoved);
+
+      return () => {
+        socket.off("friendRemoved", handleFriendRemoved);
+      };
+    }
+  }, [socket, userId]);
+
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
@@ -113,6 +143,7 @@ export const SearchUser = ({ currentUser }: { currentUser: SearchUserProps }) =>
                           <Button
                             variant="linkForm"
                             title="Ajouter à la liste de contacts"
+                            className="p-0"
                             onClick={() =>
                               handleAddFriend(contact.id, contact.username)
                             }

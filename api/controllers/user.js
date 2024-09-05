@@ -257,6 +257,106 @@ exports.updateNotification = async (req, res) => {
   }
 };
 
+exports.sendFriendRequest = async (req, res) => {
+  const { receiverId } = req.body;
+  const senderId = req.auth.userId;
+
+  if (!senderId || !receiverId) {
+    return res.status(400).json({ error: "Les identifiants des utilisateurs sont requis." });
+  }
+
+  if (senderId === receiverId) {
+    return res.status(400).json({ error: "Vous ne pouvez pas vous envoyer une demande d'ami à vous-même!" });
+  }
+
+  try {
+    const existingRequest = await prisma.friendRequest.findFirst({
+      where: {
+        senderId,
+        receiverId,
+        status: "pending",
+      },
+    });
+
+    if (existingRequest) {
+      return res.status(400).json({ error: "Une demande d'ami est déjà en attente." });
+    }
+
+    const friendRequest = await prisma.friendRequest.create({
+      data: {
+        senderId,
+        receiverId,
+      },
+    });
+
+    res.status(201).json({
+      message: "Demande d'ami envoyée avec succès.",
+      friendRequest,
+    });
+  } catch (error) {
+    console.error("Error sending friend request:", error);
+    res.status(500).json({ error: "Erreur lors de l'envoi de la demande d'ami." });
+  }
+};
+
+
+exports.getFriendRequest = async (req, res) => {
+  const userId = req.auth.userId;
+
+  if (!userId) {
+    return res.status(400).json({ error: "L'identifiant de l'utilisateur est requis." });
+  }
+
+  console.log("userId", userId);
+
+  try {
+    const sentRequests = await prisma.friendRequest.findMany({
+      where: {
+        senderId: userId,
+        status: "pending",
+      },
+      select: {
+        id: true,
+        receiver: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+          },
+        },
+        createdAt: true,
+      },
+    });
+
+    const receivedRequests = await prisma.friendRequest.findMany({
+      where: {
+        receiverId: userId,
+        status: "pending",
+      },
+      select: {
+        id: true,
+        sender: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+          },
+        },
+        createdAt: true,
+      },
+    });
+
+    console.log("sentRequests", sentRequests);
+    console.log("receivedRequests", receivedRequests);
+
+    res.status(200).json({ sentRequests, receivedRequests });
+  } catch (error) {
+    console.error("Error getting friend requests:", error);
+    res.status(500).json({ error: "Erreur lors de la récupération des demandes d'amis." });
+  }
+};
+
+
 exports.addContact = async (req, res) => {
   const { contactId } = req.body;
   const userId = req.auth.userId;
@@ -349,13 +449,11 @@ exports.removeContact = async (req, res) => {
       }),
     ]);
 
-    res
-      .status(200)
-      .json({
-        message: "Contact retiré de votre liste d'amis.",
-        contactId,
-        userId,
-      });
+    res.status(200).json({
+      message: "Contact retiré de votre liste d'amis.",
+      contactId,
+      userId,
+    });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
     res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });

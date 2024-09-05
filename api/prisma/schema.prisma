@@ -28,7 +28,10 @@ model User {
   friendOf         Friend[]       @relation("FriendUsers") // Représente les utilisateurs qui ont ajouté l'utilisateur comme ami
   createdChatRooms ChatRoom[]     @relation("CreatorChatRooms")
   messages         Message[]      @relation("UserMessages")
+  sentFriendRequests    FriendRequest[] @relation("SenderFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceiverFriendRequests")
 }
+
 
 model Message {
   id         Int      @id @default(autoincrement())
@@ -72,6 +75,23 @@ model Friend {
 
   @@id([userId, friendId])
   @@unique([userId, friendId]) // Assure une relation unique entre userId et friendId
+}
+
+model FriendRequest {
+  id        Int      @id @default(autoincrement())
+  senderId  Int
+  receiverId Int
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  sender   User @relation("SenderFriendRequests", fields: [senderId], references: [id])
+  receiver User @relation("ReceiverFriendRequests", fields: [receiverId], references: [id])
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
 
 enum Role {

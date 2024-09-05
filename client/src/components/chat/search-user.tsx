@@ -20,6 +20,7 @@ import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
 import { useSocketStore } from "@/store/socket.store";
 import { SearchUserProps, Users, FriendList } from "@/types/chat";
+import { useSendRequestMutation } from "@/hooks/send-request";
 
 export const SearchUser = ({
   currentUser,
@@ -33,6 +34,7 @@ export const SearchUser = ({
   const { socket } = useSocketStore();
   const userId = currentUser?.id;
   const currentUserName = currentUser?.username;
+  const sendRequestMutation = useSendRequestMutation();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -52,41 +54,45 @@ export const SearchUser = ({
     }
   };
 
+  console.log(contacts);
+  
+
   const handleAddFriend = (contactId: number, contactName: string) => {
-    socket?.emit(
-      "sendFriendRequest",
-      userId,
-      contactId,
-      currentUserName,
-      contactName
-    );
+    // socket?.emit(
+    //   "sendFriendRequest",
+    //   userId,
+    //   contactId,
+    //   currentUserName,
+    //   contactName
+    // );
+    sendRequestMutation.mutate(contactId);
     setQuery("");
   };
 
-  useEffect(() => {
-    if (socket) {
-      const handleFriendRemoved = (friendId: number) => {
-        setcontacts((prevContacts) =>
-          prevContacts.map((contact) =>
-            contact.id === friendId
-              ? {
-                  ...contact,
-                  friends: contact.friends.filter(
-                    (friend) => friend.friend.id !== userId
-                  ),
-                }
-              : contact
-          )
-        );
-      };
+  // useEffect(() => {
+  //   if (socket) {
+  //     const handleFriendRemoved = (friendId: number) => {
+  //       setcontacts((prevContacts) =>
+  //         prevContacts.map((contact) =>
+  //           contact.id === friendId
+  //             ? {
+  //                 ...contact,
+  //                 friends: contact.friends.filter(
+  //                   (friend) => friend.friend.id !== userId
+  //                 ),
+  //               }
+  //             : contact
+  //         )
+  //       );
+  //     };
 
-      socket.on("friendRemoved", handleFriendRemoved);
+  //     socket.on("friendRemoved", handleFriendRemoved);
 
-      return () => {
-        socket.off("friendRemoved", handleFriendRemoved);
-      };
-    }
-  }, [socket, userId]);
+  //     return () => {
+  //       socket.off("friendRemoved", handleFriendRemoved);
+  //     };
+  //   }
+  // }, [socket, userId]);
 
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;

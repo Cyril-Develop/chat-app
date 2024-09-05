@@ -20,7 +20,10 @@ export const getAllUsers = async (token: string | null) => {
   }
 };
 
-export const getUser = async (userId: number | undefined, token: string | null) => {
+export const getUser = async (
+  userId: number | undefined,
+  token: string | null
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/`,
@@ -28,7 +31,7 @@ export const getUser = async (userId: number | undefined, token: string | null) 
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ userId }),
       }
@@ -126,6 +129,56 @@ export const editNotification = async (
         body: JSON.stringify({ notification }),
       }
     );
+    const res = await response.json();
+    if (!response.ok) {
+      throw new Error(res.error);
+    }
+    return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const sendFriendRequest = async (
+  receiverId: number,
+  token: string | null
+) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/request`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ receiverId }),
+      }
+    );
+
+    const res = await response.json();
+    if (!response.ok) {
+      throw new Error(res.error);
+    }
+    return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const getFriendRequest = async (token: string | null) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/request`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     const res = await response.json();
     if (!response.ok) {
       throw new Error(res.error);

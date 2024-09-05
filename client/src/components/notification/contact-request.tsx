@@ -3,6 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useAddContactMutation } from "@/hooks/add-contact";
+import  useGetRequest  from "@/hooks/get-request";
 
 interface ContactProps {
   senderId: string;
@@ -12,56 +13,71 @@ interface ContactProps {
 
 const ContactRequest = () => {
   const [contactRequests, setContactRequests] = useState<ContactProps[]>([]);
+  
   const { socket } = useSocketStore();
   const addContact = useAddContactMutation();
 
+
+  const { data } = useGetRequest();
+
   useEffect(() => {
-    socket?.on("receiveFriendRequest", (data: ContactProps) => {
-      setContactRequests((prevRequests) => [...prevRequests, data]);
-    });
+    if (data) {
+      setContactRequests(data);
+    }
+  }, [data]);
 
-    socket?.on("friendRequestRejected", (friendId) => {
-      setContactRequests((prevRequests) =>
-        prevRequests.filter((request) => request.senderId !== friendId)
-      );
-    });
+console.log(contactRequests.receivedRequests);
 
-    socket?.on("friendRequestAccepted", (friend) => {
-      setContactRequests((prevRequests) =>
-        prevRequests.filter((request) => request.senderId !== friend.id)
-      );
-    });
-    return () => {
-      socket?.off("receiveFriendRequest");
-      socket?.off("friendRequestRejected");
-      socket?.off("friendRequestAccepted");
-    };
-  }, [socket, contactRequests]);
 
-  const handleAcceptFriendRequest = (senderId: string, contactId: string) => {
-    socket?.emit("acceptFriendRequest", senderId, contactId);
-    addContact.mutate(senderId);
-  };
+  
 
-  const handleRejectFriendRequest = (senderId: string, contactId: string) => {
-    socket?.emit("rejectFriendRequest", senderId, contactId);
-  };
+  // useEffect(() => {
+  //   socket?.on("receiveFriendRequest", (data: ContactProps) => {
+  //     setContactRequests((prevRequests) => [...prevRequests, data]);
+  //   });
+
+  //   socket?.on("friendRequestRejected", (friendId) => {
+  //     setContactRequests((prevRequests) =>
+  //       prevRequests.filter((request) => request.senderId !== friendId)
+  //     );
+  //   });
+
+  //   socket?.on("friendRequestAccepted", (friend) => {
+  //     setContactRequests((prevRequests) =>
+  //       prevRequests.filter((request) => request.senderId !== friend.id)
+  //     );
+  //   });
+  //   return () => {
+  //     socket?.off("receiveFriendRequest");
+  //     socket?.off("friendRequestRejected");
+  //     socket?.off("friendRequestAccepted");
+  //   };
+  // }, [socket, contactRequests]);
+
+  // const handleAcceptFriendRequest = (senderId: string, contactId: string) => {
+  //   socket?.emit("acceptFriendRequest", senderId, contactId);
+  //   addContact.mutate(senderId);
+  // };
+
+  // const handleRejectFriendRequest = (senderId: string, contactId: string) => {
+  //   socket?.emit("rejectFriendRequest", senderId, contactId);
+  // };
 
   return (
     <ScrollArea className="h-72">
       <div className="flex flex-col gap-4">
-        {contactRequests?.map((contact) => (
+        {contactRequests.receivedRequests?.map((contact) => (
           <div
-            key={contact.senderId}
+            key={contact.sender.id}
             className="flex items-center justify-between"
           >
-            <div>{contact.senderName}</div>
+            <div>{contact.sender.username}</div>
             <div className="flex gap-2">
               <Button
                 title="Accepter la demande de contact"
-                onClick={() =>
-                  handleAcceptFriendRequest(contact.senderId, contact.contactId)
-                }
+                // onClick={() =>
+                //   handleAcceptFriendRequest(contact.senderId, contact.contactId)
+                // }
               >
                 Accepter
               </Button>
@@ -69,9 +85,9 @@ const ContactRequest = () => {
               <Button
                 variant="destructive"
                 title="Refuser la demande de contact"
-                onClick={() =>
-                  handleRejectFriendRequest(contact.senderId, contact.contactId)
-                }
+                // onClick={() =>
+                //   handleRejectFriendRequest(contact.senderId, contact.contactId)
+                // }
               >
                 Refuser
               </Button>

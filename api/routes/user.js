@@ -14,7 +14,8 @@ router.patch("/account", checkToken, userCtrl.updateAccount);
 router.delete("/", checkToken, userCtrl.deleteAccount);
 router.post("/request", checkToken, userCtrl.sendFriendRequest);
 router.get("/request", checkToken, userCtrl.getFriendRequest);
-router.post('/add', checkToken, userCtrl.addContact);
+router.post('/accept', checkToken, userCtrl.acceptFriendRequest);
+router.post('/refuse', checkToken, userCtrl.rejectFriendRequest);
 router.delete('/remove', checkToken, userCtrl.removeContact);
 
 module.exports = router;

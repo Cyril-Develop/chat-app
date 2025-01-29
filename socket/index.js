@@ -137,26 +137,36 @@ io.on("connection", (socket) => {
   });
 
   // Envoyer une demande d'ami
-  socket.on("sendFriendRequest", (userId, friendId, friendName, username) => {
-    const friendSocket = users.find((user) => user.userId === friendId);
+  socket.on("sendFriendRequest", (data) => {
+    const { id } = data;
+    const receiverSocket = users.find(
+      (user) => user.userId === data.receiver.id
+    );
 
-    if (friendSocket) {
+    if (receiverSocket) {
       const request = {
-        senderId: userId,
-        contactId: friendId,
-        senderName: friendName,
-        contactName: username,
+        id: id,
+        sender: {
+          id: data.receiver.id,
+          username: data.sender.username,
+          profileImage: data.sender.profileImage,
+        },
       };
+      console.log("request", request);
+
       friendRequests.push(request);
-      io.to(friendSocket.socketId).emit("receiveFriendRequest", request);
+      io.to(receiverSocket.socketId).emit("receiveFriendRequest", request);
     }
   });
 
   // Accepter une demande d'ami
-  socket.on("acceptFriendRequest", (userId, friendId) => {
-    console.log(userId, friendId);
+  /// friendId correspond à l'id de la demande d'ami pas l'id de l'ami
+  socket.on("acceptFriendRequest", (userId, requestId) => {
+    console.log("userId" + userId, friendId);
     const userSocket = users.find((user) => user.userId === userId);
     const friendSocket = users.find((user) => user.userId === friendId);
+
+    console.log(friendRequests);
 
     console.log("acceptFriendRequest", userId, friendId);
 
@@ -168,41 +178,51 @@ io.on("connection", (socket) => {
     );
 
     //récupérer le nom de l'utilisateur qui a envoyé la demande et le nom de l'utilisateur qui a accepté la demande
-    const senderName = friendRequests[requestIndex].senderName;
-    const contactName = friendRequests[requestIndex].contactName;
+    // const senderName = friendRequests[requestIndex].senderName;
+    // const contactName = friendRequests[requestIndex].contactName;
 
-    if (requestIndex !== -1) {
-      friendRequests.splice(requestIndex, 1);
+    // if (requestIndex !== -1) {
+    //   friendRequests.splice(requestIndex, 1);
 
-      if (userSocket) {
-        io.to(userSocket.socketId).emit("friendRequestAccepted", {
-          id: friendId,
-          username: contactName,
-        });
-      }
+    //   if (userSocket) {
+    //     io.to(userSocket.socketId).emit("friendRequestAccepted", {
+    //       id: friendId,
+    //       username: contactName,
+    //     });
+    //   }
 
-      if (friendSocket) {
-        io.to(friendSocket.socketId).emit("friendRequestAccepted", {
-          id: userId,
-          username: senderName,
-        });
-      }
-    }
+    //   if (friendSocket) {
+    //     io.to(friendSocket.socketId).emit("friendRequestAccepted", {
+    //       id: userId,
+    //       username: senderName,
+    //     });
+    //   }
+    // }
   });
 
   // Refuser une demande d'ami
-  socket.on("rejectFriendRequest", (userId, friendId) => {
-    const requestIndex = friendRequests.findIndex(
-      (req) => req.senderId === userId && req.contactId === friendId
-    );
+  socket.on("rejectFriendRequest", (senderId, requestId) => {
+    console.log(friendRequests);
 
-    if (requestIndex !== -1) {
-      friendRequests.splice(requestIndex, 1);
-      const friendSocket = users.find((user) => user.userId === friendId);
-      if (friendSocket) {
-        io.to(friendSocket.socketId).emit("friendRequestRejected", userId);
-      }
-    }
+    console.log("senderId " + senderId, "requestId " + requestId);
+
+    const senderSocket = users.find((user) => user.userId === senderId);
+
+    console.log(senderId);
+
+    // const requestIndex = friendRequests.findIndex(
+    //   (req) => req.senderId === userId && req.contactId === friendId
+    // );
+
+    // console.log(requestIndex);
+
+    // if (requestIndex !== -1) {
+    //   friendRequests.splice(requestIndex, 1);
+    //   const friendSocket = users.find((user) => user.userId === friendId);
+    //   if (friendSocket) {
+    //     io.to(friendSocket.socketId).emit("friendRequestRejected", userId);
+    //   }
+    // }
   });
 
   // REMOVE FRIEND

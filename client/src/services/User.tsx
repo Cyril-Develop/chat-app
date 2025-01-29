@@ -189,10 +189,37 @@ export const getFriendRequest = async (token: string | null) => {
   }
 };
 
-export const addContact = async (contactId: string, token: string | null) => {
+export const acceptFriendRequest = async (contactId: string, token: string | null) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/add`,
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/accept`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ contactId }),
+      }
+    );
+
+    const res = await response.json();
+    if (!response.ok) {
+      throw new Error(res.error);
+    }
+    return res;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const rejectFriendRequest = async (
+  contactId: string,
+  token: string | null
+) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/refuse`,
       {
         method: "POST",
         headers: {

@@ -7,7 +7,7 @@ function Footer() {
       >
         Cyril-Develop
       </a>
-      &nbsp; &copy; 2024
+      &nbsp; &copy; 2025
     </footer>
   );
 }

@@ -42,6 +42,18 @@ export interface SearchUserProps {
   id: number; username: string ;
 }
 
+export interface receivedFriendRequests {
+  id: number;
+  sender: {
+    id: number;
+    sender : {
+      id: number,
+      username: string;
+      profileImage: string;
+    }
+  };
+}
+
 export interface Friend {
   id: number;
 }
@@ -55,6 +67,7 @@ export interface Users {
   username: string;
   profileImage: string;
   friends: FriendList[];
+  receivedFriendRequests: receivedFriendRequests[];
 }
 
 export interface PrivateChatProps {

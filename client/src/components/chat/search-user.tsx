@@ -18,8 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
-import { useSocketStore } from "@/store/socket.store";
-import { SearchUserProps, Users, FriendList } from "@/types/chat";
+//import { useSocketStore } from "@/store/socket.store";
+import { SearchUserProps, Users, FriendList, receivedFriendRequests } from "@/types/chat";
 import { useSendRequestMutation } from "@/hooks/send-request";
 
 export const SearchUser = ({
@@ -31,9 +31,9 @@ export const SearchUser = ({
   const [query, setQuery] = useState("");
   const [contacts, setcontacts] = useState<Users[]>([]);
   const { data } = useGetUsers();
-  const { socket } = useSocketStore();
+  //const { socket } = useSocketStore();
   const userId = currentUser?.id;
-  const currentUserName = currentUser?.username;
+  //const currentUserName = currentUser?.username;
   const sendRequestMutation = useSendRequestMutation();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,16 +55,8 @@ export const SearchUser = ({
   };
 
   console.log(contacts);
-  
 
-  const handleAddFriend = (contactId: number, contactName: string) => {
-    // socket?.emit(
-    //   "sendFriendRequest",
-    //   userId,
-    //   contactId,
-    //   currentUserName,
-    //   contactName
-    // );
+  const handleAddFriend = (contactId: number) => {
     sendRequestMutation.mutate(contactId);
     setQuery("");
   };
@@ -97,6 +89,15 @@ export const SearchUser = ({
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
+  };
+
+  const hasPendingFriendRequestFromUser = (
+    receivedFriendRequests: receivedFriendRequests[],
+    userId: number
+  ) => {
+    return receivedFriendRequests.some(
+      (request) => request.sender.id === userId
+    );
   };
 
   return (
@@ -145,14 +146,21 @@ export const SearchUser = ({
 
                         {isFriend(contact.friends) ? (
                           <Icons.check width={16} height={16} />
+                        ) : hasPendingFriendRequestFromUser(
+                            contact.receivedFriendRequests,
+                            userId
+                          ) ? (
+                          <Icons.loader
+                            width={16}
+                            height={16}
+                            className="animate-spin"
+                          />
                         ) : (
                           <Button
                             variant="linkForm"
                             title="Ajouter à la liste de contacts"
                             className="p-0"
-                            onClick={() =>
-                              handleAddFriend(contact.id, contact.username)
-                            }
+                            onClick={() => handleAddFriend(contact.id)}
                           >
                             <Icons.add width={16} height={16} />
                           </Button>

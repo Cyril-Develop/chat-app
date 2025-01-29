@@ -2,34 +2,28 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
-import { sendFriendRequest } from "@/services/User";
+import { rejectFriendRequest } from "@/services/User";
 import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
 
-export const useSendRequestMutation = () => {
+export const useRejectFriendRequestMutation = () => {
   const { token, logout } = useUserStore((state) => state);
-  const { socket } = useSocketStore();
+  //const { socket } = useSocketStore();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (receiverId: number) => sendFriendRequest(receiverId, token),
+    mutationFn: (contactId: string) => rejectFriendRequest(contactId, token),
     onSuccess: (data) => {
       toast({
         title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });
-      socket?.emit("sendFriendRequest", data.newRequest);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {
         handleTokenExpiration(logout);
-      } else {
-        toast({
-          title: error.message,
-          variant: "destructive",
-          logo: <Icons.alert />,
-        });
       }
     },
   });

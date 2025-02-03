@@ -289,12 +289,13 @@ exports.sendFriendRequest = async (req, res) => {
   }
 
   try {
-    // Vérifier si une demande d'ami est déjà en attente
+    // Vérifier si une demande d'ami est déjà en attente dans un sens ou dans l'autre
     const existingRequest = await prisma.friendRequest.findFirst({
       where: {
-        senderId,
-        receiverId,
-        status: "pending",
+        OR: [
+          { senderId, receiverId, status: "pending" },
+          { senderId: receiverId, receiverId: senderId, status: "pending" },
+        ],
       },
     });
 
@@ -320,6 +321,7 @@ exports.sendFriendRequest = async (req, res) => {
       },
       select: {
         id: true,
+        status: true,
         sender: {
           select: {
             id: true,
@@ -336,7 +338,7 @@ exports.sendFriendRequest = async (req, res) => {
         },
         createdAt: true,
       },
-    });    
+    });
 
     res.status(201).json({
       message: "Demande d'ami envoyée avec succès.",
@@ -362,13 +364,23 @@ exports.getFriendRequest = async (req, res) => {
   console.log("userId", userId);
 
   try {
-    const sentRequests = await prisma.friendRequest.findMany({
+    const friendRequests = await prisma.friendRequest.findMany({
       where: {
-        senderId: userId,
-        status: "pending",
+        OR: [
+          { senderId: userId, status: "pending" },
+          { receiverId: userId, status: "pending" },
+        ],
       },
       select: {
         id: true,
+        status: true,
+        sender: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+          },
+        },
         receiver: {
           select: {
             id: true,
@@ -380,28 +392,9 @@ exports.getFriendRequest = async (req, res) => {
       },
     });
 
-    const receivedRequests = await prisma.friendRequest.findMany({
-      where: {
-        receiverId: userId,
-        status: "pending",
-      },
-      select: {
-        id: true,
-        sender: {
-          select: {
-            id: true,
-            username: true,
-            profileImage: true,
-          },
-        },
-        createdAt: true,
-      },
-    });
+    console.log("friendRequests", friendRequests);
 
-    console.log("sentRequests", sentRequests);
-    console.log("receivedRequests", receivedRequests);
-
-    res.status(200).json({ sentRequests, receivedRequests });
+    res.status(200).json(friendRequests);
   } catch (error) {
     console.error("Error getting friend requests:", error);
     res
@@ -427,6 +420,7 @@ exports.acceptFriendRequest = async (req, res) => {
   }
 
   try {
+    // Vérifier si l'amitié existe déjà
     const existingFriendship = await prisma.friend.findFirst({
       where: {
         OR: [
@@ -442,16 +436,27 @@ exports.acceptFriendRequest = async (req, res) => {
         .json({ error: "Ce contact fait déjà partie de votre liste d'amis." });
     }
 
-    const friendship = await prisma.$transaction([
-      prisma.friend.create({
-        data: { userId: userId, friendId: contactId },
-        include: { friend: true },
-      }),
-      prisma.friend.create({
-        data: { userId: contactId, friendId: userId },
-        include: { friend: true },
-      }),
-    ]);
+    // Accepter la demande d'ami et supprimer la demande en un seul batch transaction
+    const [friendship1, friendship2, deletedRequest] =
+      await prisma.$transaction([
+        // Création de l'amitié dans les deux sens
+        prisma.friend.create({
+          data: { userId: userId, friendId: contactId },
+          include: { friend: true },
+        }),
+        prisma.friend.create({
+          data: { userId: contactId, friendId: userId },
+          include: { friend: true },
+        }),
+        // Suppression de la demande d'ami
+        prisma.friendRequest.deleteMany({
+          where: {
+            senderId: contactId,
+            receiverId: userId,
+            status: "pending",
+          },
+        }),
+      ]);
 
     const user1 = await prisma.user.findUnique({ where: { id: userId } });
     const user2 = await prisma.user.findUnique({ where: { id: contactId } });
@@ -470,6 +475,9 @@ exports.acceptFriendRequest = async (req, res) => {
 exports.rejectFriendRequest = async (req, res) => {
   const { contactId } = req.body;
   const userId = req.auth.userId;
+
+  console.log("contactId", contactId);
+  console.log("userId", userId);
 
   if (!userId || !contactId) {
     return res
@@ -502,11 +510,19 @@ exports.rejectFriendRequest = async (req, res) => {
       }),
     ]);
 
-    res.status(200).json({
-      message: "Demande d'ami refusée avec succès.",
-      contactId,
-      userId,
-    });
+    // Suppression de la demande d'ami
+    prisma.friendRequest.deleteMany({
+      where: {
+        senderId: contactId,
+        receiverId: userId,
+        status: "pending",
+      },
+    }),
+      res.status(200).json({
+        message: "Demande d'ami refusée avec succès.",
+        contactId,
+        userId,
+      });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
     res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });

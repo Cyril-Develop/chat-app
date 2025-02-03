@@ -12,6 +12,26 @@ export interface MessageProps {
   };
 }
 
+export interface PrivateMessageProps {
+  id: number;
+  message: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  receiverId: number;
+  user: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+  receiver: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+}
+
 export interface MessagesProviderProps {
   messages: {
     id: number;
@@ -35,6 +55,10 @@ export interface SendMessageProps {
   recipient: Recipient;
 }
 
+export interface SendMessagePrivateProps {  
+  recipient: Recipient;
+}
+
 export interface EmojiObject {
   emoji: string;
 }
@@ -42,4 +66,10 @@ export interface EmojiObject {
 export interface MessageFormProps {
   message: string;
   file: File | null;
+}
+
+export interface PrivateMessageFormProps {
+  message: string;
+  file: File | null;
+  receiverId: number;
 }

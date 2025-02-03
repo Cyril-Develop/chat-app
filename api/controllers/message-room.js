@@ -22,6 +22,9 @@ exports.getMessages = async (req, res) => {
       include: { user: true },
     });
 
+    console.log(messages);
+    
+    
     // Retournez les messages
     return res.status(200).json(messages);
   } catch (error) {

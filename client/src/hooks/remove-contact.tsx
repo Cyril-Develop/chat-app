@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
@@ -8,6 +8,7 @@ import { useSocketStore } from "@/store/socket.store";
 
 export const useRemoveContactMutation = () => {
   const { token, logout } = useUserStore((state) => state);
+  const queryClient = useQueryClient();
   const { socket } = useSocketStore();
 
   return useMutation({
@@ -18,7 +19,8 @@ export const useRemoveContactMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
-      socket?.emit("removeFriend", data.userId, data.contactId);
+      socket?.emit("removeFriend", data);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
       if (error.message === "Token expiré !") {

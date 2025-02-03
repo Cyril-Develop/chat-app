@@ -36,16 +36,44 @@ export function Contact({ currentUser }: ContactProps) {
   }, [currentUser]);
 
   useEffect(() => {
-    socket?.on("friendRequestAccepted", (currentUser: FriendProps) => {
-      setFriends((prevFriends) => [...prevFriends, currentUser]);
+    socket?.on("friendRequestAccepted", (data) => {
+      // Vérifiez si l'utilisateur connecté est impliqué dans la demande
+      if (
+        currentUser.id === data.senderId ||
+        currentUser.id === data.receiverId
+      ) {
+        // Déterminez le nouvel ami et son nom
+        const newFriend =
+          currentUser.id === data.senderId ? data.receiverId : data.senderId;
+        const newUsername =
+          currentUser.id === data.senderId
+            ? data.receiverName
+            : data.senderName;
+
+        // Ajoutez le nouvel ami à la liste
+        setFriends((prevFriends) => [
+          ...prevFriends,
+          { id: newFriend, username: newUsername },
+        ]);
+      }
     });
 
-    socket?.on("friendRemoved", (friendId) => {
+    socket?.on("friendRemoved", (friendId: number) => {
+      if (friendId === contactId) {
+        setContactId(null);
+      }
       setFriends((prevFriends) =>
         prevFriends.filter((friend) => friend.id !== friendId)
       );
     });
-  }, [socket]);
+
+    return () => {
+      socket?.off("friendRequestAccepted");
+      socket?.off("friendRemoved");
+    };
+  }, [socket, currentUser, contactId]);
+
+  console.log("Friends: ", friends);
 
   const handlePrivateChat = (friendId: number) => {
     // Leave current room if any

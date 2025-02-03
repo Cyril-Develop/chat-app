@@ -189,7 +189,7 @@ export const getFriendRequest = async (token: string | null) => {
   }
 };
 
-export const acceptFriendRequest = async (contactId: string, token: string | null) => {
+export const acceptFriendRequest = async (contactId: number, token: string | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/accept`,
@@ -214,7 +214,7 @@ export const acceptFriendRequest = async (contactId: string, token: string | nul
 };
 
 export const rejectFriendRequest = async (
-  contactId: string,
+  contactId: number,
   token: string | null
 ) => {
   try {

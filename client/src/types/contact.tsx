@@ -3,7 +3,10 @@ export interface FriendsListProps {
 }
 
 export interface ContactProps {
-  currentUser: { friendsList: { id: number; username: string }[] };
+  currentUser: {
+    id: number;
+    friendsList: { id: number; username: string }[];
+  };
 }
 
 export interface FriendProps {

@@ -1,4 +1,5 @@
 import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -6,21 +7,25 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 //import { useSocketStore } from "@/store/socket.store";
-import { SearchUserProps, Users, FriendList, receivedFriendRequests } from "@/types/chat";
 import { useSendRequestMutation } from "@/hooks/send-request";
+import {
+  FriendList,
+  receivedFriendRequests,
+  SearchUserProps,
+  Users,
+} from "@/types/chat";
 
 export const SearchUser = ({
   currentUser,
@@ -31,9 +36,7 @@ export const SearchUser = ({
   const [query, setQuery] = useState("");
   const [contacts, setcontacts] = useState<Users[]>([]);
   const { data } = useGetUsers();
-  //const { socket } = useSocketStore();
   const userId = currentUser?.id;
-  //const currentUserName = currentUser?.username;
   const sendRequestMutation = useSendRequestMutation();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,50 +57,14 @@ export const SearchUser = ({
     }
   };
 
-  console.log(contacts);
-
   const handleAddFriend = (contactId: number) => {
     sendRequestMutation.mutate(contactId);
     setQuery("");
   };
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     const handleFriendRemoved = (friendId: number) => {
-  //       setcontacts((prevContacts) =>
-  //         prevContacts.map((contact) =>
-  //           contact.id === friendId
-  //             ? {
-  //                 ...contact,
-  //                 friends: contact.friends.filter(
-  //                   (friend) => friend.friend.id !== userId
-  //                 ),
-  //               }
-  //             : contact
-  //         )
-  //       );
-  //     };
-
-  //     socket.on("friendRemoved", handleFriendRemoved);
-
-  //     return () => {
-  //       socket.off("friendRemoved", handleFriendRemoved);
-  //     };
-  //   }
-  // }, [socket, userId]);
-
   const isFriend = (friends: FriendList[]) => {
     if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
-  };
-
-  const hasPendingFriendRequestFromUser = (
-    receivedFriendRequests: receivedFriendRequests[],
-    userId: number
-  ) => {
-    return receivedFriendRequests.some(
-      (request) => request.sender.id === userId
-    );
   };
 
   return (
@@ -146,15 +113,6 @@ export const SearchUser = ({
 
                         {isFriend(contact.friends) ? (
                           <Icons.check width={16} height={16} />
-                        ) : hasPendingFriendRequestFromUser(
-                            contact.receivedFriendRequests,
-                            userId
-                          ) ? (
-                          <Icons.loader
-                            width={16}
-                            height={16}
-                            className="animate-spin"
-                          />
                         ) : (
                           <Button
                             variant="linkForm"

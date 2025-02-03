@@ -14,6 +14,9 @@ const Message = ({ message }: MessageProps) => {
     deleteMessage.mutate(messageId);
   };
 
+  console.log(message);
+  
+
   const isMyMessage = message.user.id === userId;
 
   return (

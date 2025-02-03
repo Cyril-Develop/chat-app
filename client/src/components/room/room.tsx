@@ -1,11 +1,11 @@
-import SendMessage from "@/components/message/send-message";
 import MessagesProvider from "@/components/message/messages-provider";
+import SendMessage from "@/components/message/send-message-room";
 import RoomHeader from "@/components/room/room-header";
-import useGetRoom from "@/hooks/get-room";
 import { Skeleton } from "@/components/ui/skeleton";
+import useGetRoom from "@/hooks/get-room";
 import { useSocketStore } from "@/store/socket.store";
+import { Message, RoomProps } from "@/types/chat";
 import { useEffect, useState } from "react";
-import { RoomProps, Message } from "@/types/chat";
 
 const Room = ({ roomId, currentUser }: RoomProps) => {
   const { socket } = useSocketStore();
@@ -61,7 +61,7 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
 
           <MessagesProvider messages={messages} />
 
-          <SendMessage recipient={{ type: "room", id: roomId }}  />
+          <SendMessage recipient={{ type: "room", id: roomId }} />
         </>
       )}
     </div>

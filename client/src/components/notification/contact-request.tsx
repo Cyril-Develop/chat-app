@@ -5,23 +5,31 @@ import { useEffect, useState } from "react";
 import { useAcceptFriendRequestMutation } from "@/hooks/accept-friend-request";
 import { useRejectFriendRequestMutation } from "@/hooks/reject-friend-request";
 import useGetRequest from "@/hooks/get-request";
-import { log } from "node:console";
+import { toast } from "@/components/ui/use-toast";
 
-
-interface ContactRequests {
-  receivedRequests: {
-    id: string;
-    sender: {
-      id: string;
-      username: string;
-    };
-  }[];
+interface FriendRequest {
+  id: number;
+  status: string;
+  sender: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+  receiver: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+  createdAt: string;
 }
 
-const ContactRequest = () => {
-  const [contactRequests, setContactRequests] = useState<ContactRequests>({
-    receivedRequests: [],
-  });
+interface CurrentUserId {
+  id: number;
+}
+
+const ContactRequest = ({ currentUser }: { currentUser: CurrentUserId }) => {
+  const userId = currentUser?.id;
+  const [contactRequests, setContactRequests] = useState<FriendRequest[]>([]);
 
   const { socket } = useSocketStore();
   const acceptFriendRequest = useAcceptFriendRequestMutation();
@@ -35,65 +43,60 @@ const ContactRequest = () => {
     }
   }, [data]);
 
-  console.log(contactRequests);
-
-  //console.log(contactRequests.receivedRequests);
+  useEffect(() => {
+    if (data && userId) {
+      const receivedRequests = data.filter(
+        (request: FriendRequest) => request.receiver.id === userId
+      );
+      setContactRequests(receivedRequests);
+    }
+  }, [data, userId]);
 
   useEffect(() => {
     socket?.on("receiveFriendRequest", (data) => {
-      console.log(data);
-      setContactRequests((prevRequests) => ({
-        ...prevRequests,
-        receivedRequests: [...prevRequests.receivedRequests, data], 
-      }));
+      setContactRequests((prevRequests) => [...prevRequests, data]);
     });
 
-    // socket?.on("friendRequestRejected", (friend) => {
-    //   console.log(friend);
-
-    //   setContactRequests((prevRequests) =>
-    //     prevRequests.filter((request) => request.senderId !== friend.id)
-    //   );
-    // });
-
-    // socket?.on("friendRequestAccepted", (friend) => {
-    //   setContactRequests((prevRequests) =>
-    //     prevRequests.filter((request) => request.senderId !== friend.id)
-    //   );
-    // });
     return () => {
       socket?.off("receiveFriendRequest");
-      // socket?.off("friendRequestRejected");
-      // socket?.off("friendRequestAccepted");
     };
-  }, [socket, contactRequests]);
+  }, [socket]);
 
-  const handleAcceptFriendRequest = (senderId: string, requestId: string) => {
-    console.log(senderId, requestId);
-    
-    socket?.emit("acceptFriendRequest", senderId, requestId);
-    console.log(senderId, requestId);
-    //acceptFriendRequest.mutate(senderId);
+  const handleAcceptFriendRequest = (
+    senderId: number,
+    receiverId: number,
+    requestId: number
+  ) => {
+    acceptFriendRequest.mutate(senderId);
+
+    removeRequest(requestId);
+
+    socket?.emit("acceptFriendRequest", senderId, receiverId, requestId);
   };
 
-  const handleRejectFriendRequest = (senderId: string, requestId: string) => {
-    console.log(senderId, requestId);
+  const handleRejectFriendRequest = (
+    senderId: number,
+    receiverId: number,
+    requestId: number
+  ) => {
+    rejectFriendRequest.mutate(senderId);
 
-    // Mettre à jour l'état pour retirer la demande de contact
-    // setContactRequests((prevRequests) =>
-    //   prevRequests.filter((request) => request.id !== requestId)
-    // );
-      
-    
+    removeRequest(requestId);
 
-    //socket?.emit("rejectFriendRequest", senderId, requestId);
-    //rejectFriendRequest.mutate(senderId);
+    socket?.emit("rejectFriendRequest", senderId, receiverId, requestId);
+  };
+
+  // retirer la demande de contact de la liste
+  const removeRequest = (requestId: number) => {
+    setContactRequests((prevRequests) =>
+      prevRequests.filter((request) => request.id !== requestId)
+    );
   };
 
   return (
     <ScrollArea className="h-72">
       <div className="flex flex-col gap-4">
-        {contactRequests.receivedRequests?.map((request) => (
+        {contactRequests.map((request) => (
           <div
             key={request.sender.id}
             className="flex items-center justify-between"
@@ -103,7 +106,11 @@ const ContactRequest = () => {
               <Button
                 title="Accepter la demande de contact"
                 onClick={() =>
-                  handleAcceptFriendRequest(request.sender.id, request.id)
+                  handleAcceptFriendRequest(
+                    request.sender.id,
+                    request.receiver.id,
+                    request.id
+                  )
                 }
               >
                 Accepter
@@ -113,7 +120,11 @@ const ContactRequest = () => {
                 variant="destructive"
                 title="Refuser la demande de contact"
                 onClick={() =>
-                  handleRejectFriendRequest(request.sender.id, request.id)
+                  handleRejectFriendRequest(
+                    request.sender.id,
+                    request.receiver.id,
+                    request.id
+                  )
                 }
               >
                 Refuser

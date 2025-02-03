@@ -77,3 +77,9 @@ export const MessageFormSchema = z.object({
   message: z.string(),
   file: z.instanceof(File).nullable(),
 });
+
+export const PrivateMessageFormSchema = z.object({
+  message: z.string(),
+  file: z.instanceof(File).nullable(),
+  receiverId: z.number(),
+});

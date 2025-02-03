@@ -14,35 +14,55 @@ generator client {
 }
 
 model User {
-  id               Int            @id @default(autoincrement())
-  createdAt        DateTime       @default(now())
-  email            String         @unique
-  password         String         @db.VarChar(255)
-  username         String         @unique
-  bio              String?        @db.VarChar(150)
-  profileImage     String         @default("default.jpg")
-  notification     String         @default("accept")
-  role             Role           @default(USER)
-  chatRooms        UserChatRoom[] // Relation avec les salons de chat créés
-  friends          Friend[]       @relation("UserFriends") // Représente les amis d'un utilisateur
-  friendOf         Friend[]       @relation("FriendUsers") // Représente les utilisateurs qui ont ajouté l'utilisateur comme ami
-  createdChatRooms ChatRoom[]     @relation("CreatorChatRooms")
-  messages         Message[]      @relation("UserMessages")
+  id               Int               @id @default(autoincrement())
+  createdAt        DateTime          @default(now())
+  email            String            @unique
+  password         String            @db.VarChar(255)
+  username         String            @unique
+  bio              String?           @db.VarChar(150)
+  profileImage     String            @default("default.jpg")
+  notification     String            @default("accept")
+  role             Role              @default(USER)
+  
+  chatRooms        UserChatRoom[] 
+  friends          Friend[]          @relation("UserFriends") 
+  friendOf         Friend[]          @relation("FriendUsers") 
+  createdChatRooms ChatRoom[]        @relation("CreatorChatRooms")
+  messages         Message[]         @relation("UserMessages")
+  
   sentFriendRequests    FriendRequest[] @relation("SenderFriendRequests")
   receivedFriendRequests FriendRequest[] @relation("ReceiverFriendRequests")
+
+  sentMessages     PrivateMessage[]  @relation("SentPrivateMessages") 
+  receivedMessages PrivateMessage[]  @relation("ReceivedPrivateMessages") 
 }
 
 
 model Message {
   id         Int      @id @default(autoincrement())
   message    String   @default("")
-  image      String?  
+  image      String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     Int
   chatRoomId Int
   user       User     @relation(fields: [userId], references: [id], name: "UserMessages")
   chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], name: "ChatRoomMessages")
+}
+
+model PrivateMessage {
+  id         Int      @id @default(autoincrement())
+  message    String
+  image      String?  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int  
+  receiverId Int
+
+  user       User @relation("SentPrivateMessages", fields: [userId], references: [id])  
+  receiver   User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id]) 
+
+  @@index([userId, receiverId])
 }
 
 model ChatRoom {
@@ -78,11 +98,11 @@ model Friend {
 }
 
 model FriendRequest {
-  id        Int      @id @default(autoincrement())
-  senderId  Int
+  id         Int      @id @default(autoincrement())
+  senderId   Int
   receiverId Int
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
 
   sender   User @relation("SenderFriendRequests", fields: [senderId], references: [id])
   receiver User @relation("ReceiverFriendRequests", fields: [receiverId], references: [id])

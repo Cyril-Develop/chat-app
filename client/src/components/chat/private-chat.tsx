@@ -1,29 +1,45 @@
 import HeaderChat from "@/components/chat/chat-header";
-import SendMessage from "../message/send-message";
+import MessagesProvider from "@/components/message/messages-provider";
 import useGetUser from "@/hooks/get-user";
-import { PrivateChatProps } from "@/types/chat";
 import { useSocketStore } from "@/store/socket.store";
-import { useEffect } from "react";
-import { useContactStore } from "@/store/contact.store";
+import { PrivateChatProps } from "@/types/chat";
+import { useEffect, useState } from "react";
+import SendMessage from "../message/send-message-private";
+import useGetPrivateMessage from "@/hooks/get-private-message";
+import { PrivateMessageProps } from "@/types/message";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
   const { data: contactInfos } = useGetUser(contactId);
-  const { setContactId } = useContactStore();
+  const [messages, setMessages] = useState<PrivateMessageProps[]>([]);
   const { socket } = useSocketStore();
+  const { data } = useGetPrivateMessage();
 
   useEffect(() => {
-    socket?.on("friendRemoved", (friendId: number) => {
-      if (friendId === contactId) {
-        setContactId(null);
-      }
-    });
-  }, [socket, contactId]);
+    if (data) {
+      setMessages(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const handleMessage = (data: PrivateMessageProps) => {
+      setMessages((prev) => [...prev, data]);
+    };
+
+    socket?.on("getPrivateMessage", handleMessage);
+
+    return () => {
+      socket?.off("getPrivateMessage", handleMessage);
+    };
+  }, [socket]);
+
+  console.log(messages);
 
   return (
     <div className="page_room">
       {contactInfos && (
         <>
           <HeaderChat contactInfos={contactInfos} />
+          <MessagesProvider messages={messages} />
           <SendMessage recipient={{ type: "user", id: contactId }} />
         </>
       )}

@@ -27,12 +27,17 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
 
     socket?.on("getPrivateMessage", handleMessage);
 
+    socket?.on("deletePrivateMessage", (messageId) => {
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg.id !== messageId)
+      );
+    });
+
     return () => {
       socket?.off("getPrivateMessage", handleMessage);
+      socket?.off("deletePrivateMessage");
     };
   }, [socket]);
-
-  console.log(messages);
 
   return (
     <div className="page_room">

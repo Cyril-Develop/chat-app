@@ -4,18 +4,21 @@ import { Icons } from "@/components/Icons";
 import { Button } from "../ui/button";
 import { getUserId } from "@/utils/get-userId";
 import { useDeleteMessageMutation } from "@/hooks/delete-message";
+import { useDeletePrivateMessageMutation } from "@/hooks/delete-private-message";
 import { MessageProps } from "@/types/message";
 
 const Message = ({ message }: MessageProps) => {
   const userId = getUserId();
-  const deleteMessage = useDeleteMessageMutation();
+  const deleteMessageInRoom = useDeleteMessageMutation();
+  const deletePrivateMessage = useDeletePrivateMessageMutation();
 
   const handleDelete = (messageId: number) => {
-    deleteMessage.mutate(messageId);
+    if (message.receiverId) {
+      deletePrivateMessage.mutate(messageId);
+    } else {
+      deleteMessageInRoom.mutate(messageId);
+    }
   };
-
-  console.log(message);
-  
 
   const isMyMessage = message.user.id === userId;
 

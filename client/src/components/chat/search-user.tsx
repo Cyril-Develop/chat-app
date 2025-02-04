@@ -50,6 +50,8 @@ export const SearchUser = ({
       );
 
       if (filteredUsers) {
+        console.log(filteredUsers);
+        
         setcontacts(filteredUsers);
       }
     } else {

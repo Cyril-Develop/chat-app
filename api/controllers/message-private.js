@@ -25,9 +25,6 @@ exports.sendMessage = async (req, res) => {
       },
     });
 
-    console.log(privateMessage);
-    
-
     return res.status(201).json(privateMessage);
   } catch (error) {
     return res.status(500).json({
@@ -76,10 +73,26 @@ exports.deleteMessage = async (req, res) => {
       return res.status(404).json({ error: "Message not found." });
     }
 
+    if (message.image) {
+      const imageToDelete = path.join("images/message", message.image);
+      fs.unlink(imageToDelete, (err) => {
+        if (err) console.error("Error deleting old image:", err);
+      });
+    }
+
+    // Vérifiez si l'utilisateur est l'auteur du message
+    if (message.userId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not allowed to delete this message." });
+    }
+
     // Supprimer le message
     await prisma.privateMessage.delete({ where: { id: messageId } });
 
-    return res.status(200).json({ message: "Message supprimé avec succès." });
+    return res
+      .status(200)
+      .json({ message: "Message supprimé avec succès.", messageId });
   } catch (error) {
     console.error(error);
     return res

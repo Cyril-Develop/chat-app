@@ -5,6 +5,7 @@ import DropDown from "@/components/chat/DropDown";
 import StatutIndicator from "@/components/statut-indicator";
 import { useSocketStore } from "@/store/socket.store";
 import { HandleUserStatusChangedProps } from "@/types/user";
+import { Separator } from "@/components/ui/separator";
 
 const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   const { socket, users } = useSocketStore();
@@ -31,30 +32,33 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   }, [socket, users, contactInfos.id]);
 
   return (
-    <div className="flex justify-between pb-2 text-md">
-      <div className="flex gap-2">
-        <div className="flex relative w-10 h-10">
-          {isConnected && <StatutIndicator />}
-          <Avatar>
-            <AvatarImage
-              src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
-                contactInfos.profileImage
-              }`}
-              className="rounded-full object-cover"
-              alt={contactInfos.username}
-            />
-            <AvatarFallback>
-              <span>{contactInfos.username}</span>
-            </AvatarFallback>
-          </Avatar>
+    <>
+      <div className="flex justify-between pb-2 text-md">
+        <div className="flex gap-2">
+          <div className="flex relative w-10 h-10">
+            {isConnected && <StatutIndicator />}
+            <Avatar>
+              <AvatarImage
+                src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
+                  contactInfos.profileImage
+                }`}
+                className="rounded-full object-cover"
+                alt={contactInfos.username}
+              />
+              <AvatarFallback>
+                <span>{contactInfos.username}</span>
+              </AvatarFallback>
+            </Avatar>
+          </div>
+          <div>
+            <h2 className="font-semibold">{contactInfos.username}</h2>
+            <p className="text-sm">{contactInfos.bio}</p>
+          </div>
         </div>
-        <div>
-          <h2 className="font-semibold">{contactInfos.username}</h2>
-          <p className="text-sm">{contactInfos.bio}</p>
-        </div>
+        <DropDown />
       </div>
-      <DropDown />
-    </div>
+      <Separator />
+    </>
   );
 };
 

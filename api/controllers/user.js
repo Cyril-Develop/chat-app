@@ -148,15 +148,13 @@ exports.updateUser = async (req, res) => {
     const id = req.auth.userId;
     const { username, bio } = req.body;
 
-    console.log(username, bio);
-
     let updatedFields = {};
     if (username) {
       updatedFields.username = username;
     }
-    if (bio) {
-      updatedFields.bio = bio;
-    }
+
+    updatedFields.bio = bio;
+
     // Get image profile
     const currentUser = await prisma.user.findUnique({
       where: { id },

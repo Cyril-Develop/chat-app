@@ -9,6 +9,7 @@ export interface MessageProps {
       username: string;
       profileImage: string;
     };
+    receiverId?: number;
   };
 }
 

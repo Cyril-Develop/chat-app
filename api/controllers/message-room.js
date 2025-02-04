@@ -24,7 +24,6 @@ exports.getMessages = async (req, res) => {
 
     console.log(messages);
     
-    
     // Retournez les messages
     return res.status(200).json(messages);
   } catch (error) {

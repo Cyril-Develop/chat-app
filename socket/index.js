@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
     io.emit("deleteRoom", id);
   });
 
-  // SEND MESSAGE
+  // SEND MESSAGE IN ROOM
   socket.on(
     "sendMessage",
     ({
@@ -139,21 +139,55 @@ io.on("connection", (socket) => {
   // SEND PRIVATE MESSAGE
   socket.on("sendPrivateMessage", (data) => {
     console.log("PrivateMessage", data);
-  
-    const receiverSocket = users.find((user) => user.userId === data.receiverId);
+
+    const receiverSocket = users.find(
+      (user) => user.userId === data.receiverId
+    );
     const senderSocket = users.find((user) => user.userId === data.userId);
-  
+
     // Envoyer le message au destinataire
     if (receiverSocket) {
       io.to(receiverSocket.socketId).emit("getPrivateMessage", data);
     }
-  
+
     // Envoyer le message à l'expéditeur (pour qu'il l'affiche aussi)
     if (senderSocket) {
       io.to(senderSocket.socketId).emit("getPrivateMessage", data);
     }
   });
+
+  // DELETE PRIVATE MESSAGE
+  socket.on("deletePrivateMessage", (messageId) => {
+    io.emit("deletePrivateMessage", messageId);
+  });
+
+  // SEND FRIEND REQUEST
+  socket.on("sendFriendRequest", (data) => {
+    const { id } = data;
+    const receiverSocket = users.find(
+      (user) => user.userId === data.receiver.id
+    );
+    if (receiverSocket) {
+      const request = {
+        id: id,
+        sender: {
+          id: data.sender.id,
+          username: data.sender.username,
+          profileImage: data.sender.profileImage,
+        },
+        receiver: {
+          id: data.receiver.id,
+          username: data.receiver.username,
+          profileImage: data.receiver.profileImage,
+        },
+      };
+      friendRequests.push(request);
+      console.log(request);
+      io.to(receiverSocket.socketId).emit("receiveFriendRequest", request);
+    }
   
+    
+  });
 
   // ACCEPT FRIEND REQUEST
   socket.on("acceptFriendRequest", (senderId, receiverId, requestId) => {
@@ -161,6 +195,7 @@ io.on("connection", (socket) => {
       (req) => req.id === requestId
     );
 
+  
     // get sender and receiver names
     const senderName = friendRequests[requestIndex].sender.username;
     const receiverName = friendRequests[requestIndex].receiver.username;

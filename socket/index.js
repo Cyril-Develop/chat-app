@@ -117,6 +117,13 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("messageDeleted", messageId);
   });
 
+  // UPDATE USER INFOS
+
+  socket.on("updateUserInfos", (data) => {
+    console.log("updateUserInfos", data);
+    io.emit("updatedUserInfos", data);
+  });
+
   // CHANGE STATUT
   socket.on("changeStatut", (userId, statut) => {
     // Update the status in the global user list
@@ -185,8 +192,6 @@ io.on("connection", (socket) => {
       console.log(request);
       io.to(receiverSocket.socketId).emit("receiveFriendRequest", request);
     }
-  
-    
   });
 
   // ACCEPT FRIEND REQUEST
@@ -195,7 +200,6 @@ io.on("connection", (socket) => {
       (req) => req.id === requestId
     );
 
-  
     // get sender and receiver names
     const senderName = friendRequests[requestIndex].sender.username;
     const receiverName = friendRequests[requestIndex].receiver.username;

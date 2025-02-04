@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import useWindowWidth from "@/hooks/window-width";
 import { useRoomStore } from "@/store/room.store";
-import { UserInfos } from "@/types/user";
+import { UserInfos, HandleUserStatusChangedProps } from "@/types/user";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { HandleUserStatusChangedProps } from "@/types/user";
 
 export function RoomUsers() {
   const [usersInRoom, setUsersInRoom] = useState<UserInfos[]>([]);
@@ -35,12 +34,29 @@ export function RoomUsers() {
       );
     };
 
+    // Mise à jour des informations utilisateur (nom, photo, etc.)
+    const handleUpdatedUserInfos = (updatedUser: UserInfos) => {
+      setUsersInRoom((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id
+            ? {
+                ...user,
+                username: updatedUser.username,
+                profileImage: updatedUser.profileImage,
+              }
+            : user
+        )
+      );
+    };
+
     socket?.on("getUserInRoom", handleUserInRoom);
     socket?.on("userStatusChanged", handleUserStatusChanged);
+    socket?.on("updatedUserInfos", handleUpdatedUserInfos);
 
     return () => {
       socket?.off("getUserInRoom", handleUserInRoom);
       socket?.off("userStatusChanged", handleUserStatusChanged);
+      socket?.off("updatedUserInfos", handleUpdatedUserInfos);
     };
   }, [socket, windowWidth, roomId]);
 

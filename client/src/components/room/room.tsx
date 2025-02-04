@@ -6,18 +6,20 @@ import useGetRoom from "@/hooks/get-room";
 import { useSocketStore } from "@/store/socket.store";
 import { Message, RoomProps } from "@/types/chat";
 import { useEffect, useState } from "react";
-
 const Room = ({ roomId, currentUser }: RoomProps) => {
   const { socket } = useSocketStore();
-  const { data: room, isLoading } = useGetRoom({ roomId });
+  const { data: fetchedRoom, isLoading } = useGetRoom({ roomId });
+  const [roomData, setRoomData] = useState(fetchedRoom);
   const [messages, setMessages] = useState<Message[]>([]);
   const [arrivalMessage, setArrivalMessage] = useState<Message | null>(null);
 
+  // Mise à jour de roomData lorsque la requête initiale est terminée
   useEffect(() => {
-    if (room) {
-      setMessages(room.messages);
+    if (fetchedRoom) {
+      setRoomData(fetchedRoom);
+      setMessages(fetchedRoom.messages);
     }
-  }, [room]);
+  }, [fetchedRoom]);
 
   useEffect(() => {
     socket?.on("getMessage", (data) => {
@@ -39,7 +41,55 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
         prevMessages.filter((msg) => msg.id !== messageId)
       );
     });
-  }, [room, socket]);
+
+    // Gestion des mises à jour de l'utilisateur
+    const handleUpdatedUser = (updatedUser: any) => {
+      // Mise à jour des informations de l'utilisateur dans roomData
+      setRoomData((prevRoom) => {
+        if (!prevRoom) return prevRoom;
+
+        return {
+          ...prevRoom,
+          messages: prevRoom.messages.map((msg) =>
+            msg.user.id === updatedUser.id
+              ? {
+                  ...msg,
+                  user: {
+                    ...msg.user,
+                    username: updatedUser.username,
+                    profileImage: updatedUser.profileImage,
+                  },
+                }
+              : msg
+          ),
+        };
+      });
+
+      // Mise à jour des messages affichés
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg.user.id === updatedUser.id
+            ? {
+                ...msg,
+                user: {
+                  ...msg.user,
+                  username: updatedUser.username,
+                  profileImage: updatedUser.profileImage,
+                },
+              }
+            : msg
+        )
+      );
+    };
+
+    socket?.on("updatedUserInfos", handleUpdatedUser);
+
+    return () => {
+      socket?.off("getMessage");
+      socket?.off("messageDeleted");
+      socket?.off("updatedUserInfos", handleUpdatedUser);
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -57,10 +107,8 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
         </>
       ) : (
         <>
-          <RoomHeader room={room} currentUser={currentUser} />
-
+          <RoomHeader room={roomData} currentUser={currentUser} />
           <MessagesProvider messages={messages} />
-
           <SendMessage recipient={{ type: "room", id: roomId }} />
         </>
       )}

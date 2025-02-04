@@ -9,10 +9,17 @@ import useGetPrivateMessage from "@/hooks/get-private-message";
 import { PrivateMessageProps } from "@/types/message";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
-  const { data: contactInfos } = useGetUser(contactId);
+  const { data: fetchedContactInfos } = useGetUser(contactId);
+  const [contactData, setContactData] = useState(fetchedContactInfos);
   const [messages, setMessages] = useState<PrivateMessageProps[]>([]);
   const { socket } = useSocketStore();
   const { data } = useGetPrivateMessage();
+
+  useEffect(() => {
+    if (fetchedContactInfos) {
+      setContactData(fetchedContactInfos);
+    }
+  }, [fetchedContactInfos]);
 
   useEffect(() => {
     if (data) {
@@ -20,11 +27,20 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
     }
   }, [data]);
 
+  console.log(contactData);
+
   useEffect(() => {
     const handleMessage = (data: PrivateMessageProps) => {
       setMessages((prev) => [...prev, data]);
     };
 
+    const handleUpdatedUser = (user: any) => {
+      if (user.id === contactId) {
+        setContactData(user);
+      }
+    };
+
+    socket?.on("updatedUserInfos", handleUpdatedUser);
     socket?.on("getPrivateMessage", handleMessage);
 
     socket?.on("deletePrivateMessage", (messageId) => {
@@ -34,16 +50,17 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
     });
 
     return () => {
+      socket?.off("updatedUserInfos", handleUpdatedUser);
       socket?.off("getPrivateMessage", handleMessage);
       socket?.off("deletePrivateMessage");
     };
-  }, [socket]);
+  }, [socket, contactId]);
 
   return (
     <div className="page_room">
-      {contactInfos && (
+      {contactData && (
         <>
-          <HeaderChat contactInfos={contactInfos} />
+          <HeaderChat contactInfos={contactData} />
           <MessagesProvider messages={messages} />
           <SendMessage recipient={{ type: "user", id: contactId }} />
         </>

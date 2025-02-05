@@ -1,16 +1,20 @@
 const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
+const argon2 = require("argon2");
 
 const prisma = new PrismaClient();
 
 exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
+    const hashedPassword = await argon2.hash(password);
+
     const user = await prisma.user.create({
       data: {
         username,
         email,
-        password,
+        password: hashedPassword,
       },
     });
     res.status(201).json(user);
@@ -38,14 +42,18 @@ const createToken = (user) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
     });
+
     if (!user) {
       return res.status(404).json({ error: "L'utilisateur n'existe pas" });
-    } else if (user.password !== password) {
+    }
+
+    if (!(await argon2.verify(user.password, password))) {
       return res.status(401).json({ error: "Mot de passe incorrect" });
     }
 

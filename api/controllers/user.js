@@ -435,26 +435,25 @@ exports.acceptFriendRequest = async (req, res) => {
     }
 
     // Accepter la demande d'ami et supprimer la demande en un seul batch transaction
-    const [friendship1, friendship2, deletedRequest] =
-      await prisma.$transaction([
-        // Création de l'amitié dans les deux sens
-        prisma.friend.create({
-          data: { userId: userId, friendId: contactId },
-          include: { friend: true },
-        }),
-        prisma.friend.create({
-          data: { userId: contactId, friendId: userId },
-          include: { friend: true },
-        }),
-        // Suppression de la demande d'ami
-        prisma.friendRequest.deleteMany({
-          where: {
-            senderId: contactId,
-            receiverId: userId,
-            status: "pending",
-          },
-        }),
-      ]);
+    await prisma.$transaction([
+      // Création de l'amitié dans les deux sens
+      prisma.friend.create({
+        data: { userId: userId, friendId: contactId },
+        include: { friend: true },
+      }),
+      prisma.friend.create({
+        data: { userId: contactId, friendId: userId },
+        include: { friend: true },
+      }),
+      // Suppression de la demande d'ami
+      prisma.friendRequest.deleteMany({
+        where: {
+          senderId: contactId,
+          receiverId: userId,
+          status: "pending",
+        },
+      }),
+    ]);
 
     const user1 = await prisma.user.findUnique({ where: { id: userId } });
     const user2 = await prisma.user.findUnique({ where: { id: contactId } });
@@ -562,10 +561,23 @@ exports.removeContact = async (req, res) => {
       }),
     ]);
 
+    // Récupère les informations des utilisateurs mis à jour
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { friends: true },
+    });
+
+    const contact = await prisma.user.findUnique({
+      where: { id: contactId },
+      include: { friends: true },
+    });
+
     res.status(200).json({
       message: "Contact retiré de votre liste d'amis.",
       contactId,
       userId,
+      user,
+      contact,
     });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);

@@ -60,6 +60,7 @@ export interface Friend {
 
 export interface FriendList {
   friend: Friend;
+  id?: number;
 }
 
 export interface Users {
@@ -82,4 +83,29 @@ export interface HeaderChatProps {
     bio: string;
     createdAt: string;
   };
+}
+
+export interface UpdateRelationship {
+  user: {
+    id: number,
+    createdAt: string,
+    email: string,
+    password: string,
+    username: string,
+    bio: string,
+    profileImage: string,
+    notification: string,
+    role: string
+  },
+  friend: {
+    id: number,
+    createdAt: string,
+    email: string,
+    password: string,
+    username: string,
+    bio: string,
+    profileImage: string,
+    notification: string,
+    role: string
+  }
 }

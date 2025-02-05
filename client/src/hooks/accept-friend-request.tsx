@@ -4,14 +4,17 @@ import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { acceptFriendRequest } from "@/services/User";
 import { handleTokenExpiration } from "@/utils/token-expiration";
+import { useSocketStore } from "@/store/socket.store";
 
 export const useAcceptFriendRequestMutation = () => {
   const { token, logout } = useUserStore((state) => state);
   const queryClient = useQueryClient();
+  const { socket } = useSocketStore();
 
   return useMutation({
     mutationFn: (contactId: number) => acceptFriendRequest(contactId, token),
     onSuccess: (data) => {
+      socket?.emit("updateRelationship", data);
       toast({
         title: data.message,
         variant: "success",

@@ -17,14 +17,15 @@ import {
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-//import { useSocketStore } from "@/store/socket.store";
+import { useEffect, useState } from "react";
+import { useSocketStore } from "@/store/socket.store";
 import { useSendRequestMutation } from "@/hooks/send-request";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   FriendList,
-  receivedFriendRequests,
   SearchUserProps,
   Users,
+  UpdateRelationship,
 } from "@/types/chat";
 
 export const SearchUser = ({
@@ -34,38 +35,94 @@ export const SearchUser = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [contacts, setcontacts] = useState<Users[]>([]);
+  const [contacts, setContacts] = useState<Users[]>([]);
   const { data } = useGetUsers();
   const userId = currentUser?.id;
   const sendRequestMutation = useSendRequestMutation();
+  const { socket } = useSocketStore();
+  const queryClient = useQueryClient();
 
+  // Search for a user
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
+
     if (value.length >= 3) {
       setOpen(true);
-
       const filteredUsers = data?.filter((user: Users) =>
         user.username.toLowerCase().includes(value.toLowerCase())
       );
-
-      if (filteredUsers) {
-        console.log(filteredUsers);
-        
-        setcontacts(filteredUsers);
-      }
+      setContacts(filteredUsers || []);
     } else {
-      setcontacts([]);
+      setContacts([]);
     }
   };
 
+  // Update the list after adding a friend
+  const updateUserRelationship = (updatedData: UpdateRelationship) => {
+    queryClient.setQueryData(["users"], (oldData: Users[] | undefined) => {
+      if (!oldData) return oldData;
+
+      return oldData.map((user) => {
+        if (user.id === updatedData.user.id) {
+          return { ...user, friends: [...user.friends, updatedData.friend] };
+        }
+        if (user.id === updatedData.friend.id) {
+          return { ...user, friends: [...user.friends, updatedData.user] };
+        }
+        setQuery("");
+        return user;
+      });
+    });
+
+    // Invalidate the query to update the list
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+  };
+
+  // Update the list after removing a friend
+  const handleRemoveFriend = (removedData: UpdateRelationship) => {
+    queryClient.setQueryData(["users"], (oldData: Users[] | undefined) => {
+      if (!oldData) return oldData;
+
+      return oldData.map((user) => {
+        if (user.id === removedData.user.id) {
+          return {
+            ...user,
+            friends: user.friends.filter((f) => f.id !== removedData.friend.id),
+          };
+        }
+        if (user.id === removedData.friend.id) {
+          return {
+            ...user,
+            friends: user.friends.filter((f) => f.id !== removedData.user.id),
+          };
+        }
+        setQuery("");
+        return user;
+      });
+    });
+
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+  };
+
+  useEffect(() => {
+    socket?.on("updatedRelationship", updateUserRelationship);
+    socket?.on("removedRelationship", handleRemoveFriend);
+
+    return () => {
+      socket?.off("updatedRelationship", updateUserRelationship);
+      socket?.off("removedRelationship", handleRemoveFriend);
+    };
+  }, [socket, queryClient]);
+
+  // Add a friend
   const handleAddFriend = (contactId: number) => {
     sendRequestMutation.mutate(contactId);
     setQuery("");
   };
 
+  // Check if the user is a friend
   const isFriend = (friends: FriendList[]) => {
-    if (friends.length === 0) return false;
     return friends.some((friendList) => friendList.friend.id === userId);
   };
 
@@ -96,7 +153,7 @@ export const SearchUser = ({
         >
           <Command>
             <CommandList>
-              {query.length >= 3 && contacts.length === 0 && (
+              {contacts.length === 0 && (
                 <CommandEmpty>Aucun contact trouvé</CommandEmpty>
               )}
               {contacts.map(
@@ -112,7 +169,6 @@ export const SearchUser = ({
                           image={contact.profileImage}
                           username={contact.username}
                         />
-
                         {isFriend(contact.friends) ? (
                           <Icons.check width={16} height={16} />
                         ) : (

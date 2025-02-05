@@ -145,8 +145,6 @@ io.on("connection", (socket) => {
 
   // SEND PRIVATE MESSAGE
   socket.on("sendPrivateMessage", (data) => {
-    console.log("PrivateMessage", data);
-
     const receiverSocket = users.find(
       (user) => user.userId === data.receiverId
     );
@@ -228,6 +226,17 @@ io.on("connection", (socket) => {
     }
   });
 
+  // UPDATE RELATIONSHIP
+
+  socket.on("updateRelationship", (data) => {
+    io.emit("updatedRelationship", data);
+  });
+
+  // DELETE RELATIONSHIP
+  // socket.on("deleteRelationship", (data) => {
+  //   io.emit("deletedRelationship", data);
+  // });
+
   // REFUSE FRIEND REQUEST
   socket.on("rejectFriendRequest", (senderId, receiverId, requestId) => {
     console.log("rejectFriendRequest", friendRequests);
@@ -258,6 +267,11 @@ io.on("connection", (socket) => {
     if (friendSocket) {
       io.to(friendSocket.socketId).emit("friendRemoved", data.userId);
     }
+
+    io.emit("removedRelationship", {
+      user: data.user,
+      friend: data.contact,
+    });
   });
 
   // DISCONNECT

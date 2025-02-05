@@ -1,7 +1,9 @@
 const { Server } = require("socket.io");
+require("dotenv").config();
+
 const io = new Server({
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
   },
 });
 
@@ -40,8 +42,6 @@ const removeUser = (socketId) => {
 
 // SOCKET CONNECTION
 io.on("connection", (socket) => {
-  console.log("new connection", socket.id);
-
   // ADD USER ONLINE
   socket.on("addUser", (userId, statut) => {
     addUser(userId, socket.id, statut);
@@ -118,9 +118,7 @@ io.on("connection", (socket) => {
   });
 
   // UPDATE USER INFOS
-
   socket.on("updateUserInfos", (data) => {
-    console.log("updateUserInfos", data);
     io.emit("updatedUserInfos", data);
   });
 
@@ -187,7 +185,6 @@ io.on("connection", (socket) => {
         },
       };
       friendRequests.push(request);
-      console.log(request);
       io.to(receiverSocket.socketId).emit("receiveFriendRequest", request);
     }
   });
@@ -204,8 +201,6 @@ io.on("connection", (socket) => {
 
     const userSocket = users.find((user) => user.userId === receiverId);
     const friendSocket = users.find((user) => user.userId === senderId);
-
-    console.log("acceptFriendRequest", senderName, receiverName);
 
     if (userSocket) {
       io.to(userSocket.socketId).emit("friendRequestAccepted", {
@@ -227,22 +222,12 @@ io.on("connection", (socket) => {
   });
 
   // UPDATE RELATIONSHIP
-
   socket.on("updateRelationship", (data) => {
     io.emit("updatedRelationship", data);
   });
 
-  // DELETE RELATIONSHIP
-  // socket.on("deleteRelationship", (data) => {
-  //   io.emit("deletedRelationship", data);
-  // });
-
   // REFUSE FRIEND REQUEST
   socket.on("rejectFriendRequest", (senderId, receiverId, requestId) => {
-    console.log("rejectFriendRequest", friendRequests);
-
-    console.log("rejectFriendRequest", senderId, receiverId, requestId);
-
     const requestIndex = friendRequests.findIndex(
       (req) => req.id === requestId
     );
@@ -250,13 +235,10 @@ io.on("connection", (socket) => {
     if (requestIndex !== -1) {
       friendRequests.splice(requestIndex, 1);
     }
-    console.log("rejectFriendRequest", friendRequests);
   });
 
   // REMOVE FRIEND
   socket.on("removeFriend", (data) => {
-    console.log("removeFriend", data);
-
     const userSocket = users.find((user) => user.userId === data.userId);
     const friendSocket = users.find((user) => user.userId === data.contactId);
 
@@ -276,7 +258,6 @@ io.on("connection", (socket) => {
 
   // DISCONNECT
   socket.on("disconnect", () => {
-    console.log("a user disconnected!");
     const user = users.find((u) => u.socketId === socket.id);
     if (user) {
       userInRoom = userInRoom.map((u) =>

@@ -35,7 +35,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/chat");
+      navigate("/chateo/chat");
     }
   }, [token]);
 
@@ -70,7 +70,7 @@ const LoginForm = () => {
     <CardWrapper
       title="Se connecter"
       description="Saisissez les identifiants de votre compte."
-      backButtonHref="/register"
+      backButtonHref="/chateo/register"
       backButtonLabel="S'enregistrer"
       text="Vous n'avez pas encore de compte ?"
     >

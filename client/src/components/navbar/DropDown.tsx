@@ -47,11 +47,11 @@ const DropDown = () => {
 
         <DropdownMenuContent className={cn("mt-5")}>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => navigate("/")}>
+            <DropdownMenuItem onClick={() => navigate("/chateo")}>
               <Icons.home width={18} height={18} />
               Accueil
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate("/chat")}>
+            <DropdownMenuItem onClick={() => navigate("/chateo/chat")}>
               <Icons.chat width={18} height={18} />
               Messagerie
             </DropdownMenuItem>
@@ -96,7 +96,7 @@ const DropDown = () => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           </DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => navigate("/settings/profile")}>
+          <DropdownMenuItem onClick={() => navigate("chateo/settings/profile")}>
             <Icons.settings width={18} height={18} />
             Paramètres
           </DropdownMenuItem>

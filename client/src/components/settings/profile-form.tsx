@@ -48,19 +48,11 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
     form.setValue("image", file);
   };
 
-  console.log(user.bio);
-  
-
   const onSubmit = async (data: ProfileFormValues) => {
     const { username, bio, image } = data;
     console.log(username, bio, image);
-    
 
-    if (
-      (username === user.username && bio === user.bio && !image) 
-    ) {
- 
-      
+    if (username === user.username && bio === user.bio && !image) {
       toast({
         title: "Erreur",
         description: "Aucune modification n'a été apportée.",

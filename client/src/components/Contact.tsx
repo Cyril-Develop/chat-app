@@ -73,8 +73,6 @@ export function Contact({ currentUser }: ContactProps) {
     };
   }, [socket, currentUser, contactId]);
 
-  console.log("Friends: ", friends);
-
   const handlePrivateChat = (friendId: number) => {
     // Leave current room if any
     if (roomId) {

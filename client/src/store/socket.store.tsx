@@ -10,7 +10,7 @@ interface SocketStore {
   socket: Socket | null;
   statut: "online" | "spy";
   users: { userId: number; socketId: string; statut: "online" | "spy" }[];
-  connectSocket: (token: string, statut : "online" | "spy") => void;
+  connectSocket: (token: string, statut: "online" | "spy") => void;
   disconnectSocket: () => void;
 }
 
@@ -31,7 +31,6 @@ export const useSocketStore = create<SocketStore>((set) => {
       const userId = decodedToken.id;
 
       socket.on("connect", () => {
-        console.log("Connected to server");
         socket?.emit("addUser", userId, statut);
       });
 

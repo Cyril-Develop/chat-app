@@ -7,8 +7,8 @@ exports.sendMessage = async (req, res) => {
   const { receiverId, message } = req.body;
   const userId = req.auth.userId;
 
-  if (!userId || !receiverId || !message) {
-    return res.status(400).json({ error: "Tous les champs sont requis." });
+  if (!userId || !receiverId) {
+    return res.status(400).json({ error: "Missing required fields." });
   }
 
   try {

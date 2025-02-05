@@ -50,51 +50,51 @@ function App() {
         </Layout>
       ),
       children: [
-        { path: "/", element: <Home /> },
-        { path: "/register", element: <Register /> },
-        { path: "/login", element: <Login /> },
+        { path: "/chateo", element: <Home /> },
+        { path: "/chateo/register", element: <Register /> },
+        { path: "/chateo/login", element: <Login /> },
         {
-          path: "/chat",
-          element: token ? <Chat /> : <Navigate to="/login" />,
+          path: "/chateo/chat",
+          element: token ? <Chat /> : <Navigate to="/chateo/login" />,
         },
         {
-          path: "/settings",
+          path: "/chateo/settings",
           element: token ? (
             <Settings>
               <Profile />
             </Settings>
           ) : (
-            <Navigate to="/login" />
+            <Navigate to="/chateo/login" />
           ),
         },
         {
-          path: "/settings/profile",
+          path: "/chateo/settings/profile",
           element: token ? (
             <Settings>
               <Profile />
             </Settings>
           ) : (
-            <Navigate to="/login" />
+            <Navigate to="/chateo/login" />
           ),
         },
         {
-          path: "/settings/account",
+          path: "/chateo/settings/account",
           element: token ? (
             <Settings>
               <Account />
             </Settings>
           ) : (
-            <Navigate to="/login" />
+            <Navigate to="/chateo/login" />
           ),
         },
         {
-          path: "/settings/notifications",
+          path: "/chateo/settings/notifications",
           element: token ? (
             <Settings>
               <Notification />
             </Settings>
           ) : (
-            <Navigate to="/login" />
+            <Navigate to="/chateo/login" />
           ),
         },
       ],

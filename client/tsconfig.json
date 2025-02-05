@@ -24,6 +24,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/pages/chat/Chat.tsx"],
+  "include": ["src", "src/pages/chat/Chat.tsx", "public/service-worker.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

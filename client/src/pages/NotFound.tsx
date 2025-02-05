@@ -20,7 +20,7 @@ const NotFound = () => {
         className="min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4"
       />
 
-      <Link to="/" className="hover:underline underline-offset-4 text-lg">
+      <Link to="/chateo" className="hover:underline underline-offset-4 text-lg">
         Retouner à la page d'accueil
       </Link>
     </div>

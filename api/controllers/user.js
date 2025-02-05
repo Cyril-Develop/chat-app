@@ -390,8 +390,6 @@ exports.getFriendRequest = async (req, res) => {
       },
     });
 
-    console.log("friendRequests", friendRequests);
-
     res.status(200).json(friendRequests);
   } catch (error) {
     console.error("Error getting friend requests:", error);

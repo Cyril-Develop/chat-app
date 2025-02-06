@@ -1,7 +1,15 @@
+const fs = require("fs");
 const { Server } = require("socket.io");
+const https = require("https");
 require("dotenv").config();
 
-const io = new Server({
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
+};
+
+const server = https.createServer(options);
+const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL,
   },
@@ -271,5 +279,7 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(3000);
-console.log("Socket.IO server running at http://localhost:3000/");
+const PORT = process.env.SOCKET_PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Socket.IO server is running at https://localhost:${PORT}`);
+});

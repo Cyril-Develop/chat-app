@@ -1,7 +1,14 @@
 const app = require("./app");
-const http = require("http");
-const server = http.createServer(app);
+const https = require("https");
+const fs = require("fs");
 
+//Certificats SSL
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
+};
+
+const server = https.createServer(options, app);
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {

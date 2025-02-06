@@ -5,20 +5,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import RootLayout from "./components/RootLayout.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Register service worker
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/chateo/service-worker.js")
-      .then((registration) => {
-        console.log("Service Worker enregistré avec succès:", registration);
-      })
-      .catch((error) => {
-        console.log("Enregistrement du Service Worker échoué:", error);
-      });
-  });
-}
-
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

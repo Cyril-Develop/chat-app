@@ -14,31 +14,31 @@ const Settings = ({ children }: SettingsLayoutProps) => {
   const sidebarNavItems = [
     {
       title: "Profil",
-      href: "/settings/profile",
+      href: "/chateo/settings/profile",
     },
     {
       title: "Compte",
-      href: "/settings/account",
+      href: "/chateo/settings/account",
     },
     {
       title: "Notifications",
-      href: "/settings/notifications",
+      href: "/chateo/settings/notifications",
     },
   ];
 
   const imageSettings = [
     {
-      href: "/settings/profile",
+      href: "/chateo/settings/profile",
       img: ImageProfile,
       alt: "profile",
     },
     {
-      href: "/settings/account",
+      href: "/chateo/settings/account",
       img: ImageAccount,
       alt: "account",
     },
     {
-      href: "/settings/notifications",
+      href: "/chateo/settings/notifications",
       img: ImageNotification,
       alt: "notification",
     },

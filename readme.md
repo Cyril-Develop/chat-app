@@ -1,7 +1,8 @@
-# Chat en temps réel
+# Chateo
 
-![home](./screenshot/chat.webp)
-![account](./screenshot/profile.webp)
+![room](/client/public/screenshot/room.webp)
+![account](/client/public/screenshot/account.webp)
+![home](/client/public/screenshot/home.webp)
 
 ## Technologies :
 
@@ -12,4 +13,8 @@
 - Shadcn
 - React
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/chat_app?style=for-the-badge)
+## Tester le projet :
+
+[Chateo](https://cyril-develop.fr/chateo)
+
+![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/Chateo?style=for-the-badge)

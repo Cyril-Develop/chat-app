@@ -4,7 +4,8 @@ import RoomHeader from "@/components/room/room-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import useGetRoom from "@/hooks/get-room";
 import { useSocketStore } from "@/store/socket.store";
-import { Message, RoomProps } from "@/types/chat";
+import { Message, RoomProps, MessageFromSocket } from "@/types/chat";
+import { UpdatedUserInfosProps } from "@/types/user";
 import { useEffect, useState } from "react";
 const Room = ({ roomId, currentUser }: RoomProps) => {
   const { socket } = useSocketStore();
@@ -22,7 +23,7 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
   }, [fetchedRoom]);
 
   useEffect(() => {
-    socket?.on("getMessage", (data) => {
+    socket?.on("getMessage", (data: MessageFromSocket) => {
       setArrivalMessage({
         id: data.id,
         message: data.message,
@@ -36,21 +37,21 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
       });
     });
 
-    socket?.on("messageDeleted", (messageId) => {
-      setMessages((prevMessages) =>
+    socket?.on("messageDeleted", (messageId: number) => {
+      setMessages((prevMessages: Message[]) =>
         prevMessages.filter((msg) => msg.id !== messageId)
       );
     });
 
     // Gestion des mises à jour de l'utilisateur
-    const handleUpdatedUser = (updatedUser: any) => {
+    const handleUpdatedUser = (updatedUser: UpdatedUserInfosProps) => {
       // Mise à jour des informations de l'utilisateur dans roomData
-      setRoomData((prevRoom) => {
+      setRoomData((prevRoom : RoomProps) => {
         if (!prevRoom) return prevRoom;
 
         return {
           ...prevRoom,
-          messages: prevRoom.messages.map((msg) =>
+          messages: prevRoom.messages?.map((msg) =>
             msg.user.id === updatedUser.id
               ? {
                   ...msg,

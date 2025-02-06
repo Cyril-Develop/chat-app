@@ -1,10 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { getPrivateMessages } from "@/services/Message";
-import { handleTokenExpiration } from "@/utils/token-expiration";
-import { useSocketStore } from "@/store/socket.store";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 

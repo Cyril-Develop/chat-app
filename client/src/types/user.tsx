@@ -13,3 +13,10 @@ export interface HandleUserStatusChangedProps {
   userId: number;
   statut: string;
 }
+
+export interface UpdatedUserInfosProps {
+  id: number,
+  username: string,
+  bio: string,
+  profileImage: string,
+}

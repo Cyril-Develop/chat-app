@@ -45,7 +45,7 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
             Acceptez ou refusez les demandes de contact.
           </SheetDescription>
         </SheetHeader>
-        <ContactRequest />
+        <ContactRequest currentUser={currentUser} />
       </SheetContent>
     </Sheet>
   );

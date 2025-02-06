@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useAcceptFriendRequestMutation } from "@/hooks/accept-friend-request";
 import { useRejectFriendRequestMutation } from "@/hooks/reject-friend-request";
 import useGetRequest from "@/hooks/get-request";
-import { toast } from "@/components/ui/use-toast";
 
 interface FriendRequest {
   id: number;
@@ -27,7 +26,7 @@ interface CurrentUserId {
   id: number;
 }
 
-const ContactRequest = ({ currentUser }: { currentUser: CurrentUserId }) => {
+const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
   const userId = currentUser?.id;
   const [contactRequests, setContactRequests] = useState<FriendRequest[]>([]);
 

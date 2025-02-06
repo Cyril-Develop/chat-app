@@ -19,6 +19,7 @@ export const useSocketStore = create<SocketStore>((set) => {
 
   return {
     socket: null,
+    statut: "online",
     users: [],
     connectSocket: (token, statut) => {
       if (socket) return;

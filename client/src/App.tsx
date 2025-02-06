@@ -6,16 +6,16 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import Navbar from "./components/navbar/Navbar";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import Chat from "./pages/chat/Chat";
-import Home from "./pages/home/Home";
-import NotFound from "./pages/NotFound";
-import Settings from "./pages/settings/Settings";
-import Profile from "./pages/settings/Profile";
-import Account from "./pages/settings/Account";
-import Notification from "./pages/settings/Notification";
+import Navbar from "@/components/navbar/Navbar";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
+import Chat from "@/pages/chat/Chat";
+import Home from "@/pages/home/Home";
+import NotFound from "@/pages/NotFound";
+import Settings from "@/pages/settings/Settings";
+import Profile from "@/pages/settings/Profile";
+import Account from "@/pages/settings/Account";
+import Notification from "@/pages/settings/Notification";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect } from "react";
 

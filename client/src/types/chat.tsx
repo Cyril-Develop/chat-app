@@ -16,6 +16,7 @@ export interface RoomProps {
     username: string;
     profileImage: string;
   };
+  messages?: Message[];
 }
 
 export interface Message {
@@ -31,26 +32,27 @@ export interface Message {
 }
 
 export interface SheetLeftProps {
-  currentUser: { 
+  currentUser: {
     id: number;
     username: string;
-    friendsList: { id: number; username: string }[] 
+    friendsList: { id: number; username: string }[];
   };
 }
 
 export interface SearchUserProps {
-  id: number; username: string ;
+  id: number;
+  username: string;
 }
 
 export interface receivedFriendRequests {
   id: number;
   sender: {
     id: number;
-    sender : {
-      id: number,
+    sender: {
+      id: number;
       username: string;
       profileImage: string;
-    }
+    };
   };
 }
 
@@ -87,25 +89,35 @@ export interface HeaderChatProps {
 
 export interface UpdateRelationship {
   user: {
-    id: number,
-    createdAt: string,
-    email: string,
-    password: string,
-    username: string,
-    bio: string,
-    profileImage: string,
-    notification: string,
-    role: string
-  },
+    id: number;
+    createdAt: string;
+    email: string;
+    password: string;
+    username: string;
+    bio: string;
+    profileImage: string;
+    notification: string;
+    role: string;
+  };
   friend: {
-    id: number,
-    createdAt: string,
-    email: string,
-    password: string,
-    username: string,
-    bio: string,
-    profileImage: string,
-    notification: string,
-    role: string
-  }
+    id: number;
+    createdAt: string;
+    email: string;
+    password: string;
+    username: string;
+    bio: string;
+    profileImage: string;
+    notification: string;
+    role: string;
+  };
+}
+
+export interface MessageFromSocket {
+  id: number;
+  message: string;
+  image?: string;
+  createdAt: string;
+  userId: number;
+  username: string;
+  profileImage: string;
 }

@@ -25,7 +25,9 @@ export const useSocketStore = create<SocketStore>((set) => {
       if (socket) return;
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
+        path: "/socket.io/",
         auth: { token },
+        transports: ["websocket", "polling"],
       });
 
       const decodedToken = jwtDecode<CustomPayload>(token);

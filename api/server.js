@@ -2,6 +2,8 @@ const app = require("./app");
 const https = require("https");
 const fs = require("fs");
 
+require("dotenv").config();
+
 //Certificats SSL
 const options = {
   key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),

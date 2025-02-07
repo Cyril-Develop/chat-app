@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Serving images statically
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/images", express.static(path.join(__dirname, "/chateo/api/images")));
 
 // Importing routes
 const authRoutes = require("./routes/auth");
@@ -19,10 +19,10 @@ const messageRoomRoutes = require('./routes/message-room');
 const messagePrivateRoutes = require('./routes/message-private');
 
 // Using routes
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use('/chat', chatRoutes);
-app.use('/message-room', messageRoomRoutes);
-app.use('/message-private', messagePrivateRoutes);
+app.use("/chateo/api/auth", authRoutes);
+app.use("/chateo/api/user", userRoutes);
+app.use('/chateo/api/chat', chatRoutes);
+app.use('/chateo/api/message-room', messageRoomRoutes);
+app.use('/chateo/api/message-private', messagePrivateRoutes);
 
 module.exports = app;

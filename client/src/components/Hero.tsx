@@ -27,8 +27,8 @@ const Hero = () => {
           <p className="max-w-lg text-center text-lg">
             Créez des salons privés ou publics, discutez avec vos amis et
             rejoignez une communauté dynamique et engageante. Notre application
-            de chat moderne et sécurisée vous offre une expérience de messagerie
-            incomparable.
+            de <strong>tchat</strong> moderne et sécurisée vous offre une
+            expérience de messagerie incomparable.
           </p>
         </CardContent>
         <CardFooter>

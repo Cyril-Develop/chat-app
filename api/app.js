@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Serving images statically
-app.use("/images", express.static(path.join(__dirname, "/chateo/api/images")));
+app.use("/chateo/api/images", express.static(path.join(__dirname, "images")));
 
 // Importing routes
 const authRoutes = require("./routes/auth");

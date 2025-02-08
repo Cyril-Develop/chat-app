@@ -14,8 +14,11 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { SheetLeftProps } from "@/types/chat";
+import { useState } from "react";
 
 export function SheetLeft({ currentUser }: SheetLeftProps) {
+  const [showNotification, setShowNotification] = useState(false);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -38,14 +41,22 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
           {currentUser && <SearchUser currentUser={currentUser} />}
           <Contact currentUser={currentUser} />
         </div>
-        <SheetHeader className={cn("text-left mt-4")}>
-          <SheetTitle>Notifications</SheetTitle>
-          <Separator />
-          <SheetDescription className="text-description">
-            Acceptez ou refusez les demandes de contact.
-          </SheetDescription>
-        </SheetHeader>
-        <ContactRequest currentUser={currentUser} />
+        {showNotification && (
+          <>
+            {" "}
+            <SheetHeader className={cn("text-left mt-4")}>
+              <SheetTitle>Notifications</SheetTitle>
+              <Separator />
+              <SheetDescription className="text-description">
+                Acceptez ou refusez les demandes de contact.
+              </SheetDescription>
+            </SheetHeader>
+          </>
+        )}
+        <ContactRequest
+          currentUser={currentUser}
+          setShowNotification={setShowNotification}
+        />
       </SheetContent>
     </Sheet>
   );

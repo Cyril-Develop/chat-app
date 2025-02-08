@@ -1,7 +1,7 @@
-const fs = require("fs");
 const { Server } = require("socket.io");
 const https = require("https");
 require("dotenv").config();
+const fs = require("fs");
 
 const options = {
   key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
@@ -88,6 +88,11 @@ io.on("connection", (socket) => {
     socket.leave(roomId);
     const usersInThisRoom = getUsersInRoom(roomId);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
+  });
+
+  socket.on("requestUserInRoom", (roomId) => {
+    const usersInRoom = getUsersInRoom(roomId);
+    socket.emit("getUserInRoom", usersInRoom);
   });
 
   // DELETE ROOM

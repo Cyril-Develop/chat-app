@@ -26,7 +26,13 @@ interface CurrentUserId {
   id: number;
 }
 
-const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
+const ContactRequest = ({
+  currentUser,
+  setShowNotification,
+}: {
+  currentUser?: CurrentUserId;
+  setShowNotification: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const userId = currentUser?.id;
   const [contactRequests, setContactRequests] = useState<FriendRequest[]>([]);
 
@@ -48,12 +54,16 @@ const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
         (request: FriendRequest) => request.receiver.id === userId
       );
       setContactRequests(receivedRequests);
+      if (setShowNotification) {
+        setShowNotification(receivedRequests.length > 0);
+      }
     }
-  }, [data, userId]);
+  }, [data, userId, setShowNotification]);
 
   useEffect(() => {
     socket?.on("receiveFriendRequest", (data) => {
       setContactRequests((prevRequests) => [...prevRequests, data]);
+      setShowNotification(true);
     });
 
     return () => {
@@ -69,6 +79,7 @@ const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
     acceptFriendRequest.mutate(senderId);
 
     removeRequest(requestId);
+    setShowNotification(false);
 
     socket?.emit("acceptFriendRequest", senderId, receiverId, requestId);
   };
@@ -81,6 +92,7 @@ const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
     rejectFriendRequest.mutate(senderId);
 
     removeRequest(requestId);
+    setShowNotification(false);
 
     socket?.emit("rejectFriendRequest", senderId, receiverId, requestId);
   };

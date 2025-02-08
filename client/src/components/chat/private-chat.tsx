@@ -27,8 +27,6 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
     }
   }, [data]);
 
-  console.log(contactData);
-
   useEffect(() => {
     const handleMessage = (data: PrivateMessageProps) => {
       setMessages((prev) => [...prev, data]);

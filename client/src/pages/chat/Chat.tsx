@@ -15,15 +15,17 @@ import { useEffect, useRef } from "react";
 import PrivateChat from "@/components/chat/private-chat";
 import { getUserId } from "@/utils/get-userId";
 import { useContactStore } from "@/store/contact.store";
+import { useState } from "react";
 
 const Chat = () => {
   const { room } = useRoomStore();
-  const { id : roomId } = room || {};
+  const { id: roomId } = room || {};
   const { statut } = useUserStore((state) => state);
-  const userId = getUserId()
+  const userId = getUserId();
   const { data: currentUser } = useGetUser(userId);
   const { socket } = useSocketStore();
   const { contactId } = useContactStore();
+  const [showNotification, setShowNotification] = useState(false);
   const prevRoomRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -60,7 +62,16 @@ const Chat = () => {
           <Contact currentUser={currentUser} />
         </div>
         <div className="chat_aside_container">
-          <ContactRequest currentUser={currentUser}/>
+          {showNotification && (
+            <>
+              <h2 className="text-3xl">Notifications</h2>
+              <Separator />
+            </>
+          )}
+          <ContactRequest
+            currentUser={currentUser}
+            setShowNotification={setShowNotification}
+          />
         </div>
       </aside>
 

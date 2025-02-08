@@ -20,12 +20,18 @@ import { Room } from "@/types/room";
 
 export function RoomSelector() {
   const { data } = useGetRooms();
-  const [openRoomSelector, setOpenRoomSelector] = useState(false);
   const { setRoom, room } = useRoomStore();
   const { id: currentRoomId, name: currentRoomName } = room || {};
   const [rooms, setRooms] = useState<Room[]>([]);
   const [newRoom, setNewRoom] = useState<Room | null>(null);
   const { socket } = useSocketStore();
+
+  //Permet de gérer l'état de la popover, Radix UI, où un Popover se ferme immédiatement lorsqu'il est utilisé à l'intérieur d'un Dialog ou lorsqu'il y a des conflits d'auto-focus
+  const [open, setOpen] = useState(false);
+
+  const togglePopover = () => {
+    setOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     if (data) {
@@ -46,7 +52,7 @@ export function RoomSelector() {
       });
     });
 
-    // If a room is deleted, remove it from the list and reset the room state of each users
+    // Si une salle est supprimée, on la retire de la liste
     socket?.on("deleteRoom", (deletedRoomId) => {
       if (currentRoomId === deletedRoomId) {
         setRoom(null);
@@ -66,14 +72,15 @@ export function RoomSelector() {
   const roomsFound = data?.length > 0;
 
   return (
-    <Popover open={openRoomSelector} onOpenChange={setOpenRoomSelector}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           role="combobox"
           size="box"
-          aria-expanded={openRoomSelector}
+          aria-expanded={open}
           className="w-[200px] justify-between p-3"
           disabled={!roomsFound}
+          onClick={togglePopover}
         >
           {currentRoomName
             ? currentRoomName
@@ -81,11 +88,14 @@ export function RoomSelector() {
             ? `Rechercher un salon (${rooms.length})`
             : "Rechercher un salon"}
 
-          {openRoomSelector ? <Icons.chevronUp /> : <Icons.chevronDown />}
+          {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>
       {roomsFound && (
-        <PopoverContent className="p-0 w-[200px]">
+        <PopoverContent
+          className="p-0 w-[200px]"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <Command>
             <CommandInput placeholder="Rechercher un salon" />
 
@@ -97,7 +107,7 @@ export function RoomSelector() {
               <RoomProvider
                 data={rooms}
                 value={currentRoomName ?? ""}
-                setOpen={setOpenRoomSelector}
+                setOpen={setOpen}
               />
             </CommandList>
           </Command>

@@ -144,10 +144,5 @@ cd socket && npm start
 
 🚀 [Démo Chateo](https://cyril-develop.fr/chateo)
 
-📌 **Compte test** :
-
-- Email : test@chateo.com
-- Mot de passe : test123
-
 ![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/Chateo?style=for-the-badge)
 

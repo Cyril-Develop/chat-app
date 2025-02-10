@@ -1,4 +1,4 @@
-# Chateo - est une application de chat en temps réel.
+# Chateo - Application de chat en temps réel.
 
 ![room](/client/public/screenshot/room.webp)
 ![account](/client/public/screenshot/account.webp)

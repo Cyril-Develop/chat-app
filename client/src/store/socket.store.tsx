@@ -1,6 +1,6 @@
-import { jwtDecode } from "jwt-decode";
-import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
+import { io, Socket } from "socket.io-client";
+import { jwtDecode } from "jwt-decode";
 
 interface CustomPayload {
   id: number;

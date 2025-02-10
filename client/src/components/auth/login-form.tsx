@@ -84,13 +84,14 @@ const LoginForm = () => {
       backButtonLabel="S'enregistrer"
       text="Vous n'avez pas encore de compte ?"
     >
+      <Line />
+      <Button
+        className="block mx-auto text-lg w-full my-4"
+        onClick={handleLoginAsGuest}
+      >
+        Découvrir en temps qu'invité
+      </Button>
       <Form {...form}>
-        <Button
-          className="block mx-auto text-lg w-full mb-8"
-          onClick={handleLoginAsGuest}
-        >
-          Se connecter en temps qu'invité
-        </Button>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4  sm:space-y-8"

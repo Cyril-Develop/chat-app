@@ -86,7 +86,7 @@ const LoginForm = () => {
     >
       <Line />
       <Button
-        className="block mx-auto text-lg my-4"
+        className="block mx-auto text-lg my-4 w-full"
         onClick={handleLoginAsGuest}
       >
         Découvrir en tant qu'invité

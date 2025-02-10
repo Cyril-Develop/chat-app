@@ -2,7 +2,11 @@ import Logo from "@/assets/chatting.svg";
 import useGetUser from "@/hooks/get-user";
 import { getUserId } from "@/utils/get-userId";
 
-const ChatUnselected = () => {
+interface ChatUnselectedProps {
+  role: string;
+}
+
+const ChatUnselected = ({ role }: ChatUnselectedProps) => {
   const userId = getUserId();
   const { data } = useGetUser(userId);
   return (
@@ -12,11 +16,19 @@ const ChatUnselected = () => {
       <div className="flex flex-col items-center gap-2">
         <h1 className="text-2xl">
           Bienvenue{" "}
-          <span className="font-semibold text-primary text-3xl">
-            {data?.username}
-          </span>{" "}
+          {role !== "GUEST" && (
+            <span className="font-semibold text-primary text-3xl">
+              {data?.username}
+            </span>
+          )}{" "}
           !
         </h1>
+
+        {role === "GUEST" && (
+          <p className="text-xl text-center">
+            En tant qu'invité, certaines fonctionnalités sont limitées.
+          </p>
+        )}
         <p className="text-xl text-center">
           Pour commencer à discuter vous devez créer ou rejoindre un salon.
         </p>

@@ -27,6 +27,7 @@ const Chat = () => {
   const { contactId } = useContactStore();
   const [showNotification, setShowNotification] = useState(false);
   const prevRoomRef = useRef<number | null>(null);
+  const role = currentUser?.role;
 
   useEffect(() => {
     if (room && currentUser) {
@@ -81,7 +82,7 @@ const Chat = () => {
         ) : contactId ? (
           <PrivateChat contactId={contactId} />
         ) : (
-          <ChatUnselected />
+          <ChatUnselected role={role} />
         )}
       </main>
 

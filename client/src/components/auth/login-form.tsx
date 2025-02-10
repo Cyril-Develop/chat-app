@@ -22,6 +22,7 @@ import { loginByEmail } from "@/services/Auth";
 import { useUserStore } from "@/store/user.store";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "@/components/Icons";
+import { loginAsGuest } from "@/services/Auth";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -66,6 +67,15 @@ const LoginForm = () => {
     onSuccess: (tokenResponse) => console.log(tokenResponse),
   });
 
+  const handleLoginAsGuest = async () => {
+    try {
+      const token = await loginAsGuest();
+      setToken(token);
+    } catch (error: any) {
+      setApiError(error.message);
+    }
+  };
+
   return (
     <CardWrapper
       title="Se connecter"
@@ -75,6 +85,12 @@ const LoginForm = () => {
       text="Vous n'avez pas encore de compte ?"
     >
       <Form {...form}>
+        <Button
+          className="block mx-auto text-lg w-full mb-8"
+          onClick={handleLoginAsGuest}
+        >
+          Se connecter en temps qu'invité
+        </Button>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4  sm:space-y-8"

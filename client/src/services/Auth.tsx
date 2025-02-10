@@ -64,3 +64,25 @@ export const loginByEmail = async ({ email, password }: LoginByEmailProps) => {
     throw new Error(error.message);
   }
 };
+
+export const loginAsGuest = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: `${import.meta.env.VITE_REACT_APP_GUEST_EMAIL}`,
+          password: `${import.meta.env.VITE_REACT_APP_GUEST_PASSWORD}`,
+        }),
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};

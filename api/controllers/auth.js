@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
 };
 
 const createToken = (user) => {
-  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: "24h",
   });
 };
@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
     }
 
     const token = createToken(user);
-    res.status(200).json(token);
+    res.status(200).json({ token, role: user.role });
   } catch (err) {
     console.error("Error logging in user:", err);
     res.status(500).json({

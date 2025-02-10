@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { io, Socket } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
+import { io, Socket } from "socket.io-client";
+import { create } from "zustand";
 
 interface CustomPayload {
   id: number;
@@ -25,9 +25,7 @@ export const useSocketStore = create<SocketStore>((set) => {
       if (socket) return;
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
-        path: "/socket.io/",
         auth: { token },
-        transports: ["websocket", "polling"],
       });
 
       const decodedToken = jwtDecode<CustomPayload>(token);
@@ -42,7 +40,6 @@ export const useSocketStore = create<SocketStore>((set) => {
       });
 
       socket.on("disconnect", () => {
-        console.log("Disconnected from server");
         socket = null;
       });
 

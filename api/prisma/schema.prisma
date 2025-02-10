@@ -117,4 +117,5 @@ enum RequestStatus {
 enum Role {
   USER
   ADMIN
+  GUEST
 }

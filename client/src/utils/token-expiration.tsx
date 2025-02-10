@@ -3,7 +3,7 @@ import { Icons } from "@/components/Icons";
 
 export const handleTokenExpiration = async (logout: () => void) => {
   toast({
-    title: "Token Expiré",
+    title: "Session expirée",
     description: "Veuillez vous reconnecter.",
     variant: "destructive",
     logo: <Icons.alert />,

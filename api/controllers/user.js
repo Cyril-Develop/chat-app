@@ -76,6 +76,7 @@ exports.getUser = async (req, res) => {
         bio: true,
         profileImage: true,
         notification: true,
+        role: true,
         chatRooms: {
           select: {
             chatRoom: {
@@ -146,7 +147,14 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const id = req.auth.userId;
+    const role = req.auth.role;
     const { username, bio } = req.body;
+
+    if (role === "GUEST") {
+      return res.status(403).json({
+        error: "Action non autorisée en tant qu'invité.",
+      });
+    }
 
     let updatedFields = {};
     if (username) {
@@ -202,6 +210,13 @@ exports.updateAccount = async (req, res) => {
   try {
     const id = req.auth.userId;
     const { email } = req.body;
+    const role = req.auth.role;
+
+    if (role === "GUEST") {
+      return res.status(403).json({
+        error: "Action non autorisée en tant qu'invité.",
+      });
+    }
 
     if (!email) {
       return res.status(400).json({
@@ -233,6 +248,14 @@ exports.updateAccount = async (req, res) => {
 exports.deleteAccount = async (req, res) => {
   try {
     const id = req.auth.userId;
+    const role = req.auth.role;
+
+    if (role === "GUEST") {
+      return res.status(403).json({
+        error: "Action non autorisée en tant qu'invité.",
+      });
+    }
+
     await prisma.user.delete({
       where: {
         id,
@@ -250,7 +273,14 @@ exports.deleteAccount = async (req, res) => {
 exports.updateNotification = async (req, res) => {
   try {
     const id = req.auth.userId;
+    const role = req.auth.role;
     const { notification } = req.body;
+
+    if (role === "GUEST") {
+      return res.status(403).json({
+        error: "Action non autorisée en tant qu'invité.",
+      });
+    }
 
     const user = await prisma.user.update({
       where: { id },
@@ -273,6 +303,13 @@ exports.updateNotification = async (req, res) => {
 exports.sendFriendRequest = async (req, res) => {
   const { receiverId } = req.body;
   const senderId = req.auth.userId;
+  const role = req.auth.role;
+
+  if (role === "GUEST") {
+    return res.status(403).json({
+      error: "Action non autorisée en tant qu'invité.",
+    });
+  }
 
   if (!senderId || !receiverId) {
     return res
@@ -358,8 +395,6 @@ exports.getFriendRequest = async (req, res) => {
       .status(400)
       .json({ error: "L'identifiant de l'utilisateur est requis." });
   }
-
-  console.log("userId", userId);
 
   try {
     const friendRequests = await prisma.friendRequest.findMany({

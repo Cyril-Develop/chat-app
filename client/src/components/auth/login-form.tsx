@@ -53,7 +53,7 @@ const LoginForm = () => {
     setApiError("");
     try {
       const { email, password } = form.getValues();
-      const token = await loginByEmail({ email, password });
+      const { token } = await loginByEmail({ email, password });
       setToken(token);
       form.reset();
     } catch (error: any) {
@@ -69,7 +69,7 @@ const LoginForm = () => {
 
   const handleLoginAsGuest = async () => {
     try {
-      const token = await loginAsGuest();
+      const { token } = await loginAsGuest();
       setToken(token);
     } catch (error: any) {
       setApiError(error.message);
@@ -86,7 +86,7 @@ const LoginForm = () => {
     >
       <Line />
       <Button
-        className="block mx-auto text-lg w-full my-4"
+        className="block mx-auto text-lg my-4"
         onClick={handleLoginAsGuest}
       >
         Découvrir en tant qu'invité

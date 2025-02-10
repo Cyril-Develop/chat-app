@@ -50,7 +50,6 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
 
   const onSubmit = async (data: ProfileFormValues) => {
     const { username, bio, image } = data;
-    console.log(username, bio, image);
 
     if (username === user.username && bio === user.bio && !image) {
       toast({

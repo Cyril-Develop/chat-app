@@ -89,7 +89,7 @@ const LoginForm = () => {
         className="block mx-auto text-lg w-full my-4"
         onClick={handleLoginAsGuest}
       >
-        Découvrir en temps qu'invité
+        Découvrir en tant qu'invité
       </Button>
       <Form {...form}>
         <form

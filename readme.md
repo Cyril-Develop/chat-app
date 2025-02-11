@@ -2,6 +2,7 @@
 
 ![room](/client/public/screenshot/room.webp)
 ![account](/client/public/screenshot/account.webp)
+![dashboard](/client/public/screenshot/dashboard.webp)
 ![home](/client/public/screenshot/home.webp)
 
 ## 🚀 Technologies utilisées :

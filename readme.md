@@ -1,7 +1,7 @@
 # Chateo - Application de chat en temps réel.
 
 ![room](/client/public/screenshot/room.webp)
-![account](/client/public/screenshot/account.webp)
+![profile](/client/public/screenshot/profile.webp)
 ![dashboard](/client/public/screenshot/dashboard.webp)
 ![home](/client/public/screenshot/home.webp)
 

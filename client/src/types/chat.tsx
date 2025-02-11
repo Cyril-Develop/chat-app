@@ -6,6 +6,7 @@ export interface HeaderRoomProps {
   };
   currentUser: {
     id: number;
+    role: string;
   };
 }
 
@@ -15,6 +16,7 @@ export interface RoomProps {
     id: number;
     username: string;
     profileImage: string;
+    role: string;
   };
   messages?: Message[];
 }

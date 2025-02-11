@@ -2,6 +2,7 @@ import { SidebarNav } from "@/components/settings/sidebar-nav";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import ImageAccount from "@/assets/account.svg";
 import ImageProfile from "@/assets/profile.svg";
+import ImageDashboard from "@/assets/dashboard.svg";
 import ImageNotification from "@/assets/notification.svg";
 import ImageSettings from "@/components/image-provider";
 import { Icons } from "@/components/Icons";
@@ -24,6 +25,10 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       title: "Notifications",
       href: "/chateo/settings/notifications",
     },
+    {
+      title: "Tableau de bord",
+      href: "/chateo/settings/dashboard",
+    },
   ];
 
   const imageSettings = [
@@ -41,6 +46,11 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       href: "/chateo/settings/notifications",
       img: ImageNotification,
       alt: "notification",
+    },
+    {
+      href: "/chateo/settings/dashboard",
+      img: ImageDashboard,
+      alt: "dashboard",
     },
   ];
 
@@ -63,6 +73,7 @@ const Settings = ({ children }: SettingsLayoutProps) => {
             <SidebarNav items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:max-w-2xl">{children}</div>
+
           <div className="hidden lg:block min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4">
             <ImageSettings logo={imageSettings} />
           </div>

@@ -5,7 +5,8 @@ import { useDeleteRoomMutation } from "@/hooks/delete-room";
 import { HeaderRoomProps } from "@/types/chat";
 
 const HeaderRoom = ({ room, currentUser }: HeaderRoomProps) => {
-  const isMyRoom = room?.createdBy === currentUser?.id;
+  const role = currentUser?.role;
+  const isMyRoom = room?.createdBy === currentUser?.id || role === "ADMIN";
 
   const deleteRoom = useDeleteRoomMutation();
 

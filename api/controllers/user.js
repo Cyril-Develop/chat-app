@@ -13,6 +13,7 @@ exports.getAllUsers = async (req, res) => {
         username: true,
         bio: true,
         profileImage: true,
+        role: true,
         friends: {
           select: {
             friend: {
@@ -147,10 +148,10 @@ exports.getUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const id = req.auth.userId;
-    const role = req.auth.role;
+    const userRole = req.auth.role;
     const { username, bio } = req.body;
 
-    if (role === "GUEST") {
+    if (userRole === "GUEST") {
       return res.status(403).json({
         error: "Action non autorisée en tant qu'invité.",
       });
@@ -210,9 +211,9 @@ exports.updateAccount = async (req, res) => {
   try {
     const id = req.auth.userId;
     const { email } = req.body;
-    const role = req.auth.role;
+    const userRole = req.auth.role;
 
-    if (role === "GUEST") {
+    if (userRole === "GUEST") {
       return res.status(403).json({
         error: "Action non autorisée en tant qu'invité.",
       });
@@ -247,10 +248,12 @@ exports.updateAccount = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
   try {
-    const id = req.auth.userId;
-    const role = req.auth.role;
+    const requesterId = req.auth.userId;
+    // Account to delete
+    const { userId } = req.body;
+    const userRole = req.auth.role;
 
-    if (role === "GUEST") {
+    if (userRole === "GUEST") {
       return res.status(403).json({
         error: "Action non autorisée en tant qu'invité.",
       });
@@ -258,10 +261,16 @@ exports.deleteAccount = async (req, res) => {
 
     await prisma.user.delete({
       where: {
-        id,
+        id: userId,
       },
     });
-    res.status(200).json({ message: "Compte supprimé avec succès." });
+
+    const isSelfDelete = userId === requesterId;
+
+    res.status(200).json({
+      message: "Compte supprimé avec succès.",
+      selfDelete: isSelfDelete,
+    });
   } catch (err) {
     console.error("Error deleting user:", err);
     res.status(500).json({
@@ -273,10 +282,10 @@ exports.deleteAccount = async (req, res) => {
 exports.updateNotification = async (req, res) => {
   try {
     const id = req.auth.userId;
-    const role = req.auth.role;
+    const userRole = req.auth.role;
     const { notification } = req.body;
 
-    if (role === "GUEST") {
+    if (userRole === "GUEST") {
       return res.status(403).json({
         error: "Action non autorisée en tant qu'invité.",
       });
@@ -303,9 +312,9 @@ exports.updateNotification = async (req, res) => {
 exports.sendFriendRequest = async (req, res) => {
   const { receiverId } = req.body;
   const senderId = req.auth.userId;
-  const role = req.auth.role;
+  const userRole = req.auth.role;
 
-  if (role === "GUEST") {
+  if (userRole === "GUEST") {
     return res.status(403).json({
       error: "Action non autorisée en tant qu'invité.",
     });

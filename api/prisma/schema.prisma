@@ -23,20 +23,19 @@ model User {
   profileImage     String            @default("default.jpg")
   notification     String            @default("accept")
   role             Role              @default(USER)
-  
+
   chatRooms        UserChatRoom[] 
   friends          Friend[]          @relation("UserFriends") 
   friendOf         Friend[]          @relation("FriendUsers") 
   createdChatRooms ChatRoom[]        @relation("CreatorChatRooms")
   messages         Message[]         @relation("UserMessages")
-  
+
   sentFriendRequests    FriendRequest[] @relation("SenderFriendRequests")
   receivedFriendRequests FriendRequest[] @relation("ReceiverFriendRequests")
 
   sentMessages     PrivateMessage[]  @relation("SentPrivateMessages") 
   receivedMessages PrivateMessage[]  @relation("ReceivedPrivateMessages") 
 }
-
 
 model Message {
   id         Int      @id @default(autoincrement())
@@ -46,7 +45,7 @@ model Message {
   updatedAt  DateTime @updatedAt
   userId     Int
   chatRoomId Int
-  user       User     @relation(fields: [userId], references: [id], name: "UserMessages")
+  user       User     @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
   chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], name: "ChatRoomMessages")
 }
 
@@ -59,8 +58,8 @@ model PrivateMessage {
   userId     Int  
   receiverId Int
 
-  user       User @relation("SentPrivateMessages", fields: [userId], references: [id])  
-  receiver   User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id]) 
+  user       User @relation("SentPrivateMessages", fields: [userId], references: [id], onDelete: Cascade)  
+  receiver   User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id], onDelete: Cascade) 
 
   @@index([userId, receiverId])
 }
@@ -73,7 +72,7 @@ model ChatRoom {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
   createdBy Int
-  creator   User           @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms")
+  creator   User           @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms", onDelete: Cascade)
   users     UserChatRoom[]
   messages  Message[]      @relation("ChatRoomMessages")
 }
@@ -81,8 +80,8 @@ model ChatRoom {
 model UserChatRoom {
   userId     Int
   chatRoomId Int
-  user       User     @relation(fields: [userId], references: [id])
-  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
 
   @@id([userId, chatRoomId])
 }
@@ -90,11 +89,11 @@ model UserChatRoom {
 model Friend {
   userId   Int
   friendId Int
-  user     User @relation("UserFriends", fields: [userId], references: [id])
-  friend   User @relation("FriendUsers", fields: [friendId], references: [id])
+  user     User @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend   User @relation("FriendUsers", fields: [friendId], references: [id], onDelete: Cascade)
 
   @@id([userId, friendId])
-  @@unique([userId, friendId]) // Assure une relation unique entre userId et friendId
+  @@unique([userId, friendId])
 }
 
 model FriendRequest {
@@ -104,8 +103,8 @@ model FriendRequest {
   status     String   @default("pending")
   createdAt  DateTime @default(now())
 
-  sender   User @relation("SenderFriendRequests", fields: [senderId], references: [id])
-  receiver User @relation("ReceiverFriendRequests", fields: [receiverId], references: [id])
+  sender   User @relation("SenderFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceiverFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
 enum RequestStatus {
@@ -119,3 +118,4 @@ enum Role {
   ADMIN
   GUEST
 }
+

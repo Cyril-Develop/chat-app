@@ -17,7 +17,7 @@ interface AlertProps {
   description: string;
   buttonTitle: string;
   trigger?: React.ReactNode;
-  action: () => void;
+  action (): void;
   open?: boolean;
   setOpen?: (open: boolean) => void;
 }

@@ -91,7 +91,7 @@ export const editAccount = async (email: string, token: string | null) => {
   }
 };
 
-export const deleteAccount = async (token: string | null) => {
+export const deleteUserAccount = async (token: string | null, userId: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
@@ -101,6 +101,7 @@ export const deleteAccount = async (token: string | null) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ userId }),
       }
     );
     const data = await response.json();
@@ -189,7 +190,10 @@ export const getFriendRequest = async (token: string | null) => {
   }
 };
 
-export const acceptFriendRequest = async (contactId: number, token: string | null) => {
+export const acceptFriendRequest = async (
+  contactId: number,
+  token: string | null
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/accept`,

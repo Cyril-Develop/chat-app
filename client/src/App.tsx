@@ -15,6 +15,7 @@ import NotFound from "@/pages/NotFound";
 import Settings from "@/pages/settings/Settings";
 import Profile from "@/pages/settings/Profile";
 import Account from "@/pages/settings/Account";
+import Dashboard from "@/pages/settings/Dashboard";
 import Notification from "@/pages/settings/Notification";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect } from "react";
@@ -92,6 +93,16 @@ function App() {
           element: token ? (
             <Settings>
               <Notification />
+            </Settings>
+          ) : (
+            <Navigate to="/chateo/login" />
+          ),
+        },
+        {
+          path: "/chateo/settings/dashboard",
+          element: token ? (
+            <Settings>
+              <Dashboard />
             </Settings>
           ) : (
             <Navigate to="/chateo/login" />

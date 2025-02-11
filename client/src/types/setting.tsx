@@ -1,4 +1,4 @@
-import { UserInfos } from '@/types/user';
+import { UserInfos } from "@/types/user";
 
 export interface AccountFormValues {
   user: UserInfos;
@@ -20,4 +20,11 @@ export interface ProfileFormValues {
 
 export interface ProfileFormProps {
   user: UserInfos;
+}
+
+export interface DashboardProps {
+  id: number;
+  username: string;
+  profileImage: string;
+  role: string;
 }

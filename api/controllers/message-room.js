@@ -97,7 +97,7 @@ exports.deleteMessage = async (req, res) => {
     }
 
     // Vérifiez si l'utilisateur est l'auteur du message
-    if (message.userId !== userId) {
+    if (message.userId !== userId && user.role !== "ADMIN") {
       return res
         .status(403)
         .json({ error: "You are not allowed to delete this message." });

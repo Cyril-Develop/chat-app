@@ -7,6 +7,7 @@ export interface UserInfos {
   createdAt: string;
   notification: string;
   statut: string;
+  role: string;
 }
 
 export interface HandleUserStatusChangedProps {

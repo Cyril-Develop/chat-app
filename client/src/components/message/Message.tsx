@@ -6,11 +6,15 @@ import { getUserId } from "@/utils/get-userId";
 import { useDeleteMessageMutation } from "@/hooks/delete-message";
 import { useDeletePrivateMessageMutation } from "@/hooks/delete-private-message";
 import { MessageProps } from "@/types/message";
+import useGetUser from "@/hooks/get-user";
 
 const Message = ({ message }: MessageProps) => {
   const userId = getUserId();
+  const { data: currentUser } = useGetUser(userId);
   const deleteMessageInRoom = useDeleteMessageMutation();
   const deletePrivateMessage = useDeletePrivateMessageMutation();
+
+  const role = currentUser?.role;
 
   const handleDelete = (messageId: number) => {
     if (message.receiverId) {
@@ -62,7 +66,7 @@ const Message = ({ message }: MessageProps) => {
         <span className="text-xs text-description">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
-        {userId === message.user.id && (
+        {(userId === message.user.id || role === "ADMIN") && (
           <Button
             variant="alert"
             title="Supprimer le message"

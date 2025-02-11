@@ -1,13 +1,13 @@
-import { Separator } from "@/components/ui/separator";
-import { AccountForm } from "@/components/settings/account-form";
 import Alert from "@/components/Alert";
-import handleDeleteAccount from "@/utils/delete-account";
-import { useUserStore } from "@/store/user.store";
-import useGetUser from "@/hooks/get-user";
-import { getUserId } from "@/utils/get-userId";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
+import { AccountForm } from "@/components/settings/account-form";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "@/components/ui/use-toast";
+import useGetUser from "@/hooks/get-user";
+import { useUserStore } from "@/store/user.store";
+import { getUserId } from "@/utils/get-userId";
+import handleDeleteAccount from "@/utils/handle-delete-account";
 
 export default function SettingsAccountPage() {
   const logout = useUserStore((state) => state.logout);
@@ -15,9 +15,9 @@ export default function SettingsAccountPage() {
   const userId = getUserId();
   const { data } = useGetUser(userId);
 
-  const handleDelete = async () => {
-    if (token) {
-      await handleDeleteAccount(logout, token);
+  const deleteAccount = async (userId?: number) => {
+    if (token && userId) {
+      await handleDeleteAccount(logout, token, userId);
     } else {
       toast({
         title: "Token manquant",
@@ -55,7 +55,7 @@ export default function SettingsAccountPage() {
             title="Supprimer le compte"
             description="Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
             buttonTitle="Supprimer"
-            action={handleDelete}
+            action={() => deleteAccount(userId)}
           />
         </>
       )}

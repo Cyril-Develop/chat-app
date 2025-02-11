@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import useGetUser from "@/hooks/get-user";
-import { getUserId } from "@/utils/get-userId";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { useUserStore } from "@/store/user.store";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -14,12 +13,10 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const { pathname } = useLocation();
-  const userId = getUserId();
-  const { data: currentUser } = useGetUser(userId);
-  const userRole = currentUser?.role;
+  const { role } = useUserStore((state) => state);
 
   const filteredItems =
-    userRole === "ADMIN"
+    role === "ADMIN"
       ? items
       : items.filter((item) => item.title !== "Tableau de bord");
 

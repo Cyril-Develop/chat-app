@@ -30,7 +30,8 @@ const LoginForm = () => {
   const [apiError, setApiError] = useState("");
 
   const setToken = useUserStore((state) => state.setToken);
-  const token = useUserStore((state) => state.token);
+  const setRole = useUserStore((state) => state.setRole);
+  const { token } = useUserStore((state) => state);
 
   const navigate = useNavigate();
 
@@ -53,8 +54,9 @@ const LoginForm = () => {
     setApiError("");
     try {
       const { email, password } = form.getValues();
-      const { token } = await loginByEmail({ email, password });
+      const { token, role } = await loginByEmail({ email, password });
       setToken(token);
+      setRole(role);
       form.reset();
     } catch (error: any) {
       setApiError(error.message);
@@ -69,8 +71,9 @@ const LoginForm = () => {
 
   const handleLoginAsGuest = async () => {
     try {
-      const { token } = await loginAsGuest();
+      const { token, role } = await loginAsGuest();
       setToken(token);
+      setRole(role);
     } catch (error: any) {
       setApiError(error.message);
     }

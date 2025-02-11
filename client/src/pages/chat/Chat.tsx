@@ -20,14 +20,13 @@ import { useState } from "react";
 const Chat = () => {
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
-  const { statut } = useUserStore((state) => state);
+  const { statut, role } = useUserStore((state) => state);
   const userId = getUserId();
   const { data: currentUser } = useGetUser(userId);
   const { socket } = useSocketStore();
   const { contactId } = useContactStore();
   const [showNotification, setShowNotification] = useState(false);
   const prevRoomRef = useRef<number | null>(null);
-  const role = currentUser?.role;
 
   useEffect(() => {
     if (room && currentUser) {

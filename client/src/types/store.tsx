@@ -1,8 +1,10 @@
 export interface UserState {
   token: string | null;
   statut: "online" | "spy";
+  role: "USER" | "ADMIN" | "GUEST";
   setStatut: (statut: "online" | "spy") => void;
   setToken: (token: string | null) => void;
+  setRole: (role: "USER" | "ADMIN" | "GUEST") => void;
   logout: () => void;
 }
 

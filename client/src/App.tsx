@@ -20,7 +20,6 @@ import Notification from "@/pages/settings/Notification";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect } from "react";
 
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
@@ -31,7 +30,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const { token, statut} = useUserStore((state) => state);
+  const { token, statut, role } = useUserStore((state) => state);
   const { connectSocket, disconnectSocket } = useSocketStore();
 
   useEffect(() => {
@@ -100,13 +99,14 @@ function App() {
         },
         {
           path: "/chateo/settings/dashboard",
-          element: token ? (
-            <Settings>
-              <Dashboard />
-            </Settings>
-          ) : (
-            <Navigate to="/chateo/login" />
-          ),
+          element:
+            role === "ADMIN" ? (
+              <Settings>
+                <Dashboard />
+              </Settings>
+            ) : (
+              <Navigate to="/chateo" />
+            ),
         },
       ],
     },

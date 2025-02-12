@@ -1,21 +1,20 @@
-import Room from "@/components/room/room";
 import ChatUnselected from "@/components/chat/chat-unselected";
+import PrivateChat from "@/components/chat/private-chat";
 import { SearchUser } from "@/components/chat/search-user";
 import { Contact } from "@/components/Contact";
-import { DialogCreate } from "@/components/dialog/dialog-create";
+import { CreateRoom } from "@/components/dialog/create-room";
 import ContactRequest from "@/components/notification/contact-request";
-import { RoomUsers } from "@/components/room/room-users";
+import Room from "@/components/room/room";
 import { RoomSelector } from "@/components/room/room-selector";
+import { RoomUsers } from "@/components/room/room-users";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-user";
+import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useUserStore } from "@/store/user.store";
-import { useEffect, useRef } from "react";
-import PrivateChat from "@/components/chat/private-chat";
 import { getUserId } from "@/utils/get-userId";
-import { useContactStore } from "@/store/contact.store";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Chat = () => {
   const { room } = useRoomStore();
@@ -89,7 +88,7 @@ const Chat = () => {
         <div className="chat_aside_container">
           <h2 className="text-3xl">Salons</h2>
           <Separator />
-          <DialogCreate
+          <CreateRoom
             btnTrigger="Créer un salon"
             headerTitle="Créer un salon"
             headerDescription="Saisissez le nom du salon."

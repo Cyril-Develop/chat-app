@@ -17,6 +17,7 @@ import Profile from "@/pages/settings/Profile";
 import Account from "@/pages/settings/Account";
 import Dashboard from "@/pages/settings/Dashboard";
 import Notification from "@/pages/settings/Notification";
+//import Password from "@/pages/password/Password";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect } from "react";
 
@@ -53,6 +54,7 @@ function App() {
         { path: "/chateo", element: <Home /> },
         { path: "/chateo/register", element: <Register /> },
         { path: "/chateo/login", element: <Login /> },
+        // { path: "/chateo/password", element: <Password /> },
         {
           path: "/chateo/chat",
           element: token ? <Chat /> : <Navigate to="/chateo/login" />,

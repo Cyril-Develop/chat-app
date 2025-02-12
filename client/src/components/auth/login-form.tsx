@@ -23,6 +23,7 @@ import { useUserStore } from "@/store/user.store";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "@/components/Icons";
 import { loginAsGuest } from "@/services/Auth";
+import { ForgotPassword } from "@/components/password/forgot-password";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -132,9 +133,12 @@ const LoginForm = () => {
                     />
                   </FormControl>
                   <FormDescription>
-                    <a href="#" className="link-form">
-                      Mot de passe oublié ?
-                    </a>
+                    <ForgotPassword
+                      btnTrigger="Mot de passe oublié ?"
+                      headerTitle="Récupération de mot de passe"
+                      headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un
+            lien de réinitialisation de votre mot de passe."
+                    />
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -1,7 +1,7 @@
-import { DialogCreate } from "@/components/dialog/dialog-create";
+import { CreateRoom } from "@/components/dialog/create-room";
 import { Icons } from "@/components/Icons";
-import { RoomUsers } from "@/components/room/room-users";
 import { RoomSelector } from "@/components/room/room-selector";
+import { RoomUsers } from "@/components/room/room-users";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -36,7 +36,7 @@ export function SheetRight() {
             Créer ou rejoignez un salon pour discuter.
           </SheetDescription>
           <div className="flex flex-col gap-4">
-            <DialogCreate
+            <CreateRoom
               btnTrigger="Créer un salon"
               headerTitle="Créer un salon"
               headerDescription="Saisissez le nom du salon."

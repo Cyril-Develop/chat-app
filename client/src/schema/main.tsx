@@ -69,6 +69,10 @@ export const RoomFormSchema = z.object({
   password: z.string().optional(),
 });
 
+export const ForgotPasswordFormSchema = z.object({
+  email: emailSchema,
+});
+
 export const RoomPasswordSchema = z.object({
   password: z.string().min(1, { message: "Le mot de passe est requis" }),
 });

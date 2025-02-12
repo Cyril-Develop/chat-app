@@ -1,20 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import CreateForm from "@/components/dialog/create-room";
+import ForgotPasswordForm from "@/components/password/forgot-password-form";
 import { useState } from "react";
 
-interface DialogCreate {
+interface ForgotPasswordProps {
   btnTrigger: string;
   headerTitle: string;
   headerDescription: string;
 }
 
-export function DialogCreate({
+export function ForgotPassword({
   btnTrigger,
   headerTitle,
   headerDescription,
-}: DialogCreate) {
+}: ForgotPasswordProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenChange = (open: boolean) => setIsOpen(open);
@@ -24,14 +24,17 @@ export function DialogCreate({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="box" >
+        <Button size="box" variant="linkForm" className="justify-start w-auto">
           {btnTrigger}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
-        <CreateForm btnSubmit="Créer" onSubmitSuccess={handleSubmitSuccess} />
+        <ForgotPasswordForm
+          btnSubmit="Continuer"
+          onSubmitSuccess={handleSubmitSuccess}
+        />
       </DialogContent>
     </Dialog>
   );

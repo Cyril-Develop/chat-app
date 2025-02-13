@@ -22,7 +22,10 @@ const forbiddenWords = [
   "bouffon",
   "boufon",
 ];
-// Message d'erreur si un mot interdit est utilisé dans le nom
+// Fonction pour enlever les accents
+const removeAccents = (str: string) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
 const forbiddenRegex = new RegExp(`(${forbiddenWords.join("|")})`, "i");
 
 // REGISTER / LOGIN
@@ -31,7 +34,7 @@ const usernameSchema = z
   .min(1, { message: "Le nom d'utilisateur est requis" })
   .min(3, { message: "Minimum 3 caractères" })
   .max(15, { message: "Maximum 15 caractères" })
-  .refine((value) => !forbiddenRegex.test(value), {
+  .refine((value) => !forbiddenRegex.test(removeAccents(value)), {
     message: "Le nom d'utilisateur contient un mot interdit",
   });
 
@@ -39,7 +42,7 @@ const emailSchema = z
   .string()
   .min(1, { message: "L'email est requis" })
   .email({ message: "L'email n'est pas valide" })
-  .refine((value) => !forbiddenRegex.test(value), {
+  .refine((value) => !forbiddenRegex.test(removeAccents(value)), {
     message: "L'email contient un mot interdit",
   });
 
@@ -56,7 +59,7 @@ const newEmailSchema = z
   .string()
   .min(1, { message: "Le nouvel email est requis" })
   .email({ message: "Le nouvel email n'est pas valide" })
-  .refine((value) => !forbiddenRegex.test(value), {
+  .refine((value) => !forbiddenRegex.test(removeAccents(value)), {
     message: "L'email contient un mot interdit",
   });
 
@@ -74,7 +77,7 @@ const nameRoomSchema = z
   .min(1, { message: "Le nom du salon est requis" })
   .min(3, { message: "Minimum 3 caractères" })
   .max(15, { message: "Maximum 15 caractères" })
-  .refine((value) => !forbiddenRegex.test(value), {
+  .refine((value) => !forbiddenRegex.test(removeAccents(value)), {
     message: "Le nom du salon contient un mot interdit",
   });
 

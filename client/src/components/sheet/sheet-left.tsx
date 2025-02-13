@@ -47,7 +47,7 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
             <SheetHeader className={cn("text-left mt-4")}>
               <SheetTitle>Notifications</SheetTitle>
               <Separator />
-              <SheetDescription className="text-description">
+              <SheetDescription className="text-description pb-2">
                 Acceptez ou refusez les demandes de contact.
               </SheetDescription>
             </SheetHeader>

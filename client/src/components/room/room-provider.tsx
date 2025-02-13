@@ -35,6 +35,7 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
 
   const handlePrivateRoomSelect = (room: Room) => {
     // Set the selected private room to be used in the dialog
+    setOpen(true);
     setSelectedPrivateRoom({ id: room.id, name: room.name });
 
     if (currentRoomId !== room.id) {
@@ -52,7 +53,9 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
     <>
       {publicRooms && publicRooms.length > 0 && (
         <RoomList
-          heading="Salons Publics 💬"
+          heading={
+            publicRooms.length <= 1 ? "Salon Public 💬" : "Salons Publics 💬"
+          }
           rooms={publicRooms}
           onSelect={handlePublicRoomSelect}
           value={value}
@@ -61,7 +64,9 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
       <CommandSeparator />
       {privateRooms && privateRooms.length > 0 && (
         <RoomList
-          heading="Salons Privés 🔒"
+          heading={
+            privateRooms.length <= 1 ? "Salon Privé 🔒" : "Salons Privés 🔒"
+          }
           rooms={privateRooms}
           onSelect={handlePrivateRoomSelect}
           value={value}

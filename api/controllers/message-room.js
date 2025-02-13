@@ -96,7 +96,7 @@ exports.deleteMessage = async (req, res) => {
       });
     }
 
-    // Vérifiez si l'utilisateur est l'auteur du message
+    // Vérifiez si l'utilisateur est l'auteur du message ou un administrateur
     if (message.userId !== userId && user.role !== "ADMIN") {
       return res
         .status(403)

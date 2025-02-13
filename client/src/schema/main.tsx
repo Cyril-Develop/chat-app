@@ -1,16 +1,47 @@
 import { z } from "zod";
 
+// MOTS INTERDITS
+const forbiddenWords = [
+  "con",
+  "idiot",
+  "abruti",
+  "crétin",
+  "imbécile",
+  "stupide",
+  "gros con",
+  "salaud",
+  "ordure",
+  "merde",
+  "enculé",
+  "connard",
+  "fils de",
+  "batard",
+  "pute",
+  "salop",
+  "salope",
+  "bouffon",
+  "boufon",
+];
+// Message d'erreur si un mot interdit est utilisé dans le nom
+const forbiddenRegex = new RegExp(`(${forbiddenWords.join("|")})`, "i");
+
 // REGISTER / LOGIN
 const usernameSchema = z
   .string()
   .min(1, { message: "Le nom d'utilisateur est requis" })
   .min(3, { message: "Minimum 3 caractères" })
-  .max(15, { message: "Maximum 15 caractères" });
+  .max(15, { message: "Maximum 15 caractères" })
+  .refine((value) => !forbiddenRegex.test(value), {
+    message: "Le nom d'utilisateur contient un mot interdit",
+  });
 
 const emailSchema = z
   .string()
   .min(1, { message: "L'email est requis" })
-  .email({ message: "L'email n'est pas valide" });
+  .email({ message: "L'email n'est pas valide" })
+  .refine((value) => !forbiddenRegex.test(value), {
+    message: "L'email contient un mot interdit",
+  });
 
 const passwordSchema = z
   .string()
@@ -24,7 +55,10 @@ const passwordSchema = z
 const newEmailSchema = z
   .string()
   .min(1, { message: "Le nouvel email est requis" })
-  .email({ message: "Le nouvel email n'est pas valide" });
+  .email({ message: "Le nouvel email n'est pas valide" })
+  .refine((value) => !forbiddenRegex.test(value), {
+    message: "L'email contient un mot interdit",
+  });
 
 const bioSchema = z.string().max(150, { message: "Maximum 150 caractères" });
 
@@ -39,7 +73,10 @@ const nameRoomSchema = z
   .string()
   .min(1, { message: "Le nom du salon est requis" })
   .min(3, { message: "Minimum 3 caractères" })
-  .max(15, { message: "Maximum 15 caractères" });
+  .max(15, { message: "Maximum 15 caractères" })
+  .refine((value) => !forbiddenRegex.test(value), {
+    message: "Le nom du salon contient un mot interdit",
+  });
 
 // SCHEMAS
 export const RegisterFormSchema = z.object({

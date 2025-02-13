@@ -27,12 +27,7 @@ export function Contact({ currentUser }: ContactProps) {
   const { id: roomId } = room || {};
   const { contactId, setContactId } = useContactStore();
   const leaveRoom = useLeaveRoomMutation();
-
-  //Permet de gérer l'état de la popover, Radix UI, où un Popover se ferme immédiatement lorsqu'il est utilisé à l'intérieur d'un Dialog ou lorsqu'il y a des conflits d'auto-focus
   const [open, setOpen] = useState(false);
-  const togglePopover = () => {
-    setOpen((prev) => !prev);
-  };
 
   useEffect(() => {
     if (currentUser?.friendsList) {
@@ -106,7 +101,6 @@ export function Contact({ currentUser }: ContactProps) {
           aria-expanded={open}
           className="w-[200px] justify-between p-3"
           disabled={!haveContact}
-          onClick={togglePopover}
         >
           Voir mes contacts
           {haveContact && ` (${friends.length})`}

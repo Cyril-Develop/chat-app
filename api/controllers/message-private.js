@@ -64,12 +64,13 @@ exports.deleteMessage = async (req, res) => {
   const userId = req.auth.userId;
 
   try {
-    // Vérifiez si le message appartient à l'utilisateur
+    // Vérifiez si l'utilisateur et le message existent
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     const message = await prisma.privateMessage.findUnique({
       where: { id: messageId },
     });
 
-    if (!message || message.userId !== userId) {
+    if (!message) {
       return res.status(404).json({ error: "Message not found." });
     }
 
@@ -80,8 +81,8 @@ exports.deleteMessage = async (req, res) => {
       });
     }
 
-    // Vérifiez si l'utilisateur est l'auteur du message
-    if (message.userId !== userId) {
+    // Vérifiez si l'utilisateur est l'auteur du message ou un administrateur
+    if (message.userId !== userId && user.role !== "ADMIN") {
       return res
         .status(403)
         .json({ error: "You are not allowed to delete this message." });

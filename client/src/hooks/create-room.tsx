@@ -16,8 +16,8 @@ export const useCreateRoomMutation = () => {
   return useMutation({
     mutationFn: (data: CreateRoomProps) => createRoom(data, token),
     onSuccess: (data) => {
-      joinRoom.mutate({ roomId: data.id });
-      setRoom(data.id);
+      joinRoom.mutate({ roomId: data.id, roomName: data.name, password: data.password });
+      setRoom({ id: data.id, name: data.name });
       socket?.emit(
         "createRoom",
         data.id,

@@ -16,7 +16,7 @@ const limiter = rateLimit({
   max: 100,
 });
 
-app.use(limiter);
+//app.use(limiter);
 
 // Serving images statically
 app.use("/chateo/api/images", express.static(path.join(__dirname, "images")));

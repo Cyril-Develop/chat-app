@@ -1,8 +1,4 @@
-import {
-  RegisterByEmailProps,
-  LoginByEmailProps,
-  SendOtpProps,
-} from "@/types/auth";
+import { RegisterByEmailProps, LoginByEmailProps } from "@/types/auth";
 
 // export const googleLogin = async () => {
 //   try {

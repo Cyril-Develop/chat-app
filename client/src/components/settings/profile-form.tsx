@@ -165,6 +165,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
         />
         <ButtonForm
           loading={editUser.isPending}
+          disabled={editUser.isPending}
           defaultValue="Enregistrer les modifications"
           spinnerValue="Envoie en cours"
         />

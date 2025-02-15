@@ -75,6 +75,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
         />
         <ButtonForm
           loading={editNotification.isPending}
+          disabled={editNotification.isPending}
           defaultValue="Enregistrer les modifications"
           spinnerValue="Envoie en cours"
         />

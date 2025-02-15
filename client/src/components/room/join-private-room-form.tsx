@@ -78,6 +78,7 @@ const JoinPrivateRoomForm = ({ btnSubmit, roomId, onOpenChange }: JoinPrivateRoo
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}
+            disabled={loading}
             defaultValue={btnSubmit}
             spinnerValue="Connexion"
           />

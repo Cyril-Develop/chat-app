@@ -20,7 +20,7 @@ interface ForgotPasswordFormProps {
 
 const ForgotPasswordForm = ({
   btnSubmit,
-  onSubmitSuccess,
+ // onSubmitSuccess,
 }: ForgotPasswordFormProps) => {
   const form = useForm({
     defaultValues: {
@@ -82,6 +82,7 @@ const ForgotPasswordForm = ({
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}
+            disabled={loading}
             defaultValue={btnSubmit}
             spinnerValue="Envoi..."
           />

@@ -100,6 +100,7 @@ const CreateRoomForm = ({
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}
+            disabled={loading}
             defaultValue={btnSubmit}
             spinnerValue="Création en cours..."
           />

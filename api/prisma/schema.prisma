@@ -21,6 +21,7 @@ model Otp {
   expiresAt  DateTime
 
   @@index([email])
+  @@map("OTP")
 }
 
 model User {

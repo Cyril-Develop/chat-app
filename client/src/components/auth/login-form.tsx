@@ -14,17 +14,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGoogleLogin } from "@react-oauth/google";
+//import { useGoogleLogin } from "@react-oauth/google";
 import Line from "@/components/auth/line";
 import CardWrapper from "./card-wrapper";
 import ShowPassord from "@/components/auth/show-password";
 import { loginByEmail } from "@/services/Auth";
 import { useUserStore } from "@/store/user.store";
 import { useNavigate } from "react-router-dom";
-import { Icons } from "@/components/Icons";
+//import { Icons } from "@/components/Icons";
 import { loginAsGuest } from "@/services/Auth";
 import { ForgotPassword } from "@/components/password/forgot-password";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -70,9 +69,9 @@ const LoginForm = () => {
     }
   };
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
-  });
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: (tokenResponse) => console.log(tokenResponse),
+  // });
 
   const handleLoginAsGuest = async () => {
     try {
@@ -141,7 +140,6 @@ const LoginForm = () => {
                       type="button"
                       variant={"linkForm"}
                       className="w-auto link-form"
-                      size="box"
                       onClick={() => setIsForgotPasswordOpen(true)}
                     >
                       Mot de passe oublié ?
@@ -155,9 +153,12 @@ const LoginForm = () => {
           <div className="flex flex-col gap-4">
             <ButtonForm
               loading={loading}
+              disabled={loading}
               defaultValue="Se connecter"
               spinnerValue="Connexion en cours"
             />
+          </div>
+          {/* <div className="flex flex-col gap-4">
 
             <Line />
 
@@ -171,7 +172,7 @@ const LoginForm = () => {
               <Icons.google className="mr-2 h-4 w-4" />
               Continuer avec Google
             </Button>
-          </div>
+          </div> */}
           {apiError && <p className="error">{apiError}</p>}
         </form>
       </Form>

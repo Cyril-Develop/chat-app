@@ -91,7 +91,10 @@ export const editAccount = async (email: string, token: string | null) => {
   }
 };
 
-export const deleteUserAccount = async (token: string | null, userId: number) => {
+export const deleteUserAccount = async (
+  token: string | null,
+  userId: number
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,

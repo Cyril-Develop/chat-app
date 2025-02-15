@@ -4,27 +4,24 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import {
-  Form,
-  FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
-  FormField,
-} from "@/components/ui/form";
+import { Form, FormItem, FormMessage, FormField } from "@/components/ui/form";
 import ButtonForm from "@/components/button-form";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ValidateAccountFormSchema } from "@/schema/main";
 
+import { registerByEmail, verifyOtp } from "@/services/Auth";
+import { toast } from "@/components/ui/use-toast";
+import { Icons } from "@/components/Icons";
+
 interface ValidateAccountFormProps {
-  btnSubmit: string;
+  newUser: { username: string; email: string; password: string };
   onSubmitSuccess: () => void;
 }
 
 export function ValidateAccountForm({
-  btnSubmit,
+  newUser,
   onSubmitSuccess,
 }: ValidateAccountFormProps) {
   const form = useForm({
@@ -41,12 +38,22 @@ export function ValidateAccountForm({
     setLoading(true);
     setApiError("");
 
-    console.log(data.otp);
-
     try {
-      // onSubmitSuccess();
+      const { email } = newUser;
+      const { otp } = data;
+
+      await verifyOtp(email, otp);
+
+      await registerByEmail(newUser);
+      toast({
+        title: "Compte créé avec succès",
+        description: "Vous pouvez maintenant vous connecter.",
+        variant: "success",
+        logo: <Icons.check className="h-6 w-6" />,
+      });
+      onSubmitSuccess();
     } catch (error: any) {
-      setApiError(error.message || "Erreur lors de la validation de l'OTP.");
+      setApiError(error.message);
     } finally {
       setLoading(false);
     }
@@ -85,8 +92,9 @@ export function ValidateAccountForm({
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}
-            defaultValue={btnSubmit}
-            spinnerValue="Envoi en cours"
+            disabled={loading}
+            defaultValue="Continuer"
+            spinnerValue="Validation en cours"
           />
         </div>
 

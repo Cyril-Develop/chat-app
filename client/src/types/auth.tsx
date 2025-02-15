@@ -8,3 +8,7 @@ export interface LoginByEmailProps {
   email: string;
   password: string;
 }
+
+export interface SendOtpProps {
+  email: string;
+}

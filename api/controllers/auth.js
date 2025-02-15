@@ -108,6 +108,38 @@ const generateOTP = () => {
   return crypto.randomInt(100000, 999999).toString();
 };
 
+// VERIFY ACCOUNT BEFORE SEND OTP
+exports.verifyUser = async (req, res) => {
+  const { username, email } = req.body;
+
+  // Vérification si l'email existe déjà dans la base de données
+  const emailExists = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (emailExists) {
+    return res.status(400).json({ error: "Email déjà utilisé" });
+  }
+
+  // Vérification si le nom d'utilisateur existe déjà dans la base de données
+  const usernameExists = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  if (usernameExists) {
+    return res.status(400).json({ error: `Nom d'utilisateur déjà utilisé` });
+  }
+
+  // Si aucun des deux n'existe, l'utilisateur est libre de s'enregistrer
+  res
+    .status(200)
+    .json({ message: "Utilisateur non trouvé, vous pouvez continuer." });
+};
+
 exports.sendOTP = async (req, res) => {
   const { email } = req.body;
 
@@ -144,7 +176,7 @@ exports.verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
 
   if (!email || !otp)
-    return res.status(400).json({ message: "Tous les champs sont requis" });
+    return res.status(400).json({ error: "Tous les champs sont requis" });
 
   const otpRecord = await prisma.otp.findFirst({
     where: {
@@ -157,7 +189,7 @@ exports.verifyOTP = async (req, res) => {
   });
 
   if (!otpRecord) {
-    return res.status(400).json({ message: "Code OTP invalide ou expiré" });
+    return res.status(400).json({ error: "Code OTP invalide ou expiré" });
   }
 
   await prisma.otp.delete({

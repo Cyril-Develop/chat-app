@@ -1,11 +1,11 @@
 import CardWrapper from "@/components/auth/card-wrapper";
 import { RegisterFormSchema } from "@/schema/main";
 import { useForm } from "react-hook-form";
-import { registerByEmail } from "@/services/Auth";
-import { toast } from "@/components/ui/use-toast";
-import Line from "@/components/auth/line";
+import { sendOtp, verifyIfUserExists } from "@/services/Auth";
+//import Line from "@/components/auth/line";
+//import { Icons } from "@/components/Icons";
+//import { Button } from "../ui/button";
 import ShowPassord from "@/components/auth/show-password";
-import { Icons } from "@/components/Icons";
 import ButtonForm from "@/components/button-form";
 import {
   Form,
@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { useState } from "react";
 import { ValidateAccount } from "./validate-account";
 
@@ -25,7 +24,13 @@ const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [openValidateAccount, setOpenValidateAccount] = useState(false);
+  const [openRequestOtp, setOpenRequestOtp] = useState(false);
+
+  const [newUser, setNewUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
   const form = useForm({
     defaultValues: {
@@ -40,26 +45,25 @@ const RegisterForm = () => {
     setLoading(true);
     setApiError("");
     try {
-      // const { username, email, password } = form.getValues();
-      // await registerByEmail({ username, email, password });
+      const { username, email, password } = form.getValues();
+      setNewUser({ username, email, password });
 
-      console.log("create account");
+      const userExists = await verifyIfUserExists(username, email);
 
-      // Ajout d'un délai pour s'assurer que passe bien devant l'overlay
-      setTimeout(() => {
-        setOpenValidateAccount(true);
-      }, 150);
+      // Si la réponse contient une erreur, c'est que l'utilisateur existe déjà
+      if (userExists.error) {
+        throw new Error(userExists.error);
+      }
 
-      // toast({
-      //   title: "Compte créé avec succès,",
-      //   description: "Vous pouvez maintenant vous connecter.",
-      //   variant: "success",
-      //   logo: <Icons.check className="h-6 w-6" />,
-      // });
-      // form.reset();
+      // Si l'utilisateur n'existe pas encore, on peut envoyer l'OTP
+      const otpSent = await sendOtp(email);
+
+      if (!otpSent) {
+        throw new Error("Erreur lors de l'envoi de l'OTP.");
+      }
+
+      setOpenRequestOtp(true);
     } catch (error: any) {
-      console.log(error.message);
-
       if (error.message.includes("Nom d'utilisateur déjà utilisé")) {
         form.setError("username", {
           type: "manual",
@@ -76,6 +80,15 @@ const RegisterForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAccountCreationSuccess = () => {
+    form.reset();
+    setNewUser({
+      username: "",
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -145,9 +158,12 @@ const RegisterForm = () => {
             <div className="flex flex-col gap-4">
               <ButtonForm
                 loading={loading}
+                disabled={loading}
                 defaultValue="Créer un compte"
                 spinnerValue="Création en cours"
               />
+            </div>
+            {/* <div className="flex flex-col gap-4">
               <Line />
 
               <Button
@@ -160,14 +176,16 @@ const RegisterForm = () => {
                 <Icons.google className="mr-2 h-4 w-4" />
                 Continuer avec Google
               </Button>
-            </div>
+            </div> */}
             {apiError && <p className="error">{apiError}</p>}
           </form>
         </Form>
-        {openValidateAccount && (
+        {openRequestOtp && (
           <ValidateAccount
-            isOpen={openValidateAccount}
-            setIsOpen={setOpenValidateAccount}
+            newUser={newUser}
+            isOpen={openRequestOtp}
+            setIsOpen={setOpenRequestOtp}
+            handleAccountCreationSuccess={handleAccountCreationSuccess}
             headerTitle="Valider votre compte"
             headerDescription="Un code de validation à 6 chiffres a été envoyé à l'adresse email que vous avez renseignée."
           />

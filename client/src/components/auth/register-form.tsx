@@ -19,11 +19,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import { ValidateAccount } from "./validate-account";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [openValidateAccount, setOpenValidateAccount] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -38,16 +40,23 @@ const RegisterForm = () => {
     setLoading(true);
     setApiError("");
     try {
-      const { username, email, password } = form.getValues();
-      await registerByEmail({ username, email, password });
+      // const { username, email, password } = form.getValues();
+      // await registerByEmail({ username, email, password });
 
-      toast({
-        title: "Compte créé avec succès,",
-        description: "Vous pouvez maintenant vous connecter.",
-        variant: "success",
-        logo: <Icons.check className="h-6 w-6" />,
-      });
-      form.reset();
+      console.log("create account");
+
+      // Ajout d'un délai pour s'assurer que passe bien devant l'overlay
+      setTimeout(() => {
+        setOpenValidateAccount(true);
+      }, 150);
+
+      // toast({
+      //   title: "Compte créé avec succès,",
+      //   description: "Vous pouvez maintenant vous connecter.",
+      //   variant: "success",
+      //   logo: <Icons.check className="h-6 w-6" />,
+      // });
+      // form.reset();
     } catch (error: any) {
       console.log(error.message);
 
@@ -137,7 +146,7 @@ const RegisterForm = () => {
               <ButtonForm
                 loading={loading}
                 defaultValue="Créer un compte"
-                spinnerValue="Envoie en cours"
+                spinnerValue="Création en cours"
               />
               <Line />
 
@@ -155,6 +164,14 @@ const RegisterForm = () => {
             {apiError && <p className="error">{apiError}</p>}
           </form>
         </Form>
+        {openValidateAccount && (
+          <ValidateAccount
+            isOpen={openValidateAccount}
+            setIsOpen={setOpenValidateAccount}
+            headerTitle="Valider votre compte"
+            headerDescription="Un code de validation à 6 chiffres a été envoyé à l'adresse email que vous avez renseignée."
+          />
+        )}
       </CardWrapper>
     </>
   );

@@ -1,34 +1,34 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import ForgotPasswordForm from "@/components/password/forgot-password-form";
+import { ValidateAccountForm } from "./validate-account-form";
 
-interface ForgotPasswordProps {
+interface ValidateAccountProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   headerTitle: string;
   headerDescription: string;
 }
 
-export function ForgotPassword({
+export function ValidateAccount({
   isOpen,
   setIsOpen,
   headerTitle,
   headerDescription,
-}: ForgotPasswordProps) {
+}: ValidateAccountProps) {
   const handleOpenChange = (open: boolean) => setIsOpen(open);
   const handleSubmitSuccess = () => handleOpenChange(false);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        {/* <Button size="box" variant="linkForm" className="justify-start w-auto">
+      {/*<DialogTrigger asChild>
+         <Button size="box" variant="linkForm" className="justify-start w-auto">
           {btnTrigger}
-        </Button> */}
-      </DialogTrigger>
+        </Button> 
+      </DialogTrigger>*/}
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
-        <ForgotPasswordForm
+        <ValidateAccountForm
           btnSubmit="Continuer"
           onSubmitSuccess={handleSubmitSuccess}
         />

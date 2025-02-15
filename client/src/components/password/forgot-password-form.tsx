@@ -26,7 +26,7 @@ const ForgotPasswordForm = ({
     defaultValues: {
       email: "",
     },
-    resolver: zodResolver(ForgotPasswordFormSchema),
+    resolver: zodResolver(ForgotPasswordFormSchema)
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,9 +35,9 @@ const ForgotPasswordForm = ({
   //const createRoom = useCreateRoomMutation();
 
   const onSubmit = async () => {
+
     setLoading(true);
     setApiError("");
-    console.log("check password");
 
     const { email } = form.getValues();
 
@@ -45,7 +45,7 @@ const ForgotPasswordForm = ({
 
     try {
       //await createRoom.mutateAsync({ email });
-      onSubmitSuccess();
+      //onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);
     } finally {

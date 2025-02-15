@@ -24,11 +24,13 @@ import { useNavigate } from "react-router-dom";
 import { Icons } from "@/components/Icons";
 import { loginAsGuest } from "@/services/Auth";
 import { ForgotPassword } from "@/components/password/forgot-password";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
 
   const setToken = useUserStore((state) => state.setToken);
   const setRole = useUserStore((state) => state.setRole);
@@ -51,6 +53,8 @@ const LoginForm = () => {
   });
 
   const onSubmit = async () => {
+    console.log("login");
+
     setLoading(true);
     setApiError("");
     try {
@@ -133,12 +137,15 @@ const LoginForm = () => {
                     />
                   </FormControl>
                   <FormDescription>
-                    <ForgotPassword
-                      btnTrigger="Mot de passe oublié ?"
-                      headerTitle="Récupération de mot de passe"
-                      headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un
-            lien de réinitialisation de votre mot de passe."
-                    />
+                    <Button
+                      type="button"
+                      variant={"linkForm"}
+                      className="w-auto link-form"
+                      size="box"
+                      onClick={() => setIsForgotPasswordOpen(true)}
+                    >
+                      Mot de passe oublié ?
+                    </Button>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -149,7 +156,7 @@ const LoginForm = () => {
             <ButtonForm
               loading={loading}
               defaultValue="Se connecter"
-              spinnerValue="Connexion"
+              spinnerValue="Connexion en cours"
             />
 
             <Line />
@@ -168,6 +175,14 @@ const LoginForm = () => {
           {apiError && <p className="error">{apiError}</p>}
         </form>
       </Form>
+      {isForgotPasswordOpen && (
+        <ForgotPassword
+          isOpen={isForgotPasswordOpen}
+          setIsOpen={setIsForgotPasswordOpen}
+          headerTitle="Vous avez oublié votre mot de passe ?"
+          headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un lien de réinitialisation de votre mot de passe."
+        />
+      )}
     </CardWrapper>
   );
 };

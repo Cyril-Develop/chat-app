@@ -58,7 +58,10 @@ export default function Dashboard() {
       ) : (
         <Table>
           <TableCaption className="text-lg">
-            Utilisateurs enregistrés
+            {filteredData?.length}
+            {filteredData?.length === 1
+              ? " utilisateur enregistré"
+              : " utilisateurs enregistrés"}
           </TableCaption>
           <TableHeader>
             <TableRow className={cn("border-primary/10")}>

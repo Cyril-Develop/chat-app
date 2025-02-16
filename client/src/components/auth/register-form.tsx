@@ -187,7 +187,7 @@ const RegisterForm = () => {
             setIsOpen={setOpenRequestOtp}
             handleAccountCreationSuccess={handleAccountCreationSuccess}
             headerTitle="Valider votre compte"
-            headerDescription="Un code de validation à 6 chiffres a été envoyé à l'adresse email que vous avez renseignée."
+            headerDescription="Un code de validation à 6 chiffres a été envoyé à l'adresse email indiquée."
           />
         )}
       </CardWrapper>

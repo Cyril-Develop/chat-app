@@ -94,8 +94,8 @@ export const RegisterFormSchema = z.object({
 export const ValidateAccountFormSchema = z.object({
   otp: z
     .string()
-    .length(6, { message: "L'OTP doit contenir 6 caractères" })
-    .regex(/^\d+$/, "L'OTP doit contenir uniquement des chiffres"),
+    .length(6, { message: "Le code attendu contient 6 caractères" })
+    .regex(/^\d+$/, { message: "Le code ne doit contenir que des chiffres" }),
 });
 
 export const LoginFormSchema = z.object({

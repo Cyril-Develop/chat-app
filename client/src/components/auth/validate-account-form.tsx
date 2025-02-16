@@ -10,7 +10,6 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ValidateAccountFormSchema } from "@/schema/main";
-
 import { registerByEmail, verifyOtp } from "@/services/Auth";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
@@ -97,6 +96,13 @@ export function ValidateAccountForm({
             spinnerValue="Validation en cours"
           />
         </div>
+
+        <FormItem>
+          <p className="flex gap-2 text-sm text-muted-foreground">
+            <Icons.alert width={20} height={20} />
+            Pensez à vérifier votre dossier de courriers indésirables.
+          </p>
+        </FormItem>
 
         {apiError && <p className="error">{apiError}</p>}
       </form>

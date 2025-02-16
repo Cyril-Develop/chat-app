@@ -52,8 +52,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = async () => {
-    console.log("login");
-
     setLoading(true);
     setApiError("");
     try {
@@ -180,8 +178,8 @@ const LoginForm = () => {
         <ForgotPassword
           isOpen={isForgotPasswordOpen}
           setIsOpen={setIsForgotPasswordOpen}
-          headerTitle="Vous avez oublié votre mot de passe ?"
-          headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un lien de réinitialisation de votre mot de passe."
+          headerTitle="Modifier votre mot de passe"
+          headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un lien de réinitialisation."
         />
       )}
     </CardWrapper>

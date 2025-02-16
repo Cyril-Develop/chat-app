@@ -67,7 +67,7 @@ export function AccountForm({ user }: AccountFormValues) {
                     {...field}
                     type="email"
                     disabled
-                    className="disabled:cursor-default"
+                    className="disabled:cursor-not-allowed"
                   />
                 </FormControl>
                 <FormMessage />
@@ -100,7 +100,7 @@ export function AccountForm({ user }: AccountFormValues) {
           loading={editAccount.isPending}
           disabled={editAccount.isPending}
           defaultValue="Enregistrer les modifications"
-          spinnerValue="Envoie en cours"
+          spinnerValue="Envoi en cours"
         />
 
         {apiError && <p className="error">{apiError}</p>}

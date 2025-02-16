@@ -17,7 +17,7 @@ const Navbar = () => {
   const { data: currentUser } = useGetUser(userId);
 
   return (
-    <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-primary-foreground md:px-10">
+    <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-background md:px-10">
       <h1 className="font-bold text-3xl lg:text-3xl text-primary-foreground dark:text-secondary-foreground ">
         <Link
           to="/chateo"

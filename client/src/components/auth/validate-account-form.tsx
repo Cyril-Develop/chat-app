@@ -70,7 +70,7 @@ export function ValidateAccountForm({
           name="otp"
           render={({ field }) => (
             <FormItem>
-              <InputOTP {...field} maxLength={6}>
+              <InputOTP {...field} maxLength={6} aria-label="Code de validation">
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
                   <InputOTPSlot index={1} />

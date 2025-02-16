@@ -57,7 +57,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                     <FormControl>
                       <RadioGroupItem value="accept" />
                     </FormControl>
-                    <FormLabel className="font-normal">
+                    <FormLabel className="font-normal hover:cursor-pointer">
                       Tous les nouveaux messages privés
                     </FormLabel>
                   </FormItem>
@@ -65,7 +65,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                     <FormControl>
                       <RadioGroupItem value="refuse" />
                     </FormControl>
-                    <FormLabel className="font-normal">Rien</FormLabel>
+                    <FormLabel className="font-normal hover:cursor-pointer">Rien</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -77,7 +77,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
           loading={editNotification.isPending}
           disabled={editNotification.isPending}
           defaultValue="Enregistrer les modifications"
-          spinnerValue="Envoie en cours"
+          spinnerValue="Envoi en cours"
         />
 
         {apiError && <p className="error">{apiError}</p>}

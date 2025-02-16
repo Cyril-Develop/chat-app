@@ -25,6 +25,7 @@ const ShowPassord = ({
         type={showPassword ? "text" : "password"}
         placeholder="••••••••"
         id="password"
+        aria-label="password"
       />
       <Button
         type="button"

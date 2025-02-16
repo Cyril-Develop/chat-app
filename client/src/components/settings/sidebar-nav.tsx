@@ -35,9 +35,9 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           className={cn(
             buttonVariants({ variant: "outline" }),
             pathname === item.href
-              ? "bg-muted hover:bg-muted cursor-default dark:bg-muted-foreground dark:hover:bg-muted-foreground dark:text-primary-foreground"
-              : "hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary-foreground dark:hover:text-primary",
-            "justify-start text-base"
+              ? "bg-muted hover:bg-muted cursor-default dark:bg-secondary border dark:border-popover"
+              : "hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary dark:bg-primary-foreground border",
+            "justify-start text-base dark:border-popover"
           )}
         >
           {item.title}

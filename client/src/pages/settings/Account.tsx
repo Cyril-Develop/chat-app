@@ -20,8 +20,8 @@ export default function SettingsAccountPage() {
       await handleDeleteAccount(logout, token, userId);
     } else {
       toast({
-        title: "Token manquant",
-        description: "Impossible de supprimer le compte sans token.",
+        title: "Session expirée",
+        description: "Impossible de supprimer le compte, veuillez vous reconnecter.",
         variant: "destructive",
         logo: <Icons.alert />,
       });

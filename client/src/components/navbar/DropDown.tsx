@@ -45,7 +45,7 @@ const DropDown = () => {
           <span className="hidden-text">Menu</span>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className={cn("mt-5")}>
+        <DropdownMenuContent className={cn("mt-5 dark:bg-primary-foreground")}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => navigate("/chateo")}>
               <Icons.home width={18} height={18} />
@@ -70,7 +70,7 @@ const DropDown = () => {
                 Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
-                <DropdownMenuSubContent>
+                <DropdownMenuSubContent className={cn("dark:bg-primary-foreground")}>
                   <DropdownMenuItem onClick={() => setStatut("online")}>
                     <Icons.circle
                       width={18}

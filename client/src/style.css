@@ -86,7 +86,7 @@ html.dark {
 }
 
 .chat_aside{
-  @apply hidden lg:flex flex-col gap-8 pt-4 dark:border-secondary-foreground/30 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex;
+  @apply hidden lg:flex flex-col gap-8 pt-4 dark:border-secondary-foreground/5 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex;
 }
 
 .chat_aside_container {

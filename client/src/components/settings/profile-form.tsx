@@ -102,7 +102,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 Image
               </p>
               <FormLabel
-                className="input-style hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary-foreground dark:hover:text-primary"
+                className="input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary"
                 tabIndex={0}
                 aria-label="Sélectionner une image"
                 onKeyDown={handleKeydown}
@@ -151,7 +151,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               <FormControl>
                 <Textarea
                   placeholder="Parle nous un peu de toi..."
-                  className="resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox"
+                  className="resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
                   maxLength={150}
                   {...field}
                 />
@@ -167,7 +167,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           loading={editUser.isPending}
           disabled={editUser.isPending}
           defaultValue="Enregistrer les modifications"
-          spinnerValue="Envoie en cours"
+          spinnerValue="Envoi en cours"
         />
       </form>
     </Form>

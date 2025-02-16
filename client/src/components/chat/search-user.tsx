@@ -129,7 +129,7 @@ export const SearchUser = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background border border-input rounded-md">
+        <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background dark:bg-primary-foreground border border-input rounded-md">
           <Label htmlFor="searchUser">
             <Icons.search
               style={{ stroke: "#80838B" }}

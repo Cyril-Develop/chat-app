@@ -189,7 +189,9 @@ exports.verifyOTP = async (req, res) => {
   });
 
   if (!otpRecord) {
-    return res.status(400).json({ error: "Code OTP invalide ou expiré" });
+    return res
+      .status(400)
+      .json({ error: "Le code de vérification est incorrect ou a expiré" });
   }
 
   await prisma.otp.delete({
@@ -198,5 +200,7 @@ exports.verifyOTP = async (req, res) => {
     },
   });
 
-  res.status(200).json({ message: "Code OTP vérifié avec succès" });
+  res
+    .status(200)
+    .json({ message: "Le code de vérification a été vérifié avec succés" });
 };

@@ -56,27 +56,29 @@ export function AccountForm({ user }: AccountFormValues) {
         className="space-y-6"
       >
         <div className="space-y-6">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="email"
-                    disabled
-                    className="disabled:cursor-not-allowed"
-                  />
-                </FormControl>
-                <FormMessage />
-                <FormDescription>
-                  Votre addresse email actuelle.
-                </FormDescription>
-              </FormItem>
-            )}
-          />
+          {user.role !== "GUEST" && (
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="email"
+                      disabled
+                      className="disabled:cursor-not-allowed"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <FormDescription>
+                    Votre addresse email actuelle.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+          )}
           <FormField
             control={form.control}
             name="newEmail"

@@ -44,7 +44,7 @@ export function Toaster() {
               )}
             </>
             {action}
-            <ToastClose />
+            <ToastClose aria-label="close toast" title="Fermer" />
           </Toast>
         );
       })}

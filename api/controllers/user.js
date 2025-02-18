@@ -515,9 +515,6 @@ exports.rejectFriendRequest = async (req, res) => {
   const { contactId } = req.body;
   const userId = req.auth.userId;
 
-  console.log("contactId", contactId);
-  console.log("userId", userId);
-
   if (!userId || !contactId) {
     return res
       .status(400)

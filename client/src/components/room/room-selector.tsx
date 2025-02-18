@@ -17,6 +17,7 @@ import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
 import { useSocketStore } from "@/store/socket.store";
 import { Room } from "@/types/room";
+import { cn } from "@/lib/utils";
 
 export function RoomSelector() {
   const { data } = useGetRooms();
@@ -77,6 +78,7 @@ export function RoomSelector() {
         <Button
           role="combobox"
           size="box"
+          aria-label="Voir les salons"
           aria-expanded={open}
           className="w-[200px] justify-between p-3"
           disabled={!roomsFound}
@@ -93,7 +95,7 @@ export function RoomSelector() {
       </PopoverTrigger>
       {roomsFound && (
         <PopoverContent
-          className="p-0 w-[200px]"
+          className={cn("p-0 w-[200px]")}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>

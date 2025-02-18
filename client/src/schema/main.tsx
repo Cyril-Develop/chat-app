@@ -108,6 +108,11 @@ export const AccountFormSchema = z.object({
   newEmail: newEmailSchema,
 });
 
+export const PasswordFormSchema = z.object({
+  password: passwordSchema,
+  confirmPassword: passwordSchema,
+});
+
 export const ProfileFormSchema = z.object({
   username: usernameSchema,
   bio: bioSchema,

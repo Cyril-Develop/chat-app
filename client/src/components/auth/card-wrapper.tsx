@@ -10,10 +10,10 @@ import BackButton from "./back-button";
 interface CardWrapperProps {
   title: string;
   description: string;
-  backButtonHref: string;
-  backButtonLabel: string;
+  backButtonHref?: string;
+  backButtonLabel?: string;
   children: React.ReactNode;
-  text: string;
+  text?: string;
 }
 
 const CardWrapper = ({
@@ -30,9 +30,15 @@ const CardWrapper = ({
         <AuthHeader title={title} description={description} />
       </CardHeader>
       <CardContent>{children}</CardContent>
-      <CardFooter>
-        <BackButton label={backButtonLabel} href={backButtonHref} text={text} />
-      </CardFooter>
+      {backButtonHref && backButtonLabel && text && (
+        <CardFooter>
+          <BackButton
+            label={backButtonLabel}
+            href={backButtonHref}
+            text={text}
+          />
+        </CardFooter>
+      )}
     </Card>
   );
 };

@@ -81,6 +81,11 @@ const LoginForm = () => {
     }
   };
 
+  const handleResetPassword = () => {
+    form.reset();
+    setApiError("");
+  };
+
   return (
     <CardWrapper
       title="Se connecter"
@@ -178,6 +183,7 @@ const LoginForm = () => {
         <ForgotPassword
           isOpen={isForgotPasswordOpen}
           setIsOpen={setIsForgotPasswordOpen}
+          handleResetPassword={handleResetPassword}
           headerTitle="Modifier votre mot de passe"
           headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un lien de réinitialisation."
         />

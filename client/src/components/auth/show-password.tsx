@@ -24,7 +24,7 @@ const ShowPassord = ({
         {...field}
         type={showPassword ? "text" : "password"}
         placeholder="••••••••"
-        id="password"
+        id={field.name}
         aria-label="password"
       />
       <Button

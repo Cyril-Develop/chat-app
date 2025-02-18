@@ -97,6 +97,7 @@ export function Contact({ currentUser }: ContactProps) {
       <PopoverTrigger asChild>
         <Button
           role="combobox"
+          aria-label="Voir mes contacts"
           size="box"
           aria-expanded={open}
           className="w-[200px] justify-between p-3"

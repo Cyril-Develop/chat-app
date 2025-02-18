@@ -133,7 +133,6 @@ export const SearchUser = ({
           <Label htmlFor="searchUser">
             <Icons.search
               style={{ stroke: "#80838B" }}
-              aria-label="Rechercher un contact"
             />
           </Label>
           <Input

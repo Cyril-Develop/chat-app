@@ -6,12 +6,14 @@ interface ForgotPasswordProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   headerTitle: string;
+  handleResetPassword: () => void;
   headerDescription: string;
 }
 
 export function ForgotPassword({
   isOpen,
   setIsOpen,
+  handleResetPassword,
   headerTitle,
   headerDescription,
 }: ForgotPasswordProps) {
@@ -20,16 +22,13 @@ export function ForgotPassword({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        {/* <Button size="box" variant="linkForm" className="justify-start w-auto">
-          {btnTrigger}
-        </Button> */}
-      </DialogTrigger>
+      <DialogTrigger asChild></DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
         <ForgotPasswordForm
           btnSubmit="Continuer"
+          handleResetPassword={handleResetPassword}
           onSubmitSuccess={handleSubmitSuccess}
         />
       </DialogContent>

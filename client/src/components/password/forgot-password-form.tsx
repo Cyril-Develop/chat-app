@@ -12,40 +12,46 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ForgotPasswordFormSchema } from "@/schema/main";
+import { forgotPassword } from "@/services/Auth";
+import { toast } from "../ui/use-toast";
+import { Icons } from "../Icons";
 
 interface ForgotPasswordFormProps {
   btnSubmit: string;
   onSubmitSuccess: () => void;
+  handleResetPassword: () => void;
 }
 
 const ForgotPasswordForm = ({
   btnSubmit,
- // onSubmitSuccess,
+  onSubmitSuccess,
+  handleResetPassword,
 }: ForgotPasswordFormProps) => {
   const form = useForm({
     defaultValues: {
       email: "",
     },
-    resolver: zodResolver(ForgotPasswordFormSchema)
+    resolver: zodResolver(ForgotPasswordFormSchema),
   });
 
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  //const createRoom = useCreateRoomMutation();
-
   const onSubmit = async () => {
-
     setLoading(true);
     setApiError("");
 
     const { email } = form.getValues();
 
-    console.log(email);
-
     try {
-      //await createRoom.mutateAsync({ email });
-      //onSubmitSuccess();
+      const response = await forgotPassword(email);
+      onSubmitSuccess();
+      toast({
+        description: response.message,
+        variant: "success",
+        logo: <Icons.check />,
+      });
+      handleResetPassword();
     } catch (error: any) {
       setApiError(error.message);
     } finally {

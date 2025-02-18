@@ -204,3 +204,92 @@ exports.verifyOTP = async (req, res) => {
     .status(200)
     .json({ message: "Le code de vérification a été vérifié avec succés" });
 };
+
+// RESET PASSWORD
+const sendResetPasswordEmail = async (email, userId) => {
+  // Générer un token JWT valable 30 minutes
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: "30m",
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.APP_PASSWORD,
+    },
+  });
+
+  await transporter.sendMail({
+    from: "Chateo",
+    to: email,
+    subject: "Récupération de mot de passe",
+    html: `
+    <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;">
+        <h1 style="color: #333;">Chateo</h1>
+        <h2 style="color: #333;">Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe :</h2>
+        <a href="${process.env.CLIENT_URL}/reset-password/${token}" 
+          style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px;">
+            Réinitialiser le mot de passe
+        </a>
+        <p style="font-size: 14px; color: #777; margin-top: 20px;">
+            Ce lien est valable pendant <strong>30 minutes</strong>.
+        </p>
+        <p style="font-size: 14px; color: #777;">
+            Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
+        </p>
+    </div>
+    `,
+  });
+};
+
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return res.status(404).json({ error: "L'utilisateur n'existe pas" });
+  }
+
+  await sendResetPasswordEmail(email, user.id);
+
+  res.status(200).json({
+    message: "Un email de réinitialisation a été envoyé à l'email indiqué",
+  });
+};
+
+exports.resetPassword = async (req, res) => {
+  const { token, password } = req.body;
+
+  try {
+    // Vérifier et décoder le token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    // Hasher le nouveau mot de passe
+    const hashedPassword = await argon2.hash(password);
+
+    // Mettre à jour le mot de passe
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    res
+      .status(200)
+      .json({
+        message:
+          "Mot de passe réinitialisé avec succès, vous pouvez maintenant vous connecter",
+      });
+  } catch (error) {
+    res.status(400).json({ error: "Token invalide ou expiré" });
+  }
+};

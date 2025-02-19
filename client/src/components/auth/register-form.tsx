@@ -155,14 +155,12 @@ const RegisterForm = () => {
                 )}
               />
             </div>
-            <div className="flex flex-col gap-4">
-              <ButtonForm
-                loading={loading}
-                disabled={loading}
-                defaultValue="Créer un compte"
-                spinnerValue="Création en cours"
-              />
-            </div>
+            <ButtonForm
+              loading={loading}
+              disabled={loading}
+              defaultValue="Créer un compte"
+              spinnerValue="Création en cours"
+            />
             {/* <div className="flex flex-col gap-4">
               <Line />
 

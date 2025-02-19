@@ -153,14 +153,12 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <div className="flex flex-col gap-4">
-            <ButtonForm
-              loading={loading}
-              disabled={loading}
-              defaultValue="Se connecter"
-              spinnerValue="Connexion en cours"
-            />
-          </div>
+          <ButtonForm
+            loading={loading}
+            disabled={loading}
+            defaultValue="Se connecter"
+            spinnerValue="Connexion en cours"
+          />
           {/* <div className="flex flex-col gap-4">
 
             <Line />

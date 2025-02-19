@@ -60,7 +60,10 @@ const ContactForm = () => {
   };
 
   return (
-    <CardWrapper title="Me contacter" description="Des questions ?">
+    <CardWrapper
+      title="Me contacter"
+      description="Une question, une suggestion ?"
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -134,7 +137,7 @@ const ContactForm = () => {
               </FormItem>
             )}
           />
-          <div className="flex flex-col gap-4">
+          <div className="pb-3 md:pb-0">
             <ButtonForm
               loading={loading}
               disabled={loading}

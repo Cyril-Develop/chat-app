@@ -1,5 +1,3 @@
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 function Footer() {
   return (
     <footer className="bg-primary text-white p-4 w-full flex flex-col gap-2 justify-center items-center font-extralight h-24 dark:bg-background">
@@ -9,8 +7,6 @@ function Footer() {
       >
         Me contacter
       </a>
-
-      <Separator className={cn("w-1/3")} />
       <p>
         &copy; 2025 &nbsp;
         <a

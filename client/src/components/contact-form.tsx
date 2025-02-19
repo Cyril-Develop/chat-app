@@ -1,0 +1,152 @@
+import ButtonForm from "@/components/button-form";
+import {
+  Form,
+  FormControl,
+  FormLabel,
+  FormItem,
+  FormMessage,
+  FormField,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ContactFormSchema } from "@/schema/main";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CardWrapper from "@/components/auth/card-wrapper";
+import { Textarea } from "@/components/ui/textarea";
+import { sendContactEmail } from "@/services/Contact";
+import { toast } from "@/components/ui/use-toast";
+import { Icons } from "@/components/Icons";
+
+const ContactForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    resolver: zodResolver(ContactFormSchema),
+  });
+
+  const onSubmit = async () => {
+    setLoading(true);
+    setApiError("");
+    try {
+      const { name, email, subject, message } = form.getValues();
+
+      const response = await sendContactEmail({
+        name,
+        email,
+        subject,
+        message,
+      });
+
+      toast({
+        title: response.message,
+        variant: "success",
+        logo: <Icons.check />,
+      });
+
+      form.reset();
+    } catch (error: any) {
+      setApiError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <CardWrapper title="Me contacter" description="Des questions ?">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4  sm:space-y-8"
+          noValidate
+        >
+          <div className="flex flex-col gap-4 justify-between md:gap-8 md:flex-row">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom *</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="John Doe" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email *</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="john.doe@gmail.com"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="subject"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Objet *</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="Sujet de votre message"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Message *</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Votre message ici..."
+                    className="resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
+                    maxLength={150}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex flex-col gap-4">
+            <ButtonForm
+              loading={loading}
+              disabled={loading}
+              defaultValue="Envoyer"
+              spinnerValue="Envoi en cours"
+            />
+          </div>
+          {apiError && <p className="error">{apiError}</p>}
+        </form>
+      </Form>
+    </CardWrapper>
+  );
+};
+
+export default ContactForm;

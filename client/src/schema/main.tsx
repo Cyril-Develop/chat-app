@@ -74,6 +74,27 @@ export const notificationsFormSchema = z.object({
   }),
 });
 
+// CONTACT
+const nameSchema = z
+  .string()
+  .min(1, { message: "Le nom est requis" })
+  .min(3, { message: "Minimum 3 caractères" })
+  .max(15, { message: "Maximum 15 caractères" })
+  .refine((value) => !forbiddenWords.includes(strNoAccent(value)), {
+    message: "Le nom d'utilisateur contient un mot interdit",
+  });
+
+const messageSchema = z
+  .string()
+  .min(1, { message: "Le message est requis" })
+  .max(150, { message: "Maximum 150 caractères" });
+
+const subjectSchema = z
+  .string()
+  .min(1, { message: "L'objet est requis" })
+  .min(3, { message: "Minimum 3 caractères" })
+  .max(20, { message: "Maximum 20 caractères" });
+
 // ROOM
 const nameRoomSchema = z
   .string()
@@ -111,6 +132,13 @@ export const AccountFormSchema = z.object({
 export const PasswordFormSchema = z.object({
   password: passwordSchema,
   confirmPassword: passwordSchema,
+});
+
+export const ContactFormSchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  subject: subjectSchema,
+  message: messageSchema,
 });
 
 export const ProfileFormSchema = z.object({

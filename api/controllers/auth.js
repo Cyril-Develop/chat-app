@@ -262,7 +262,7 @@ exports.forgotPassword = async (req, res) => {
   await sendResetPasswordEmail(email, user.id);
 
   res.status(200).json({
-    message: "Un email de réinitialisation a été envoyé à l'email indiqué",
+    message: "Un message a été envoyé à l'email indiqué",
   });
 };
 
@@ -283,12 +283,10 @@ exports.resetPassword = async (req, res) => {
       data: { password: hashedPassword },
     });
 
-    res
-      .status(200)
-      .json({
-        message:
-          "Mot de passe réinitialisé avec succès, vous pouvez maintenant vous connecter",
-      });
+    res.status(200).json({
+      message:
+        "Mot de passe réinitialisé avec succès, vous pouvez maintenant vous connecter",
+    });
   } catch (error) {
     res.status(400).json({ error: "Token invalide ou expiré" });
   }

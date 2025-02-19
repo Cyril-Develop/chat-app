@@ -67,8 +67,8 @@ export default function ResetPassword() {
   return (
     <div className="form">
       <CardWrapper
-        title="Réinitialiser le mot de passe"
-        description="Saisissez votre nouveau mot de passe"
+        title="Modifier votre mot de passe"
+        description="Saisissez un nouveau mot de passe pour sécuriser votre compte."
       >
         <Form {...form}>
           <form

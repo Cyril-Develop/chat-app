@@ -14,7 +14,7 @@ import { ContactFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CardWrapper from "@/components/auth/card-wrapper";
 import { Textarea } from "@/components/ui/textarea";
-import { sendContactEmail } from "@/services/Contact";
+import { sendContactEmail } from "@/services/Email";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 

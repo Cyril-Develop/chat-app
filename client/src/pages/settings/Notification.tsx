@@ -13,7 +13,8 @@ export default function SettingsNotificationsPage() {
           <div>
             <h3 className="text-lg font-medium">Notifications</h3>
             <p className="text-description">
-              Configurez la façon dont vous recevez les notifications.
+              Vous pouvez choisir de recevoir des alertes pour les nouvelles
+              demandes d'amis et les messages privés, ou de ne rien recevoir.
             </p>
           </div>
           <Separator />

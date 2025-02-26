@@ -1,4 +1,5 @@
 import ButtonForm from "@/components/button-form";
+import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -46,33 +47,41 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
           name="type"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>Informez-moi de...</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="accept" />
-                    </FormControl>
-                    <FormLabel className="font-normal hover:cursor-pointer">
-                      Tous les nouveaux messages privés
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="refuse" />
-                    </FormControl>
-                    <FormLabel className="font-normal hover:cursor-pointer">Rien</FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
+              <FormLabel id="notification-label">
+                Notifications par e-mail
+              </FormLabel>
+              <RadioGroup
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                aria-labelledby="notification-label"
+                className="flex flex-col space-y-1"
+              >
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <RadioGroupItem id="accept" value="accept" />
+                  <FormLabel
+                    htmlFor="accept"
+                    className="font-normal hover:cursor-pointer"
+                  >
+                    Recevoir les notifications de demandes d'amis et messages
+                    privés.
+                  </FormLabel>
+                </FormItem>
+
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <RadioGroupItem id="refuse" value="refuse" />
+                  <FormLabel
+                    htmlFor="refuse"
+                    className="font-normal hover:cursor-pointer"
+                  >
+                    Ne pas recevoir de notifications.
+                  </FormLabel>
+                </FormItem>
+              </RadioGroup>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <ButtonForm
           loading={editNotification.isPending}
           disabled={editNotification.isPending}

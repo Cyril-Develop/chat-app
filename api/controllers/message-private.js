@@ -21,7 +21,14 @@ exports.sendMessage = async (req, res) => {
       },
       include: {
         user: { select: { id: true, username: true, profileImage: true } },
-        receiver: { select: { id: true, username: true, profileImage: true } },
+        receiver: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+            notification: true,
+          },
+        },
       },
     });
 

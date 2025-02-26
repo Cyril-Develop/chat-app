@@ -1,10 +1,3 @@
-export interface ContactFormProps {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
 export interface FriendsListProps {
   friendsList: { id: number; username: string }[];
 }

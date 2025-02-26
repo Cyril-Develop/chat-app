@@ -13,7 +13,7 @@ export const useEditNotificationMutation = () => {
     mutationFn: (notification: string) => editNotification(notification, token),
     onSuccess: () => {
       toast({
-        title: "Changement pris en compte !",
+        title: "Vos préférences ont été mises à jour avec succès !",
         variant: "success",
         logo: <Icons.check />,
       });

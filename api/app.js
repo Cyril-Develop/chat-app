@@ -27,7 +27,7 @@ const userRoutes = require("./routes/user");
 const chatRoutes = require('./routes/chat');
 const messageRoomRoutes = require('./routes/message-room');
 const messagePrivateRoutes = require('./routes/message-private');
-const contactRoutes = require("./routes/contact");
+const emailRoutes = require("./routes/email");
 
 // Using routes
 app.use("/chateo/api/auth", authRoutes);
@@ -35,6 +35,6 @@ app.use("/chateo/api/user", userRoutes);
 app.use('/chateo/api/chat', chatRoutes);
 app.use('/chateo/api/message-room', messageRoomRoutes);
 app.use('/chateo/api/message-private', messagePrivateRoutes);
-app.use("/chateo/api/contact", contactRoutes);
+app.use("/chateo/api/email", emailRoutes);
 
 module.exports = app;

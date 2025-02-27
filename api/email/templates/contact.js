@@ -1,11 +1,10 @@
 const contactTemplate = (name, email, message) => `
   <div style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; color: #333;">
      <h1 style="color: #4D80EF; text-align: center;">
-      <img src="${process.env.IMAGE_URL}logo.png" alt="Logo" width="100">
-Chateo
+      Chateo
     </h1>
     <p style="font-size: 16px; line-height: 1.5;">
-      Nouveau message de <strong>${name}</strong>
+      <strong style="color: #333;">Contact :</strong> ${name}
     </p>
     <p style="font-size: 16px; line-height: 1.5;">
       <strong style="color: #333;">Email :</strong> <a href="mailto:${email}" style="color: #007bff; text-decoration: none;">${email}</a>

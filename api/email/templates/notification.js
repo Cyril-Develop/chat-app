@@ -1,8 +1,7 @@
 const notificationTemplate = (name, type) => `
   <div style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; color: #333;">
     <h1 style="color: #4D80EF; text-align: center;">
-      <img src="${process.env.IMAGE_URL}logo.png" alt="Logo" width="100">
-Chateo
+      Chateo
     </h1>
     <p style="font-size: 16px; line-height: 1.5; background-color: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; text-align: center;">
       ${

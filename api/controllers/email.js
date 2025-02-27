@@ -56,7 +56,6 @@ exports.sendEmailContact = async (req, res) => {
     await transporter.sendMail({
       to: process.env.MY_EMAIL,
       subject: subject,
-      text: "Ce message a été envoyé depuis le formulaire de contact de Chateo.",
       html: contactTemplate(name, email, message),
     });
 

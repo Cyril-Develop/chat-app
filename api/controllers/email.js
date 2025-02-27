@@ -29,8 +29,8 @@ exports.sendEmailNotification = async (req, res) => {
       to: process.env.MY_EMAIL,
       subject:
         type === "Private message"
-          ? "Nouveau message privé"
-          : "Nouvelle demande d'amis",
+          ? "Notification - Nouveau message privé"
+          : "Notification - Nouvelle demande d'ami",
       html: notificationTemplate(user.username, type),
     });
 
@@ -56,6 +56,7 @@ exports.sendEmailContact = async (req, res) => {
     await transporter.sendMail({
       to: process.env.MY_EMAIL,
       subject: subject,
+      text: "Ce message a été envoyé depuis le formulaire de contact de Chateo.",
       html: contactTemplate(name, email, message),
     });
 

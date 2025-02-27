@@ -1,6 +1,6 @@
 const contactTemplate = (name, email, message) => `
   <div style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; color: #333;">
-    <h2 style="color: #4CAF50;">📨 Nouveau message de ${name}</h2>
+    <h2 style="color: #4D80EF;">📨 Nouveau message de ${name}</h2>
     <p style="font-size: 16px; line-height: 1.5;">
       <strong style="color: #333;">Email :</strong> <a href="mailto:${email}" style="color: #007bff; text-decoration: none;">${email}</a>
     </p>

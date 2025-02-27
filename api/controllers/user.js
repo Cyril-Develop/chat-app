@@ -378,6 +378,7 @@ exports.sendFriendRequest = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
+            notification: true,
           },
         },
         createdAt: true,

@@ -14,8 +14,6 @@ const Message = ({ message }: MessageProps) => {
   const deleteMessageInRoom = useDeleteMessageMutation();
   const deletePrivateMessage = useDeletePrivateMessageMutation();
 
-  const role = currentUser?.role;
-
   const handleDelete = (messageId: number) => {
     if (message.receiverId) {
       deletePrivateMessage.mutate(messageId);
@@ -24,7 +22,10 @@ const Message = ({ message }: MessageProps) => {
     }
   };
 
+  const role = currentUser?.role;
   const isMyMessage = message.user.id === userId;
+
+  const canDeleteMessage = isMyMessage || role === "ADMIN";
 
   return (
     <div
@@ -66,7 +67,7 @@ const Message = ({ message }: MessageProps) => {
         <span className="text-xs text-description">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
-        {(userId === message.user.id || role === "ADMIN") && (
+        {canDeleteMessage && (
           <Button
             variant="alert"
             title="Supprimer le message"

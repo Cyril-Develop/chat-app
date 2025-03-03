@@ -1,9 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const fs = require("fs");
 const path = require("path");
-
 const prisma = new PrismaClient();
 
+//********** GET ALL USERS **********/
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany({
@@ -62,6 +62,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+//********** GET USER **********/
 exports.getUser = async (req, res) => {
   const { userId } = req.body;
   try {
@@ -144,7 +145,7 @@ exports.getUser = async (req, res) => {
   }
 };
 
-// Update user's username, bio and profile image
+//********** UPDATE USER INFOS **********/
 exports.updateUser = async (req, res) => {
   try {
     const id = req.auth.userId;
@@ -207,6 +208,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+//********** UPDATE EMAIL ACCOUNT **********/
 exports.updateAccount = async (req, res) => {
   try {
     const id = req.auth.userId;
@@ -246,6 +248,7 @@ exports.updateAccount = async (req, res) => {
   }
 };
 
+//********** DELETE ACCOUNT **********/
 exports.deleteAccount = async (req, res) => {
   try {
     const requesterId = req.auth.userId;
@@ -309,6 +312,7 @@ exports.updateNotification = async (req, res) => {
   }
 };
 
+//********** SEND FRIEND REQUEST **********/
 exports.sendFriendRequest = async (req, res) => {
   const { receiverId } = req.body;
   const senderId = req.auth.userId;
@@ -397,6 +401,7 @@ exports.sendFriendRequest = async (req, res) => {
   }
 };
 
+//********** GET FRIEND REQUEST **********/
 exports.getFriendRequest = async (req, res) => {
   const userId = req.auth.userId;
 
@@ -444,6 +449,7 @@ exports.getFriendRequest = async (req, res) => {
   }
 };
 
+//********** ACCEPT FRIEND REQUEST **********/
 exports.acceptFriendRequest = async (req, res) => {
   const { contactId } = req.body;
   const userId = req.auth.userId;
@@ -512,6 +518,7 @@ exports.acceptFriendRequest = async (req, res) => {
   }
 };
 
+//********** REJECT FRIEND REQUEST **********/
 exports.rejectFriendRequest = async (req, res) => {
   const { contactId } = req.body;
   const userId = req.auth.userId;
@@ -566,6 +573,7 @@ exports.rejectFriendRequest = async (req, res) => {
   }
 };
 
+//********** REMOVE CONTACT **********/
 exports.removeContact = async (req, res) => {
   const { contactId } = req.body;
   const userId = req.auth.userId;

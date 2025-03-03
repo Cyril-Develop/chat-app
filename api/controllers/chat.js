@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+//**********  CREATE CHAT ROOM **********/
 exports.createChatRoom = async (req, res) => {
   const { name, password } = req.body;
   const userId = req.auth.userId;
@@ -33,6 +34,7 @@ exports.createChatRoom = async (req, res) => {
   }
 };
 
+//**********  JOIN CHAT ROOM **********/
 exports.joinChatRoom = async (req, res) => {
   const { roomId, password } = req.body;
   const userId = req.auth.userId;
@@ -105,6 +107,7 @@ exports.joinChatRoom = async (req, res) => {
   }
 };
 
+//**********  LEAVE CHAT ROOM **********/
 exports.leaveChatRoom = async (req, res) => {
   const { roomId } = req.body;
   const userId = req.auth.userId;
@@ -138,6 +141,7 @@ exports.leaveChatRoom = async (req, res) => {
   }
 };
 
+//**********  GET CHAT ROOMS **********/
 exports.getChatRooms = async (req, res) => {
   try {
     const chatRooms = await prisma.chatRoom.findMany();
@@ -147,6 +151,7 @@ exports.getChatRooms = async (req, res) => {
   }
 };
 
+//**********  GET CHAT ROOM **********/
 exports.getChatRoom = async (req, res) => {
   const { id } = req.params;
   const roomId = parseInt(id);
@@ -211,6 +216,7 @@ exports.getChatRoom = async (req, res) => {
   }
 };
 
+//**********  DELETE CHAT ROOM **********/
 exports.deleteChatRoom = async (req, res) => {
   const { roomId } = req.body;
 

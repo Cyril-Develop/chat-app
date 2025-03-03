@@ -4,6 +4,7 @@ const notificationTemplate = require("../email/templates/notification");
 const contactTemplate = require("../email/templates/contact");
 const transporter = require("../email/transporter");
 
+//**********  SEND EMAIL NOTIFICATION **********/
 exports.sendEmailNotification = async (req, res) => {
   const { receiverId, type } = req.body;
   const userId = req.auth.userId;
@@ -43,6 +44,7 @@ exports.sendEmailNotification = async (req, res) => {
   }
 };
 
+//**********  SEND EMAIL CONTACT **********/
 exports.sendEmailContact = async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;

@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const fs = require("fs");
 const path = require("path");
 
+//********** GET MESSAGES **********/
 exports.getMessages = async (req, res) => {
   const { chatRoomId } = req.body;
 
@@ -30,6 +31,7 @@ exports.getMessages = async (req, res) => {
   }
 };
 
+//********** SEND MESSAGE **********/
 exports.sendMessage = async (req, res) => {
   const { roomId, message } = req.body;
   const userId = req.auth.userId;
@@ -67,6 +69,7 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
+//********** DELETE MESSAGE **********/
 exports.deleteMessage = async (req, res) => {
   const { messageId } = req.body;
   const userId = req.auth.userId;

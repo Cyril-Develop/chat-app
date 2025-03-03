@@ -2,10 +2,12 @@ const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-
+const transporter = require("../email/transporter");
+const validRegister = require("../email/templates/valid-register");
+const resetPassword = require("../email/templates/reset-password");
 const prisma = new PrismaClient();
 
+//**********  REGISTER **********/
 exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -37,10 +39,11 @@ exports.register = async (req, res) => {
 
 const createToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: "24h",
+    expiresIn: "30s",
   });
 };
 
+//**********  LOGIN **********/
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -69,46 +72,21 @@ exports.login = async (req, res) => {
   }
 };
 
-// SEND OTP EMAIL
+//**********  VERIFY ACCOUNT **********/
 const sendOTPEmail = async (email, otp) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.APP_PASSWORD,
-    },
-  });
-
   await transporter.sendMail({
     from: "Chateo",
     to: email,
     subject: "Votre code de vérification",
-    html: `
-    <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;">
-        <h1 style="color: #333;">
-          Chateo
-        </h1>
-        <h2 style="color: #333;">Voici votre code OTP :</h2>
-        <div style="font-size: 24px; font-weight: bold; color: #007bff; background: #fff; padding: 10px; display: inline-block; border-radius: 5px;">
-            ${otp}
-        </div>
-        <p style="font-size: 14px; color: #777; margin-top: 20px;">
-            Ce code est valable pendant <strong>5 minutes</strong>.
-        </p>
-    </div>
-`,
+    html: validRegister(otp),
   });
 };
 
-// GENERATE OTP
 const generateOTP = () => {
   return crypto.randomInt(100000, 999999).toString();
 };
 
-// VERIFY ACCOUNT BEFORE SEND OTP
+//**********  VERIFY IF USER EXISTS BEFORE REGISTER **********/
 exports.verifyUser = async (req, res) => {
   const { username, email } = req.body;
 
@@ -140,6 +118,7 @@ exports.verifyUser = async (req, res) => {
     .json({ message: "Utilisateur non trouvé, vous pouvez continuer." });
 };
 
+//**********  CREATE OTP & SEND EMAIL **********/
 exports.sendOTP = async (req, res) => {
   const { email } = req.body;
 
@@ -172,6 +151,7 @@ exports.sendOTP = async (req, res) => {
   }
 };
 
+//**********  VERIFY OTP **********/
 exports.verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
 
@@ -205,47 +185,21 @@ exports.verifyOTP = async (req, res) => {
     .json({ message: "Le code de vérification a été vérifié avec succés" });
 };
 
-// RESET PASSWORD
+//**********  RESET PASSWORD **********/
 const sendResetPasswordEmail = async (email, userId) => {
-  // Générer un token JWT valable 30 minutes
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: "30m",
-  });
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.APP_PASSWORD,
-    },
   });
 
   await transporter.sendMail({
     from: "Chateo",
     to: email,
     subject: "Récupération de mot de passe",
-    html: `
-    <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;">
-        <h1 style="color: #333;">Chateo</h1>
-        <h2 style="color: #333;">Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe :</h2>
-        <a href="${process.env.CLIENT_URL}/reset-password/${token}" 
-          style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px;">
-            Réinitialiser le mot de passe
-        </a>
-        <p style="font-size: 14px; color: #777; margin-top: 20px;">
-            Ce lien est valable pendant <strong>30 minutes</strong>.
-        </p>
-        <p style="font-size: 14px; color: #777;">
-            Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
-        </p>
-    </div>
-    `,
+    html: resetPassword(token),
   });
 };
 
+//********** FORGOT PASSWORD **********/
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -266,6 +220,7 @@ exports.forgotPassword = async (req, res) => {
   });
 };
 
+//********** RESET PASSWORD **********/
 exports.resetPassword = async (req, res) => {
   const { token, password } = req.body;
 

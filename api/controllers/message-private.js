@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const fs = require("fs");
 const path = require("path");
 
+//********** SEND PRIVATE MESSAGE **********/
 exports.sendMessage = async (req, res) => {
   const { receiverId, message } = req.body;
   const userId = req.auth.userId;
@@ -41,6 +42,7 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
+//********** GET PRIVATE MESSAGES **********/
 exports.getMessages = async (req, res) => {
   const userId = req.auth.userId;
 
@@ -66,6 +68,7 @@ exports.getMessages = async (req, res) => {
   }
 };
 
+//********** DELETE PRIVATE MESSAGE **********/
 exports.deleteMessage = async (req, res) => {
   const { messageId } = req.body;
   const userId = req.auth.userId;

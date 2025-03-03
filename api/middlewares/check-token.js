@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.message === "jwt expired") {
-      return res.status(401).json({ error: "Token expiré !" });
+      return res.status(401).json({ error: "Session expirée, veuillez vous reconnecter" });
     }
     res.status(401).json({ error: "Action non autorisée !" });
   }

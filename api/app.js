@@ -19,22 +19,22 @@ const limiter = rateLimit({
 //app.use(limiter);
 
 // Serving images statically
-app.use("/images", express.static(path.join(__dirname, "/images")));
+app.use("/chateo/api/images", express.static(path.join(__dirname, "images")));
 
 // Importing routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
-const chatRoutes = require("./routes/chat");
-const messageRoomRoutes = require("./routes/message-room");
-const messagePrivateRoutes = require("./routes/message-private");
+const chatRoutes = require('./routes/chat');
+const messageRoomRoutes = require('./routes/message-room');
+const messagePrivateRoutes = require('./routes/message-private');
 const emailRoutes = require("./routes/email");
 
 // Using routes
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use("/chat", chatRoutes);
-app.use("/message-room", messageRoomRoutes);
-app.use("/message-private", messagePrivateRoutes);
-app.use("/email", emailRoutes);
+app.use("/chateo/api/auth", authRoutes);
+app.use("/chateo/api/user", userRoutes);
+app.use('/chateo/api/chat', chatRoutes);
+app.use('/chateo/api/message-room', messageRoomRoutes);
+app.use('/chateo/api/message-private', messagePrivateRoutes);
+app.use("/chateo/api/email", emailRoutes);
 
 module.exports = app;

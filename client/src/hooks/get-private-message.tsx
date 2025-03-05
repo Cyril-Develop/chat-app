@@ -4,10 +4,11 @@ import { useUserStore } from "@/store/user.store";
 import { getPrivateMessages } from "@/services/Message";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-
+import { useHandleTokenExpiration } from "./handle-token-expiration";
 
 const useGetPrivateMessage = () => {
   const { token, logout } = useUserStore((state) => state);
+  const handleExpiration = useHandleTokenExpiration();
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["privateMessage"],
@@ -16,13 +17,17 @@ const useGetPrivateMessage = () => {
 
   useEffect(() => {
     if (isError && error) {
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
+        return;
+      }
+
       toast({
         title: "Erreur",
         description: error.message,
         variant: "destructive",
         logo: <Icons.alert />,
       });
-      logout();
     }
   }, [isError, error, logout]);
 

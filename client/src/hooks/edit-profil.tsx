@@ -3,13 +3,14 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { editProfile } from "@/services/User";
-import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 export const useEditUserMutation = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token } = useUserStore((state) => state);
   const queryClient = useQueryClient();
   const { socket } = useSocketStore();
+  const handleExpiration = useHandleTokenExpiration();
 
   return useMutation({
     mutationFn: (formData: FormData) => editProfile(formData, token),
@@ -23,8 +24,8 @@ export const useEditUserMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      if (error.message === "Token expiré !") {
-        handleTokenExpiration(logout);
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
       } else {
         toast({
           title: "Erreur",

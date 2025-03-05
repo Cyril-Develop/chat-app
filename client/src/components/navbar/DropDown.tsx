@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/Icons";
 import { useNavigate } from "react-router-dom";
-import { useHandleLogout } from "@/hooks/logout";
+import { useHandleLogout } from "@/hooks/handle-logout";
 import { useUserStore } from "@/store/user.store";
 import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";

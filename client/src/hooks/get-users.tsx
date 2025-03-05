@@ -4,9 +4,11 @@ import { useUserStore } from "@/store/user.store";
 import { getAllUsers } from "@/services/User";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 const useGetUsers = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token} = useUserStore((state) => state);
+  const handleExpiration = useHandleTokenExpiration();
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["users"],
@@ -15,15 +17,19 @@ const useGetUsers = () => {
 
   useEffect(() => {
     if (isError && error) {
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
+        return;
+      }
+
       toast({
         title: "Erreur",
         description: error.message,
         variant: "destructive",
-        logo: <Icons.alert/>,
+        logo: <Icons.alert />,
       });
-      logout();
     }
-  }, [isError, error, logout]);
+  }, [isError, error]);
 
   return { data, isLoading };
 };

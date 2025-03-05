@@ -1,14 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/store/user.store";
 import { sendPrivateMessage } from "@/services/Message";
-import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
 import { useSendNotificationByEmailMutation } from "@/hooks/send-notification-email";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 export const useSendPrivateMessageMutation = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token } = useUserStore((state) => state);
   const { socket } = useSocketStore();
   const sendNotificationByEmailMutation = useSendNotificationByEmailMutation();
+  const handleExpiration = useHandleTokenExpiration();
 
   return useMutation({
     mutationFn: (formData: FormData) => sendPrivateMessage(formData, token),
@@ -22,8 +23,8 @@ export const useSendPrivateMessageMutation = () => {
       }
     },
     onError: (error) => {
-      if (error.message === "Token expiré !") {
-        handleTokenExpiration(logout);
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
       }
     },
   });

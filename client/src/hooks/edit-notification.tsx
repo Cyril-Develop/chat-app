@@ -3,11 +3,12 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { editNotification } from "@/services/User";
-import { handleTokenExpiration } from "@/utils/token-expiration";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 export const useEditNotificationMutation = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token } = useUserStore((state) => state);
   const queryClient = useQueryClient();
+  const handleExpiration = useHandleTokenExpiration();
 
   return useMutation({
     mutationFn: (notification: string) => editNotification(notification, token),
@@ -20,8 +21,8 @@ export const useEditNotificationMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      if (error.message === "Token expiré !") {
-        handleTokenExpiration(logout);
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
       } else {
         toast({
           title: "Erreur",

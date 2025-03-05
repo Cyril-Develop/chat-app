@@ -26,6 +26,7 @@ module.exports = async (req, res, next) => {
 
     // Check if user role is admin
     req.auth = { userId, role };
+
     next();
   } catch (error) {
     if (error.message === "jwt expired") {

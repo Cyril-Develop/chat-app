@@ -3,12 +3,13 @@ import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { deletePrivateMessage } from "@/services/Message";
-import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 export const useDeletePrivateMessageMutation = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token } = useUserStore((state) => state);
   const { socket } = useSocketStore();
+  const handleExpiration = useHandleTokenExpiration();
 
   return useMutation({
     mutationFn: (messageId: number) => deletePrivateMessage(messageId, token),
@@ -21,8 +22,8 @@ export const useDeletePrivateMessageMutation = () => {
       socket?.emit("deletePrivateMessage", data.messageId);
     },
     onError: (error) => {
-      if (error.message === "Token expiré !") {
-        handleTokenExpiration(logout);
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
       }
     },
   });

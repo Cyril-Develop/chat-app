@@ -4,20 +4,21 @@ import { Icons } from "@/components/Icons";
 import { useUserStore } from "@/store/user.store";
 import { useRoomStore } from "@/store/room.store";
 import { joinRoom } from "@/services/Chat";
-import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useSocketStore } from "@/store/socket.store";
 import useGetUser from "./get-user";
 import { getUserId } from "@/utils/get-userId";
 import { JoinRoomProps } from "@/types/room";
 import { useContactStore } from "@/store/contact.store";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 export const useJoinRoomMutation = () => {
-  const { token, logout, statut } = useUserStore((state) => state);
+  const { token, statut } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
   const { socket } = useSocketStore((state) => state);
   const userId = getUserId();
   const { data: currentUser } = useGetUser(userId);
   const { contactId, setContactId } = useContactStore();
+  const handleTokenExpiration = useHandleTokenExpiration();
 
   return useMutation({
     mutationFn: (data: JoinRoomProps) => joinRoom(data, token),
@@ -42,8 +43,8 @@ export const useJoinRoomMutation = () => {
       );
     },
     onError: (error) => {
-      if (error.message === "Token expiré !") {
-        handleTokenExpiration(logout);
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleTokenExpiration();
       }
     },
   });

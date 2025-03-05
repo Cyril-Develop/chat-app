@@ -1,17 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "@/store/user.store";
 import { createRoom } from "@/services/Chat";
-import { handleTokenExpiration } from "@/utils/token-expiration";
 import { useJoinRoomMutation } from "@/hooks/join-room";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { CreateRoomProps } from "@/types/room";
+import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
 
 export const useCreateRoomMutation = () => {
-  const { token, logout } = useUserStore((state) => state);
+  const { token } = useUserStore((state) => state);
   const { setRoom } = useRoomStore();
   const joinRoom = useJoinRoomMutation();
   const { socket } = useSocketStore();
+  const handleExpiration = useHandleTokenExpiration();
 
   return useMutation({
     mutationFn: (data: CreateRoomProps) => createRoom(data, token),
@@ -30,8 +31,8 @@ export const useCreateRoomMutation = () => {
       );
     },
     onError: (error) => {
-      if (error.message === "Token expiré !") {
-        handleTokenExpiration(logout);
+      if (error.message === "Session expirée, veuillez vous reconnecter") {
+        handleExpiration();
       }
     },
   });

@@ -33,7 +33,7 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
 
   return (
     <>
-      <div className="flex justify-between pb-2 text-md">
+      <div className="flex justify-between text-md pb-4">
         <div className="flex gap-2">
           <div className="flex relative w-10 h-10">
             {isConnected && <StatutIndicator />}

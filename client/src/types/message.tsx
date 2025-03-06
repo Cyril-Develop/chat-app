@@ -1,3 +1,5 @@
+import { UseFormReturn } from "react-hook-form";
+
 export interface MessageProps {
   message: {
     id: number;
@@ -11,6 +13,11 @@ export interface MessageProps {
     };
     receiverId?: number;
   };
+}
+
+export interface HandleEmojiPickerProps {
+  form: UseFormReturn<any>;
+  setOpenEmoji: (open: boolean) => void;
 }
 
 export interface PrivateMessageProps {
@@ -56,7 +63,7 @@ export interface SendMessageProps {
   recipient: Recipient;
 }
 
-export interface SendMessagePrivateProps {  
+export interface SendMessagePrivateProps {
   recipient: Recipient;
 }
 

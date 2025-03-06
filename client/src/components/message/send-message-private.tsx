@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import EmojiPicker from "emoji-picker-react";
 import { useState, useRef } from "react";
 import {
   Form,
@@ -23,8 +22,8 @@ import { useUserStore } from "@/store/user.store";
 import {
   SendMessagePrivateProps,
   PrivateMessageFormProps,
-  EmojiObject,
 } from "@/types/message";
+import HandleEmojiPicker from "@/components/message/handle-emoji-picker";
 
 const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
   const { statut } = useUserStore((state) => state);
@@ -42,10 +41,6 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
       receiverId: recipient.id,
     },
   });
-
-  const handleEmojiClick = (emojiObject: EmojiObject) => {
-    form.setValue("message", form.getValues("message") + emojiObject.emoji);
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -118,16 +113,7 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
         className="relative flex flex-col sm:flex-row  gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
         {openEmoji && (
-          <div className="absolute z-20 bottom-32 sm:bottom-20 right-0 sm:right-2 ">
-            <Button
-              type="button"
-              className="relative left-0 top-1 rounded-bl-none rounded-br-none"
-              onClick={() => setOpenEmoji(false)}
-            >
-              <Icons.close width="18" height="18" />
-            </Button>
-            <EmojiPicker onEmojiClick={handleEmojiClick} width={280} />
-          </div>
+          <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />
         )}
 
         <FormField
@@ -141,7 +127,7 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
                   placeholder="Message..."
                   aria-label="Envoyer un message"
                   className={cn(
-                    "resize-none min-h-[44px] h-11 scrollbar-webkit scrollbar-firefox"
+                    "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox"
                   )}
                 />
               </FormControl>
@@ -150,7 +136,7 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
           )}
         />
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <FormField
             control={form.control}
             name="file"

@@ -1,17 +1,21 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useUserStore } from "@/store/user.store";
+import { toast } from "@/components/ui/use-toast";
 import { rejectFriendRequest } from "@/services/User";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useRejectFriendRequestMutation = () => {
-  const { token } = useUserStore((state) => state);
   const queryClient = useQueryClient();
-  const handleExpiration = useHandleTokenExpiration();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
+  const { setAuthentication } = useAuthStore();
 
   return useMutation({
-    mutationFn: (contactId: number) => rejectFriendRequest(contactId, token),
+    mutationFn: (contactId: number) => rejectFriendRequest(contactId),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -20,10 +24,14 @@ export const useRejectFriendRequestMutation = () => {
       });
       queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

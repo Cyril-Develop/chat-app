@@ -1,27 +1,29 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useUserStore } from "@/store/user.store";
-import { useRoomStore } from "@/store/room.store";
+import { toast } from "@/components/ui/use-toast";
 import { joinRoom } from "@/services/Chat";
-import { useSocketStore } from "@/store/socket.store";
-import useGetUser from "./get-user";
-import { getUserId } from "@/utils/get-userId";
-import { JoinRoomProps } from "@/types/room";
+import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { useRoomStore } from "@/store/room.store";
+import { useSocketStore } from "@/store/socket.store";
+import { JoinRoomProps } from "@/types/room";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useGetUser from "./get-current-user";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useNavigate } from "react-router-dom";
 
 export const useJoinRoomMutation = () => {
-  const { token, statut } = useUserStore((state) => state);
-  const { setRoom } = useRoomStore();
+  const { room, setRoom } = useRoomStore();
   const { socket } = useSocketStore((state) => state);
-  const userId = getUserId();
-  const { data: currentUser } = useGetUser(userId);
+  const visible = useAuthStore((state) => state.visible);
+  const { data: currentUser } = useGetUser();
   const { contactId, setContactId } = useContactStore();
-  const handleTokenExpiration = useHandleTokenExpiration();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { setAuthentication } = useAuthStore();
 
   return useMutation({
-    mutationFn: (data: JoinRoomProps) => joinRoom(data, token),
+    mutationFn: (data: JoinRoomProps) => joinRoom(data),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -39,13 +41,17 @@ export const useJoinRoomMutation = () => {
         currentUser.id,
         currentUser.username,
         currentUser.profileImage,
-        statut
+        visible
       );
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleTokenExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

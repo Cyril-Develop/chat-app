@@ -1,26 +1,26 @@
+import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-import { useUserStore } from "@/store/user.store";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
+import Chat from "@/pages/chat/Chat";
+import Home from "@/pages/home/Home";
+import NotFound from "@/pages/NotFound";
+import Account from "@/pages/settings/Account";
+import Dashboard from "@/pages/settings/Dashboard";
+import Notification from "@/pages/settings/Notification";
+import Profile from "@/pages/settings/Profile";
+import Settings from "@/pages/settings/Settings";
+import { useAuthStore } from "@/store/auth.store";
+import { useSocketStore } from "@/store/socket.store";
+import { useEffect } from "react";
 import {
   createBrowserRouter,
   Navigate,
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import Navbar from "@/components/navbar/Navbar";
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
-import Chat from "@/pages/chat/Chat";
-import Home from "@/pages/home/Home";
-import NotFound from "@/pages/NotFound";
-import Settings from "@/pages/settings/Settings";
-import Profile from "@/pages/settings/Profile";
-import Account from "@/pages/settings/Account";
-import Dashboard from "@/pages/settings/Dashboard";
-import Notification from "@/pages/settings/Notification";
-import Password from "./pages/password/Password";
 import Contact from "./pages/contact/Contact";
-import { useSocketStore } from "@/store/socket.store";
-import { useEffect } from "react";
+import Password from "./pages/password/Password";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -32,16 +32,27 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const { token, statut, role } = useUserStore((state) => state);
   const { connectSocket, disconnectSocket } = useSocketStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
+  const visible = useAuthStore((state) => state.visible);
+  const role = useAuthStore((state) => state.user?.role);
 
+  // Get current user id , role and check if authenticated
   useEffect(() => {
-    if (token) {
-      connectSocket(token, statut);
+    if (isAuthenticated) {
+      initializeAuth();
+    }
+  }, [initializeAuth]);
+
+  // Connect or disconnect socket based on authentication status
+  useEffect(() => {
+    if (isAuthenticated) {
+      connectSocket(visible);
     } else {
       disconnectSocket();
     }
-  }, [token, connectSocket, disconnectSocket]);
+  }, [isAuthenticated, connectSocket, disconnectSocket]);
 
   const router = createBrowserRouter([
     {
@@ -59,11 +70,11 @@ function App() {
         { path: "/chateo/contact", element: <Contact /> },
         {
           path: "/chateo/chat",
-          element: token ? <Chat /> : <Navigate to="/chateo/login" />,
+          element: isAuthenticated ? <Chat /> : <Navigate to="/chateo/login" />,
         },
         {
           path: "/chateo/settings",
-          element: token ? (
+          element: isAuthenticated ? (
             <Settings>
               <Profile />
             </Settings>
@@ -73,7 +84,7 @@ function App() {
         },
         {
           path: "/chateo/settings/profile",
-          element: token ? (
+          element: isAuthenticated ? (
             <Settings>
               <Profile />
             </Settings>
@@ -83,7 +94,7 @@ function App() {
         },
         {
           path: "/chateo/settings/account",
-          element: token ? (
+          element: isAuthenticated ? (
             <Settings>
               <Account />
             </Settings>
@@ -93,7 +104,7 @@ function App() {
         },
         {
           path: "/chateo/settings/notifications",
-          element: token ? (
+          element: isAuthenticated ? (
             <Settings>
               <Notification />
             </Settings>
@@ -104,7 +115,7 @@ function App() {
         {
           path: "/chateo/settings/dashboard",
           element:
-            role === "ADMIN" ? (
+            isAuthenticated && role === "ADMIN" ? (
               <Settings>
                 <Dashboard />
               </Settings>

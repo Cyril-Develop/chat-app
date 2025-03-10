@@ -1,28 +1,29 @@
 import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
-import { editNotification } from "@/services/User";
+import { deleteUserAccount } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { ApiError } from "@/types/api";
 import { handleApiError } from "@/utils/error-handler";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-export const useEditNotificationMutation = () => {
+export const useDeleteUserAccountMutation = () => {
   const queryClient = useQueryClient();
   const { setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (notification: string) => editNotification(notification),
+    mutationFn: (userId: number) => deleteUserAccount(userId),
     onSuccess: (data) => {
       toast({
         title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

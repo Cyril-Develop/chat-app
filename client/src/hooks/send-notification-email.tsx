@@ -1,12 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { useUserStore } from "@/store/user.store";
 import { sendNotificationByEmail } from "@/services/Email";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useSendNotificationByEmailMutation = () => {
-  const { token } = useUserStore((state) => state);
-  const handleExpiration = useHandleTokenExpiration();
-
+  const { setAuthentication } = useAuthStore();
+  const queryClient = useQueryClient();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: ({
       receiverId,
@@ -14,11 +18,15 @@ export const useSendNotificationByEmailMutation = () => {
     }: {
       receiverId: number;
       type: "Friend request" | "Private message";
-    }) => sendNotificationByEmail({ receiverId, type, token }),
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    }) => sendNotificationByEmail({ receiverId, type }),
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

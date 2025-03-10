@@ -8,20 +8,21 @@ import Room from "@/components/room/room";
 import { RoomSelector } from "@/components/room/room-selector";
 import { RoomUsers } from "@/components/room/room-users";
 import { Separator } from "@/components/ui/separator";
-import useGetUser from "@/hooks/get-user";
+import useGetUser from "@/hooks/get-current-user";
+import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { useUserStore } from "@/store/user.store";
-import { getUserId } from "@/utils/get-userId";
 import { useEffect, useRef, useState } from "react";
 
 const Chat = () => {
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
-  const { statut, role } = useUserStore((state) => state);
-  const userId = getUserId();
-  const { data: currentUser } = useGetUser(userId);
+  const { role, visible } = useAuthStore((state) => ({
+    role: state.user?.role,
+    visible: state.visible,
+  }));
+  const { data: currentUser } = useGetUser();
   const { socket } = useSocketStore();
   const { contactId } = useContactStore();
   const [showNotification, setShowNotification] = useState(false);
@@ -40,7 +41,7 @@ const Chat = () => {
         currentUser.id,
         currentUser.username,
         currentUser.profileImage,
-        statut
+        visible
       );
 
       prevRoomRef.current = room.id;

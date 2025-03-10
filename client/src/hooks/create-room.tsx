@@ -1,23 +1,32 @@
-import { useMutation } from "@tanstack/react-query";
-import { useUserStore } from "@/store/user.store";
-import { createRoom } from "@/services/Chat";
+import { Icons } from "@/components/Icons";
+import { toast } from "@/components/ui/use-toast";
 import { useJoinRoomMutation } from "@/hooks/join-room";
+import { createRoom } from "@/services/Chat";
+import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
+import { ApiError } from "@/types/api";
 import { CreateRoomProps } from "@/types/room";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useCreateRoomMutation = () => {
-  const { token } = useUserStore((state) => state);
-  const { setRoom } = useRoomStore();
+  const { room, setRoom } = useRoomStore();
   const joinRoom = useJoinRoomMutation();
   const { socket } = useSocketStore();
-  const handleExpiration = useHandleTokenExpiration();
+  const navigate = useNavigate();
+  const { setAuthentication } = useAuthStore();
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateRoomProps) => createRoom(data, token),
+    mutationFn: (data: CreateRoomProps) => createRoom(data),
     onSuccess: (data) => {
-      joinRoom.mutate({ roomId: data.id, roomName: data.name, password: data.password });
+      joinRoom.mutate({
+        roomId: data.id,
+        roomName: data.name,
+        password: data.password,
+      });
       setRoom({ id: data.id, name: data.name });
       socket?.emit(
         "createRoom",
@@ -30,10 +39,14 @@ export const useCreateRoomMutation = () => {
         data.createdBy
       );
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

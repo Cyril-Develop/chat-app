@@ -1,36 +1,34 @@
+import { Icons } from "@/components/Icons";
+import { useTheme } from "@/components/theme-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuSub,
-  DropdownMenuPortal,
   DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Icons } from "@/components/Icons";
-import { useNavigate } from "react-router-dom";
 import { useHandleLogout } from "@/hooks/handle-logout";
-import { useUserStore } from "@/store/user.store";
-import { useEffect } from "react";
-import { useSocketStore } from "@/store/socket.store";
-import { getUserId } from "@/utils/get-userId";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/components/theme-provider";
+import { useAuthStore } from "@/store/auth.store";
+import { useSocketStore } from "@/store/socket.store";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DropDown = () => {
   const navigate = useNavigate();
   const handleLogout = useHandleLogout();
-  const { statut, setStatut } = useUserStore((state) => state);
   const { socket } = useSocketStore();
-  const userId = getUserId();
   const { theme } = useTheme();
+  const { visible, setVisible } = useAuthStore();
 
   useEffect(() => {
-    socket?.emit("changeStatut", userId, statut);
-  }, [socket, statut, userId]);
+    socket?.emit("changeStatut", visible);
+  }, [socket, visible]);
 
   return (
     <>
@@ -70,8 +68,10 @@ const DropDown = () => {
                 Statut
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
-                <DropdownMenuSubContent className={cn("dark:bg-primary-foreground")}>
-                  <DropdownMenuItem onClick={() => setStatut("online")}>
+                <DropdownMenuSubContent
+                  className={cn("dark:bg-primary-foreground")}
+                >
+                  <DropdownMenuItem onClick={() => setVisible(true)}>
                     <Icons.circle
                       width={18}
                       height={18}
@@ -79,18 +79,18 @@ const DropDown = () => {
                       stroke="none"
                     />
                     En ligne
-                    {statut === "online" && (
-                      <Icons.check width={14} height={14} />
-                    )}
+                    {visible === true && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setStatut("spy")}>
+                  <DropdownMenuItem onClick={() => setVisible(false)}>
                     <Icons.spy
                       width={18}
                       height={18}
                       stroke={theme === "dark" ? "#fff" : "#000"}
                     />
                     Espion
-                    {statut === "spy" && <Icons.check width={14} height={14} />}
+                    {visible === false && (
+                      <Icons.check width={14} height={14} />
+                    )}
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>

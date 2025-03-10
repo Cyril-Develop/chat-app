@@ -6,7 +6,7 @@ const path = require("path");
 //********** SEND PRIVATE MESSAGE **********/
 exports.sendMessage = async (req, res) => {
   const { receiverId, message } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!userId || !receiverId) {
     return res.status(400).json({ error: "Missing required fields." });
@@ -44,7 +44,7 @@ exports.sendMessage = async (req, res) => {
 
 //********** GET PRIVATE MESSAGES **********/
 exports.getMessages = async (req, res) => {
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   try {
     // Récupérer les messages privés envoyés ou reçus par l'utilisateur
@@ -71,7 +71,7 @@ exports.getMessages = async (req, res) => {
 //********** DELETE PRIVATE MESSAGE **********/
 exports.deleteMessage = async (req, res) => {
   const { messageId } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   try {
     // Vérifiez si l'utilisateur et le message existent

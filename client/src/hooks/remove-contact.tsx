@@ -1,19 +1,23 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useUserStore } from "@/store/user.store";
+import { toast } from "@/components/ui/use-toast";
 import { removeContact } from "@/services/User";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useRemoveContactMutation = () => {
-  const { token } = useUserStore((state) => state);
-  const queryClient = useQueryClient();
   const { socket } = useSocketStore();
-  const handleExpiration = useHandleTokenExpiration();
+  const { setAuthentication } = useAuthStore();
+  const queryClient = useQueryClient();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (contactId: number | null) => removeContact(contactId, token),
+    mutationFn: (contactId: number | null) => removeContact(contactId),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -23,10 +27,14 @@ export const useRemoveContactMutation = () => {
       socket?.emit("removeFriend", data);
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

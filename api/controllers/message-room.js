@@ -34,7 +34,7 @@ exports.getMessages = async (req, res) => {
 //********** SEND MESSAGE **********/
 exports.sendMessage = async (req, res) => {
   const { roomId, message } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   try {
     // Vérifiez si l'utilisateur et le salon de chat existent
@@ -72,7 +72,7 @@ exports.sendMessage = async (req, res) => {
 //********** DELETE MESSAGE **********/
 exports.deleteMessage = async (req, res) => {
   const { messageId } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   // Vérifiez que toutes les informations nécessaires sont présentes
   if (!userId || !messageId) {

@@ -25,14 +25,14 @@ exports.register = async (req, res) => {
   } catch (err) {
     console.error("Error creating user:", err);
     if (err.meta.target === "User_email_key") {
-      return res.status(400).json({ error: "Email déjà utilisé" });
+      return res.status(400).json({ error: "Email déjà utilisé." });
     }
 
     if (err.meta.target === "User_username_key") {
-      return res.status(400).json({ error: "Nom d'utilisateur déjà utilisé" });
+      return res.status(400).json({ error: "Nom d'utilisateur déjà utilisé." });
     }
     res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
     });
   }
 };
@@ -55,21 +55,42 @@ exports.login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ error: "L'utilisateur n'existe pas" });
+      return res.status(404).json({ error: "L'utilisateur n'existe pas." });
     }
 
     if (!(await argon2.verify(user.password, password))) {
-      return res.status(401).json({ error: "Mot de passe incorrect" });
+      return res.status(401).json({ error: "Mot de passe incorrect." });
     }
 
     const token = createToken(user);
-    res.status(200).json({ token, role: user.role });
+
+    // Stocker le token dans un cookie HTTP-only
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: process.env.COOKIE_MAX_AGE,
+    });
+
+    res.json({
+      isAuthenticated: true,
+      user: {
+        id: user.id,
+        role: user.role,
+      },
+    });
   } catch (err) {
     console.error("Error logging in user:", err);
     res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
     });
   }
+};
+
+//**********  LOGOUT **********/
+exports.logout = (req, res) => {
+  res.clearCookie("auth_token");
+  res.json({ success: true });
 };
 
 //**********  VERIFY ACCOUNT **********/
@@ -77,7 +98,7 @@ const sendOTPEmail = async (email, otp) => {
   await transporter.sendMail({
     from: "Chateo",
     to: email,
-    subject: "Votre code de vérification",
+    subject: "Votre code de vérification.",
     html: validRegister(otp),
   });
 };
@@ -98,7 +119,7 @@ exports.verifyUser = async (req, res) => {
   });
 
   if (emailExists) {
-    return res.status(400).json({ error: "Email déjà utilisé" });
+    return res.status(400).json({ error: "Email déjà utilisé." });
   }
 
   // Vérification si le nom d'utilisateur existe déjà dans la base de données
@@ -109,7 +130,7 @@ exports.verifyUser = async (req, res) => {
   });
 
   if (usernameExists) {
-    return res.status(400).json({ error: `Nom d'utilisateur déjà utilisé` });
+    return res.status(400).json({ error: `Nom d'utilisateur déjà utilisé.` });
   }
 
   // Si aucun des deux n'existe, l'utilisateur est libre de s'enregistrer
@@ -122,7 +143,7 @@ exports.verifyUser = async (req, res) => {
 exports.sendOTP = async (req, res) => {
   const { email } = req.body;
 
-  if (!email) return res.status(400).json({ message: "Email requis" });
+  if (!email) return res.status(400).json({ message: "Email requis." });
 
   await prisma.otp.deleteMany({
     where: {
@@ -142,11 +163,11 @@ exports.sendOTP = async (req, res) => {
 
   try {
     await sendOTPEmail(email, otpCode);
-    res.status(200).json({ message: "Code OTP envoyé avec succès" });
+    res.status(200).json({ message: "Code OTP envoyé avec succès." });
   } catch (err) {
     console.error("Error sending OTP:", err);
     res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
     });
   }
 };
@@ -156,7 +177,7 @@ exports.verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
 
   if (!email || !otp)
-    return res.status(400).json({ error: "Tous les champs sont requis" });
+    return res.status(400).json({ error: "Tous les champs sont requis." });
 
   const otpRecord = await prisma.otp.findFirst({
     where: {
@@ -171,7 +192,7 @@ exports.verifyOTP = async (req, res) => {
   if (!otpRecord) {
     return res
       .status(400)
-      .json({ error: "Le code de vérification est incorrect ou a expiré" });
+      .json({ error: "Le code de vérification est incorrect ou a expiré." });
   }
 
   await prisma.otp.delete({
@@ -182,7 +203,7 @@ exports.verifyOTP = async (req, res) => {
 
   res
     .status(200)
-    .json({ message: "Le code de vérification a été vérifié avec succés" });
+    .json({ message: "Le code de vérification a été vérifié avec succés." });
 };
 
 //**********  RESET PASSWORD **********/
@@ -194,7 +215,7 @@ const sendResetPasswordEmail = async (email, userId) => {
   await transporter.sendMail({
     from: "Chateo",
     to: email,
-    subject: "Récupération de mot de passe",
+    subject: "Récupération de mot de passe.",
     html: resetPassword(token),
   });
 };
@@ -210,13 +231,13 @@ exports.forgotPassword = async (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({ error: "L'utilisateur n'existe pas" });
+    return res.status(404).json({ error: "L'utilisateur n'existe pas." });
   }
 
   await sendResetPasswordEmail(email, user.id);
 
   res.status(200).json({
-    message: "Un message a été envoyé à l'email indiqué",
+    message: "Un message a été envoyé à l'email indiqué.",
   });
 };
 
@@ -240,7 +261,7 @@ exports.resetPassword = async (req, res) => {
 
     res.status(200).json({
       message:
-        "Mot de passe réinitialisé avec succès, vous pouvez maintenant vous connecter",
+        "Mot de passe réinitialisé avec succès, vous pouvez maintenant vous connecter.",
     });
   } catch (error) {
     res.status(400).json({ error: "Token invalide ou expiré" });

@@ -13,14 +13,14 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
 
   useEffect(() => {
     const user = users.find((user) => user.userId === contactInfos.id);
-    setIsConnected(user?.statut === "online");
+    setIsConnected(user?.visible === true);
 
     const handleUserStatusChanged = ({
       userId,
-      statut,
+      visible,
     }: HandleUserStatusChangedProps) => {
       if (userId === contactInfos.id) {
-        setIsConnected(statut === "online");
+        setIsConnected(visible === true);
       }
     };
 

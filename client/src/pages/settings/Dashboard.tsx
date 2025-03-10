@@ -9,41 +9,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "@/components/ui/use-toast";
 import UserThumbnail from "@/components/user-thumbnail";
 import useGetUsers from "@/hooks/get-users";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/store/user.store";
 import { DashboardProps } from "@/types/setting";
-import handleDeleteAccount from "@/utils/handle-delete-account";
-import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteUserAccountMutation } from "@/hooks/delete-user-account";
 
 export default function Dashboard() {
   const { data, isLoading } = useGetUsers();
-  const logout = useUserStore((state) => state.logout);
-  const { token } = useUserStore((state) => state);
-  const queryClient = useQueryClient();
+  const { mutate: deleteUserAccount } = useDeleteUserAccountMutation();
 
   const filteredData = data?.filter(
     (user: DashboardProps) => user.role === "USER"
   );
 
   const noUsersFound = !filteredData?.length;
-
-  const deleteAccount = async (userId: number) => {
-    if (token && userId) {
-      await handleDeleteAccount(logout, token, userId);
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-    } else {
-      toast({
-        title: "Token manquant",
-        description: "Impossible de supprimer le compte sans token.",
-        variant: "destructive",
-        logo: <Icons.alert />,
-      });
-      logout();
-    }
-  };
 
   return (
     <>
@@ -89,7 +69,7 @@ export default function Dashboard() {
                     variant="alert"
                     title="Supprimer l'utilisateur"
                     className="p-0"
-                    onClick={() => deleteAccount(user.id)}
+                    onClick={() => deleteUserAccount(user.id)}
                   >
                     <Icons.delete width={16} height={16} />
                   </Button>

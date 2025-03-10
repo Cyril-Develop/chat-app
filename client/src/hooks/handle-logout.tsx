@@ -1,25 +1,18 @@
-import { useRoomStore } from "@/store/room.store";
-import { leaveRoom } from "@/services/Chat";
-import { useUserStore } from "@/store/user.store";
+import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
+import { logout } from "@/services/Auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useHandleLogout = () => {
-  const { room, setRoom } = useRoomStore();
-  const { token, logout } = useUserStore((state) => state);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { setAuthentication } = useAuthStore();
 
   const handleLogout = async () => {
-    try {
-      if (room && room.id) {
-        const { id: roomId } = room;
-        await leaveRoom(roomId, token);
-        setRoom(null);
-      }
-      logout();
-      navigate("/chateo/login");
-    } catch (error) {
-      console.log(error);
-    }
+    logout();
+    setAuthentication(false, null);
+    queryClient.clear();
+    navigate("/chateo/login");
   };
 
   return handleLogout;

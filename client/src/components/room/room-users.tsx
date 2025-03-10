@@ -25,11 +25,11 @@ export function RoomUsers() {
 
     const handleUserStatusChanged = ({
       userId,
-      statut,
+      visible,
     }: HandleUserStatusChangedProps) => {
       setUsersInRoom((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === userId ? { ...user, statut } : user
+          user.id === userId ? { ...user, visible } : user
         )
       );
     };
@@ -64,7 +64,7 @@ export function RoomUsers() {
     <ScrollArea className="h-72">
       <div className="flex flex-col gap-4">
         {usersInRoom
-          ?.filter((user) => user.statut === "online")
+          ?.filter((user) => user.visible === true)
           .map((user) => (
             <div key={user.id} className="relative">
               <StatutIndicator />

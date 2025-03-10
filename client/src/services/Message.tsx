@@ -12,130 +12,142 @@ export const getMessages = async (token: string | null) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const sendMessage = async (formData: FormData, token: string | null) => {
+export const sendMessage = async (formData: FormData) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-room`,
       {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
+        credentials: "include",
       }
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const deleteMessage = async (
-  messageId: number,
-  token: string | null
-) => {
+export const deleteMessage = async (messageId: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-room`,
       {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ messageId }),
+        credentials: "include",
       }
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
 // PRIVATE CHAT
-export const getPrivateMessages = async (token: string | null) => {
+export const getPrivateMessages = async () => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-private`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        credentials: "include",
       }
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const sendPrivateMessage = async (
-  formData: FormData,
-  token: string | null
-) => {
+export const sendPrivateMessage = async (formData: FormData) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-private`,
       {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
+        credentials: "include",
       }
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const deletePrivateMessage = async (
-  messageId: number,
-  token: string | null
-) => {
+export const deletePrivateMessage = async (messageId: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-private`,
       {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ messageId }),
+        credentials: "include",
       }
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };

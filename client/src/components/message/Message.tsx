@@ -1,16 +1,14 @@
-import moment from "moment/min/moment-with-locales";
-import UserThumbnail from "@/components/user-thumbnail";
 import { Icons } from "@/components/Icons";
-import { Button } from "../ui/button";
-import { getUserId } from "@/utils/get-userId";
+import UserThumbnail from "@/components/user-thumbnail";
 import { useDeleteMessageMutation } from "@/hooks/delete-message";
 import { useDeletePrivateMessageMutation } from "@/hooks/delete-private-message";
+import useGetUser from "@/hooks/get-current-user";
 import { MessageProps } from "@/types/message";
-import useGetUser from "@/hooks/get-user";
+import moment from "moment/min/moment-with-locales";
+import { Button } from "../ui/button";
 
 const Message = ({ message }: MessageProps) => {
-  const userId = getUserId();
-  const { data: currentUser } = useGetUser(userId);
+  const { data: currentUser } = useGetUser();
   const deleteMessageInRoom = useDeleteMessageMutation();
   const deletePrivateMessage = useDeletePrivateMessageMutation();
 
@@ -23,8 +21,7 @@ const Message = ({ message }: MessageProps) => {
   };
 
   const role = currentUser?.role;
-  const isMyMessage = message.user.id === userId;
-
+  const isMyMessage = message.user.id === currentUser?.id;
   const canDeleteMessage = isMyMessage || role === "ADMIN";
 
   return (

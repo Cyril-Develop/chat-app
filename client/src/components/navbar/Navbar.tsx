@@ -1,20 +1,18 @@
-import { Link } from "react-router-dom";
-import { useUserStore } from "@/store/user.store";
 import { Icons } from "@/components/Icons";
-import DropDown from "@/components/navbar/DropDown";
 import ModeToggle from "@/components/mode-toggle";
+import DropDown from "@/components/navbar/DropDown";
 import { SheetLeft } from "@/components/sheet/sheet-left";
 import { SheetRight } from "@/components/sheet/sheet-right";
+import useGetUser from "@/hooks/get-current-user";
 import useWindowWidth from "@/hooks/window-width";
-import useGetUser from "@/hooks/get-user";
-import { getUserId } from "@/utils/get-userId";
+import { useAuthStore } from "@/store/auth.store";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const isConnected = useUserStore((state) => state.token) ? true : false;
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const windowWidth = useWindowWidth();
   const isMobileView = windowWidth < 1024;
-  const userId = getUserId();
-  const { data: currentUser } = useGetUser(userId);
+  const { data: currentUser } = useGetUser();
 
   return (
     <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-background md:px-10">
@@ -30,13 +28,13 @@ const Navbar = () => {
       </h1>
 
       <div className="flex items-center gap-2 md:gap-5">
-        {isMobileView && isConnected && (
+        {isMobileView && isAuthenticated && (
           <>
             <SheetLeft currentUser={currentUser} />
             <SheetRight />
           </>
         )}
-        {isConnected ? (
+        {isAuthenticated ? (
           <DropDown />
         ) : (
           <Link to="chateo/login" className="link-nav" title="Se connecter">

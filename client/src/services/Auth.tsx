@@ -123,6 +123,7 @@ export const loginByEmail = async ({ email, password }: LoginByEmailProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       }
     );
     const data = await response.json();
@@ -149,12 +150,24 @@ export const loginAsGuest = async () => {
           email: `${import.meta.env.VITE_REACT_APP_GUEST_EMAIL}`,
           password: `${import.meta.env.VITE_REACT_APP_GUEST_PASSWORD}`,
         }),
+        credentials: "include",
       }
     );
     const data = await response.json();
     return data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const logout = async () => {
+  try {
+    await fetch(`${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (error: any) {
+    console.error("Erreur lors de la déconnexion :", error);
   }
 };
 

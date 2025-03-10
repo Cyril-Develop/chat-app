@@ -1,6 +1,6 @@
 import HeaderChat from "@/components/chat/chat-header";
 import MessagesProvider from "@/components/message/messages-provider";
-import useGetUser from "@/hooks/get-user";
+import useGetUserById from "@/hooks/get-user-by-id";
 import { useSocketStore } from "@/store/socket.store";
 import { PrivateChatProps } from "@/types/chat";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import useGetPrivateMessage from "@/hooks/get-private-message";
 import { PrivateMessageProps } from "@/types/message";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
-  const { data: fetchedContactInfos } = useGetUser(contactId);
+  const { data: fetchedContactInfos } = useGetUserById(contactId);
   const [contactData, setContactData] = useState(fetchedContactInfos);
   const [messages, setMessages] = useState<PrivateMessageProps[]>([]);
   const { socket } = useSocketStore();

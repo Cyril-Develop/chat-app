@@ -1,16 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
-import { useUserStore } from "@/store/user.store";
 import { sendMessage } from "@/services/Message";
+import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { ApiError } from "@/types/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/auth.store";
+import { handleApiError } from "@/utils/error-handler";
 
 export const useSendMessageMutation = () => {
-  const { token } = useUserStore((state) => state);
   const { socket } = useSocketStore();
-  const handleExpiration = useHandleTokenExpiration();
+  const { room, setRoom } = useRoomStore();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { setAuthentication } = useAuthStore();
 
   return useMutation({
-    mutationFn: (formData: FormData) => sendMessage(formData, token),
+    mutationFn: (formData: FormData) => sendMessage(formData),
     onSuccess: (data) => {
       socket?.emit("sendMessage", {
         id: data.id,
@@ -23,10 +28,14 @@ export const useSendMessageMutation = () => {
         createdAt: data.createdAt,
       });
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

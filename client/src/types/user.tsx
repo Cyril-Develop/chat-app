@@ -6,13 +6,13 @@ export interface UserInfos {
   profileImage: string;
   createdAt: string;
   notification: string;
-  statut: string;
+  visible: boolean;
   role: string;
 }
 
 export interface HandleUserStatusChangedProps {
   userId: number;
-  statut: string;
+  visible: boolean;
 }
 
 export interface UpdatedUserInfosProps {

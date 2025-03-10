@@ -1,18 +1,23 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useUserStore } from "@/store/user.store";
+import { toast } from "@/components/ui/use-toast";
 import { deletePrivateMessage } from "@/services/Message";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useDeletePrivateMessageMutation = () => {
-  const { token } = useUserStore((state) => state);
+  const queryClient = useQueryClient();
   const { socket } = useSocketStore();
-  const handleExpiration = useHandleTokenExpiration();
+  const { setAuthentication } = useAuthStore();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (messageId: number) => deletePrivateMessage(messageId, token),
+    mutationFn: (messageId: number) => deletePrivateMessage(messageId),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -21,10 +26,14 @@ export const useDeletePrivateMessageMutation = () => {
       });
       socket?.emit("deletePrivateMessage", data.messageId);
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

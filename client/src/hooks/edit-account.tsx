@@ -1,17 +1,21 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
-import { useUserStore } from "@/store/user.store";
-import { editAccount } from "@/services/User";
 import { Icons } from "@/components/Icons";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { toast } from "@/components/ui/use-toast";
+import { editAccount } from "@/services/User";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useEditAccountMutation = () => {
-  const { token } = useUserStore((state) => state);
   const queryClient = useQueryClient();
-  const handleExpiration = useHandleTokenExpiration();
+  const { setAuthentication } = useAuthStore();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (email: string) => editAccount(email, token),
+    mutationFn: (email: string) => editAccount(email),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -20,10 +24,14 @@ export const useEditAccountMutation = () => {
       });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

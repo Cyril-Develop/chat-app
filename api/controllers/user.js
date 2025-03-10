@@ -62,9 +62,30 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-//********** GET USER **********/
-exports.getUser = async (req, res) => {
-  const { userId } = req.body;
+exports.isAuthenticated = async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.userId,
+    },
+  });
+
+  if (!user) {
+    return res.status(404).json({ error: "L'utilisateur n'existe pas" });
+  }
+
+  res.json({
+    isAuthenticated: true,
+    user: {
+      id: user.id,
+      role: user.role,
+    },
+  });
+};
+
+//********** GET CURRENT USER **********/
+exports.getCurrentUser = async (req, res) => {
+  const userId = req.userId;
+
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -145,11 +166,94 @@ exports.getUser = async (req, res) => {
   }
 };
 
+//********** GET USER BY ID **********/
+exports.getUserById = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        email: true,
+        username: true,
+        bio: true,
+        profileImage: true,
+        notification: true,
+        role: true,
+        chatRooms: {
+          select: {
+            chatRoom: {
+              select: {
+                id: true,
+                name: true,
+                isPrivate: true,
+              },
+            },
+          },
+        },
+        friends: {
+          select: {
+            friend: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+                createdAt: true,
+                bio: true,
+              },
+            },
+          },
+        },
+        friendOf: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (user) {
+      // Combine friends and friendOf into a single list of unique friends
+      const friendsList = [];
+
+      user.friends.forEach((f) => {
+        if (!friendsList.some((friend) => friend.id === f.friend.id)) {
+          friendsList.push(f.friend);
+        }
+      });
+
+      user.friendOf.forEach((f) => {
+        if (!friendsList.some((friend) => friend.id === f.user.id)) {
+          friendsList.push(f.user);
+        }
+      });
+
+      res.status(200).json({ ...user, friendsList });
+    } else {
+      res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+  } catch (err) {
+    console.error("Error getting user:", err);
+    res.status(500).json({
+      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+    });
+  }
+};
+
 //********** UPDATE USER INFOS **********/
 exports.updateUser = async (req, res) => {
   try {
-    const id = req.auth.userId;
-    const userRole = req.auth.role;
+    const userId = req.userId;
+    const userRole = req.role;
     const { username, bio } = req.body;
 
     if (userRole === "GUEST") {
@@ -167,7 +271,7 @@ exports.updateUser = async (req, res) => {
 
     // Get image profile
     const currentUser = await prisma.user.findUnique({
-      where: { id },
+      where: { id: userId },
       select: { profileImage: true },
     });
 
@@ -188,7 +292,7 @@ exports.updateUser = async (req, res) => {
 
     const user = await prisma.user.update({
       where: {
-        id,
+        id: userId,
       },
       data: updatedFields,
       select: {
@@ -211,9 +315,9 @@ exports.updateUser = async (req, res) => {
 //********** UPDATE EMAIL ACCOUNT **********/
 exports.updateAccount = async (req, res) => {
   try {
-    const id = req.auth.userId;
+    const userId = req.userId;
+    const userRole = req.role;
     const { email } = req.body;
-    const userRole = req.auth.role;
 
     if (userRole === "GUEST") {
       return res.status(403).json({
@@ -228,7 +332,7 @@ exports.updateAccount = async (req, res) => {
     }
 
     const user = await prisma.user.update({
-      where: { id },
+      where: { id: userId },
       data: { email },
       select: {
         id: true,
@@ -251,10 +355,8 @@ exports.updateAccount = async (req, res) => {
 //********** DELETE ACCOUNT **********/
 exports.deleteAccount = async (req, res) => {
   try {
-    const requesterId = req.auth.userId;
-    // Account to delete
-    const { userId } = req.body;
-    const userRole = req.auth.role;
+    const userId = req.userId;
+    const userRole = req.role;
 
     if (userRole === "GUEST") {
       return res.status(403).json({
@@ -262,17 +364,34 @@ exports.deleteAccount = async (req, res) => {
       });
     }
 
+    // Vérifier si l'utilisateur est membre d'un salon de discussion
+    // retourne l'id de l'utilisateur et l'id du salon de discussion
+    const existingMembership = await prisma.userChatRoom.findFirst({
+      where: { userId: userId },
+    });
+
+    if (existingMembership) {
+      // Supprimer l'utilisateur du salon de discussion
+      await prisma.userChatRoom.delete({
+        where: {
+          userId_chatRoomId: {
+            userId: userId,
+            chatRoomId: existingMembership.chatRoomId,
+          },
+        },
+      });
+    }
+
+    // Ensuite supprimer l'utilisateur de la base de données
     await prisma.user.delete({
       where: {
         id: userId,
       },
     });
 
-    const isSelfDelete = userId === requesterId;
-
     res.status(200).json({
-      message: "Compte supprimé avec succès.",
-      selfDelete: isSelfDelete,
+      message:
+        "Compte supprimé avec succès, nous espérons vous revoir bientôt! 😔",
     });
   } catch (err) {
     console.error("Error deleting user:", err);
@@ -282,10 +401,58 @@ exports.deleteAccount = async (req, res) => {
   }
 };
 
+//********** DELETE USER ACCOUNT **********/
+exports.deleteUserAccount = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const userRole = req.role;
+
+    if (userRole !== "ADMIN") {
+      return res.status(403).json({
+        error: "Action non autorisée.",
+      });
+    }
+
+    // Vérifier si l'utilisateur est membre d'un salon de discussion
+    // retourne l'id de l'utilisateur et l'id du salon de discussion
+    const existingMembership = await prisma.userChatRoom.findFirst({
+      where: { userId: parseInt(userId) },
+    });
+
+    if (existingMembership) {
+      // Supprimer l'utilisateur du salon de discussion
+      await prisma.userChatRoom.delete({
+        where: {
+          userId_chatRoomId: {
+            userId: parseInt(userId),
+            chatRoomId: existingMembership.chatRoomId,
+          },
+        },
+      });
+    }
+
+    // Ensuite supprimer l'utilisateur de la base de données
+    await prisma.user.delete({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    res.status(200).json({
+      message: "L'utilisateur a été supprimé avec succès.",
+    });
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    res.status(500).json({
+      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
+    });
+  }
+};
+
 exports.updateNotification = async (req, res) => {
   try {
-    const id = req.auth.userId;
-    const userRole = req.auth.role;
+    const userId = req.userId;
+    const userRole = req.role;
     const { notification } = req.body;
 
     if (userRole === "GUEST") {
@@ -295,7 +462,7 @@ exports.updateNotification = async (req, res) => {
     }
 
     const user = await prisma.user.update({
-      where: { id },
+      where: { id: userId },
       data: { notification },
       select: {
         id: true,
@@ -303,11 +470,14 @@ exports.updateNotification = async (req, res) => {
       },
     });
 
-    res.status(200).json(user);
+    res.status(200).json({
+      message: "Vos préférences ont été mises à jour avec succès !",
+      user,
+    });
   } catch (err) {
     console.error("Error updating notification:", err);
     res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
     });
   }
 };
@@ -315,8 +485,8 @@ exports.updateNotification = async (req, res) => {
 //********** SEND FRIEND REQUEST **********/
 exports.sendFriendRequest = async (req, res) => {
   const { receiverId } = req.body;
-  const senderId = req.auth.userId;
-  const userRole = req.auth.role;
+  const senderId = req.userId;
+  const userRole = req.role;
 
   if (userRole === "GUEST") {
     return res.status(403).json({
@@ -403,7 +573,7 @@ exports.sendFriendRequest = async (req, res) => {
 
 //********** GET FRIEND REQUEST **********/
 exports.getFriendRequest = async (req, res) => {
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!userId) {
     return res
@@ -452,7 +622,7 @@ exports.getFriendRequest = async (req, res) => {
 //********** ACCEPT FRIEND REQUEST **********/
 exports.acceptFriendRequest = async (req, res) => {
   const { contactId } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!userId || !contactId) {
     return res
@@ -521,7 +691,7 @@ exports.acceptFriendRequest = async (req, res) => {
 //********** REJECT FRIEND REQUEST **********/
 exports.rejectFriendRequest = async (req, res) => {
   const { contactId } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!userId || !contactId) {
     return res
@@ -576,7 +746,7 @@ exports.rejectFriendRequest = async (req, res) => {
 //********** REMOVE CONTACT **********/
 exports.removeContact = async (req, res) => {
   const { contactId } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!userId || !contactId) {
     return res

@@ -7,7 +7,7 @@ const transporter = require("../email/transporter");
 //**********  SEND EMAIL NOTIFICATION **********/
 exports.sendEmailNotification = async (req, res) => {
   const { receiverId, type } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!userId || !receiverId) {
     return res.status(400).json({ error: "Missing required fields." });
@@ -52,7 +52,7 @@ exports.sendEmailContact = async (req, res) => {
     if (!name || !email || !subject || !message) {
       return res
         .status(400)
-        .json({ error: "Veuillez remplir tous les champs" });
+        .json({ error: "Veuillez remplir tous les champs." });
     }
 
     await transporter.sendMail({
@@ -61,11 +61,11 @@ exports.sendEmailContact = async (req, res) => {
       html: contactTemplate(name, email, message),
     });
 
-    res.status(200).json({ message: "Email envoyé avec succès" });
+    res.status(200).json({ message: "Email envoyé avec succès." });
   } catch (err) {
     console.error("Error sending email:", err);
     res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
     });
   }
 };

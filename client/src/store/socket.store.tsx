@@ -1,16 +1,11 @@
 import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
-import { jwtDecode } from "jwt-decode";
-
-interface CustomPayload {
-  id: number;
-}
 
 interface SocketStore {
   socket: Socket | null;
-  statut: "online" | "spy";
-  users: { userId: number; socketId: string; statut: "online" | "spy" }[];
-  connectSocket: (token: string, statut: "online" | "spy") => void;
+  visible: boolean;
+  users: { userId: number; socketId: string; visible: boolean }[];
+  connectSocket: (visible: boolean) => void;
   disconnectSocket: () => void;
 }
 
@@ -19,22 +14,19 @@ export const useSocketStore = create<SocketStore>((set) => {
 
   return {
     socket: null,
-    statut: "online",
+    visible: false,
     users: [],
-    connectSocket: (token, statut) => {
+    connectSocket: (visible) => {
       if (socket) return;
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
         path: "/socket.io/",
-        auth: { token },
+        withCredentials: true,
         transports: ["websocket", "polling"],
       });
 
-      const decodedToken = jwtDecode<CustomPayload>(token);
-      const userId = decodedToken.id;
-
       socket.on("connect", () => {
-        socket?.emit("addUser", userId, statut);
+        socket?.emit("addUser", visible);
       });
 
       socket.on("getUsers", (users) => {

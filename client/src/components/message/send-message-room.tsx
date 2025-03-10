@@ -1,9 +1,6 @@
 import { Icons } from "@/components/Icons";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import HandleEmojiPicker from "@/components/message/handle-emoji-picker";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { useState, useRef } from "react";
 import {
   Form,
   FormControl,
@@ -12,18 +9,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { MessageFormSchema } from "@/schema/main";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { useSendMessageMutation } from "@/hooks/send-message";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/store/user.store";
-import { SendMessageProps, MessageFormProps } from "@/types/message";
-import HandleEmojiPicker from "@/components/message/handle-emoji-picker";
+import { MessageFormSchema } from "@/schema/main";
+import { useAuthStore } from "@/store/auth.store";
+import { MessageFormProps, SendMessageProps } from "@/types/message";
+import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const SendMessage = ({ recipient }: SendMessageProps) => {
-  const { statut } = useUserStore((state) => state);
+  const visible = useAuthStore((state) => state.visible);
   const sendMessage = useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
@@ -58,7 +58,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
     const { message } = data;
 
     if (noContent) return;
-    if (statut === "spy") {
+    if (visible === false) {
       setError("Vous ne pouvez pas envoyer de message en mode espion");
       return;
     }
@@ -190,7 +190,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
           </Button>
         </div>
       </form>
-      {error && statut === "spy" && <p className="error">{error}</p>}
+      {error && visible === false && <p className="error">{error}</p>}
     </Form>
   );
 };

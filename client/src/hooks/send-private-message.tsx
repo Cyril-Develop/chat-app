@@ -1,31 +1,41 @@
-import { useMutation } from "@tanstack/react-query";
-import { useUserStore } from "@/store/user.store";
-import { sendPrivateMessage } from "@/services/Message";
-import { useSocketStore } from "@/store/socket.store";
 import { useSendNotificationByEmailMutation } from "@/hooks/send-notification-email";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { sendPrivateMessage } from "@/services/Message";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
+import { useSocketStore } from "@/store/socket.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useSendPrivateMessageMutation = () => {
-  const { token } = useUserStore((state) => state);
   const { socket } = useSocketStore();
-  const sendNotificationByEmailMutation = useSendNotificationByEmailMutation();
-  const handleExpiration = useHandleTokenExpiration();
+  const { setAuthentication } = useAuthStore();
+  const { mutate: sendNotificationByEmailMutation } =
+    useSendNotificationByEmailMutation();
+  const queryClient = useQueryClient();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (formData: FormData) => sendPrivateMessage(formData, token),
+    mutationFn: (formData: FormData) => sendPrivateMessage(formData),
     onSuccess: (data) => {
       socket?.emit("sendPrivateMessage", data);
       if (data.receiver.notification === "accept") {
-        sendNotificationByEmailMutation.mutate({
+        sendNotificationByEmailMutation({
           receiverId: data.receiver.id,
           type: "Private message",
         });
       }
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

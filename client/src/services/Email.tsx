@@ -24,35 +24,44 @@ export const sendContactEmail = async ({
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const sendNotificationByEmail = async (
-  { receiverId, type, token }: NotificationEmailProps
-) => {
+export const sendNotificationByEmail = async ({
+  receiverId,
+  type,
+}: NotificationEmailProps) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/email/notification`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ receiverId, type }),
+        credentials: "include",
       }
     );
     const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(responseData.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
     return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
-}
+};

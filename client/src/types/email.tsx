@@ -8,5 +8,4 @@ export interface ContactFormProps {
 export interface NotificationEmailProps {
   receiverId: number;
   type: "Friend request" | "Private message";
-  token: string | null;
 }

@@ -9,7 +9,7 @@ import { UpdatedUserInfosProps } from "@/types/user";
 import { useEffect, useState } from "react";
 const Room = ({ roomId, currentUser }: RoomProps) => {
   const { socket } = useSocketStore();
-  const { data: fetchedRoom, isLoading } = useGetRoom({ roomId });
+  const { data: fetchedRoom, isLoading } = useGetRoom(roomId);
   const [roomData, setRoomData] = useState(fetchedRoom);
   const [messages, setMessages] = useState<Message[]>([]);
   const [arrivalMessage, setArrivalMessage] = useState<Message | null>(null);
@@ -46,7 +46,7 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
     // Gestion des mises à jour de l'utilisateur
     const handleUpdatedUser = (updatedUser: UpdatedUserInfosProps) => {
       // Mise à jour des informations de l'utilisateur dans roomData
-      setRoomData((prevRoom : RoomProps) => {
+      setRoomData((prevRoom: RoomProps) => {
         if (!prevRoom) return prevRoom;
 
         return {

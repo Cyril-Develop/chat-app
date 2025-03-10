@@ -1,21 +1,24 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useUserStore } from "@/store/user.store";
+import { toast } from "@/components/ui/use-toast";
 import { deleteMessage } from "@/services/Message";
-import { useSocketStore } from "@/store/socket.store";
+import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { useSocketStore } from "@/store/socket.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useDeleteMessageMutation = () => {
-  const { token } = useUserStore((state) => state);
-  const { room } = useRoomStore();
+  const { room, setRoom } = useRoomStore();
   const { id: roomId } = room || {};
   const { socket } = useSocketStore();
-  const handleExpiration = useHandleTokenExpiration();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { setAuthentication } = useAuthStore();
 
   return useMutation({
-    mutationFn: (messageId: number) => deleteMessage(messageId, token),
+    mutationFn: (messageId: number) => deleteMessage(messageId),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -24,10 +27,14 @@ export const useDeleteMessageMutation = () => {
       });
       socket?.emit("messageDeleted", data.messageId, roomId);
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

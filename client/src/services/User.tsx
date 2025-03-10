@@ -1,4 +1,4 @@
-export const getAllUsers = async (token: string | null) => {
+export const getAllUsers = async () => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/all`,
@@ -6,69 +6,124 @@ export const getAllUsers = async (token: string | null) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       }
     );
-    const data = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(data.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return data;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const getUser = async (
-  userId: number | undefined,
-  token: string | null
-) => {
+export const isAuthenticated = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/`,
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/status`,
       {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId }),
+        method: "GET",
+        credentials: "include",
       }
     );
-    const data = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(data.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return data;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const editProfile = async (formData: FormData, token: string | null) => {
+export const getCurrentUser = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/profile`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getUserById = async (userId: number) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/profile/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editProfile = async (formData: FormData) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
       {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         body: formData,
+        credentials: "include",
       }
     );
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const editAccount = async (email: string, token: string | null) => {
+export const editAccount = async (email: string) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/account`,
@@ -76,25 +131,26 @@ export const editAccount = async (email: string, token: string | null) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ email }),
+        credentials: "include",
       }
     );
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const deleteUserAccount = async (
-  token: string | null,
-  userId: number
-) => {
+export const deleteAccount = async () => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user`,
@@ -102,25 +158,51 @@ export const deleteUserAccount = async (
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId }),
+        credentials: "include",
       }
     );
-    const data = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(data.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return data;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const editNotification = async (
-  notification: string,
-  token: string | null
-) => {
+export const deleteUserAccount = async (userId: number) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/delete/${userId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editNotification = async (notification: string) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/notifications`,
@@ -128,25 +210,26 @@ export const editNotification = async (
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ notification }),
+        credentials: "include",
       }
     );
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const sendFriendRequest = async (
-  receiverId: number,
-  token: string | null
-) => {
+export const sendFriendRequest = async (receiverId: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/request`,
@@ -154,23 +237,26 @@ export const sendFriendRequest = async (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ receiverId }),
+        credentials: "include",
       }
     );
-
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const getFriendRequest = async (token: string | null) => {
+export const getFriendRequest = async () => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/request`,
@@ -178,8 +264,8 @@ export const getFriendRequest = async (token: string | null) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       }
     );
 
@@ -193,10 +279,7 @@ export const getFriendRequest = async (token: string | null) => {
   }
 };
 
-export const acceptFriendRequest = async (
-  contactId: number,
-  token: string | null
-) => {
+export const acceptFriendRequest = async (contactId: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/accept`,
@@ -204,26 +287,26 @@ export const acceptFriendRequest = async (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ contactId }),
+        credentials: "include",
       }
     );
-
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const rejectFriendRequest = async (
-  contactId: number,
-  token: string | null
-) => {
+export const rejectFriendRequest = async (contactId: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/refuse`,
@@ -231,26 +314,26 @@ export const rejectFriendRequest = async (
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ contactId }),
+        credentials: "include",
       }
     );
-
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-export const removeContact = async (
-  contactId: number | null,
-  token: string | null
-) => {
+export const removeContact = async (contactId: number | null) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/remove`,
@@ -258,18 +341,21 @@ export const removeContact = async (
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ contactId }),
+        credentials: "include",
       }
     );
-
-    const res = await response.json();
+    const responseData = await response.json();
     if (!response.ok) {
-      throw new Error(res.error);
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
     }
-    return res;
+    return responseData;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 };

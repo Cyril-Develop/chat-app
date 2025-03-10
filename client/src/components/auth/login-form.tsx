@@ -14,14 +14,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
-//import { useGoogleLogin } from "@react-oauth/google";
 import Line from "@/components/auth/line";
 import CardWrapper from "./card-wrapper";
 import ShowPassord from "@/components/auth/show-password";
 import { loginByEmail } from "@/services/Auth";
-import { useUserStore } from "@/store/user.store";
+import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
-//import { Icons } from "@/components/Icons";
 import { loginAsGuest } from "@/services/Auth";
 import { ForgotPassword } from "@/components/password/forgot-password";
 
@@ -30,18 +28,14 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
-
-  const setToken = useUserStore((state) => state.setToken);
-  const setRole = useUserStore((state) => state.setRole);
-  const { token } = useUserStore((state) => state);
-
+  const { isAuthenticated, setAuthentication } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
+    if (isAuthenticated) {
       navigate("/chateo/chat");
     }
-  }, [token]);
+  }, [isAuthenticated]);
 
   const form = useForm({
     defaultValues: {
@@ -56,9 +50,8 @@ const LoginForm = () => {
     setApiError("");
     try {
       const { email, password } = form.getValues();
-      const { token, role } = await loginByEmail({ email, password });
-      setToken(token);
-      setRole(role);
+      const { isAuthenticated, user } = await loginByEmail({ email, password });
+      setAuthentication(isAuthenticated, user);
       form.reset();
     } catch (error: any) {
       setApiError(error.message);
@@ -73,9 +66,8 @@ const LoginForm = () => {
 
   const handleLoginAsGuest = async () => {
     try {
-      const { token, role } = await loginAsGuest();
-      setToken(token);
-      setRole(role);
+      const { isAuthenticated, user } = await loginAsGuest();
+      setAuthentication(isAuthenticated, user);
     } catch (error: any) {
       setApiError(error.message);
     }

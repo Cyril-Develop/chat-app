@@ -1,20 +1,26 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useUserStore } from "@/store/user.store";
-import { sendFriendRequest } from "@/services/User";
-import { useSocketStore } from "@/store/socket.store";
+import { toast } from "@/components/ui/use-toast";
 import { useSendNotificationByEmailMutation } from "@/hooks/send-notification-email";
-import { useHandleTokenExpiration } from "@/hooks/handle-token-expiration";
+import { sendFriendRequest } from "@/services/User";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
+import { useSocketStore } from "@/store/socket.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useSendRequestMutation = () => {
-  const { token } = useUserStore((state) => state);
   const { socket } = useSocketStore();
-  const sendNotificationByEmailMutation = useSendNotificationByEmailMutation();
-  const handleExpiration = useHandleTokenExpiration();
+  const { mutate: sendNotificationByEmailMutation } =
+    useSendNotificationByEmailMutation();
+  const { setAuthentication } = useAuthStore();
+  const queryClient = useQueryClient();
+  const { room, setRoom } = useRoomStore();
+  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (receiverId: number) => sendFriendRequest(receiverId, token),
+    mutationFn: (receiverId: number) => sendFriendRequest(receiverId),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -23,22 +29,20 @@ export const useSendRequestMutation = () => {
       });
       socket?.emit("sendFriendRequest", data.newRequest);
       if (data.newRequest.receiver.notification === "accept") {
-        sendNotificationByEmailMutation.mutate({
+        sendNotificationByEmailMutation({
           receiverId: data.newRequest.receiver.id,
           type: "Friend request",
         });
       }
     },
-    onError: (error) => {
-      if (error.message === "Session expirée, veuillez vous reconnecter") {
-        handleExpiration();
-      } else {
-        toast({
-          title: error.message,
-          variant: "destructive",
-          logo: <Icons.alert />,
-        });
-      }
+    onError: (error: ApiError) => {
+      handleApiError(error, {
+        room,
+        setRoom,
+        setAuthentication,
+        queryClient,
+        navigate,
+      });
     },
   });
 };

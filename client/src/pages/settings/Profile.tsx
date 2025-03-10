@@ -1,12 +1,10 @@
-import { Separator } from "@/components/ui/separator";
-import ProfileForm from "@/components/settings/profile-form";
 import PreviewCard from "@/components/settings/preview-card";
-import useGetUser from "@/hooks/get-user";
-import { getUserId } from "@/utils/get-userId";
+import ProfileForm from "@/components/settings/profile-form";
+import { Separator } from "@/components/ui/separator";
+import useGetUser from "@/hooks/get-current-user";
 
 const ProfilePage = () => {
-  const userId = getUserId();
-  const { data } = useGetUser(userId);
+  const { data } = useGetUser();
   return (
     <div className="space-y-6 md:pb-10">
       {data && (

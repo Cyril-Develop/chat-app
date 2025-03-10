@@ -1,11 +1,9 @@
-import { Separator } from "@/components/ui/separator";
 import NotificationForm from "@/components/settings/notification-form";
-import useGetUser from "@/hooks/get-user";
-import { getUserId } from "@/utils/get-userId";
+import { Separator } from "@/components/ui/separator";
+import useGetUser from "@/hooks/get-current-user";
 
 export default function SettingsNotificationsPage() {
-  const userId = getUserId();
-  const { data } = useGetUser(userId);
+  const { data } = useGetUser();
   return (
     <div className="space-y-6">
       {data && (

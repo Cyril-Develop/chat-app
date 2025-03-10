@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 //**********  CREATE CHAT ROOM **********/
 exports.createChatRoom = async (req, res) => {
   const { name, password } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   if (!name) {
-    return res.status(400).json({ error: "Le nom du salon est requis" });
+    return res.status(400).json({ error: "Le nom du salon est requis." });
   }
 
   const existingChatRoom = await prisma.chatRoom.findFirst({
@@ -15,7 +15,7 @@ exports.createChatRoom = async (req, res) => {
   });
 
   if (existingChatRoom) {
-    return res.status(400).json({ error: "Le nom du salon  est déjà pris" });
+    return res.status(400).json({ error: "Le nom du salon  est déjà pris." });
   }
 
   try {
@@ -30,15 +30,14 @@ exports.createChatRoom = async (req, res) => {
     res.status(201).json(chatRoom);
   } catch (error) {
     console.error("Error creating chat room:", error);
-    res.status(500).json({ error: "Error creating chat room" });
+    res.status(500).json({ error: "Error creating chat room." });
   }
 };
 
 //**********  JOIN CHAT ROOM **********/
 exports.joinChatRoom = async (req, res) => {
   const { roomId, password } = req.body;
-  const userId = req.auth.userId;
-
+  const userId = req.userId;
   try {
     const chatRoom = await prisma.chatRoom.findUnique({
       where: { id: roomId },
@@ -53,15 +52,18 @@ exports.joinChatRoom = async (req, res) => {
     if (!chatRoom) {
       return res
         .status(404)
-        .json({ error: "Le salon de discussion n'existe pas" });
+        .json({
+          error: "Le salon de discussion n'existe pas.",
+          errorCode: "ROOM_NOT_FOUND",
+        });
     }
 
     if (chatRoom.isPrivate && !password) {
-      return res.status(403).json({ error: "Le mot de passe est requis" });
+      return res.status(403).json({ error: "Le mot de passe est requis." });
     }
 
     if (chatRoom.isPrivate && chatRoom.password !== password) {
-      return res.status(403).json({ error: "Mot de passe incorrect" });
+      return res.status(403).json({ error: "Mot de passe incorrect." });
     }
     // Vérifier si l'utilisateur est déjà membre de ce salon
     const existingMembership = await prisma.userChatRoom.findFirst({
@@ -103,14 +105,14 @@ exports.joinChatRoom = async (req, res) => {
     }
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre le salon:", error);
-    res.status(500).json({ error: "Impossible de rejoindre le salon" });
+    res.status(500).json({ error: "Impossible de rejoindre le salon." });
   }
 };
 
 //**********  LEAVE CHAT ROOM **********/
 exports.leaveChatRoom = async (req, res) => {
   const { roomId } = req.body;
-  const userId = req.auth.userId;
+  const userId = req.userId;
 
   try {
     const existingMembership = await prisma.userChatRoom.findFirst({
@@ -118,9 +120,10 @@ exports.leaveChatRoom = async (req, res) => {
     });
 
     if (!existingMembership) {
-      return res
-        .status(404)
-        .json({ error: "Vous n'êtes pas membre de ce salon" });
+      return res.status(404).json({
+        error: "Vous n'êtes pas membre de ce salon.",
+        errorCode: "USER_NOT_IN_ROOM",
+      });
     }
 
     await prisma.userChatRoom.delete({
@@ -137,7 +140,7 @@ exports.leaveChatRoom = async (req, res) => {
       .json({ message: "Vous avez quitté le salon de discussion.", roomId });
   } catch (error) {
     console.error("Erreur lors de la tentative de quitter le salon:", error);
-    res.status(500).json({ error: "Impossible de quitter le salon" });
+    res.status(500).json({ error: "Impossible de quitter le salon." });
   }
 };
 
@@ -196,9 +199,10 @@ exports.getChatRoom = async (req, res) => {
     });
 
     if (!chatRoom) {
-      return res
-        .status(404)
-        .json({ error: "Le salon de discussion n'existe pas" });
+      return res.status(404).json({
+        error: "Le salon de discussion n'existe pas.",
+        errorCode: "ROOM_NOT_FOUND",
+      });
     }
 
     // Map the users to return a simplified array of users
@@ -210,9 +214,9 @@ exports.getChatRoom = async (req, res) => {
       "Erreur lors de la récupération du salon de discussion :",
       error
     );
-    res
-      .status(500)
-      .json({ error: "Erreur lors de la récupération du salon de discussion" });
+    res.status(500).json({
+      error: "Erreur lors de la récupération du salon de discussion.",
+    });
   }
 };
 

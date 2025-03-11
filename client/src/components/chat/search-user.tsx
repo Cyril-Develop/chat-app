@@ -151,7 +151,9 @@ export const SearchUser = ({
           <Command>
             <CommandList>
               {contacts.length === 0 && (
-                <CommandEmpty>Aucun contact trouvé</CommandEmpty>
+                <CommandEmpty className={cn("error p-3")}>
+                  Aucun contact trouvé.
+                </CommandEmpty>
               )}
               {contacts.map(
                 (contact) =>

@@ -99,11 +99,9 @@ export function RoomSelector() {
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>
-            <CommandInput placeholder="Rechercher un salon"
-            />
-
+            <CommandInput placeholder="Rechercher un salon" />
             <CommandList>
-              <CommandEmpty className="error p-3">
+              <CommandEmpty className={cn("error p-3")}>
                 Aucun salon trouvé.
               </CommandEmpty>
 

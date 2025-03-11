@@ -9,7 +9,7 @@ exports.sendMessage = async (req, res) => {
   const userId = req.userId;
 
   if (!userId || !receiverId) {
-    return res.status(400).json({ error: "Missing required fields." });
+    return res.status(400).json({ error: "Les champs sont obligatoires." });
   }
 
   try {
@@ -81,7 +81,7 @@ exports.deleteMessage = async (req, res) => {
     });
 
     if (!message) {
-      return res.status(404).json({ error: "Message not found." });
+      return res.status(404).json({ error: "Message introuvable." });
     }
 
     if (message.image) {
@@ -95,7 +95,7 @@ exports.deleteMessage = async (req, res) => {
     if (message.userId !== userId && user.role !== "ADMIN") {
       return res
         .status(403)
-        .json({ error: "You are not allowed to delete this message." });
+        .json({ error: "Vous n'êtes pas autorisé à supprimer ce message." });
     }
 
     // Supprimer le message

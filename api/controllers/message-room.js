@@ -14,7 +14,7 @@ exports.getMessages = async (req, res) => {
     });
 
     if (!chatRoom) {
-      return res.status(404).json({ error: "ChatRoom not found." });
+      return res.status(404).json({ error: "Salon introuvable." });
     }
 
     // Récupérez les messages du salon de chat
@@ -44,7 +44,7 @@ exports.sendMessage = async (req, res) => {
     });
 
     if (!user || !chatRoom) {
-      return res.status(404).json({ error: "User or ChatRoom not found." });
+      return res.status(404).json({ error: "Utilisateur ou salon introuvable." });
     }
 
     // Créez le message
@@ -78,7 +78,7 @@ exports.deleteMessage = async (req, res) => {
   if (!userId || !messageId) {
     return res
       .status(400)
-      .json({ error: "userId and messageId are required." });
+      .json({ error: "Les informations nécessaires sont manquantes." });
   }
 
   try {
@@ -89,7 +89,7 @@ exports.deleteMessage = async (req, res) => {
     });
 
     if (!user || !message) {
-      return res.status(404).json({ error: "User or Message not found." });
+      return res.status(404).json({ error: "Utilisateur ou message introuvable." });
     }
 
     if (message.image) {
@@ -103,7 +103,7 @@ exports.deleteMessage = async (req, res) => {
     if (message.userId !== userId && user.role !== "ADMIN") {
       return res
         .status(403)
-        .json({ error: "You are not allowed to delete this message." });
+        .json({ error: "Vous n'êtes pas autorisé à supprimer ce message." });
     }
 
     // Supprimez le message

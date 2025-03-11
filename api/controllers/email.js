@@ -10,7 +10,7 @@ exports.sendEmailNotification = async (req, res) => {
   const userId = req.userId;
 
   if (!userId || !receiverId) {
-    return res.status(400).json({ error: "Missing required fields." });
+    return res.status(400).json({ error: "Les champs sont obligatoires." });
   }
 
   try {
@@ -19,7 +19,7 @@ exports.sendEmailNotification = async (req, res) => {
     });
 
     if (!receiver) {
-      return res.status(404).json({ error: "Receiver not found." });
+      return res.status(404).json({ error: "Destinataire introuvable." });
     }
 
     const user = await prisma.user.findUnique({
@@ -35,7 +35,7 @@ exports.sendEmailNotification = async (req, res) => {
       html: notificationTemplate(user.username, type),
     });
 
-    return res.status(200).json({ message: "Email sent successfully." });
+    return res.status(200).json({ message: "Email envoyé avec succès." });
   } catch (error) {
     console.error(error);
     return res

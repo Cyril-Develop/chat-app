@@ -23,7 +23,9 @@ export const useDeleteUserAccountMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      ["users", "blocked-users"].forEach((key) =>
+        queryClient.invalidateQueries({ queryKey: [key] })
+      );
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

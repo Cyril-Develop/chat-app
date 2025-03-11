@@ -1,15 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
 import JoinPrivateRoomForm from "@/components/room/join-private-room-form";
-
-interface JoinRoomProps {
-  btnTrigger: string;
-  headerTitle: string;
-  headerDescription: string;
-  isOpen: boolean;
-  roomId: number;
-  onOpenChange: (open: boolean) => void;
-}
+import { JoinRoomProps } from "@/types/dialog";
 
 export function JoinRoom({
   headerTitle,

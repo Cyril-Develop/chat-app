@@ -13,3 +13,23 @@ export interface FriendProps {
   id: number;
   username: string;
 }
+
+export interface FriendRequest {
+  id: number;
+  status: string;
+  sender: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+  receiver: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+  createdAt: string;
+}
+
+export interface CurrentUserId {
+  id: number;
+}

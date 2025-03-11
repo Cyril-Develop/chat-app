@@ -5,26 +5,7 @@ import { useEffect, useState } from "react";
 import { useAcceptFriendRequestMutation } from "@/hooks/accept-friend-request";
 import { useRejectFriendRequestMutation } from "@/hooks/reject-friend-request";
 import useGetRequest from "@/hooks/get-friend-requests";
-
-interface FriendRequest {
-  id: number;
-  status: string;
-  sender: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-  receiver: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-  createdAt: string;
-}
-
-interface CurrentUserId {
-  id: number;
-}
+import { FriendRequest, CurrentUserId } from "@/types/contact";
 
 const ContactRequest = ({
   currentUser,
@@ -40,7 +21,7 @@ const ContactRequest = ({
   const acceptFriendRequest = useAcceptFriendRequestMutation();
   const rejectFriendRequest = useRejectFriendRequestMutation();
 
-  const { data : friendRequests } = useGetRequest();
+  const { data: friendRequests } = useGetRequest();
 
   useEffect(() => {
     if (friendRequests) {

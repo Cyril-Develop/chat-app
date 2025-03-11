@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-
-interface BackButtonProps {
-  label: string;
-  href: string;
-  text: string;
-}
+import { BackButtonProps } from "@/types/auth";
 
 const BackButton = ({ label, href, text }: BackButtonProps) => {
   return (

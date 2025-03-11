@@ -1,28 +1,21 @@
 import { BlockedUsersProps } from "@/types/user";
 import UserThumbnail from "../user-thumbnail";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { useUnblockUserMutation } from "@/hooks/unblock-user";
 import { Icons } from "@/components/Icons";
 
 const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
-  const [currentBlockedUsers, setCurrentBlockedUsers] = useState(blockedUsers);
   const { mutate: unblockUser } = useUnblockUserMutation();
 
   const handleUnblockUser = (blockedId: number) => {
     unblockUser(blockedId);
-    setCurrentBlockedUsers((prevUsers) =>
-      prevUsers.filter((user) => user.id !== blockedId)
-    );
   };
 
   return (
     <div>
-      <h3 className="text-lg font-medium pb-2">
-        Utilisateurs bloqués
-      </h3>
-      <div className="flex flex-wrap min-h-11 gap-4 p-3 rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover">
-        {currentBlockedUsers.map((user) => (
+      <h3 className="text-lg font-medium mb-2">Utilisateurs bloqués</h3>
+      <div className="flex flex-wrap min-h-11 gap-4 mb-2 p-3 rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover">
+        {blockedUsers.map((user) => (
           <div key={user.id} className="flex items-center">
             <UserThumbnail
               imageSize="8"
@@ -39,6 +32,10 @@ const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
           </div>
         ))}
       </div>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        Consultez la liste des utilisateurs bloqués et débloquez-les si
+        nécessaire.
+      </p>
     </div>
   );
 };

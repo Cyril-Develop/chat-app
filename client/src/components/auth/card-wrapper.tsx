@@ -6,15 +6,7 @@ import {
 } from "@/components/ui/card";
 import AuthHeader from "@/components/auth/auth-header";
 import BackButton from "./back-button";
-
-interface CardWrapperProps {
-  title: string;
-  description: string;
-  backButtonHref?: string;
-  backButtonLabel?: string;
-  children: React.ReactNode;
-  text?: string;
-}
+import { CardWrapperProps } from "@/types/auth";
 
 const CardWrapper = ({
   title,

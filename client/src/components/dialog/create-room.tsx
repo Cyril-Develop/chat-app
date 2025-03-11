@@ -3,12 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
 import CreateRoomForm from "@/components/room/create-room-form";
 import { useState } from "react";
-
-interface CreateRoomProps {
-  btnTrigger: string;
-  headerTitle: string;
-  headerDescription: string;
-}
+import { CreateRoomProps } from "@/types/dialog";
 
 export function CreateRoom({
   btnTrigger,

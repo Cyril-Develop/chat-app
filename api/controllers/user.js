@@ -899,8 +899,7 @@ exports.blockUser = async (req, res) => {
     });
 
     res.status(200).json({
-      message:
-        "Utilisateur bloqué avec succès et retiré de votre liste d'amis.",
+      message: "Utilisateur bloqué et retiré de votre liste d'amis.",
       contactId,
       userId,
       user,
@@ -936,7 +935,7 @@ exports.getBlockedUsers = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: "Erreur lors de la récupération des utilisateurs bloqués.",
+      error: "Impossible de récupérer les utilisateurs bloqués.",
     });
   }
 };

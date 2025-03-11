@@ -19,8 +19,8 @@ export default function SettingsAccountPage() {
           <div>
             <h3 className="text-lg font-medium">Compte</h3>
             <p className="text-description">
-              Mettez à jour votre adresse e-mail, débloquez des utilisateurs et
-              supprimez votre compte.
+              Mettez à jour votre adresse e-mail, gérez la liste des
+              utilisateurs bloqués ou supprimez votre compte.
             </p>
           </div>
           <Separator />

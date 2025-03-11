@@ -33,6 +33,10 @@ export interface Message {
   };
 }
 
+export interface ChatUnselectedProps {
+  role: "USER" | "ADMIN" | "GUEST";
+}
+
 export interface SheetLeftProps {
   currentUser: {
     id: number;

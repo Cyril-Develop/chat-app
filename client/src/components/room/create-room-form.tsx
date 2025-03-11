@@ -16,11 +16,7 @@ import { RoomFormSchema } from "@/schema/main";
 import ShowPassord from "@/components/auth/show-password";
 import { useCreateRoomMutation } from "@/hooks/create-room";
 import { cn } from "@/lib/utils";
-
-interface CreateRoomFormProps {
-  btnSubmit: string;
-  onSubmitSuccess: () => void;
-}
+import { CreateRoomFormProps } from "@/types/room";
 
 const CreateRoomForm = ({
   btnSubmit,

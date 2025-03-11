@@ -13,14 +13,13 @@ import { RoomPasswordSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ShowPassord from "@/components/auth/show-password";
 import { useJoinRoomMutation } from "@/hooks/join-room";
+import { JoinPrivateRoomFormProps } from "@/types/room";
 
-interface JoinPrivateRoomFormProps {
-  btnSubmit: string;
-  roomId: number;
-  onOpenChange: (open: boolean) => void;
-}
-
-const JoinPrivateRoomForm = ({ btnSubmit, roomId, onOpenChange }: JoinPrivateRoomFormProps) => {
+const JoinPrivateRoomForm = ({
+  btnSubmit,
+  roomId,
+  onOpenChange,
+}: JoinPrivateRoomFormProps) => {
   const form = useForm({
     defaultValues: {
       password: "",

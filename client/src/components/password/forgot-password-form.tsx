@@ -15,12 +15,7 @@ import { ForgotPasswordFormSchema } from "@/schema/main";
 import { forgotPassword } from "@/services/Auth";
 import { toast } from "../ui/use-toast";
 import { Icons } from "../Icons";
-
-interface ForgotPasswordFormProps {
-  btnSubmit: string;
-  onSubmitSuccess: () => void;
-  handleResetPassword: () => void;
-}
+import { ForgotPasswordFormProps } from "@/types/password";
 
 const ForgotPasswordForm = ({
   btnSubmit,

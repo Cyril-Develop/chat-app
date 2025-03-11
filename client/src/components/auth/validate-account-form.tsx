@@ -13,11 +13,7 @@ import { ValidateAccountFormSchema } from "@/schema/main";
 import { registerByEmail, verifyOtp } from "@/services/Auth";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-
-interface ValidateAccountFormProps {
-  newUser: { username: string; email: string; password: string };
-  onSubmitSuccess: () => void;
-}
+import { ValidateAccountFormProps } from "@/types/auth";
 
 export function ValidateAccountForm({
   newUser,
@@ -70,7 +66,11 @@ export function ValidateAccountForm({
           name="otp"
           render={({ field }) => (
             <FormItem>
-              <InputOTP {...field} maxLength={6} aria-label="Code de validation">
+              <InputOTP
+                {...field}
+                maxLength={6}
+                aria-label="Code de validation"
+              >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
                   <InputOTPSlot index={1} />

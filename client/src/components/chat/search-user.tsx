@@ -36,7 +36,7 @@ export const SearchUser = ({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [contacts, setContacts] = useState<Users[]>([]);
-  const { data : users } = useGetUsers();
+  const { data: users } = useGetUsers();
   const userId = currentUser?.id;
   const sendRequestMutation = useSendRequestMutation();
   const { socket } = useSocketStore();
@@ -131,9 +131,7 @@ export const SearchUser = ({
       <PopoverTrigger asChild>
         <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background dark:bg-primary-foreground border border-input rounded-md">
           <Label htmlFor="searchUser">
-            <Icons.search
-              style={{ stroke: "#80838B" }}
-            />
+            <Icons.search style={{ stroke: "#80838B" }} />
           </Label>
           <Input
             type="text"
@@ -147,7 +145,7 @@ export const SearchUser = ({
       </PopoverTrigger>
       {query.length >= 3 && (
         <PopoverContent
-          className="w-[200px] p-0 border-none"
+          className={cn("w-[200px] p-0 border-none")}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>
@@ -158,10 +156,10 @@ export const SearchUser = ({
               {contacts.map(
                 (contact) =>
                   contact.id !== userId && (
-                    <CommandGroup className={cn("p-0")} key={contact.id}>
+                    <CommandGroup key={contact.id}>
                       <CommandItem
                         value={contact.username}
-                        className="flex items-center justify-between p-2 h-11"
+                        className={cn("flex items-center justify-between p-2")}
                       >
                         <UserThumbnail
                           imageSize="8"
@@ -174,7 +172,7 @@ export const SearchUser = ({
                           <Button
                             variant="linkForm"
                             title="Ajouter à la liste de contacts"
-                            className="p-0"
+                            className={cn("p-0")}
                             onClick={() => handleAddFriend(contact.id)}
                           >
                             <Icons.add width={16} height={16} />

@@ -1,14 +1,7 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
 import ForgotPasswordForm from "@/components/password/forgot-password-form";
-
-interface ForgotPasswordProps {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  headerTitle: string;
-  handleResetPassword: () => void;
-  headerDescription: string;
-}
+import { ForgotPasswordProps } from "@/types/password";
 
 export function ForgotPassword({
   isOpen,

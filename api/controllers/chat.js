@@ -150,7 +150,7 @@ exports.getChatRooms = async (req, res) => {
     const chatRooms = await prisma.chatRoom.findMany();
     res.status(200).json(chatRooms);
   } catch (error) {
-    res.status(500).json({ error: "Error getting chat rooms" });
+    res.status(500).json({ error: "Impossible de récupérer la liste des salons." });
   }
 };
 

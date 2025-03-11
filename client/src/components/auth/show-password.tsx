@@ -1,17 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/Icons";
 import { Input } from "../ui/input";
-
-interface ShowPassordProps {
-  showPassword: boolean;
-  setShowPassword: (showPassword: boolean) => void;
-  field: {
-    name: string;
-    value?: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  };
-}
+import { ShowPassordProps } from "@/types/auth";
 
 const ShowPassord = ({
   showPassword,

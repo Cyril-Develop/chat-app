@@ -15,6 +15,17 @@ export interface RoomListProps {
   onSelect: (room: Room) => void;
 }
 
+export interface CreateRoomFormProps {
+  btnSubmit: string;
+  onSubmitSuccess: () => void;
+}
+
+export interface JoinPrivateRoomFormProps {
+  btnSubmit: string;
+  roomId: number;
+  onOpenChange: (open: boolean) => void;
+}
+
 export interface RoomProviderProps {
   data: Room[];
   value: string;

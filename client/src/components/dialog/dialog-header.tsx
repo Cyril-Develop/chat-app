@@ -3,11 +3,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-interface DialogHeaderProps {
-  title: string;
-  description: string;
-}
+import { DialogHeaderProps } from "@/types/dialog";
 
 const DialogHeaderComp = ({ title, description }: DialogHeaderProps) => {
   return (

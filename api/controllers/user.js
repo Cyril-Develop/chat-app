@@ -844,8 +844,15 @@ exports.removeContact = async (req, res) => {
 exports.blockUser = async (req, res) => {
   // Celui qui bloque
   const userId = req.userId;
+  const userRole = req.role;
   // Celui qui est bloqué
   const { contactId } = req.body;
+
+  if (userRole === "GUEST") {
+    return res.status(403).json({
+      error: "Action non autorisée en tant qu'invité.",
+    });
+  }
 
   if (userId === contactId) {
     return res

@@ -5,7 +5,7 @@ import { useSocketStore } from "@/store/socket.store";
 import { PrivateChatProps } from "@/types/chat";
 import { useEffect, useState } from "react";
 import SendMessage from "../message/send-message-private";
-import useGetPrivateMessage from "@/hooks/get-private-message";
+import useGetPrivateMessage from "@/hooks/get-private-messages";
 import { PrivateMessageProps } from "@/types/message";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
@@ -13,7 +13,7 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
   const [contactData, setContactData] = useState(fetchedContactInfos);
   const [messages, setMessages] = useState<PrivateMessageProps[]>([]);
   const { socket } = useSocketStore();
-  const { data } = useGetPrivateMessage();
+  const { data : privateMessages } = useGetPrivateMessage();
 
   useEffect(() => {
     if (fetchedContactInfos) {
@@ -22,10 +22,10 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
   }, [fetchedContactInfos]);
 
   useEffect(() => {
-    if (data) {
-      setMessages(data);
+    if (privateMessages) {
+      setMessages(privateMessages);
     }
-  }, [data]);
+  }, [privateMessages]);
 
   useEffect(() => {
     const handleMessage = (data: PrivateMessageProps) => {

@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { useAcceptFriendRequestMutation } from "@/hooks/accept-friend-request";
 import { useRejectFriendRequestMutation } from "@/hooks/reject-friend-request";
-import useGetRequest from "@/hooks/get-request";
+import useGetRequest from "@/hooks/get-friend-requests";
 
 interface FriendRequest {
   id: number;
@@ -40,17 +40,17 @@ const ContactRequest = ({
   const acceptFriendRequest = useAcceptFriendRequestMutation();
   const rejectFriendRequest = useRejectFriendRequestMutation();
 
-  const { data } = useGetRequest();
+  const { data : friendRequests } = useGetRequest();
 
   useEffect(() => {
-    if (data) {
-      setContactRequests(data);
+    if (friendRequests) {
+      setContactRequests(friendRequests);
     }
-  }, [data]);
+  }, [friendRequests]);
 
   useEffect(() => {
-    if (data && userId) {
-      const receivedRequests = data.filter(
+    if (friendRequests && userId) {
+      const receivedRequests = friendRequests.filter(
         (request: FriendRequest) => request.receiver.id === userId
       );
       setContactRequests(receivedRequests);
@@ -58,11 +58,11 @@ const ContactRequest = ({
         setShowNotification(receivedRequests.length > 0);
       }
     }
-  }, [data, userId, setShowNotification]);
+  }, [friendRequests, userId, setShowNotification]);
 
   useEffect(() => {
-    socket?.on("receiveFriendRequest", (data) => {
-      setContactRequests((prevRequests) => [...prevRequests, data]);
+    socket?.on("receiveFriendRequest", (friendRequests) => {
+      setContactRequests((prevRequests) => [...prevRequests, friendRequests]);
       setShowNotification(true);
     });
 

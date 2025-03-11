@@ -99,6 +99,86 @@ export const getUserById = async (userId: number) => {
   }
 };
 
+export const getBlockedUsers = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/block`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const blockUser = async (contactId: number | null) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/block`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ contactId }),
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const unblockUser = async (blockedId: number | null) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/block/${blockedId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const editProfile = async (formData: FormData) => {
   try {
     const response = await fetch(
@@ -256,7 +336,7 @@ export const sendFriendRequest = async (receiverId: number) => {
   }
 };
 
-export const getFriendRequest = async () => {
+export const getFriendRequests = async () => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/request`,

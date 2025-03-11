@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/services/User";
+import { getBlockedUsers } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { handleApiError } from "@/utils/error-handler";
@@ -6,15 +6,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const useGetCurrentUser = () => {
+const useGetBlockedUsers = () => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => getCurrentUser(),
+    queryKey: ["blocked-users"] ,
+    queryFn: async () => getBlockedUsers(),
     enabled: isAuthenticated,
     retry: false,
   });
@@ -34,4 +34,4 @@ const useGetCurrentUser = () => {
   return { data, isLoading };
 };
 
-export default useGetCurrentUser;
+export default useGetBlockedUsers;

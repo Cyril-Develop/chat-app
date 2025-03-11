@@ -4,10 +4,10 @@ import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-current-user";
 
 const ProfilePage = () => {
-  const { data } = useGetUser();
+  const { data: currentUser } = useGetUser();
   return (
     <div className="space-y-6 md:pb-10">
-      {data && (
+      {currentUser && (
         <>
           <div>
             <h3 className="text-lg font-medium">Profil</h3>
@@ -15,9 +15,9 @@ const ProfilePage = () => {
               Modifiez la façon dont vous apparaissez aux autres utilisateurs.
             </p>
           </div>
-          <PreviewCard user={data} />
+          <PreviewCard user={currentUser} />
           <Separator />
-          <ProfileForm user={data} />
+          <ProfileForm user={currentUser} />
         </>
       )}
     </div>

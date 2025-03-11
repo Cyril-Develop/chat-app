@@ -3,10 +3,10 @@ import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-current-user";
 
 export default function SettingsNotificationsPage() {
-  const { data } = useGetUser();
+  const { data: currentUser } = useGetUser();
   return (
     <div className="space-y-6">
-      {data && (
+      {currentUser && (
         <>
           <div>
             <h3 className="text-lg font-medium">Notifications</h3>
@@ -16,7 +16,7 @@ export default function SettingsNotificationsPage() {
             </p>
           </div>
           <Separator />
-          <NotificationForm user={data} />
+          <NotificationForm user={currentUser} />
         </>
       )}
     </div>

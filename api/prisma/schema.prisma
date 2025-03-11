@@ -34,6 +34,8 @@ model User {
   profileImage     String            @default("default.jpg")
   notification     String            @default("accept")
   role             Role              @default(USER)
+  blockedUsers BlockedUser[]  @relation("BlockerRelation")
+  blockedBy    BlockedUser[]  @relation("BlockedRelation")
 
   chatRooms        UserChatRoom[] 
   friends          Friend[]          @relation("UserFriends") 
@@ -47,6 +49,17 @@ model User {
   sentMessages     PrivateMessage[]  @relation("SentPrivateMessages") 
   receivedMessages PrivateMessage[]  @relation("ReceivedPrivateMessages") 
 }
+
+model BlockedUser {
+  id          Int    @id @default(autoincrement())
+  blockerId   Int
+  blockedId   Int
+  blocker     User   @relation("BlockerRelation", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked     User   @relation("BlockedRelation", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+}
+
 
 model Message {
   id         Int      @id @default(autoincrement())

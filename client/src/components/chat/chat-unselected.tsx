@@ -6,7 +6,7 @@ interface ChatUnselectedProps {
 }
 
 const ChatUnselected = ({ role }: ChatUnselectedProps) => {
-  const { data } = useGetUser();
+  const { data : currentUser } = useGetUser();
 
   return (
     <div className="bg-muted flex flex-col justify-center items-center grow h-full p-2 pl-2  xl:p-2 xl:pl-0 xl:flex-row">
@@ -17,7 +17,7 @@ const ChatUnselected = ({ role }: ChatUnselectedProps) => {
           Bienvenue{" "}
           {role !== "GUEST" && (
             <span className="font-semibold text-primary text-3xl">
-              {data?.username}
+              {currentUser?.username}
             </span>
           )}{" "}
           !

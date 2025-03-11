@@ -4,23 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-current-user";
 import { useDeleteAccountMutation } from "@/hooks/delete-account";
+import BlockedUsers from "@/components/settings/blocked-users";
+import useGetBlockedUsers from "@/hooks/get-blocked-users";
 
 export default function SettingsAccountPage() {
-  const { data } = useGetUser();
+  const { data: currentUser } = useGetUser();
+  const { data: blockedUsers } = useGetBlockedUsers();
   const { mutate: deleteAccount } = useDeleteAccountMutation();
 
   return (
     <div className="space-y-6">
-      {data && (
+      {currentUser && blockedUsers && (
         <>
           <div>
             <h3 className="text-lg font-medium">Compte</h3>
             <p className="text-description">
-              Mettez à jour les informations de votre compte.
+              Mettez à jour votre adresse e-mail, débloquez des utilisateurs et
+              supprimez votre compte.
             </p>
           </div>
           <Separator />
-          <AccountForm user={data} />
+          <BlockedUsers blockedUsers={blockedUsers} />
+          <AccountForm user={currentUser} />
           <Separator />
           <Alert
             trigger={

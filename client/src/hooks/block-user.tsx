@@ -1,6 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
-import { removeContact } from "@/services/User";
+import { blockUser } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
@@ -9,7 +9,7 @@ import { handleApiError } from "@/utils/error-handler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-export const useRemoveContactMutation = () => {
+export const useBlockUserMutation = () => {
   const { socket } = useSocketStore();
   const { setAuthentication } = useAuthStore();
   const queryClient = useQueryClient();
@@ -17,7 +17,7 @@ export const useRemoveContactMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (contactId: number | null) => removeContact(contactId),
+    mutationFn: (contactId: number | null) => blockUser(contactId),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -25,7 +25,7 @@ export const useRemoveContactMutation = () => {
         logo: <Icons.check />,
       });
       socket?.emit("removeFriend", data);
-      //queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

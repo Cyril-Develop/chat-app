@@ -8,10 +8,10 @@ const HeaderRoom = ({ room, currentUser }: HeaderRoomProps) => {
   const role = currentUser?.role;
   const isMyRoom = room?.createdBy === currentUser?.id || role === "ADMIN";
 
-  const deleteRoom = useDeleteRoomMutation();
+  const { mutate: deleteRoom } = useDeleteRoomMutation();
 
   const handleDeleteChat = () => {
-    deleteRoom.mutate(room.id);
+    deleteRoom(room.id);
   };
 
   return (

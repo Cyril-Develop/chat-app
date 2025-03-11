@@ -28,12 +28,8 @@ export const handleApiError = (
     logo: <Icons.alert />,
   });
 
-  console.log(`Erreur API: ${error.errorCode}`, error);
-
   switch (error.errorCode) {
     case "ACCOUNT_DELETED":
-      console.log("Le compte a été supprimé");
-
       if (room && room.id) {
         setRoom(null);
       }
@@ -46,7 +42,6 @@ export const handleApiError = (
       break;
 
     case "TOKEN_EXPIRED":
-      console.log("on doit se déconnecter");
       logout();
       if (setAuthentication) {
         setAuthentication(false, null);
@@ -55,7 +50,6 @@ export const handleApiError = (
       break;
 
     case "ROOM_NOT_FOUND":
-      console.log("La salle de chat n'a pas été trouvée");
       if (room && room.id) {
         setRoom(null);
       }

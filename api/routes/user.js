@@ -20,5 +20,8 @@ router.get("/request", checkToken, userCtrl.getFriendRequest);
 router.post("/accept", checkToken, userCtrl.acceptFriendRequest);
 router.post("/refuse", checkToken, userCtrl.rejectFriendRequest);
 router.delete("/remove", checkToken, userCtrl.removeContact);
+router.post("/block", checkToken, userCtrl.blockUser);
+router.get("/block", checkToken, userCtrl.getBlockedUsers);
+router.delete("/block/:blockedId", checkToken, userCtrl.unblockUser);
 
 module.exports = router;

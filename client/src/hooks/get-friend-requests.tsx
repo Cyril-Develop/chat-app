@@ -1,20 +1,20 @@
-import { getPrivateMessages } from "@/services/Message";
+import { getFriendRequests } from "@/services/User";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/auth.store";
-import { useNavigate } from "react-router-dom";
 import { useRoomStore } from "@/store/room.store";
+import { useNavigate } from "react-router-dom";
 import { handleApiError } from "@/utils/error-handler";
 
-const useGetPrivateMessage = () => {
+const useGetRequest = () => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["privateMessage"],
-    queryFn: async () => getPrivateMessages(),
+    queryKey: ["request"],
+    queryFn: async () => getFriendRequests(),
     enabled: isAuthenticated,
     retry: false,
   });
@@ -34,4 +34,4 @@ const useGetPrivateMessage = () => {
   return { data, isLoading };
 };
 
-export default useGetPrivateMessage;
+export default useGetRequest;

@@ -16,14 +16,14 @@ import { DashboardProps } from "@/types/setting";
 import { useDeleteUserAccountMutation } from "@/hooks/delete-user-account";
 
 export default function Dashboard() {
-  const { data, isLoading } = useGetUsers();
+  const { data: users, isLoading } = useGetUsers();
   const { mutate: deleteUserAccount } = useDeleteUserAccountMutation();
 
-  const filteredData = data?.filter(
+  const filteredUsers = users?.filter(
     (user: DashboardProps) => user.role === "USER"
   );
 
-  const noUsersFound = !filteredData?.length;
+  const noUsersFound = !filteredUsers?.length;
 
   return (
     <>
@@ -38,8 +38,8 @@ export default function Dashboard() {
       ) : (
         <Table>
           <TableCaption className="text-lg">
-            {filteredData?.length}
-            {filteredData?.length === 1
+            {filteredUsers?.length}
+            {filteredUsers?.length === 1
               ? " utilisateur enregistré"
               : " utilisateurs enregistrés"}
           </TableCaption>
@@ -54,7 +54,7 @@ export default function Dashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredData?.map((user: DashboardProps) => (
+            {filteredUsers?.map((user: DashboardProps) => (
               <TableRow key={user.id} className={cn("hover:bg-foreground/5")}>
                 <TableCell className="font-medium">{user.id}</TableCell>
                 <TableCell>

@@ -36,7 +36,7 @@ export const SearchUser = ({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [contacts, setContacts] = useState<Users[]>([]);
-  const { data } = useGetUsers();
+  const { data : users } = useGetUsers();
   const userId = currentUser?.id;
   const sendRequestMutation = useSendRequestMutation();
   const { socket } = useSocketStore();
@@ -49,7 +49,7 @@ export const SearchUser = ({
 
     if (value.length >= 3) {
       setOpen(true);
-      const filteredUsers = data?.filter((user: Users) =>
+      const filteredUsers = users?.filter((user: Users) =>
         user.username.toLowerCase().includes(value.toLowerCase())
       );
       setContacts(filteredUsers || []);

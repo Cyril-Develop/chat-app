@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const e = require("express");
 const fs = require("fs");
 const path = require("path");
 const prisma = new PrismaClient();
@@ -6,7 +7,35 @@ const prisma = new PrismaClient();
 //********** GET ALL USERS **********/
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await prisma.user.findMany({
+    const currentUserId = req.userId;
+
+    // Récupérer l'utilisateur actuel pour vérifier son rôle
+    const currentUser = await prisma.user.findUnique({
+      where: { id: currentUserId },
+      select: { role: true },
+    });
+
+    const usersQuery = {
+      where: {
+        AND: [
+          // Exclure les utilisateurs que l'utilisateur actuel a bloqués
+          {
+            blockedBy: {
+              none: {
+                blockerId: currentUserId,
+              },
+            },
+          },
+          // Exclure les utilisateurs qui ont bloqué l'utilisateur actuel
+          {
+            blockedUsers: {
+              none: {
+                blockedId: currentUserId,
+              },
+            },
+          },
+        ],
+      },
       select: {
         id: true,
         createdAt: true,
@@ -52,7 +81,15 @@ exports.getAllUsers = async (req, res) => {
           },
         },
       },
-    });
+    };
+
+    // Si l'utilisateur est un administrateur, ne pas appliquer les filtres de blocage
+    if (currentUser.role === "ADMIN") {
+      delete usersQuery.where; // Enlève la condition de filtrage si admin
+    }
+
+    const users = await prisma.user.findMany(usersQuery);
+
     res.status(200).json(users);
   } catch (err) {
     console.error("Error getting users:", err);
@@ -800,5 +837,121 @@ exports.removeContact = async (req, res) => {
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
     res.status(500).json({ error: "Erreur lors de la suppression de l'ami." });
+  }
+};
+
+//********** BLOCK USER **********/
+exports.blockUser = async (req, res) => {
+  // Celui qui bloque
+  const userId = req.userId;
+  // Celui qui est bloqué
+  const { contactId } = req.body;
+
+  if (userId === contactId) {
+    return res
+      .status(400)
+      .json({ error: "Vous ne pouvez pas vous bloquer vous-même." });
+  }
+
+  try {
+    // Utilisation d'une transaction pour assurer l'intégrité des données
+    await prisma.$transaction([
+      prisma.friend.deleteMany({
+        where: {
+          OR: [
+            {
+              userId: userId,
+              friendId: contactId,
+            },
+            {
+              userId: contactId,
+              friendId: userId,
+            },
+          ],
+        },
+      }),
+    ]);
+
+    // Récupère les informations des utilisateurs mis à jour
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { friends: true },
+    });
+
+    const contact = await prisma.user.findUnique({
+      where: { id: contactId },
+      include: { friends: true },
+    });
+
+    // Bloquer l'utilisateur
+    await prisma.blockedUser.create({
+      data: {
+        blockerId: userId,
+        blockedId: contactId,
+      },
+    });
+
+    res.status(200).json({
+      message:
+        "Utilisateur bloqué avec succès et retiré de votre liste d'amis.",
+      contactId,
+      userId,
+      user,
+      contact,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur lors du blocage de l'utilisateur." });
+  }
+};
+
+//********** GET BLOCKED USERS **********/
+exports.getBlockedUsers = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const blockedUsers = await prisma.blockedUser.findMany({
+      where: { blockerId: userId },
+      select: {
+        blocked: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+          },
+        },
+      },
+    });
+
+    const result = blockedUsers.map((user) => user.blocked);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Erreur lors de la récupération des utilisateurs bloqués.",
+    });
+  }
+};
+
+//********** UNBLOCK USER **********/
+exports.unblockUser = async (req, res) => {
+  const userId = req.userId;
+  const blockedId = req.params.blockedId;
+
+  try {
+    await prisma.blockedUser.deleteMany({
+      where: {
+        blockerId: userId,
+        blockedId: parseInt(blockedId),
+      },
+    });
+
+    res.json({ message: "Utilisateur débloqué avec succès." });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Erreur lors du déblocage de l'utilisateur." });
   }
 };

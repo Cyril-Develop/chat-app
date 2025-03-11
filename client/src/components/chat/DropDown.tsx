@@ -12,20 +12,21 @@ import { useRemoveContactMutation } from "@/hooks/remove-contact";
 import { useContactStore } from "@/store/contact.store";
 import Alert from "@/components/Alert";
 import { useState } from "react";
+import { useBlockUserMutation } from "@/hooks/block-user";
 
 const Dropdown = () => {
   const { contactId, setContactId } = useContactStore();
-  const mutation = useRemoveContactMutation();
+  const { mutate: removeContact } = useRemoveContactMutation();
+  const { mutate: blockUser } = useBlockUserMutation();
   const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
-    mutation.mutate(contactId);
+    removeContact(contactId);
     setContactId(null);
   };
 
   const handleBlock = () => {
-    console.log("block");
-    // A FAIRE
+    blockUser(contactId);
     setOpen(false);
   };
 
@@ -39,13 +40,13 @@ const Dropdown = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className={cn(" mt-1")}>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={handleDelete}>
-              <Icons.delete width={18} height={18} />
-              <span>Supprimer le contact</span>
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setOpen(true)}>
               <Icons.block width={18} height={18} />
               <span>Bloquer le contact</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDelete}>
+              <Icons.delete width={18} height={18} />
+              <span>Supprimer le contact</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
@@ -55,8 +56,7 @@ const Dropdown = () => {
         setOpen={setOpen}
         title="Bloquer le contact"
         description="Êtes-vous sûr de vouloir bloquer ce contact ? 
-              L'utilisateur ne pourra plus vous envoyer de messages privés ni vous envoyer de demande d'amis.
-              Cette action est irréversible."
+              L'utilisateur sera supprimé de votre liste de contacts et ne pourra plus vous ajouter."
         buttonTitle="Bloquer"
         action={handleBlock}
       />

@@ -16,8 +16,18 @@ export interface HandleUserStatusChangedProps {
 }
 
 export interface UpdatedUserInfosProps {
-  id: number,
-  username: string,
-  bio: string,
-  profileImage: string,
+  id: number;
+  username: string;
+  bio: string;
+  profileImage: string;
+}
+
+interface BlockedUser {
+  id: number;
+  username: string;
+  profileImage: string;
+}
+
+export interface BlockedUsersProps {
+  blockedUsers: BlockedUser[];
 }

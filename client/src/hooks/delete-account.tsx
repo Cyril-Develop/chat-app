@@ -26,6 +26,7 @@ export const useDeleteAccountMutation = () => {
       if (room && room.id) {
         setRoom(null);
       }
+      queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
       setAuthentication(false, null);
       queryClient.clear();
       navigate("/chateo/login");

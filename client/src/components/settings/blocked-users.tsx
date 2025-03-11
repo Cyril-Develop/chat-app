@@ -18,10 +18,10 @@ const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
 
   return (
     <div>
-      <h3 className="text-lg font-medium pb-2 min-h-11">
+      <h3 className="text-lg font-medium pb-2">
         Utilisateurs bloqués
       </h3>
-      <div className="flex flex-wrap gap-4 p-3 rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover">
+      <div className="flex flex-wrap min-h-11 gap-4 p-3 rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover">
         {currentBlockedUsers.map((user) => (
           <div key={user.id} className="flex items-center">
             <UserThumbnail

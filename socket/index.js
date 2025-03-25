@@ -1,8 +1,17 @@
 const { Server } = require("socket.io");
 require("dotenv").config();
+const https = require("https");
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const io = new Server({
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
+};
+
+const server = https.createServer(options);
+
+const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -160,32 +169,29 @@ io.on("connection", (socket) => {
   socket.on("messageDeleted", (messageId, roomId) => {
     io.to(roomId).emit("messageDeleted", messageId);
   });
-  addUser
-  //********** UPDATE USER INFOS IN ROOM **********/
+
+  //********** UPDATE MESSAGE IN ROOM **********/
   socket.on("updateUserInfos", (data) => {
     io.emit("updatedUserInfos", data);
   });
 
   //********** CHANGE USER STATUS **********/
   socket.on("changeStatut", (visible) => {
-    if (!socket.user || !socket.user.id) return; // Vérification pour éviter un crash
-
+    // Update the status in the global user list
     const userId = socket.user.id;
+    const user = users.find((user) => user.userId === userId);
 
-    // Mise à jour du statut global
-    users = users.map((user) =>
-      user.userId === userId ? { ...user, visible } : user
-    );
-
-    // Mise à jour du statut dans les rooms où il est présent
-    userInRoom.forEach((entry) => {
-      if (entry.id === userId) {
-        entry.visible = visible;
-        io.to(entry.roomId).emit("getUserInRoom", getUsersInRoom(entry.roomId));
-      }
+    if (user) {
+      user.visible = visible;
+    }
+    // Update the status in the room user list
+    const userInRoomEntries = userInRoom.filter((user) => user.id === userId);
+    userInRoomEntries.forEach((entry) => {
+      entry.visible = visible;
+      io.to(entry.roomId).emit("getUserInRoom", getUsersInRoom(entry.roomId));
     });
 
-    // Notifier tous les clients du changement de statut
+    // Send the status change to all users
     io.emit("userStatusChanged", { userId, visible });
   });
 
@@ -215,40 +221,25 @@ io.on("connection", (socket) => {
   //********** SEND FRIEND REQUEST **********/
   socket.on("sendFriendRequest", (data) => {
     const { id } = data;
-
-    // Trouver la connexion du destinataire
     const receiverSocket = users.find(
       (user) => user.userId === data.receiver.id
     );
-
-    // Trouver la connexion de l'expéditeur
-    const senderSocket = users.find((user) => user.userId === data.sender.id);
-
-    const request = {
-      id: id,
-      sender: {
-        id: data.sender.id,
-        username: data.sender.username,
-        profileImage: data.sender.profileImage,
-      },
-      receiver: {
-        id: data.receiver.id,
-        username: data.receiver.username,
-        profileImage: data.receiver.profileImage,
-      },
-    };
-
-    // Ajouter la demande dans le tableau des requêtes d'ami
-    friendRequests.push(request);
-
-    // Envoyer l'événement au destinataire (receiver)
     if (receiverSocket) {
+      const request = {
+        id: id,
+        sender: {
+          id: data.sender.id,
+          username: data.sender.username,
+          profileImage: data.sender.profileImage,
+        },
+        receiver: {
+          id: data.receiver.id,
+          username: data.receiver.username,
+          profileImage: data.receiver.profileImage,
+        },
+      };
+      friendRequests.push(request);
       io.to(receiverSocket.socketId).emit("receiveFriendRequest", request);
-    }
-
-    // Envoyer l'événement à l'expéditeur (sender)
-    if (senderSocket) {
-      io.to(senderSocket.socketId).emit("friendRequestSent", request);
     }
   });
 
@@ -282,32 +273,22 @@ io.on("connection", (socket) => {
         receiverName,
       });
     }
-
-    // supprimer la demande d'ami du tableau des demandes
-    friendRequests = friendRequests.filter((req) => req.id !== requestId);
   });
 
   //********** UPDATE RELATIONSHIP **********/
-  socket.on("updateRelationship", (usersID) => {
-    io.emit("updatedRelationship", usersID);
+  socket.on("updateRelationship", (data) => {
+    io.emit("updatedRelationship", data);
   });
 
   //********** REJECT FRIEND REQUEST **********/
   socket.on("rejectFriendRequest", (senderId, receiverId, requestId) => {
-    const senderSocket = users.find((user) => user.userId === senderId);
+    const requestIndex = friendRequests.findIndex(
+      (req) => req.id === requestId
+    );
 
-    if (senderSocket) {
-      io.to(senderSocket.socketId).emit("friendRequestRejected", requestId);
+    if (requestIndex !== -1) {
+      friendRequests.splice(requestIndex, 1);
     }
-
-    const receiverSocket = users.find((user) => user.userId === receiverId);
-
-    if (receiverSocket) {
-      io.to(receiverSocket.socketId).emit("friendRequestRejected", requestId);
-    }
-
-    // supprimer la demande d'ami du tableau des demandes
-    friendRequests = friendRequests.filter((req) => req.id !== requestId);
   });
 
   //********** REMOVE FRIEND **********/
@@ -323,16 +304,10 @@ io.on("connection", (socket) => {
       io.to(friendSocket.socketId).emit("friendRemoved", data.userId);
     }
 
-    // Met à jour la liste des utilisateurs disponibles dans le champ de recherche
     io.emit("removedRelationship", {
       user: data.user,
       friend: data.contact,
     });
-  });
-
-  //********** DELETE ACCOUNT **********/
-  socket.on("deleteAccount", (data) => {
-    io.emit("accountDeleted", data.userId);
   });
 
   //********** DISCONNECT **********/
@@ -361,6 +336,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.SOCKET_PORT || 3000;
-io.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Socket.IO server is running at https://localhost:${PORT}`);
 });

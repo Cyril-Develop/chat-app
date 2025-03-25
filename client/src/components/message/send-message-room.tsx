@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { MessageFormSchema } from "@/schema/main";
 import { useAuthStore } from "@/store/auth.store";
 import { MessageFormProps, SendMessageProps } from "@/types/message";
-import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
+import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -129,6 +129,9 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
                   className={cn(
                     "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox"
                   )}
+                  onKeyDown={(e) =>
+                    handleKeydown(e, form.handleSubmit(onSubmit))
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -147,7 +150,9 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
                   tabIndex={0}
                   aria-label="Joindre une image"
                   title="Joindre une image"
-                  onKeyDown={handleKeydown}
+                  onKeyDown={(e) =>
+                    handleKeydown(e, form.handleSubmit(onSubmit))
+                  }
                   onClick={() => handleLabelClick("fileInput")}
                 >
                   <Icons.image />

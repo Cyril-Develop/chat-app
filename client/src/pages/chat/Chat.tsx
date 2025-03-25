@@ -1,7 +1,7 @@
 import ChatUnselected from "@/components/chat/chat-unselected";
 import PrivateChat from "@/components/chat/private-chat";
 import { SearchUser } from "@/components/chat/search-user";
-import { Contact } from "@/components/Contact";
+import { Contact } from "@/components/contact-list";
 import { CreateRoom } from "@/components/dialog/create-room";
 import ContactRequest from "@/components/notification/contact-request";
 import Room from "@/components/room/room";

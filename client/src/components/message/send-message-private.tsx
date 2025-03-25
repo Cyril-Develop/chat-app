@@ -20,7 +20,7 @@ import {
   PrivateMessageFormProps,
   SendMessagePrivateProps,
 } from "@/types/message";
-import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
+import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -110,7 +110,7 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
       )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row  gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
+        className="relative flex flex-col sm:flex-row gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
         {openEmoji && (
           <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />
@@ -129,6 +129,9 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
                   className={cn(
                     "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox"
                   )}
+                  onKeyDown={(e) =>
+                    handleKeydown(e, form.handleSubmit(onSubmit))
+                  } 
                 />
               </FormControl>
               <FormMessage />
@@ -147,7 +150,9 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
                   tabIndex={0}
                   aria-label="Joindre une image"
                   title="Joindre une image"
-                  onKeyDown={handleKeydown}
+                  onKeyDown={(e) =>
+                    handleKeydown(e, form.handleSubmit(onSubmit))
+                  }
                   onClick={() => handleLabelClick("fileInput")}
                 >
                   <Icons.image />

@@ -1,5 +1,5 @@
-import { Icons } from "./Icons";
-import { Button } from "./ui/button";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
 
 interface ButtonFormProps {
   loading: boolean;

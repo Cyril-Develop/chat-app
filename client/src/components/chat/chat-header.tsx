@@ -11,25 +11,26 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   const { socket, users } = useSocketStore();
   const [isConnected, setIsConnected] = useState(false);
 
+  const handleUserStatusChanged = ({
+    userId,
+    visible,
+  }: HandleUserStatusChangedProps) => {
+    if (userId === contactInfos.id) {
+      setIsConnected(visible === true);
+    }
+  };
+
   useEffect(() => {
     const user = users.find((user) => user.userId === contactInfos.id);
+    // Si l'utilisateur est connecté, on met à jour le state isConnected
     setIsConnected(user?.visible === true);
-
-    const handleUserStatusChanged = ({
-      userId,
-      visible,
-    }: HandleUserStatusChangedProps) => {
-      if (userId === contactInfos.id) {
-        setIsConnected(visible === true);
-      }
-    };
 
     socket?.on("userStatusChanged", handleUserStatusChanged);
 
     return () => {
       socket?.off("userStatusChanged", handleUserStatusChanged);
     };
-  }, [socket, users, contactInfos.id]);
+  }, [socket, users, contactInfos]);
 
   return (
     <>

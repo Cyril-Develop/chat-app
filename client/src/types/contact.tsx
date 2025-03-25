@@ -33,3 +33,9 @@ export interface FriendRequest {
 export interface CurrentUserId {
   id: number;
 }
+export interface FriendRequestAcceptedProps {
+  senderId: number;
+  receiverId: number;
+  senderName: string;
+  receiverName: string;
+}

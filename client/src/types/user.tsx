@@ -22,12 +22,12 @@ export interface UpdatedUserInfosProps {
   profileImage: string;
 }
 
-interface BlockedUser {
+export interface BlockedUsersState {
   id: number;
   username: string;
   profileImage: string;
 }
 
 export interface BlockedUsersProps {
-  blockedUsers: BlockedUser[];
+  blockedUsers: BlockedUsersState[];
 }

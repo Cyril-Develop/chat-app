@@ -40,7 +40,7 @@ export const useAuthStore = create(
     }),
     {
       name: "auth-storage",
-      // Ne stockez que l'état isAuthenticated dans localStorage, pas le user
+      // Stocke uniquement l'état isAuthenticated dans localStorage
       partialize: (state) =>
         ({
           isAuthenticated: state.isAuthenticated,

@@ -1,5 +1,3 @@
-import { Icons } from "@/components/Icons";
-import { toast } from "@/components/ui/use-toast";
 import { rejectFriendRequest } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
@@ -16,12 +14,7 @@ export const useRejectFriendRequestMutation = () => {
 
   return useMutation({
     mutationFn: (contactId: number) => rejectFriendRequest(contactId),
-    onSuccess: (data) => {
-      toast({
-        title: data.message,
-        variant: "success",
-        logo: <Icons.check />,
-      });
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
     },
     onError: (error: ApiError) => {

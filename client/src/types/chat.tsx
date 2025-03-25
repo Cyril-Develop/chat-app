@@ -46,15 +46,37 @@ export interface SheetLeftProps {
 }
 
 export interface SearchUserProps {
+  bio: string;
+  createdAt: string;
+  friendOf: [];
+  friends: [];
   id: number;
+  profileImage: string;
+  receivedFriendRequests: [];
+  role: string;
+  sentFriendRequests: [];
   username: string;
 }
 
-export interface receivedFriendRequests {
+export interface ReceivedFriendRequests {
   id: number;
   sender: {
     id: number;
+    status: string;
     sender: {
+      id: number;
+      username: string;
+      profileImage: string;
+    };
+  };
+}
+
+export interface SentFriendRequests {
+  id: number;
+  receiver: {
+    id: number;
+    status: string;
+    receiver: {
       id: number;
       username: string;
       profileImage: string;
@@ -76,7 +98,8 @@ export interface Users {
   username: string;
   profileImage: string;
   friends: FriendList[];
-  receivedFriendRequests: receivedFriendRequests[];
+  receivedFriendRequests: ReceivedFriendRequests[];
+  sentFriendRequests: SentFriendRequests[];
 }
 
 export interface PrivateChatProps {

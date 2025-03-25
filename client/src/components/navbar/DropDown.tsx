@@ -1,5 +1,4 @@
 import { Icons } from "@/components/Icons";
-import { useTheme } from "@/components/theme-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +15,7 @@ import { useHandleLogout } from "@/hooks/handle-logout";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth.store";
 import { useSocketStore } from "@/store/socket.store";
+import { useTheme } from "@/theme/theme-provider";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +29,13 @@ const DropDown = () => {
   useEffect(() => {
     socket?.emit("changeStatut", visible);
   }, [socket, visible]);
+
+  const handleStatut = (updatedVisible: boolean) => {
+    if (visible === updatedVisible) {
+      return;
+    }
+    setVisible(updatedVisible);
+  };
 
   return (
     <>
@@ -71,7 +78,7 @@ const DropDown = () => {
                 <DropdownMenuSubContent
                   className={cn("dark:bg-primary-foreground")}
                 >
-                  <DropdownMenuItem onClick={() => setVisible(true)}>
+                  <DropdownMenuItem onClick={() => handleStatut(true)}>
                     <Icons.circle
                       width={18}
                       height={18}
@@ -81,7 +88,7 @@ const DropDown = () => {
                     En ligne
                     {visible === true && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setVisible(false)}>
+                  <DropdownMenuItem onClick={() => handleStatut(false)}>
                     <Icons.spy
                       width={18}
                       height={18}

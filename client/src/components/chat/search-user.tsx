@@ -20,13 +20,8 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { useSendRequestMutation } from "@/hooks/send-request";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  FriendList,
-  SearchUserProps,
-  Users,
-  UpdateRelationship,
-} from "@/types/chat";
+import { FriendList, SearchUserProps, Users } from "@/types/chat";
+import { useFriendRequestUpdates } from "@/hooks/friend-request-handler";
 
 export const SearchUser = ({
   currentUser,
@@ -40,9 +35,14 @@ export const SearchUser = ({
   const userId = currentUser?.id;
   const sendRequestMutation = useSendRequestMutation();
   const { socket } = useSocketStore();
-  const queryClient = useQueryClient();
+  const {
+    updateUserRelationship,
+    handleRemoveFriend,
+    addFriendRequest,
+    removeFriendRequest,
+  } = useFriendRequestUpdates();
 
-  // Search for a user
+  // Rechercher un utilisateur
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
@@ -58,72 +58,52 @@ export const SearchUser = ({
     }
   };
 
-  // Update the list after adding a friend
-  const updateUserRelationship = (updatedData: UpdateRelationship) => {
-    queryClient.setQueryData(["users"], (oldData: Users[] | undefined) => {
-      if (!oldData) return oldData;
-
-      return oldData.map((user) => {
-        if (user.id === updatedData.user.id) {
-          return { ...user, friends: [...user.friends, updatedData.friend] };
-        }
-        if (user.id === updatedData.friend.id) {
-          return { ...user, friends: [...user.friends, updatedData.user] };
-        }
-        setQuery("");
-        return user;
-      });
-    });
-
-    // Invalidate the query to update the list
-    queryClient.invalidateQueries({ queryKey: ["users"] });
-  };
-
-  // Update the list after removing a friend
-  const handleRemoveFriend = (removedData: UpdateRelationship) => {
-    queryClient.setQueryData(["users"], (oldData: Users[] | undefined) => {
-      if (!oldData) return oldData;
-
-      return oldData.map((user) => {
-        if (user.id === removedData.user.id) {
-          return {
-            ...user,
-            friends: user.friends.filter((f) => f.id !== removedData.friend.id),
-          };
-        }
-        if (user.id === removedData.friend.id) {
-          return {
-            ...user,
-            friends: user.friends.filter((f) => f.id !== removedData.user.id),
-          };
-        }
-        setQuery("");
-        return user;
-      });
-    });
-
-    queryClient.invalidateQueries({ queryKey: ["users"] });
-  };
-
   useEffect(() => {
-    socket?.on("updatedRelationship", updateUserRelationship);
-    socket?.on("removedRelationship", handleRemoveFriend);
+    socket?.on("updatedRelationship", (data) => updateUserRelationship(data));
+    socket?.on("removedRelationship", (data) => handleRemoveFriend(data));
+    socket?.on("receiveFriendRequest", (data) => addFriendRequest(data));
+    socket?.on("friendRequestSent", (data) => addFriendRequest(data));
+    socket?.on("friendRequestRejected", (data) => removeFriendRequest(data));
 
     return () => {
       socket?.off("updatedRelationship", updateUserRelationship);
       socket?.off("removedRelationship", handleRemoveFriend);
+      socket?.off("receiveFriendRequest", addFriendRequest);
+      socket?.off("friendRequestSent", addFriendRequest);
+      socket?.off("friendRequestRejected", removeFriendRequest);
     };
-  }, [socket, queryClient]);
+  }, [
+    socket,
+    updateUserRelationship,
+    handleRemoveFriend,
+    addFriendRequest,
+    removeFriendRequest,
+  ]);
 
-  // Add a friend
+  // Ajouter un ami
   const handleAddFriend = (contactId: number) => {
     sendRequestMutation.mutate(contactId);
     setQuery("");
   };
 
-  // Check if the user is a friend
+  // Vérifier si l'utilisateur est déjà un ami
   const isFriend = (friends: FriendList[]) => {
     return friends.some((friendList) => friendList.friend.id === userId);
+  };
+
+  // Vérifier si une demande d'ami est en cours (envoyée ou reçue)
+  const isRequestPending = (contact: Users) => {
+    // Vérifier si l'utilisateur courant a envoyé une demande à ce contact
+    const hasSentRequest = contact.sentFriendRequests?.some(
+      (request) => request.receiver.id === userId
+    );
+
+    // Vérifier si ce contact a envoyé une demande à l'utilisateur courant
+    const hasReceivedRequest = contact.receivedFriendRequests?.some(
+      (request) => request.sender.id === userId
+    );
+
+    return hasSentRequest || hasReceivedRequest;
   };
 
   return (
@@ -170,6 +150,8 @@ export const SearchUser = ({
                         />
                         {isFriend(contact.friends) ? (
                           <Icons.check width={16} height={16} />
+                        ) : isRequestPending(contact) ? (
+                          <Icons.loader width={16} height={16} />
                         ) : (
                           <Button
                             variant="linkForm"

@@ -8,12 +8,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRoomStore } from "@/store/room.store";
 import { ApiError } from "@/types/api";
 import { handleApiError } from "@/utils/error-handler";
+import { useSocketStore } from "@/store/socket.store";
 
 export const useDeleteAccountMutation = () => {
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const { setAuthentication } = useAuthStore();
+  const { socket } = useSocketStore();
 
   return useMutation({
     mutationFn: () => deleteAccount(),
@@ -26,7 +28,10 @@ export const useDeleteAccountMutation = () => {
       if (room && room.id) {
         setRoom(null);
       }
-      queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
+      socket?.emit("deleteAccount", { userId: data.user.id });
+      ["users", "blocked-users"].forEach((key) =>
+        queryClient.invalidateQueries({ queryKey: [key] })
+      );
       setAuthentication(false, null);
       queryClient.clear();
       navigate("/chateo/login");

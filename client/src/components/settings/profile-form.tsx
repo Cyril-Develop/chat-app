@@ -1,6 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import ButtonForm from "@/components/button-form";
+import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,
@@ -13,13 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { ProfileFormSchema } from "@/schema/main";
-import { Siren } from "lucide-react";
-import { handleKeydown, handleLabelClick } from "@/utils/handle-input-file";
-import { ProfileFormProps, ProfileFormValues } from "@/types/setting";
-import { useRef, useState } from "react";
 import { useEditUserMutation } from "@/hooks/edit-profil";
-import { Icons } from "@/components/Icons";
+import { ProfileFormSchema } from "@/schema/main";
+import { ProfileFormProps, ProfileFormValues } from "@/types/setting";
+import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Siren } from "lucide-react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {

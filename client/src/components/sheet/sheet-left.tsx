@@ -1,5 +1,5 @@
 import { SearchUser } from "@/components/chat/search-user";
-import { Contact } from "@/components/Contact";
+import { Contact } from "@/components/contact-list";
 import { Icons } from "@/components/Icons";
 import ContactRequest from "@/components/notification/contact-request";
 import { Button } from "@/components/ui/button";
@@ -42,16 +42,13 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
           <Contact currentUser={currentUser} />
         </div>
         {showNotification && (
-          <>
-            {" "}
-            <SheetHeader className={cn("text-left mt-4")}>
-              <SheetTitle>Notifications</SheetTitle>
-              <Separator />
-              <SheetDescription className="text-description pb-2">
-                Acceptez ou refusez les demandes de contact.
-              </SheetDescription>
-            </SheetHeader>
-          </>
+          <SheetHeader className={cn("text-left mt-8")}>
+            <SheetTitle>Notifications</SheetTitle>
+            <Separator />
+            <SheetDescription className="text-description pb-2">
+              Acceptez ou refusez les demandes de contact.
+            </SheetDescription>
+          </SheetHeader>
         )}
         <ContactRequest
           currentUser={currentUser}

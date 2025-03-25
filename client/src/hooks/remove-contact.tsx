@@ -25,7 +25,6 @@ export const useRemoveContactMutation = () => {
         logo: <Icons.check />,
       });
       socket?.emit("removeFriend", data);
-      //queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

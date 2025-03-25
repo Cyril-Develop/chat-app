@@ -1,8 +1,8 @@
-import { Icons } from "../Icons";
-import { Button } from "../ui/button";
-import EmojiPicker, { Theme } from "emoji-picker-react";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "@/theme/theme-provider";
 import { EmojiObject, HandleEmojiPickerProps } from "@/types/message";
+import EmojiPicker, { Theme } from "emoji-picker-react";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
 
 export default function HandleEmojiPicker({
   form,

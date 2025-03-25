@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
@@ -29,66 +29,68 @@ export function Contact({ currentUser }: ContactProps) {
   const leaveRoom = useLeaveRoomMutation();
   const [open, setOpen] = useState(false);
 
+  // Met à jour la liste des amis au montage du composant
   useEffect(() => {
     if (currentUser?.friendsList) {
       setFriends(currentUser.friendsList);
     }
   }, [currentUser]);
 
+  // Fonction pour gérer l'ajout d'un ami via la demande acceptée
+  const handleFriendRequestAccepted = useCallback((data: any) => {
+    if (
+      currentUser.id === data.senderId ||
+      currentUser.id === data.receiverId
+    ) {
+      const newFriend =
+        currentUser.id === data.senderId ? data.receiverId : data.senderId;
+      const newUsername =
+        currentUser.id === data.senderId
+          ? data.receiverName
+          : data.senderName;
+
+      setFriends((prevFriends) => [
+        ...prevFriends,
+        { id: newFriend, username: newUsername },
+      ]);
+    }
+  }, [currentUser]);
+
+  // Fonction pour gérer la suppression d'un ami
+  const handleFriendRemoved = useCallback((friendId: number) => {
+    if (friendId === contactId) {
+      setContactId(null); // Si le contact supprimé était celui sélectionné, réinitialiser le contactId
+    }
+    setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== friendId));
+  }, [contactId, setContactId]);
+
+  // Gérer les événements de socket
   useEffect(() => {
-    socket?.on("friendRequestAccepted", (data) => {
-      // Vérifiez si l'utilisateur connecté est impliqué dans la demande
-      if (
-        currentUser.id === data.senderId ||
-        currentUser.id === data.receiverId
-      ) {
-        // Déterminez le nouvel ami et son nom
-        const newFriend =
-          currentUser.id === data.senderId ? data.receiverId : data.senderId;
-        const newUsername =
-          currentUser.id === data.senderId
-            ? data.receiverName
-            : data.senderName;
-
-        // Ajoutez le nouvel ami à la liste
-        setFriends((prevFriends) => [
-          ...prevFriends,
-          { id: newFriend, username: newUsername },
-        ]);
-      }
-    });
-
-    socket?.on("friendRemoved", (friendId: number) => {
-      if (friendId === contactId) {
-        setContactId(null);
-      }
-      setFriends((prevFriends) =>
-        prevFriends.filter((friend) => friend.id !== friendId)
-      );
-    });
+    socket?.on("friendRequestAccepted", handleFriendRequestAccepted);
+    socket?.on("friendRemoved", handleFriendRemoved);
 
     return () => {
-      socket?.off("friendRequestAccepted");
-      socket?.off("friendRemoved");
+      socket?.off("friendRequestAccepted", handleFriendRequestAccepted);
+      socket?.off("friendRemoved", handleFriendRemoved);
     };
-  }, [socket, currentUser, contactId]);
+  }, [socket, handleFriendRequestAccepted, handleFriendRemoved]);
 
-  const handlePrivateChat = (friendId: number) => {
-    // Leave current room if any
-    if (roomId) {
-      leaveRoom.mutate(roomId);
-    }
-    // Toggle private chat
-    if (contactId === friendId) {
-      // Close private chat if already open
-      setContactId(null);
-      setOpen(false);
-    } else {
-      // Open private chat with the selected friend
-      setContactId(friendId);
-      setOpen(false);
-    }
-  };
+  // Fonction pour gérer l'ouverture et la fermeture des discussions privées
+  const handlePrivateChat = useCallback(
+    (friendId: number) => {
+      if (roomId) {
+        leaveRoom.mutate(roomId);
+      }
+      if (contactId === friendId) {
+        setContactId(null);
+        setOpen(false);
+      } else {
+        setContactId(friendId);
+        setOpen(false);
+      }
+    },
+    [contactId, roomId, leaveRoom, setContactId]
+  );
 
   const haveContact = friends.length > 0;
 

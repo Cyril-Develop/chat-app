@@ -31,6 +31,7 @@ const LoginForm = () => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
   const navigate = useNavigate();
 
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/chateo/chat");
@@ -65,11 +66,15 @@ const LoginForm = () => {
   // });
 
   const handleLoginAsGuest = async () => {
+    setLoading(true);
+    setApiError("");
     try {
       const { isAuthenticated, user } = await loginAsGuest();
       setAuthentication(isAuthenticated, user);
     } catch (error: any) {
       setApiError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 

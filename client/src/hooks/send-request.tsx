@@ -27,6 +27,7 @@ export const useSendRequestMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
+      // Permet d'envoyer la demande d'ami à l'utilisateur concerné via le socket
       socket?.emit("sendFriendRequest", data.newRequest);
       if (data.newRequest.receiver.notification === "accept") {
         sendNotificationByEmailMutation({

@@ -1,7 +1,7 @@
 import { useSocketStore } from "@/store/socket.store";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState, useCallback } from "react";
 import { useAcceptFriendRequestMutation } from "@/hooks/accept-friend-request";
 import { useRejectFriendRequestMutation } from "@/hooks/reject-friend-request";
 import useGetRequest from "@/hooks/get-friend-requests";
@@ -16,108 +16,79 @@ const ContactRequest = ({
 }) => {
   const userId = currentUser?.id;
   const [contactRequests, setContactRequests] = useState<FriendRequest[]>([]);
-
   const { socket } = useSocketStore();
   const acceptFriendRequest = useAcceptFriendRequestMutation();
   const rejectFriendRequest = useRejectFriendRequestMutation();
-
   const { data: friendRequests } = useGetRequest();
 
-  useEffect(() => {
-    if (friendRequests) {
-      setContactRequests(friendRequests);
-    }
-  }, [friendRequests]);
-
+  // Met à jour contactRequests quand friendRequests change
   useEffect(() => {
     if (friendRequests && userId) {
       const receivedRequests = friendRequests.filter(
-        (request: FriendRequest) => request.receiver.id === userId
+        (request : FriendRequest) => request.receiver.id === userId
       );
       setContactRequests(receivedRequests);
-      if (setShowNotification) {
-        setShowNotification(receivedRequests.length > 0);
-      }
+      setShowNotification(receivedRequests.length > 0);
     }
   }, [friendRequests, userId, setShowNotification]);
 
+  // Gère les nouvelles demandes de contact via le socket
   useEffect(() => {
-    socket?.on("receiveFriendRequest", (friendRequests) => {
-      setContactRequests((prevRequests) => [...prevRequests, friendRequests]);
+    const handleReceiveFriendRequest = (newRequest: FriendRequest) => {
+      setContactRequests((prevRequests) => {
+        const exists = prevRequests.some((req) => req.id === newRequest.id);
+        return exists ? prevRequests : [...prevRequests, newRequest];
+      });
       setShowNotification(true);
-    });
-
-    return () => {
-      socket?.off("receiveFriendRequest");
     };
-  }, [socket]);
 
-  const handleAcceptFriendRequest = (
-    senderId: number,
-    receiverId: number,
-    requestId: number
-  ) => {
-    acceptFriendRequest.mutate(senderId);
+    socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
+    return () => {
+      socket?.off("receiveFriendRequest", handleReceiveFriendRequest);
+    };
+  }, [socket, setShowNotification]);
 
-    removeRequest(requestId);
-    setShowNotification(false);
+  // Supprime une requête localement et met à jour la notification
+  const removeRequest = useCallback((requestId: number) => {
+    setContactRequests((prevRequests) => {
+      const updatedRequests = prevRequests.filter(
+        (request) => request.id !== requestId
+      );
+      setShowNotification(updatedRequests.length > 0);
+      return updatedRequests;
+    });
+  }, [setShowNotification]);
 
-    socket?.emit("acceptFriendRequest", senderId, receiverId, requestId);
+  // Gestion des actions Accepter / Refuser
+  const handleAccept = (request: FriendRequest) => {
+    acceptFriendRequest.mutate(request.sender.id);
+    removeRequest(request.id);
+    socket?.emit("acceptFriendRequest", request.sender.id, request.receiver.id, request.id);
   };
 
-  const handleRejectFriendRequest = (
-    senderId: number,
-    receiverId: number,
-    requestId: number
-  ) => {
-    rejectFriendRequest.mutate(senderId);
-
-    removeRequest(requestId);
-    setShowNotification(false);
-
-    socket?.emit("rejectFriendRequest", senderId, receiverId, requestId);
-  };
-
-  // retirer la demande de contact de la liste
-  const removeRequest = (requestId: number) => {
-    setContactRequests((prevRequests) =>
-      prevRequests.filter((request) => request.id !== requestId)
-    );
+  const handleReject = (request: FriendRequest) => {
+    rejectFriendRequest.mutate(request.sender.id);
+    removeRequest(request.id);
+    socket?.emit("rejectFriendRequest", request.sender.id, request.receiver.id, request.id);
   };
 
   return (
     <ScrollArea className="h-72">
       <div className="flex flex-col gap-4">
         {contactRequests.map((request) => (
-          <div
-            key={request.sender.id}
-            className="flex items-center justify-between"
-          >
+          <div key={request.id} className="flex items-center justify-between">
             <div>{request.sender.username}</div>
             <div className="flex gap-2">
               <Button
                 title="Accepter la demande de contact"
-                onClick={() =>
-                  handleAcceptFriendRequest(
-                    request.sender.id,
-                    request.receiver.id,
-                    request.id
-                  )
-                }
+                onClick={() => handleAccept(request)}
               >
                 Accepter
               </Button>
-
               <Button
                 variant="destructive"
                 title="Refuser la demande de contact"
-                onClick={() =>
-                  handleRejectFriendRequest(
-                    request.sender.id,
-                    request.receiver.id,
-                    request.id
-                  )
-                }
+                onClick={() => handleReject(request)}
               >
                 Refuser
               </Button>

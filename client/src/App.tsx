@@ -1,5 +1,4 @@
 import Navbar from "@/components/navbar/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import Chat from "@/pages/chat/Chat";
@@ -12,6 +11,7 @@ import Profile from "@/pages/settings/Profile";
 import Settings from "@/pages/settings/Settings";
 import { useAuthStore } from "@/store/auth.store";
 import { useSocketStore } from "@/store/socket.store";
+import { ThemeProvider } from "@/theme/theme-provider";
 import { useEffect } from "react";
 import {
   createBrowserRouter,

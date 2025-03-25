@@ -80,6 +80,21 @@ exports.getAllUsers = async (req, res) => {
             },
           },
         },
+        sentFriendRequests: {
+          where: {
+            status: "pending",
+          },
+          select: {
+            id: true,
+            receiver: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+        },
       },
     };
 
@@ -276,7 +291,7 @@ exports.getUserById = async (req, res) => {
 
       res.status(200).json({ ...user, friendsList });
     } else {
-      res.status(404).json({ error: "Utilisateur non trouvé" });
+      res.status(404).json({ error: "Cet utilisateur n'existe pas." });
     }
   } catch (err) {
     console.error("Error getting user:", err);
@@ -429,6 +444,9 @@ exports.deleteAccount = async (req, res) => {
     res.status(200).json({
       message:
         "Compte supprimé avec succès, nous espérons vous revoir bientôt! 😔",
+      user: {
+        id: userId,
+      },
     });
   } catch (err) {
     console.error("Error deleting user:", err);
@@ -477,6 +495,9 @@ exports.deleteUserAccount = async (req, res) => {
 
     res.status(200).json({
       message: "L'utilisateur a été supprimé avec succès.",
+      user: {
+        id: parseInt(userId),
+      },
     });
   } catch (err) {
     console.error("Error deleting user:", err);
@@ -602,9 +623,7 @@ exports.sendFriendRequest = async (req, res) => {
     });
   } catch (error) {
     console.error("Error sending friend request:", error);
-    res
-      .status(500)
-      .json({ error: "Erreur lors de l'envoi de la demande d'ami." });
+    res.status(500).json({ error: "Impossible d'envoyer la demande d'ami." });
   }
 };
 
@@ -628,7 +647,6 @@ exports.getFriendRequest = async (req, res) => {
       },
       select: {
         id: true,
-        status: true,
         sender: {
           select: {
             id: true,
@@ -643,7 +661,6 @@ exports.getFriendRequest = async (req, res) => {
             profileImage: true,
           },
         },
-        createdAt: true,
       },
     });
 
@@ -711,8 +728,15 @@ exports.acceptFriendRequest = async (req, res) => {
       }),
     ]);
 
-    const user1 = await prisma.user.findUnique({ where: { id: userId } });
-    const user2 = await prisma.user.findUnique({ where: { id: contactId } });
+    const user1 = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true }, 
+    });
+
+    const user2 = await prisma.user.findUnique({
+      where: { id: contactId },
+      select: { id: true }, 
+    });
 
     res.status(201).json({
       message: "Contact ajouté avec succès.",
@@ -770,7 +794,6 @@ exports.rejectFriendRequest = async (req, res) => {
       },
     }),
       res.status(200).json({
-        message: "Demande d'ami refusée avec succès.",
         contactId,
         userId,
       });

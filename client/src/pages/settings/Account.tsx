@@ -6,11 +6,35 @@ import useGetUser from "@/hooks/get-current-user";
 import { useDeleteAccountMutation } from "@/hooks/delete-account";
 import BlockedUsers from "@/components/settings/blocked-users";
 import useGetBlockedUsers from "@/hooks/get-blocked-users";
+import { useSocketStore } from "@/store/socket.store";
+import { useCallback, useEffect, useState } from "react";
+import { BlockedUsersState } from "@/types/user";
 
 export default function SettingsAccountPage() {
   const { data: currentUser } = useGetUser();
-  const { data: blockedUsers } = useGetBlockedUsers();
+  const { data } = useGetBlockedUsers();
   const { mutate: deleteAccount } = useDeleteAccountMutation();
+  const { socket } = useSocketStore();
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUsersState[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setBlockedUsers(data);
+    }
+  }, [data]);
+
+  // Si l'événement "accountDeleted" est émis, mise à jour de la liste des utilisateurs bloqués pour exclure l'utilisateur supprimé
+  const handleAccountDeleted = useCallback((userId: number) => {
+    setBlockedUsers((prev) => prev.filter((user) => user.id !== userId));
+  }, []);
+
+  useEffect(() => {
+    socket?.on("accountDeleted", handleAccountDeleted);
+
+    return () => {
+      socket?.off("accountDeleted", handleAccountDeleted);
+    };
+  }, [socket, handleAccountDeleted]);
 
   return (
     <div className="space-y-6">

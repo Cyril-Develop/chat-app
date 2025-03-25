@@ -25,6 +25,12 @@ export default function Dashboard() {
 
   const noUsersFound = !filteredUsers?.length;
 
+  const handlePlural = (count: number) => {
+    return count === 1
+      ? " Utilisateur enregistré"
+      : " Utilisateurs enregistrés";
+  };
+
   return (
     <>
       {isLoading ? (
@@ -39,9 +45,7 @@ export default function Dashboard() {
         <Table>
           <TableCaption className="text-lg">
             {filteredUsers?.length}
-            {filteredUsers?.length === 1
-              ? " utilisateur enregistré"
-              : " utilisateurs enregistrés"}
+            {handlePlural(filteredUsers?.length)}
           </TableCaption>
           <TableHeader>
             <TableRow className={cn("border-primary/10")}>

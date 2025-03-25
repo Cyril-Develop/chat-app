@@ -39,7 +39,15 @@ export interface ChatUnselectedProps {
 
 export interface SheetLeftProps {
   currentUser: {
+    bio: string;
+    createdAt: string;
+    friendOf: [];
+    friends: [];
     id: number;
+    profileImage: string;
+    receivedFriendRequests: [];
+    role: string;
+    sentFriendRequests: [];
     username: string;
     friendsList: { id: number; username: string }[];
   };

@@ -32,7 +32,7 @@ export function SheetRight() {
         <SheetHeader className={cn("text-left")}>
           <SheetTitle>Salons</SheetTitle>
           <Separator />
-          <SheetDescription className="text-description">
+          <SheetDescription className={cn("text-description")}>
             Créer ou rejoignez un salon pour discuter.
           </SheetDescription>
           <div className="flex flex-col gap-4">

@@ -80,7 +80,7 @@ export function RoomSelector() {
           size="box"
           aria-label="Voir les salons"
           aria-expanded={open}
-          className="w-[200px] justify-between p-3"
+          className={cn("w-[200px] justify-between p-3")}
           disabled={!roomsFound}
           onClick={togglePopover}
         >

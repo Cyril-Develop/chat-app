@@ -3,6 +3,7 @@ import { EmojiObject, HandleEmojiPickerProps } from "@/types/message";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function HandleEmojiPicker({
   form,
@@ -19,7 +20,7 @@ export default function HandleEmojiPicker({
     <div className="absolute z-20 bottom-32 sm:bottom-20 right-0 sm:right-2">
       <Button
         type="button"
-        className="relative left-0 top-1 rounded-bl-none rounded-br-none"
+        className={cn("relative left-0 top-1 rounded-bl-none rounded-br-none")}
         onClick={() => setOpenEmoji(false)}
       >
         <Icons.close width="18" height="18" />

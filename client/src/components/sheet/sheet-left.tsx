@@ -33,7 +33,7 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
         <SheetHeader className={cn("text-left")}>
           <SheetTitle>Contacts</SheetTitle>
           <Separator />
-          <SheetDescription className="text-description">
+          <SheetDescription className={cn("text-description")}>
             Recherchez et discutez avec vos amis.
           </SheetDescription>
         </SheetHeader>

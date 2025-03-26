@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App from "@/App.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import RootLayout from "./components/RootLayout.tsx";
+import RootLayout from "@/components/RootLayout.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 

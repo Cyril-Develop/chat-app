@@ -6,6 +6,7 @@ import useWindowWidth from "@/hooks/window-width";
 import { useRoomStore } from "@/store/room.store";
 import { UserInfos, HandleUserStatusChangedProps } from "@/types/user";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export function RoomUsers() {
   const [usersInRoom, setUsersInRoom] = useState<UserInfos[]>([]);
@@ -61,7 +62,7 @@ export function RoomUsers() {
   }, [socket, windowWidth, roomId]);
 
   return (
-    <ScrollArea className="h-72">
+    <ScrollArea className={cn("h-72")}>
       <div className="flex flex-col gap-4">
         {usersInRoom
           ?.filter((user) => user.visible === true)

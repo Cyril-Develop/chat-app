@@ -1,16 +1,17 @@
 import { PreviewCardProps } from "@/types/setting";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import moment from "moment/min/moment-with-locales";
+import { cn } from "@/lib/utils";
 
 const PreviewCard = ({ user }: PreviewCardProps) => {
   return (
     <article className="flex gap-4 rounded-md border bg-popover dark:bg-background p-4 text-popover-foreground shadow-md outline-none">
-      <Avatar className="w-16 h-16 md:w-24 md:h-24">
+      <Avatar className={cn("w-16 h-16 md:w-24 md:h-24")}>
         <AvatarImage
           src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
             user.profileImage
           }`}
-          className="rounded-full object-cover"
+          className={cn("rounded-full object-cover")}
           alt={user.username}
         />
         <AvatarFallback>

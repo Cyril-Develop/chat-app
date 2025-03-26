@@ -15,13 +15,14 @@ import { useForm } from "react-hook-form";
 import { LoginFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Line from "@/components/auth/line";
-import CardWrapper from "./card-wrapper";
+import CardWrapper from "@/components/auth/card-wrapper";
 import ShowPassord from "@/components/auth/show-password";
 import { loginByEmail } from "@/services/Auth";
 import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
 import { loginAsGuest } from "@/services/Auth";
 import { ForgotPassword } from "@/components/password/forgot-password";
+import { cn } from "@/lib/utils";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,6 @@ const LoginForm = () => {
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const { isAuthenticated, setAuthentication } = useAuthStore();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -101,7 +101,7 @@ const LoginForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4  sm:space-y-8"
+          className={cn("space-y-4  sm:space-y-8")}
           noValidate
         >
           <div className="space-y-4  sm:space-y-8">
@@ -139,7 +139,7 @@ const LoginForm = () => {
                     <Button
                       type="button"
                       variant={"linkForm"}
-                      className="w-auto link-form"
+                      className={cn("w-auto link-form")}
                       onClick={() => setIsForgotPasswordOpen(true)}
                     >
                       Mot de passe oublié ?

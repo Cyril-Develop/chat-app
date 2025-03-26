@@ -183,7 +183,7 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
             type="submit"
             size="message"
             title="Envoyer"
-            className="ml-auto"
+            className={cn("ml-auto")}
             disabled={noContent}
           >
             <Icons.send aria-label="Envoyer" />

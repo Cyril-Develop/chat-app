@@ -13,8 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ForgotPasswordFormSchema } from "@/schema/main";
 import { forgotPassword } from "@/services/Auth";
-import { toast } from "../ui/use-toast";
-import { Icons } from "../Icons";
+import { toast } from "@/components/ui/use-toast";
+import { Icons } from "@/components/Icons";
 import { ForgotPasswordFormProps } from "@/types/password";
 
 const ForgotPasswordForm = ({

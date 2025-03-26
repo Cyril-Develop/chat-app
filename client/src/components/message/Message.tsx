@@ -5,7 +5,8 @@ import { useDeletePrivateMessageMutation } from "@/hooks/delete-private-message"
 import useGetUser from "@/hooks/get-current-user";
 import { MessageProps } from "@/types/message";
 import moment from "moment/min/moment-with-locales";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const Message = ({ message }: MessageProps) => {
   const { data: currentUser } = useGetUser();
@@ -68,7 +69,7 @@ const Message = ({ message }: MessageProps) => {
           <Button
             variant="alert"
             title="Supprimer le message"
-            className="p-0"
+            className={cn("p-0")}
             onClick={() => handleDelete(message.id)}
           >
             <Icons.delete width={16} height={16} />

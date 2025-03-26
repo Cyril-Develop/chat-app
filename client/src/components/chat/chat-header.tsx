@@ -6,6 +6,7 @@ import StatutIndicator from "@/components/statut-indicator";
 import { useSocketStore } from "@/store/socket.store";
 import { HandleUserStatusChangedProps } from "@/types/user";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   const { socket, users } = useSocketStore();
@@ -43,7 +44,7 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
                 src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
                   contactInfos.profileImage
                 }`}
-                className="rounded-full object-cover"
+                className={cn("rounded-full object-cover")}
                 alt={contactInfos.username}
               />
               <AvatarFallback>

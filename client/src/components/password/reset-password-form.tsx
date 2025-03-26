@@ -15,8 +15,8 @@ import CardWrapper from "@/components/auth/card-wrapper";
 import ShowPassord from "@/components/auth/show-password";
 import { useParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "@/services/Auth";
-import { toast } from "../ui/use-toast";
-import { Icons } from "../Icons";
+import { toast } from "@/components/ui/use-toast";
+import { Icons } from "@/components/Icons";
 
 export default function ResetPassword() {
   const [loading, setLoading] = useState(false);

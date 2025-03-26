@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { NotificationFormValues } from "@/types/setting";
+import { cn } from "@/lib/utils";
 
 const NotificationForm = ({ user }: NotificationFormValues) => {
   const [apiError, setApiError] = useState("");
@@ -44,7 +45,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className="space-y-3">
+            <FormItem className={cn("space-y-3")}>
               <FormLabel id="notification-label">
                 Notifications par e-mail
               </FormLabel>
@@ -52,13 +53,13 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 aria-labelledby="notification-label"
-                className="flex flex-col space-y-1"
+                className={cn("flex flex-col space-y-1")}
               >
                 <FormItem className="flex items-center space-x-3 space-y-0">
                   <RadioGroupItem id="accept" value="accept" />
                   <FormLabel
                     htmlFor="accept"
-                    className="font-normal hover:cursor-pointer"
+                    className={cn("font-normal hover:cursor-pointer")}
                   >
                     Recevoir les notifications de demandes d'amis et messages
                     privés.
@@ -69,7 +70,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                   <RadioGroupItem id="refuse" value="refuse" />
                   <FormLabel
                     htmlFor="refuse"
-                    className="font-normal hover:cursor-pointer"
+                    className={cn("font-normal hover:cursor-pointer")}
                   >
                     Ne pas recevoir de notifications.
                   </FormLabel>

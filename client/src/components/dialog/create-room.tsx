@@ -4,6 +4,7 @@ import DialogHeaderComp from "@/components/dialog/dialog-header";
 import CreateRoomForm from "@/components/room/create-room-form";
 import { useState } from "react";
 import { CreateRoomProps } from "@/types/dialog";
+import { cn } from "@/lib/utils";
 
 export function CreateRoom({
   btnTrigger,
@@ -22,7 +23,7 @@ export function CreateRoom({
         <Button size="box">{btnTrigger}</Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className={cn("sm:max-w-[425px]")}>
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
         <CreateRoomForm
           btnSubmit="Créer"

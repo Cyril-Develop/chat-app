@@ -7,10 +7,6 @@ import { Icons } from "@/components/Icons";
 const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
   const { mutate: unblockUser } = useUnblockUserMutation();
 
-  const handleUnblockUser = (blockedId: number) => {
-    unblockUser(blockedId);
-  };
-
   return (
     <div>
       <h3 className="text-lg font-medium mb-2">Utilisateurs bloqués</h3>
@@ -24,7 +20,7 @@ const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
             />
             <Button
               variant="linkForm"
-              onClick={() => handleUnblockUser(user.id)}
+              onClick={() => unblockUser(user.id)}
               title="Débloquer l'utilisateur"
             >
               <Icons.close height={20} width={20} />

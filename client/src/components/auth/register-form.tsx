@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { ValidateAccount } from "./validate-account";
+import { cn } from "@/lib/utils";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -104,7 +105,7 @@ const RegisterForm = () => {
           <form
             noValidate
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4  md:space-y-8"
+            className={cn("space-y-4  md:space-y-8")}
           >
             <div className="flex gap-4 justify-between flex-col md:gap-8 ">
               <FormField

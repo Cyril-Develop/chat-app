@@ -1,7 +1,8 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import { ValidateAccountForm } from "./validate-account-form";
+import { ValidateAccountForm } from "@/components/auth/validate-account-form";
 import { ValidateAccountProps } from "@/types/auth";
+import { cn } from "@/lib/utils";
 
 export function ValidateAccount({
   newUser,
@@ -19,7 +20,7 @@ export function ValidateAccount({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className={cn("sm:max-w-[425px]")}>
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
         <ValidateAccountForm
           newUser={newUser}

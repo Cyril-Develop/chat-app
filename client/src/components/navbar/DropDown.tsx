@@ -30,7 +30,7 @@ const DropDown = () => {
     socket?.emit("changeStatut", visible);
   }, [socket, visible]);
 
-  const handleStatut = (updatedVisible: boolean) => {
+  const handleVisibility = (updatedVisible: boolean) => {
     if (visible === updatedVisible) {
       return;
     }
@@ -78,7 +78,7 @@ const DropDown = () => {
                 <DropdownMenuSubContent
                   className={cn("dark:bg-primary-foreground")}
                 >
-                  <DropdownMenuItem onClick={() => handleStatut(true)}>
+                  <DropdownMenuItem onClick={() => handleVisibility(true)}>
                     <Icons.circle
                       width={18}
                       height={18}
@@ -88,7 +88,7 @@ const DropDown = () => {
                     En ligne
                     {visible === true && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleStatut(false)}>
+                  <DropdownMenuItem onClick={() => handleVisibility(false)}>
                     <Icons.spy
                       width={18}
                       height={18}

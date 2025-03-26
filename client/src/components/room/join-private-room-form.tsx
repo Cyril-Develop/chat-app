@@ -28,7 +28,6 @@ const JoinPrivateRoomForm = ({
   });
 
   const joinRoom = useJoinRoomMutation();
-
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");

@@ -129,9 +129,6 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
                   className={cn(
                     "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox"
                   )}
-                  onKeyDown={(e) =>
-                    handleKeydown(e, form.handleSubmit(onSubmit))
-                  }
                 />
               </FormControl>
               <FormMessage />
@@ -150,9 +147,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
                   tabIndex={0}
                   aria-label="Joindre une image"
                   title="Joindre une image"
-                  onKeyDown={(e) =>
-                    handleKeydown(e, form.handleSubmit(onSubmit))
-                  }
+                  onKeyDown={handleKeydown}
                   onClick={() => handleLabelClick("fileInput")}
                 >
                   <Icons.image />

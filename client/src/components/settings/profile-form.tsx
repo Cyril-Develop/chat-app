@@ -105,7 +105,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 className="input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary"
                 tabIndex={0}
                 aria-label="Sélectionner une image"
-                onKeyDown={(e) => handleKeydown(e, form.handleSubmit(onSubmit))}
+                onKeyDown={handleKeydown}
                 onClick={() => handleLabelClick("fileInput")}
               >
                 {imageUploaded ? (

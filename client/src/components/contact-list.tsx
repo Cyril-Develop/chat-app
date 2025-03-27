@@ -21,6 +21,7 @@ import { FriendProps, ContactProps } from "@/types/contact";
 import { useContactStore } from "@/store/contact.store";
 import { useNotificationStore } from "@/store/notification.store";
 import { cn } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
 
 export function Contact({ currentUser }: ContactProps) {
   const [friends, setFriends] = useState<FriendProps[]>([]);
@@ -28,12 +29,12 @@ export function Contact({ currentUser }: ContactProps) {
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
   const { contactId, setContactId } = useContactStore();
-  const leaveRoom = useLeaveRoomMutation();
+  const { mutate: leaveRoom } = useLeaveRoomMutation();
   const [open, setOpen] = useState(false);
-
-  const { notifications, removeNotification } = useNotificationStore();
-
-  console.log("notifications", notifications);
+  const location = useLocation();
+  const isOnChatPage = location.pathname === "/chateo/chat/";
+  const { notifications, clearNotificationsForContact } =
+    useNotificationStore();
 
   // compter le nombre de notifications provenant de chaque contact
   const countNotifications = (contactId: number) => {
@@ -100,20 +101,30 @@ export function Contact({ currentUser }: ContactProps) {
   const handlePrivateChat = useCallback(
     (friendId: number) => {
       if (roomId) {
-        leaveRoom.mutate(roomId);
+        leaveRoom(roomId);
       }
+      // Vérifié si la discussion privée est déjà ouverte pour le contact sélectionné
       if (contactId === friendId) {
         setContactId(null);
-        setOpen(false);
       } else {
         setContactId(friendId);
-        setOpen(false);
+        // Effacer les notifications pour le contact sélectionné si la discussion privée est ouverte et que l'utilisateur est sur la page de chat
+        clearNotificationsForContact(friendId);
       }
+      setOpen(false);
     },
     [contactId, roomId, leaveRoom, setContactId]
   );
 
   const haveContact = friends.length > 0;
+
+  // Vérifier si l'utilisateur est sur la page de chat et si un contact est sélectionné
+  // Si oui, effacer les notifications pour ce contact
+  useEffect(() => {
+    if (contactId && isOnChatPage) {
+      clearNotificationsForContact(contactId);
+    }
+  }, [contactId, isOnChatPage]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -147,6 +158,11 @@ export function Contact({ currentUser }: ContactProps) {
                   <CommandItem
                     key={friend.id}
                     onSelect={() => handlePrivateChat(friend.id)}
+                    title={
+                      contactId
+                        ? "Fermer la discussion"
+                        : "Ouvrir la discussion"
+                    }
                   >
                     <div className="flex items-center justify-between w-full cursor-pointer">
                       {friend.username}

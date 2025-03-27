@@ -39,7 +39,7 @@ export const GlobalNotifications: React.FC = () => {
         ) : undefined,
       });
     }
-  }, [notifications, removeNotification]);
+  }, [notifications, removeNotification, navigate, location]);
 
   return null;
 };

@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils";
 
 const Message = ({ message }: MessageProps) => {
   const { data: currentUser } = useGetUser();
-  const deleteMessageInRoom = useDeleteMessageMutation();
-  const deletePrivateMessage = useDeletePrivateMessageMutation();
+  const { mutate: deleteMessageInRoom } = useDeleteMessageMutation();
+  const { mutate: deletePrivateMessage } = useDeletePrivateMessageMutation();
 
   const handleDelete = (messageId: number) => {
     if (message.receiverId) {
-      deletePrivateMessage.mutate(messageId);
+      deletePrivateMessage(messageId);
     } else {
-      deleteMessageInRoom.mutate(messageId);
+      deleteMessageInRoom(messageId);
     }
   };
 

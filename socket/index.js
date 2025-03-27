@@ -205,6 +205,12 @@ io.on("connection", (socket) => {
     // Envoyer le message au destinataire
     if (receiverSocket) {
       io.to(receiverSocket.socketId).emit("getPrivateMessage", data);
+
+      // Nouvelle émission uniquement pour la notification du destinataire
+      io.to(receiverSocket.socketId).emit(
+        "newPrivateMessageNotification",
+        data
+      );
     }
 
     // Envoyer le message à l'expéditeur (pour qu'il l'affiche aussi)

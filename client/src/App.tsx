@@ -19,14 +19,18 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import Contact from "./pages/contact/Contact";
-import Password from "./pages/password/Password";
+import Contact from "@/pages/contact/Contact";
+import Password from "@/pages/password/Password";
+import { GlobalNotifications } from "@/components/Notification";
+import { useGlobalNotifications } from "@/hooks/notification";
+import { useNotificationStore } from "./store/notification.store";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Navbar />
       {children}
+      <GlobalNotifications />
     </>
   );
 };
@@ -37,6 +41,13 @@ function App() {
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
   const visible = useAuthStore((state) => state.visible);
   const role = useAuthStore((state) => state.user?.role);
+
+
+
+  
+  const  {notifications} = useNotificationStore();
+  console.log(notifications);
+  
 
   // Get current user id , role and check if authenticated
   useEffect(() => {
@@ -130,6 +141,9 @@ function App() {
       element: <NotFound />,
     },
   ]);
+
+  // Afficher les notifications peu importe la page
+  useGlobalNotifications();
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

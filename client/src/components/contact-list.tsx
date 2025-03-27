@@ -19,6 +19,8 @@ import { useRoomStore } from "@/store/room.store";
 import { useLeaveRoomMutation } from "@/hooks/leave-room";
 import { FriendProps, ContactProps } from "@/types/contact";
 import { useContactStore } from "@/store/contact.store";
+import { useNotificationStore } from "@/store/notification.store";
+import { cn } from "@/lib/utils";
 
 export function Contact({ currentUser }: ContactProps) {
   const [friends, setFriends] = useState<FriendProps[]>([]);
@@ -29,6 +31,17 @@ export function Contact({ currentUser }: ContactProps) {
   const leaveRoom = useLeaveRoomMutation();
   const [open, setOpen] = useState(false);
 
+  const { notifications, removeNotification } = useNotificationStore();
+
+  console.log("notifications", notifications);
+
+  // compter le nombre de notifications provenant de chaque contact
+  const countNotifications = (contactId: number) => {
+    return notifications.filter(
+      (notification) => notification.user.id === contactId
+    ).length;
+  };
+
   // Met à jour la liste des amis au montage du composant
   useEffect(() => {
     if (currentUser?.friendsList) {
@@ -37,32 +50,40 @@ export function Contact({ currentUser }: ContactProps) {
   }, [currentUser]);
 
   // Fonction pour gérer l'ajout d'un ami via la demande acceptée
-  const handleFriendRequestAccepted = useCallback((data: any) => {
-    if (
-      currentUser.id === data.senderId ||
-      currentUser.id === data.receiverId
-    ) {
-      const newFriend =
-        currentUser.id === data.senderId ? data.receiverId : data.senderId;
-      const newUsername =
-        currentUser.id === data.senderId
-          ? data.receiverName
-          : data.senderName;
+  const handleFriendRequestAccepted = useCallback(
+    (data: any) => {
+      if (
+        currentUser.id === data.senderId ||
+        currentUser.id === data.receiverId
+      ) {
+        const newFriend =
+          currentUser.id === data.senderId ? data.receiverId : data.senderId;
+        const newUsername =
+          currentUser.id === data.senderId
+            ? data.receiverName
+            : data.senderName;
 
-      setFriends((prevFriends) => [
-        ...prevFriends,
-        { id: newFriend, username: newUsername },
-      ]);
-    }
-  }, [currentUser]);
+        setFriends((prevFriends) => [
+          ...prevFriends,
+          { id: newFriend, username: newUsername },
+        ]);
+      }
+    },
+    [currentUser]
+  );
 
   // Fonction pour gérer la suppression d'un ami
-  const handleFriendRemoved = useCallback((friendId: number) => {
-    if (friendId === contactId) {
-      setContactId(null); // Si le contact supprimé était celui sélectionné, réinitialiser le contactId
-    }
-    setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== friendId));
-  }, [contactId, setContactId]);
+  const handleFriendRemoved = useCallback(
+    (friendId: number) => {
+      if (friendId === contactId) {
+        setContactId(null); // Si le contact supprimé était celui sélectionné, réinitialiser le contactId
+      }
+      setFriends((prevFriends) =>
+        prevFriends.filter((friend) => friend.id !== friendId)
+      );
+    },
+    [contactId, setContactId]
+  );
 
   // Gérer les événements de socket
   useEffect(() => {
@@ -102,7 +123,7 @@ export function Contact({ currentUser }: ContactProps) {
           aria-label="Voir mes contacts"
           size="box"
           aria-expanded={open}
-          className="w-[200px] justify-between p-3"
+          className={cn("w-[200px] justify-between p-3")}
           disabled={!haveContact}
         >
           Voir mes contacts
@@ -112,30 +133,29 @@ export function Contact({ currentUser }: ContactProps) {
       </PopoverTrigger>
       {haveContact && (
         <PopoverContent
-          className="p-0 w-[200px]"
+          className={cn("p-0 w-[200px]")}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>
             <CommandInput placeholder="Rechercher un contact" />
             <CommandList>
-              <CommandEmpty className="error p-3">
+              <CommandEmpty className={cn("error p-3")}>
                 Aucun contact trouvé.
               </CommandEmpty>
               <CommandGroup heading="Contacts">
                 {friends.map((friend) => (
                   <CommandItem
                     key={friend.id}
-                    className="flex items-center justify-between"
+                    onSelect={() => handlePrivateChat(friend.id)}
                   >
-                    {friend.username}
-                    <Button
-                      variant="linkForm"
-                      aria-label="contact"
-                      className="p-0"
-                      onClick={() => handlePrivateChat(friend.id)}
-                    >
-                      <Icons.user width="16" height="16" />
-                    </Button>
+                    <div className="flex items-center justify-between w-full cursor-pointer">
+                      {friend.username}
+                      {countNotifications(friend.id) > 0 && (
+                        <span className="bg-primary dark:bg-primary text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                          {countNotifications(friend.id)}
+                        </span>
+                      )}
+                    </div>
                   </CommandItem>
                 ))}
               </CommandGroup>

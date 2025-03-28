@@ -32,7 +32,6 @@ export function Contact({ currentUser }: ContactProps) {
   const { mutate: leaveRoom } = useLeaveRoomMutation();
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const isOnChatPage = location.pathname === "/chateo/chat/";
   const { notifications, clearNotificationsForContact } =
     useNotificationStore();
 
@@ -108,7 +107,7 @@ export function Contact({ currentUser }: ContactProps) {
         setContactId(null);
       } else {
         setContactId(friendId);
-        // Effacer les notifications pour le contact sélectionné si la discussion privée est ouverte et que l'utilisateur est sur la page de chat
+        // Effacer les notifications pour le contact sélectionné si on ouvre la discussion
         clearNotificationsForContact(friendId);
       }
       setOpen(false);
@@ -116,10 +115,11 @@ export function Contact({ currentUser }: ContactProps) {
     [contactId, roomId, leaveRoom, setContactId]
   );
 
+  const isOnChatPage = location.pathname === "/chateo/chat/";
   const haveContact = friends.length > 0;
+  const haveNotification = notifications.length > 0;
 
-  // Vérifier si l'utilisateur est sur la page de chat et si un contact est sélectionné
-  // Si oui, effacer les notifications pour ce contact
+  // Si l'utilisateur est sur la page de chat et si un contact est sélectionné, effacer les notifications
   useEffect(() => {
     if (contactId && isOnChatPage) {
       clearNotificationsForContact(contactId);
@@ -134,7 +134,13 @@ export function Contact({ currentUser }: ContactProps) {
           aria-label="Voir mes contacts"
           size="box"
           aria-expanded={open}
-          className={cn("w-[200px] justify-between p-3")}
+          className={
+            haveNotification
+              ? cn(
+                  "w-[200px] justify-between p-3 bg-green-700 hover:bg-green-700/80 dark:bg-green-600 dark:hover:bg-green-600/80"
+                )
+              : cn("w-[200px] justify-between p-3")
+          }
           disabled={!haveContact}
         >
           Voir mes contacts
@@ -159,7 +165,7 @@ export function Contact({ currentUser }: ContactProps) {
                     key={friend.id}
                     onSelect={() => handlePrivateChat(friend.id)}
                     title={
-                      contactId
+                      contactId === friend.id
                         ? "Fermer la discussion"
                         : "Ouvrir la discussion"
                     }
@@ -167,7 +173,7 @@ export function Contact({ currentUser }: ContactProps) {
                     <div className="flex items-center justify-between w-full cursor-pointer">
                       {friend.username}
                       {countNotifications(friend.id) > 0 && (
-                        <span className="bg-primary dark:bg-primary text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                        <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
                           {countNotifications(friend.id)}
                         </span>
                       )}

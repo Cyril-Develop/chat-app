@@ -1,19 +1,19 @@
+import ButtonForm from "@/components/button-form";
+import { Icons } from "@/components/Icons";
+import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { Form, FormItem, FormMessage, FormField } from "@/components/ui/form";
-import ButtonForm from "@/components/button-form";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { toast } from "@/components/ui/use-toast";
 import { ValidateAccountFormSchema } from "@/schema/main";
 import { registerByEmail, verifyOtp } from "@/services/Auth";
-import { toast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/Icons";
 import { ValidateAccountFormProps } from "@/types/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export function ValidateAccountForm({
   newUser,

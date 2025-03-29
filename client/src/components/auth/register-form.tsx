@@ -1,7 +1,7 @@
 import CardWrapper from "@/components/auth/card-wrapper";
 import { RegisterFormSchema } from "@/schema/main";
-import { useForm } from "react-hook-form";
 import { sendOtp, verifyIfUserExists } from "@/services/Auth";
+import { useForm } from "react-hook-form";
 //import Line from "@/components/auth/line";
 //import { Icons } from "@/components/Icons";
 //import { Button } from "../ui/button";
@@ -10,16 +10,16 @@ import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { useState } from "react";
-import { ValidateAccount } from "./validate-account";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Input } from "../ui/input";
+import { ValidateAccount } from "./validate-account";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);

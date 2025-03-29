@@ -52,7 +52,12 @@ exports.getMessages = async (req, res) => {
       where: {
         OR: [{ userId: userId }, { receiverId: userId }],
       },
-      include: {
+      select: {
+        id: true,
+        message: true,
+        image: true,
+        createdAt: true,
+        isRead: true,
         user: { select: { id: true, username: true, profileImage: true } },
         receiver: { select: { id: true, username: true, profileImage: true } },
       },
@@ -65,6 +70,72 @@ exports.getMessages = async (req, res) => {
     return res
       .status(500)
       .json({ error: "Erreur lors de la récupération des messages privés." });
+  }
+};
+
+//********** GET UNREAD PRIVATE MESSAGES **********/
+exports.getUnreadMessages = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    // Récupérer les messages non lus où l'utilisateur est le destinataire
+    const unreadMessages = await prisma.privateMessage.findMany({
+      where: {
+        receiverId: userId,
+        isRead: false,
+      },
+      select: {
+        id: true,
+        message: true,
+        image: true,
+        createdAt: true,
+        user: { select: { id: true } },
+        receiver: { select: { id: true } },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    return res.status(200).json(unreadMessages);
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des messages non lus :",
+      error
+    );
+    return res.status(500).json({
+      error: "Erreur lors de la récupération des messages non lus.",
+    });
+  }
+};
+
+//********** MARK MESSAGE AS READ **********/
+exports.markMessagesAsRead = async (req, res) => {
+  const { contactId } = req.body;
+  const userId = req.userId;
+
+  if (!contactId || !userId) {
+    return res.status(400).json({ error: "Données invalides." });
+  }
+
+  // userId est l'utilisateur qui a envoyé le message
+  // receiverId est l'utilisateur qui a reçu le message (l'utilisateur connecté)
+  try {
+    await prisma.privateMessage.updateMany({
+      where: {
+        userId: contactId,
+        receiverId: userId,
+        isRead: false,
+      },
+      data: {
+        isRead: true,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Messages marqués comme lus." });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour des messages:", error);
+    return res.status(500).json({ error: "Erreur serveur." });
   }
 };
 

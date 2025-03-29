@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import { useNotificationStore } from "@/store/notification.store";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
-import { useNavigate } from "react-router-dom";
 
 export const GlobalNotifications: React.FC = () => {
-  const { notifications, removeNotification } = useNotificationStore();
-  const navigate = useNavigate();
+  const { notifications } = useNotificationStore();
 
   useEffect(() => {
     if (notifications.length > 0) {
@@ -16,14 +14,14 @@ export const GlobalNotifications: React.FC = () => {
       toast({
         title: `${
           notifications.length > 1
-            ? `${notifications.length} Nouveaux messages`
-            : `${notifications.length} Nouveau message`
+            ? `${notifications.length} messages non lus`
+            : `${notifications.length} message non lu`
         }`,
         logo: <Icons.siren />,
         variant: "success",
       });
     }
-  }, [notifications, removeNotification, navigate, location]);
+  }, [notifications]);
 
   return null;
 };

@@ -11,7 +11,12 @@ export interface MessageProps {
       username: string;
       profileImage: string;
     };
-    receiverId?: number;
+    receiver?: {
+      id: number;
+      username: string;
+      profileImage: string;
+    };
+    isRead?: boolean;
   };
 }
 
@@ -25,9 +30,7 @@ export interface PrivateMessageProps {
   message: string;
   image: string;
   createdAt: string;
-  updatedAt: string;
-  userId: number;
-  receiverId: number;
+  isRead: boolean;
   user: {
     id: number;
     username: string;
@@ -37,6 +40,25 @@ export interface PrivateMessageProps {
     id: number;
     username: string;
     profileImage: string;
+  };
+}
+
+export interface NotificationProps {
+  messageId: number;
+  senderId: number;
+  receiverId: number;
+}
+
+export interface UnreadMessagesProps {
+  id: number;
+  message: string;
+  image?: string;
+  createdAt: string;
+  user: {
+    id: number;
+  };
+  receiver: {
+    id: number;
   };
 }
 

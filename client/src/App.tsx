@@ -23,9 +23,10 @@ import Contact from "@/pages/contact/Contact";
 import Password from "@/pages/password/Password";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
+import { useNotificationStore } from "@/store/notification.store";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  // Afficher les notifications peu importe la page
+  // Afficher les notifications peu importe la page sur laquelle l'utilisateur se trouve
   useGlobalNotifications();
   return (
     <>
@@ -40,17 +41,21 @@ function App() {
   const { connectSocket, disconnectSocket } = useSocketStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
+  const initializeNotifications = useNotificationStore(
+    (state) => state.initializeNotifications
+  );
   const visible = useAuthStore((state) => state.visible);
   const role = useAuthStore((state) => state.user?.role);
 
-  // Get current user id , role and check if authenticated
+  // On initialise les notifications et l'authentification au chargement de l'application
   useEffect(() => {
     if (isAuthenticated) {
       initializeAuth();
+      initializeNotifications();
     }
-  }, [initializeAuth]);
+  }, [isAuthenticated, initializeAuth, initializeNotifications]);
 
-  // Connect or disconnect socket based on authentication status
+  // On connecte le socket si l'utilisateur est authentifié
   useEffect(() => {
     if (isAuthenticated) {
       connectSocket(visible);

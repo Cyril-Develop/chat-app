@@ -1,21 +1,21 @@
-import { Input } from "@/components/ui/input";
+import ButtonForm from "@/components/button-form";
+import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import ButtonForm from "@/components/button-form";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import { ForgotPasswordFormSchema } from "@/schema/main";
 import { forgotPassword } from "@/services/Auth";
-import { toast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/Icons";
 import { ForgotPasswordFormProps } from "@/types/password";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const ForgotPasswordForm = ({
   btnSubmit,

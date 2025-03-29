@@ -14,7 +14,7 @@ const Message = ({ message }: MessageProps) => {
   const { mutate: deletePrivateMessage } = useDeletePrivateMessageMutation();
 
   const handleDelete = (messageId: number) => {
-    if (message.receiverId) {
+    if (message.receiver?.id) {
       deletePrivateMessage(messageId);
     } else {
       deleteMessageInRoom(messageId);

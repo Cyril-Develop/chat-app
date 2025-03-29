@@ -1,11 +1,15 @@
 import { create } from "zustand";
-import { PrivateMessageProps } from "@/types/message";
+import { NotificationProps, UnreadMessagesProps } from "@/types/message";
+import {
+  fetchUnreadPrivateMessages,
+  markPrivateMessagesAsRead,
+} from "@/services/Message";
 
 interface NotificationStore {
-  notifications: PrivateMessageProps[];
-  addNotification: (message: PrivateMessageProps) => void;
-  removeNotification: (messageId: number) => void;
+  notifications: NotificationProps[];
+  addNotification: (message: NotificationProps) => void;
   clearNotificationsForContact: (contactId: number) => void;
+  initializeNotifications: () => Promise<void>;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
@@ -16,17 +20,39 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       notifications: [...state.notifications, message],
     })),
 
-  removeNotification: (messageId) =>
-    set((state) => ({
-      notifications: state.notifications.filter(
-        (notification) => notification.id !== messageId
-      ),
-    })),
+  // Initialise les notifications depuis la base de données au chargement de l'application
+  initializeNotifications: async () => {
+    try {
+      const unreadMessages = await fetchUnreadPrivateMessages();
 
-  clearNotificationsForContact: (contactId) =>
-    set((state) => ({
-      notifications: state.notifications.filter(
-        (notification) => notification.user.id !== contactId
-      ),
-    })),
+      set({
+        notifications: unreadMessages.map((msg: UnreadMessagesProps) => ({
+          messageId: msg.id,
+          senderId: msg.user.id,
+          receiverId: msg.receiver.id,
+        })),
+      });
+    } catch (error) {
+      console.error(
+        "Erreur lors de l'initialisation des notifications:",
+        error
+      );
+      // En cas d'erreur, nous gardons les notifications vides
+      set({ notifications: [] });
+    }
+  },
+
+  // Efface les notifications pour un contact donné et met à jour la BDD
+  clearNotificationsForContact: async (contactId) => {
+    try {
+      await markPrivateMessagesAsRead(contactId);
+      set((state) => ({
+        notifications: state.notifications.filter(
+          (notification) => notification.senderId !== contactId
+        ),
+      }));
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des messages lus:", error);
+    }
+  },
 }));

@@ -8,6 +8,8 @@ const messageCtrl = require("../controllers/message-private");
 
 router.post("/", checkToken, multer, resize, messageCtrl.sendMessage);
 router.get("/", checkToken, messageCtrl.getMessages);
+router.get("/unread", checkToken, messageCtrl.getUnreadMessages);
+router.patch("/mark-as-read", checkToken, messageCtrl.markMessagesAsRead);
 router.delete("/", checkToken, messageCtrl.deleteMessage);
 
 module.exports = router;

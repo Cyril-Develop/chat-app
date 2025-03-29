@@ -1,28 +1,27 @@
-import { Button } from "@/components/ui/button";
+import CardWrapper from "@/components/auth/card-wrapper";
+import Line from "@/components/auth/line";
+import ShowPassord from "@/components/auth/show-password";
 import ButtonForm from "@/components/button-form";
+import { ForgotPassword } from "@/components/password/forgot-password";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
-  FormField,
   FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { LoginFormSchema } from "@/schema/main";
+import { loginAsGuest, loginByEmail } from "@/services/Auth";
+import { useAuthStore } from "@/store/auth.store";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema } from "@/schema/main";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Line from "@/components/auth/line";
-import CardWrapper from "@/components/auth/card-wrapper";
-import ShowPassord from "@/components/auth/show-password";
-import { loginByEmail } from "@/services/Auth";
-import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
-import { loginAsGuest } from "@/services/Auth";
-import { ForgotPassword } from "@/components/password/forgot-password";
-import { cn } from "@/lib/utils";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);

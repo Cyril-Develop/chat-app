@@ -1,7 +1,7 @@
-import { useAuthStore } from "@/store/auth.store";
-import { useNavigate } from "react-router-dom";
 import { logout } from "@/services/Auth";
+import { useAuthStore } from "@/store/auth.store";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export const useHandleLogout = () => {
   const queryClient = useQueryClient();

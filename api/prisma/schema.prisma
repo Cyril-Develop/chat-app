@@ -81,11 +81,10 @@ model PrivateMessage {
   updatedAt  DateTime @updatedAt
   userId     Int  
   receiverId Int
+  isRead    Boolean @default(false)
 
   user       User @relation("SentPrivateMessages", fields: [userId], references: [id], onDelete: Cascade)  
   receiver   User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id], onDelete: Cascade) 
-
-  @@index([userId, receiverId])
 }
 
 model ChatRoom {

@@ -35,10 +35,10 @@ export function Contact({ currentUser }: ContactProps) {
   const { notifications, clearNotificationsForContact } =
     useNotificationStore();
 
-  // compter le nombre de notifications provenant de chaque contact
+  // Compter le nombre de notifications provenant de chaque contact
   const countNotifications = (contactId: number) => {
     return notifications.filter(
-      (notification) => notification.user.id === contactId
+      (notification) => notification.senderId === contactId
     ).length;
   };
 
@@ -115,7 +115,7 @@ export function Contact({ currentUser }: ContactProps) {
     [contactId, roomId, leaveRoom, setContactId]
   );
 
-  const isOnChatPage = location.pathname === "/chateo/chat/";
+  const isOnChatPage = location.pathname === "/chateo/chat";
   const haveContact = friends.length > 0;
   const haveNotification = notifications.length > 0;
 

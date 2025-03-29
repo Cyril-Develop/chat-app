@@ -1,5 +1,4 @@
 // ROOM
-
 export const getMessages = async (token: string | null) => {
   try {
     const response = await fetch(
@@ -99,6 +98,45 @@ export const getPrivateMessages = async () => {
   } catch (error: any) {
     throw error;
   }
+};
+
+export const fetchUnreadPrivateMessages = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-private/unread`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const markPrivateMessagesAsRead = async (contactId: number) => {
+  await fetch(
+    `${import.meta.env.VITE_REACT_APP_BASE_URL}/message-private/mark-as-read`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ contactId }),
+    }
+  );
 };
 
 export const sendPrivateMessage = async (formData: FormData) => {

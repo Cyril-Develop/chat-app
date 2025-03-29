@@ -195,7 +195,7 @@ io.on("connection", (socket) => {
     io.emit("userStatusChanged", { userId, visible });
   });
 
-  //******** SEND PRIVATE MESSAGE **********/
+ //******** SEND PRIVATE MESSAGE **********/
   socket.on("sendPrivateMessage", (data) => {
     const receiverSocket = users.find(
       (user) => user.userId === data.receiverId
@@ -207,10 +207,11 @@ io.on("connection", (socket) => {
       io.to(receiverSocket.socketId).emit("getPrivateMessage", data);
 
       // Nouvelle émission uniquement pour la notification du destinataire
-      io.to(receiverSocket.socketId).emit(
-        "newPrivateMessageNotification",
-        data
-      );
+      io.to(receiverSocket.socketId).emit("newPrivateMessageNotification", {
+        messageId: data.id,
+        senderId: data.user.id,
+        receiverId: data.receiver.id,
+      });
     }
 
     // Envoyer le message à l'expéditeur (pour qu'il l'affiche aussi)

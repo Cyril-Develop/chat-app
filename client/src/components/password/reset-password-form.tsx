@@ -1,22 +1,22 @@
+import CardWrapper from "@/components/auth/card-wrapper";
+import ShowPassord from "@/components/auth/show-password";
 import ButtonForm from "@/components/button-form";
+import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
+import { toast } from "@/components/ui/use-toast";
+import { PasswordFormSchema } from "@/schema/main";
+import { resetPassword } from "@/services/Auth";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { PasswordFormSchema } from "@/schema/main";
-import { zodResolver } from "@hookform/resolvers/zod";
-import CardWrapper from "@/components/auth/card-wrapper";
-import ShowPassord from "@/components/auth/show-password";
-import { useParams, useNavigate } from "react-router-dom";
-import { resetPassword } from "@/services/Auth";
-import { toast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/Icons";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ResetPassword() {
   const [loading, setLoading] = useState(false);

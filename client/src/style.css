@@ -126,7 +126,7 @@ html.dark {
 }
 
 .text-description-form {
-  @apply text-muted-foreground text-lg sm:text-xl;
+  @apply text-gray-600 dark:text-gray-400 text-lg sm:text-xl;
 }
 
 .text-description {
@@ -134,7 +134,7 @@ html.dark {
 }
 
 .text-paragraph {
-  @apply text-base sm:text-lg;
+  @apply text-base sm:text-lg text-gray-600 dark:text-gray-400;
 }
 
 .text-button {

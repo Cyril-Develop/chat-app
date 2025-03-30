@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import { PasswordFormSchema } from "@/schema/main";
 import { resetPassword } from "@/services/Auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -82,7 +83,7 @@ export default function ResetPassword() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="password">Mot de passe</FormLabel>
+                    <FormLabel htmlFor="password" className={cn("text-label")}>Mot de passe</FormLabel>
                     <FormControl>
                       <ShowPassord
                         showPassword={showPassword}
@@ -99,7 +100,7 @@ export default function ResetPassword() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="confirmPassword">
+                    <FormLabel htmlFor="confirmPassword" className={cn("text-label")}>
                       Confirmer le mot de passe
                     </FormLabel>
                     <FormControl>

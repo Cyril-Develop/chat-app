@@ -20,7 +20,9 @@ export function CreateRoom({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="box">{btnTrigger}</Button>
+        <Button size="box" className={cn("text-button")}>
+          {btnTrigger}
+        </Button>
       </DialogTrigger>
 
       <DialogContent className={cn("sm:max-w-[425px]")}>

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import { ForgotPasswordFormSchema } from "@/schema/main";
 import { forgotPassword } from "@/services/Auth";
 import { ForgotPasswordFormProps } from "@/types/password";
@@ -67,12 +68,13 @@ const ForgotPasswordForm = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className={cn("text-label")}>Email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="email"
                     placeholder="john.doe@gmail.com"
+                    className={cn("text-label")}
                   />
                 </FormControl>
                 <FormMessage />

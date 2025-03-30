@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { sendContactEmail } from "@/services/Email";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
+import { cn } from "@/lib/utils";
 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
@@ -76,9 +77,14 @@ const ContactForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nom *</FormLabel>
+                  <FormLabel className={cn("text-label")}>Nom *</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" placeholder="John Doe" />
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder="John Doe"
+                      className={cn("text-label")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -89,12 +95,13 @@ const ContactForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email *</FormLabel>
+                  <FormLabel className={cn("text-label")}>Email *</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       placeholder="john.doe@gmail.com"
+                      className={cn("text-label")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -107,12 +114,13 @@ const ContactForm = () => {
             name="subject"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Objet *</FormLabel>
+                <FormLabel className={cn("text-label")}>Objet *</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="text"
                     placeholder="Sujet de votre message"
+                    className={cn("text-label")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -124,11 +132,11 @@ const ContactForm = () => {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Message *</FormLabel>
+                <FormLabel className={cn("text-label")}>Message *</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Votre message ici..."
-                    className="resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
+                    className="text-label resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
                     maxLength={150}
                     {...field}
                   />

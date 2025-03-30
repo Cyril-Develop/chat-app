@@ -35,7 +35,7 @@ const Message = ({ message }: MessageProps) => {
         image={message.user.profileImage}
         username={message.user.username}
         imageSize="6"
-        textSize="text-sm sm:text-base"
+        textSize="text-label"
       />
 
       <div className="flex flex-col gap-2 max-w-[235px] 2xl:max-w-[500px]">

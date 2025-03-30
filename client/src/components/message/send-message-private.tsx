@@ -127,7 +127,7 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
                   placeholder="Message..."
                   aria-label="Envoyer un message"
                   className={cn(
-                    "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox"
+                    "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox text-label"
                   )}
                 />
               </FormControl>

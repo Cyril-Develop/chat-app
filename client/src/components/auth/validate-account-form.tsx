@@ -8,6 +8,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 import { ValidateAccountFormSchema } from "@/schema/main";
 import { registerByEmail, verifyOtp } from "@/services/Auth";
 import { ValidateAccountFormProps } from "@/types/auth";
@@ -65,7 +66,7 @@ export function ValidateAccountForm({
           control={form.control}
           name="otp"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className={cn("flex flex-col items-center")}>
               <InputOTP
                 {...field}
                 maxLength={6}
@@ -98,7 +99,7 @@ export function ValidateAccountForm({
         </div>
 
         <FormItem>
-          <p className="flex gap-2 text-sm text-muted-foreground">
+          <p className="flex gap-2 text-additional-info">
             <Icons.alert width={20} height={20} />
             Pensez à vérifier votre dossier de courriers indésirables.
           </p>

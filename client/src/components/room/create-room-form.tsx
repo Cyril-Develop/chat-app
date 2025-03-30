@@ -84,7 +84,7 @@ const CreateRoomForm = ({
                     field={field}
                   />
                 </FormControl>
-                <FormDescription className={cn("text-muted-foreground text-sm sm:text-md")}>
+                <FormDescription className={cn("text-additional-info")}>
                   Si vous saisissez un mot de passe, le salon sera privé et seul
                   vous et vos amis pourront y accéder.
                 </FormDescription>

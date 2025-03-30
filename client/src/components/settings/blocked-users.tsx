@@ -9,7 +9,7 @@ const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
 
   return (
     <div>
-      <h3 className="text-lg font-medium mb-2">Utilisateurs bloqués</h3>
+      <h3 className="text-label mb-2">Utilisateurs bloqués</h3>
       <div className="flex flex-wrap min-h-11 gap-4 mb-2 p-3 rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover">
         {blockedUsers.map((user) => (
           <div key={user.id} className="flex items-center">
@@ -28,7 +28,7 @@ const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
           </div>
         ))}
       </div>
-      <p className="text-sm text-gray-600 dark:text-gray-400">
+      <p className="text-additional-info">
         Consultez la liste des utilisateurs bloqués et débloquez-les si
         nécessaire.
       </p>

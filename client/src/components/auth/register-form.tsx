@@ -114,9 +114,16 @@ const RegisterForm = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom d'utilisateur</FormLabel>
+                    <FormLabel className={cn("text-label")}>
+                      Nom d'utilisateur
+                    </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" placeholder="John Doe" />
+                      <Input
+                        {...field}
+                        type="text"
+                        placeholder="John Doe"
+                        className={cn("text-label")}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -127,12 +134,13 @@ const RegisterForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className={cn("text-label")}>Email</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         type="email"
                         placeholder="john.doe@gmail.com"
+                        className={cn("text-label")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -144,7 +152,9 @@ const RegisterForm = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mot de passe</FormLabel>
+                    <FormLabel className={cn("text-label")}>
+                      Mot de passe
+                    </FormLabel>
                     <FormControl>
                       <ShowPassord
                         showPassword={showPassword}
@@ -164,7 +174,7 @@ const RegisterForm = () => {
                 defaultValue="Créer un compte"
                 spinnerValue="Création en cours"
               />
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-additional-info text-center">
                 En vous inscrivant, vous acceptez nos{" "}
                 <Link
                   to="/chateo/terms"

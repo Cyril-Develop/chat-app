@@ -28,9 +28,9 @@ export function SheetRight() {
           </span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right">
+      <SheetContent side="right" className={cn("flex flex-col gap-4")}>
         <SheetHeader className={cn("text-left")}>
-          <SheetTitle>Salons</SheetTitle>
+          <SheetTitle className={cn("text-title")}>Salons</SheetTitle>
           <Separator />
           <SheetDescription className={cn("text-description")}>
             Créer ou rejoignez un salon pour discuter.
@@ -46,7 +46,7 @@ export function SheetRight() {
         </SheetHeader>
         {room && (
           <SheetHeader className={cn("text-left mt-4")}>
-            <SheetTitle>Utilisateurs</SheetTitle>
+            <SheetTitle className={cn("text-title")}>Utilisateurs</SheetTitle>
             <Separator />
             <SheetDescription className="text-description">
               Utilisateurs présents dans le salon.

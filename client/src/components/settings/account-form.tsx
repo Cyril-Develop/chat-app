@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { AccountFormSchema } from "@/schema/main";
 import { useEditAccountMutation } from "@/hooks/edit-account";
 import { AccountFormValues } from "@/types/setting";
+import { cn } from "@/lib/utils";
 
 export function AccountForm({ user }: AccountFormValues) {
   const [apiError, setApiError] = useState("");
@@ -62,17 +63,17 @@ export function AccountForm({ user }: AccountFormValues) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className={cn("text-label")}>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       disabled
-                      className="disabled:cursor-not-allowed"
+                      className="disabled:cursor-not-allowed text-label"
                     />
                   </FormControl>
                   <FormMessage />
-                  <FormDescription>
+                  <FormDescription className={cn("text-additional-info")}>
                     Votre addresse email actuelle.
                   </FormDescription>
                 </FormItem>
@@ -84,12 +85,13 @@ export function AccountForm({ user }: AccountFormValues) {
             name="newEmail"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Modifier votre adresse email</FormLabel>
+                <FormLabel className={cn("text-label")}>Modifier votre adresse email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="email"
                     placeholder="john.doe@gmail.com"
+                    className={cn("text-label")}
                   />
                 </FormControl>
                 <FormMessage />

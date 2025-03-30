@@ -52,7 +52,7 @@ const Chat = () => {
     <div className="chat">
       <aside className="chat_aside border-r-2">
         <div className="chat_aside_container">
-          <h2 className="text-3xl">Contacts</h2>
+          <h2 className="text-title">Contacts</h2>
           {currentUser && (
             <>
               <Separator />
@@ -64,7 +64,7 @@ const Chat = () => {
         <div className="chat_aside_container">
           {showNotification && (
             <>
-              <h2 className="text-3xl">Notifications</h2>
+              <h2 className="text-title">Notifications</h2>
               <Separator />
             </>
           )}
@@ -87,7 +87,7 @@ const Chat = () => {
 
       <aside className="chat_aside border-l-2">
         <div className="chat_aside_container">
-          <h2 className="text-3xl">Salons</h2>
+          <h2 className="text-title">Salons</h2>
           <Separator />
           <CreateRoom
             btnTrigger="Créer un salon"
@@ -98,7 +98,7 @@ const Chat = () => {
         </div>
         {room && currentUser && (
           <div className="chat_aside_container">
-            <h2 className="text-3xl">Utilisateurs</h2>
+            <h2 className="text-title">Utilisateurs</h2>
             <Separator />
             <RoomUsers />
           </div>

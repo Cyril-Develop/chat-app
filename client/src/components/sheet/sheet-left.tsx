@@ -31,7 +31,7 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader className={cn("text-left")}>
-          <SheetTitle>Contacts</SheetTitle>
+          <SheetTitle className={cn("text-title")}>Contacts</SheetTitle>
           <Separator />
           <SheetDescription className={cn("text-description")}>
             Recherchez et discutez avec vos amis.
@@ -42,8 +42,8 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
           <Contact currentUser={currentUser} />
         </div>
         {showNotification && (
-          <SheetHeader className={cn("text-left mt-8")}>
-            <SheetTitle>Notifications</SheetTitle>
+          <SheetHeader className={cn("text-left mt-4")}>
+            <SheetTitle className={cn("text-title")}>Notifications</SheetTitle>
             <Separator />
             <SheetDescription className="text-description pb-2">
               Acceptez ou refusez les demandes de contact.

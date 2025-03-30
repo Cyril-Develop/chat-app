@@ -38,12 +38,12 @@ export default function Dashboard() {
           <Icons.loader />
         </span>
       ) : noUsersFound ? (
-        <p className="text-lg flex justify-center">
+        <p className="text-gray-600 dark:text-gray-400 flex justify-center">
           Aucun utilisateur enregistré
         </p>
       ) : (
         <Table>
-          <TableCaption className="text-lg">
+          <TableCaption className={cn("text-gray-600 dark:text-gray-400 text-base")}>
             {filteredUsers?.length}
             {handlePlural(filteredUsers?.length)}
           </TableCaption>

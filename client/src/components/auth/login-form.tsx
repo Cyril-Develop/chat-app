@@ -92,7 +92,7 @@ const LoginForm = () => {
     >
       <Line />
       <Button
-        className="block mx-auto text-lg my-4 w-full"
+        className="block mx-auto text-button w-full my-4 "
         onClick={handleLoginAsGuest}
       >
         Découvrir en tant qu'invité
@@ -109,12 +109,13 @@ const LoginForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className={cn("text-label")}>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       placeholder="john.doe@gmail.com"
+                      className={cn("text-label")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -126,7 +127,9 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="password">Mot de passe</FormLabel>
+                  <FormLabel htmlFor="password" className={cn("text-label")}>
+                    Mot de passe
+                  </FormLabel>
                   <FormControl>
                     <ShowPassord
                       showPassword={showPassword}
@@ -138,7 +141,7 @@ const LoginForm = () => {
                     <Button
                       type="button"
                       variant={"linkForm"}
-                      className={cn("w-auto link-form")}
+                      className={cn("w-auto link-form text-sm sm:text-md")}
                       onClick={() => setIsForgotPasswordOpen(true)}
                     >
                       Mot de passe oublié ?

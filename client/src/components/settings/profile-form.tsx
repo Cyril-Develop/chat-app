@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Siren } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
@@ -81,12 +82,14 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom d'utilisateur</FormLabel>
+              <FormLabel className={cn("text-label")}>
+                Nom d'utilisateur
+              </FormLabel>
               <FormControl>
-                <Input {...field} type="text" />
+                <Input {...field} type="text" className={cn("text-label")} />
               </FormControl>
               <FormMessage />
-              <FormDescription>
+              <FormDescription className={cn("text-additional-info")}>
                 Il s'agit de votre nom d'affichage public. Il peut s'agir de
                 votre vrai nom ou d'un pseudonyme.
               </FormDescription>
@@ -98,30 +101,32 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <p className="text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <p className="text-label leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Image
               </p>
               <FormLabel
-                className="input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary"
+                className={cn(
+                  "input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary text-label"
+                )}
                 tabIndex={0}
                 aria-label="Sélectionner une image"
                 onKeyDown={handleKeydown}
                 onClick={() => handleLabelClick("fileInput")}
               >
                 {imageUploaded ? (
-                  <>
+                  <div className="flex items-center gap-2 text-label">
                     Image chargée
                     <img
                       src={URL.createObjectURL(imageUploaded)}
                       alt="preview image"
                       className="w-11 h-11 rounded-full object-cover"
                     />
-                  </>
+                  </div>
                 ) : (
-                  <>
+                  <div className="flex items-center gap-2 text-label">
                     Sélectionner une image
                     <Icons.image />
-                  </>
+                  </div>
                 )}
               </FormLabel>
               <FormControl>
@@ -136,7 +141,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
+              <FormDescription className={cn("text-additional-info")}>
                 L'image doit être au format JPG, JPEG, PNG ou SVG.
               </FormDescription>
             </FormItem>
@@ -147,17 +152,19 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="bio"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel className={cn("text-label")}>Bio</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Parle nous un peu de toi..."
-                  className="resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
+                  className={cn(
+                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-label"
+                  )}
                   maxLength={150}
                   {...field}
                 />
               </FormControl>
               <FormMessage />
-              <FormDescription>
+              <FormDescription className={cn("text-additional-info")}>
                 Votre bio apparaîtra sur votre profil.
               </FormDescription>
             </FormItem>

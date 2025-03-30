@@ -63,9 +63,9 @@ const CreateRoomForm = ({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nom</FormLabel>
+                <FormLabel className={cn("text-label")}>Nom</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" />
+                  <Input {...field} type="text"className={cn("text-label")}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,7 +76,7 @@ const CreateRoomForm = ({
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="password">Mot de passe</FormLabel>
+                <FormLabel htmlFor="password" className={cn("text-label")}>Mot de passe</FormLabel>
                 <FormControl>
                   <ShowPassord
                     showPassword={showPassword}
@@ -84,7 +84,7 @@ const CreateRoomForm = ({
                     field={field}
                   />
                 </FormControl>
-                <FormDescription className={cn("text-muted-foreground")}>
+                <FormDescription className={cn("text-muted-foreground text-sm sm:text-md")}>
                   Si vous saisissez un mot de passe, le salon sera privé et seul
                   vous et vos amis pourront y accéder.
                 </FormDescription>

@@ -35,7 +35,7 @@ const Message = ({ message }: MessageProps) => {
         image={message.user.profileImage}
         username={message.user.username}
         imageSize="6"
-        textSize="text-sm"
+        textSize="text-sm sm:text-base"
       />
 
       <div className="flex flex-col gap-2 max-w-[235px] 2xl:max-w-[500px]">
@@ -62,7 +62,7 @@ const Message = ({ message }: MessageProps) => {
       </div>
 
       <div className="flex justify-between min-w-44">
-        <span className="text-xs text-description">
+        <span className="text-xs text-muted-foreground">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
         {canDeleteMessage && (

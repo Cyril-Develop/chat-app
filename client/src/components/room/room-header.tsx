@@ -13,7 +13,7 @@ const HeaderRoom = ({ room, currentUser }: HeaderRoomProps) => {
   return (
     <>
       <div className="flex justify-between pb-4 text-xl lg:text-3xl min-h-12">
-        <h1>{room?.name}</h1>
+        <h1 className="text-xl sm:text-2xl">{room?.name}</h1>
         {isMyRoom && (
           <Button
             variant="alert"

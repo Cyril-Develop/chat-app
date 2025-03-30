@@ -19,7 +19,7 @@ const ButtonForm = ({
       type="submit"
       size="lg"
       variant="default"
-      className="text-lg w-full"
+      className="text-button w-full"
       disabled={disabled || loading}
     >
       {loading ? (

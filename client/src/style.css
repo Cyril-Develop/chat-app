@@ -52,7 +52,7 @@
 html {
   max-width: 2500px;
   margin: 0 auto;
-  width: 100%; 
+  width: 100%;
 }
 
 html.dark {
@@ -85,7 +85,7 @@ html.dark {
   @apply flex justify-center items-center h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)] relative flex-col lg:flex-row;
 }
 
-.chat_aside{
+.chat_aside {
   @apply hidden lg:flex flex-col gap-8 pt-4 dark:border-secondary-foreground/5 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex;
 }
 
@@ -118,11 +118,35 @@ html.dark {
 }
 
 .error {
-  @apply text-center text-sm text-red-600 dark:text-red-400;
+  @apply text-center text-sm text-red-600 dark:text-red-500;
+}
+
+.text-title {
+  @apply text-xl font-semibold sm:text-2xl;
+}
+
+.text-description-form {
+  @apply text-muted-foreground text-lg sm:text-xl;
 }
 
 .text-description {
-  @apply text-gray-600 dark:text-gray-400;
+  @apply text-gray-600 dark:text-gray-400 text-base sm:text-lg;
+}
+
+.text-paragraph {
+  @apply text-base sm:text-lg;
+}
+
+.text-button {
+  @apply text-base text-primary-foreground;
+}
+
+.text-label {
+  @apply text-base;
+}
+
+.text-additional-info {
+  @apply text-sm text-gray-600 dark:text-gray-400;
 }
 
 .animate-spin {

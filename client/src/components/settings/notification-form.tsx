@@ -46,7 +46,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
           name="type"
           render={({ field }) => (
             <FormItem className={cn("space-y-3")}>
-              <FormLabel id="notification-label">
+              <FormLabel id="notification-label" className={cn("text-label")}>
                 Notifications par e-mail
               </FormLabel>
               <RadioGroup
@@ -59,7 +59,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                   <RadioGroupItem id="accept" value="accept" />
                   <FormLabel
                     htmlFor="accept"
-                    className={cn("font-normal hover:cursor-pointer")}
+                    className={cn("font-normal hover:cursor-pointer text-label")}
                   >
                     Recevoir les notifications de demandes d'amis et messages
                     privés.
@@ -70,7 +70,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                   <RadioGroupItem id="refuse" value="refuse" />
                   <FormLabel
                     htmlFor="refuse"
-                    className={cn("font-normal hover:cursor-pointer")}
+                    className={cn("font-normal hover:cursor-pointer text-label")}
                   >
                     Ne pas recevoir de notifications.
                   </FormLabel>

@@ -18,8 +18,9 @@ import {
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Input } from "../ui/input";
-import { ValidateAccount } from "./validate-account";
+import { Input } from "@/components/ui/input";
+import { ValidateAccount } from "@/components/auth/validate-account";
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -156,12 +157,24 @@ const RegisterForm = () => {
                 )}
               />
             </div>
-            <ButtonForm
-              loading={loading}
-              disabled={loading}
-              defaultValue="Créer un compte"
-              spinnerValue="Création en cours"
-            />
+            <div className="flex flex-col gap-1">
+              <ButtonForm
+                loading={loading}
+                disabled={loading}
+                defaultValue="Créer un compte"
+                spinnerValue="Création en cours"
+              />
+              <p className="text-sm text-muted-foreground text-center">
+                En vous inscrivant, vous acceptez nos{" "}
+                <Link
+                  to="/chateo/terms"
+                  className="text-primary no-underline rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring underline-offset-4 hover:underline focus:underline font-semibold"
+                >
+                  conditions générales d'utilisation
+                </Link>
+                .
+              </p>
+            </div>
             {/* <div className="flex flex-col gap-4">
               <Line />
 

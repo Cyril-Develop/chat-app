@@ -21,6 +21,7 @@ import {
 } from "react-router-dom";
 import Contact from "@/pages/contact/Contact";
 import Password from "@/pages/password/Password";
+import Terms from "@/pages/legal/Terms";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
 import { useNotificationStore } from "@/store/notification.store";
@@ -78,6 +79,7 @@ function App() {
         { path: "/chateo/login", element: <Login /> },
         { path: "/chateo/reset-password/:token", element: <Password /> },
         { path: "/chateo/contact", element: <Contact /> },
+        { path: "/chateo/terms", element: <Terms /> },
         {
           path: "/chateo/chat",
           element: isAuthenticated ? <Chat /> : <Navigate to="/chateo/login" />,

@@ -1,11 +1,10 @@
 import { getRoom } from "@/services/Chat";
 import { useAuthStore } from "@/store/auth.store";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRoomStore } from "@/store/room.store";
 import { handleApiError } from "@/utils/error-handler";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const useGetRoom = (roomId: number) => {
   const { room, setRoom } = useRoomStore();
@@ -13,7 +12,7 @@ const useGetRoom = (roomId: number) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setAuthentication } = useAuthStore();
-  
+
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["chat", roomId],
     queryFn: async () => getRoom(roomId),

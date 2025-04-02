@@ -18,8 +18,8 @@ const ContactRequest = ({
   const userId = currentUser?.id;
   const [contactRequests, setContactRequests] = useState<FriendRequest[]>([]);
   const { socket } = useSocketStore();
-  const acceptFriendRequest = useAcceptFriendRequestMutation();
-  const rejectFriendRequest = useRejectFriendRequestMutation();
+  const { mutate: acceptFriendRequest } = useAcceptFriendRequestMutation();
+  const { mutate: rejectFriendRequest } = useRejectFriendRequestMutation();
   const { data: friendRequests } = useGetRequest();
 
   // Met à jour contactRequests quand friendRequests change
@@ -65,7 +65,7 @@ const ContactRequest = ({
 
   // Gestion des actions Accepter / Refuser
   const handleAccept = (request: FriendRequest) => {
-    acceptFriendRequest.mutate(request.sender.id);
+    acceptFriendRequest(request.sender.id);
     removeRequest(request.id);
     socket?.emit(
       "acceptFriendRequest",
@@ -76,7 +76,7 @@ const ContactRequest = ({
   };
 
   const handleReject = (request: FriendRequest) => {
-    rejectFriendRequest.mutate(request.sender.id);
+    rejectFriendRequest(request.sender.id);
     removeRequest(request.id);
     socket?.emit(
       "rejectFriendRequest",

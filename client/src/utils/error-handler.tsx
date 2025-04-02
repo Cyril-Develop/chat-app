@@ -7,7 +7,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { NavigateFunction } from "react-router-dom";
 
 type ErrorHandlerDependencies = {
-  room: Room | null;
+  room?: Room | null;
   setRoom: (room: Room | null) => void;
   setAuthentication?: (isAuthenticated: boolean, user: null) => void;
   queryClient: QueryClient;

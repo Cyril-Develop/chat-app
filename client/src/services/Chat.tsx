@@ -1,5 +1,6 @@
 import { CreateRoomProps, JoinRoomProps } from "@/types/room";
 
+//********** GET ALL ROOMS  **********/
 export const getRooms = async () => {
   try {
     const response = await fetch(
@@ -26,6 +27,7 @@ export const getRooms = async () => {
   }
 };
 
+//********** GET ROOM  **********/
 export const getRoom = async (roomId: number) => {
   try {
     const response = await fetch(
@@ -52,6 +54,7 @@ export const getRoom = async (roomId: number) => {
   }
 };
 
+//********** CREATE ROOM (PUBLIC OR PRIVATE)  **********/
 export const createRoom = async (data: CreateRoomProps) => {
   try {
     const response = await fetch(
@@ -79,7 +82,8 @@ export const createRoom = async (data: CreateRoomProps) => {
   }
 };
 
-export const joinRoom = async (data: JoinRoomProps) => {
+//********** JOIN ROOM OR PRIVATE DISCUSSION  **********/
+export const joinChat = async (data: JoinRoomProps) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/join`,
@@ -106,6 +110,7 @@ export const joinRoom = async (data: JoinRoomProps) => {
   }
 };
 
+//********** LEAVE ROOM  **********/
 export const leaveRoom = async (roomId: number) => {
   try {
     const response = await fetch(
@@ -133,6 +138,7 @@ export const leaveRoom = async (roomId: number) => {
   }
 };
 
+//********** DELETE ROOM  **********/
 export const deleteRoom = async (roomId: number) => {
   try {
     const response = await fetch(

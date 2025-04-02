@@ -97,7 +97,7 @@ const RegisterForm = () => {
     <>
       <CardWrapper
         title="Créer un compte "
-        description="Créez un compte pour accéder à toutes les fonctionnalités de l'application."
+        description="Commencez gratuitement."
         backButtonHref="/chateo/login"
         backButtonLabel="Se connecter"
         text="Vous possédez déjà un compte ?"

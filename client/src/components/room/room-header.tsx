@@ -9,7 +9,6 @@ const HeaderRoom = ({ room, currentUser }: HeaderRoomProps) => {
   const role = currentUser?.role;
   const isMyRoom = room?.createdBy === currentUser?.id || role === "ADMIN";
   const { mutate: deleteRoom } = useDeleteRoomMutation();
-
   return (
     <>
       <div className="flex justify-between pb-4 text-xl lg:text-3xl min-h-12">

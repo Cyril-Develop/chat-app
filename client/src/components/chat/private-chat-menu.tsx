@@ -14,7 +14,7 @@ import Alert from "@/components/Alert";
 import { useState } from "react";
 import { useBlockUserMutation } from "@/hooks/block-user";
 
-const Dropdown = () => {
+const PrivateChatMenu = () => {
   const { contactId, setContactId } = useContactStore();
   const { mutate: removeContact } = useRemoveContactMutation();
   const { mutate: blockUser } = useBlockUserMutation();
@@ -64,4 +64,4 @@ const Dropdown = () => {
   );
 };
 
-export default Dropdown;
+export default PrivateChatMenu;

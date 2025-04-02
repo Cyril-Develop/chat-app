@@ -6,15 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { useRoomStore } from "@/store/room.store";
 import { handleApiError } from "@/utils/error-handler";
 
-const useGetPrivateMessages = () => {
+const useGetPrivateMessages = (contactId : number) => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["privateMessage"],
-    queryFn: async () => getPrivateMessages(),
+    queryKey: ["messages-private", contactId],
+    queryFn: async () => getPrivateMessages(contactId),
     enabled: isAuthenticated,
     retry: false,
   });

@@ -1,19 +1,19 @@
+import ShowPassord from "@/components/auth/show-password";
+import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import ButtonForm from "@/components/button-form";
+import { useJoinRoomMutation } from "@/hooks/join-chat";
+import { RoomPasswordSchema } from "@/schema/main";
+import { JoinPrivateRoomFormProps } from "@/types/room";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { RoomPasswordSchema } from "@/schema/main";
-import { zodResolver } from "@hookform/resolvers/zod";
-import ShowPassord from "@/components/auth/show-password";
-import { useJoinRoomMutation } from "@/hooks/join-room";
-import { JoinPrivateRoomFormProps } from "@/types/room";
 
 const JoinPrivateRoomForm = ({
   btnSubmit,
@@ -27,7 +27,7 @@ const JoinPrivateRoomForm = ({
     resolver: zodResolver(RoomPasswordSchema),
   });
 
-  const joinRoom = useJoinRoomMutation();
+  const { mutateAsync: joinRoom } = useJoinRoomMutation();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -38,7 +38,7 @@ const JoinPrivateRoomForm = ({
     try {
       const { password } = form.getValues();
       const data = { roomId, password };
-      await joinRoom.mutateAsync(data);
+      await joinRoom(data);
       onOpenChange(false);
     } catch (error: any) {
       setApiError(error.message);

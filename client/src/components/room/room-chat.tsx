@@ -1,27 +1,37 @@
 import MessagesProvider from "@/components/message/messages-provider";
-import SendMessage from "@/components/message/send-message-room";
+import SendRoomMessage from "@/components/message/send-room-message";
 import RoomHeader from "@/components/room/room-header";
 import useGetRoom from "@/hooks/get-room";
 import { useSocketStore } from "@/store/socket.store";
-import { Message, RoomProps, MessageFromSocket } from "@/types/chat";
+import {
+  MessageRoomProps,
+  RoomDataProps,
+  RoomChatProps,
+  MessageFromSocket,
+} from "@/types/chat";
 import { UpdatedUserInfosProps } from "@/types/user";
 import { useEffect, useState } from "react";
 import { Icons } from "@/components/Icons";
+import useGetRoomMessages from "@/hooks/get-room-messages";
 
-const Room = ({ roomId, currentUser }: RoomProps) => {
+const RoomChat = ({ roomId, currentUser }: RoomChatProps) => {
   const { socket } = useSocketStore();
-  const { data: fetchedRoom, isLoading } = useGetRoom(roomId);
-  const [roomData, setRoomData] = useState(fetchedRoom);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [arrivalMessage, setArrivalMessage] = useState<Message | null>(null);
+  const { data: fetchedRoom, isLoading: isLoadingRoom } = useGetRoom(roomId);
+  const { data: meesagesInRoom } = useGetRoomMessages(roomId);
+  const [roomData, setRoomData] = useState<RoomDataProps>(fetchedRoom);
+  const [messages, setMessages] = useState<MessageRoomProps[]>(meesagesInRoom);
+  const [arrivalMessage, setArrivalMessage] = useState<MessageRoomProps | null>(
+    null
+  );
 
-  // Mise à jour de roomData lorsque la requête initiale est terminée
+  // Gérer un state local ici pour les likes ?
+
   useEffect(() => {
-    if (fetchedRoom) {
+    if (fetchedRoom && meesagesInRoom) {
       setRoomData(fetchedRoom);
-      setMessages(fetchedRoom.messages);
+      setMessages(meesagesInRoom);
     }
-  }, [fetchedRoom]);
+  }, [fetchedRoom, meesagesInRoom]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -30,7 +40,7 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
   }, [arrivalMessage]);
 
   const handleDeleteMessage = (messageId: number) => {
-    setMessages((prevMessages: Message[]) =>
+    setMessages((prevMessages: MessageRoomProps[]) =>
       prevMessages.filter((msg) => msg.id !== messageId)
     );
   };
@@ -38,7 +48,7 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
   // Gestion des mises à jour de l'utilisateur
   const handleUpdatedUser = (updatedUser: UpdatedUserInfosProps) => {
     // Mise à jour des informations de l'utilisateur dans roomData
-    setRoomData((prevRoom: RoomProps) => {
+    setRoomData((prevRoom) => {
       if (!prevRoom) return prevRoom;
 
       return {
@@ -76,17 +86,7 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
   };
 
   const handleGetMessage = (data: MessageFromSocket) => {
-    setArrivalMessage({
-      id: data.id,
-      message: data.message,
-      image: data.image,
-      createdAt: data.createdAt,
-      user: {
-        id: data.userId,
-        username: data.username,
-        profileImage: data.profileImage,
-      },
-    });
+    setArrivalMessage(data as MessageRoomProps);
   };
 
   useEffect(() => {
@@ -102,18 +102,18 @@ const Room = ({ roomId, currentUser }: RoomProps) => {
   }, [socket, handleGetMessage, handleDeleteMessage, handleUpdatedUser]);
 
   return (
-    <div className="page_room">
-      {isLoading ? (
+    <div className="page_conversation">
+      {isLoadingRoom ? (
         <Icons.loader width={18} height={18} />
       ) : (
         <>
           <RoomHeader room={roomData} currentUser={currentUser} />
-          <MessagesProvider messages={messages} />
-          <SendMessage recipient={{ type: "room", id: roomId }} />
+          <MessagesProvider messages={messages} type="room" />
+          <SendRoomMessage />
         </>
       )}
     </div>
   );
 };
 
-export default Room;
+export default RoomChat;

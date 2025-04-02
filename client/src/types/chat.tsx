@@ -10,7 +10,7 @@ export interface HeaderRoomProps {
   };
 }
 
-export interface RoomProps {
+export interface RoomChatProps {
   roomId: number;
   currentUser: {
     id: number;
@@ -18,10 +18,31 @@ export interface RoomProps {
     profileImage: string;
     role: string;
   };
-  messages?: Message[];
 }
 
-export interface Message {
+export interface RoomDataProps {
+  createdBy: number;
+  id: number;
+  messages: {
+    id: number;
+    message: string;
+    createdAt: string;
+    image?: string;
+    user: {
+      id: number;
+      username: string;
+      profileImage: string;
+    };
+  }[];
+  name: string;
+  users: {
+    id: number;
+    profileImage: string;
+    username: string;
+  }[];
+}
+
+export interface MessageRoomProps {
   id: number;
   message: string;
   image?: string;
@@ -31,6 +52,10 @@ export interface Message {
     username: string;
     profileImage: string;
   };
+  likes: {
+    userId: number;
+    username: string;
+  }[];
 }
 
 export interface ChatUnselectedProps {
@@ -114,7 +139,7 @@ export interface PrivateChatProps {
   contactId: number;
 }
 
-export interface HeaderChatProps {
+export interface PrivateChatHeaderProps {
   contactInfos: {
     id: number;
     username: string;
@@ -157,4 +182,13 @@ export interface MessageFromSocket {
   userId: number;
   username: string;
   profileImage: string;
+  user: {
+    id: number;
+    username: string;
+    profileImage: string;
+  };
+  likes?: {
+    userId: number;
+    username: string;
+  }[];
 }

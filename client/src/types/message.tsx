@@ -2,22 +2,15 @@ import { UseFormReturn } from "react-hook-form";
 
 export interface MessageProps {
   message: {
-    id: number;
-    message: string;
     createdAt: string;
+    id: number;
     image?: string;
-    user: {
-      id: number;
-      username: string;
-      profileImage: string;
-    };
-    receiver?: {
-      id: number;
-      username: string;
-      profileImage: string;
-    };
-    isRead?: boolean;
+    likes?: { userId: number; username: string }[];
+    message: string;
+    user: { id: number; username: string; profileImage: string };
+    receiver?: { id: number; username: string; profileImage: string };
   };
+  type: "private" | "room";
 }
 
 export interface HandleEmojiPickerProps {
@@ -43,6 +36,23 @@ export interface PrivateMessageProps {
   };
 }
 
+export interface SendMessageSocketProps {
+  createdAt: string;
+  id: number;
+  image: string | null;
+  chatRoomId: number;
+  message: string;
+  user: {
+    id: number;
+    username: string;
+    profileImage: string | null;
+  };
+  likes: {
+    id: number;
+    username: string;
+  }[];
+}
+
 export interface NotificationProps {
   messageId: number;
   senderId: number;
@@ -64,29 +74,15 @@ export interface UnreadMessagesProps {
 
 export interface MessagesProviderProps {
   messages: {
-    id: number;
-    message: string;
     createdAt: string;
+    id: number;
     image?: string;
-    user: {
-      id: number;
-      username: string;
-      profileImage: string;
-    };
+    likes?: { userId: number; username: string }[];
+    message: string;
+    user: { id: number; username: string; profileImage: string };
+    receiver?: { id: number; username: string; profileImage: string };
   }[];
-}
-
-interface Recipient {
-  type: "room" | "user";
-  id: number;
-}
-
-export interface SendMessageProps {
-  recipient: Recipient;
-}
-
-export interface SendMessagePrivateProps {
-  recipient: Recipient;
+  type: "private" | "room";
 }
 
 export interface EmojiObject {

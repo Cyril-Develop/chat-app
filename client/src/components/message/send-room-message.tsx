@@ -12,33 +12,31 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { useSendPrivateMessageMutation } from "@/hooks/send-private-message";
+import { useSendMessageMutation } from "@/hooks/send-message";
 import { cn } from "@/lib/utils";
-import { PrivateMessageFormSchema } from "@/schema/main";
+import { MessageFormSchema } from "@/schema/main";
 import { useAuthStore } from "@/store/auth.store";
-import {
-  PrivateMessageFormProps,
-  SendMessagePrivateProps,
-} from "@/types/message";
+import { useRoomStore } from "@/store/room.store";
+import { MessageFormProps } from "@/types/message";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
+const SendRoomMessage = () => {
+  const roomId = useRoomStore((state) => state.room?.id);
   const visible = useAuthStore((state) => state.visible);
-  const sendMessage = useSendPrivateMessageMutation();
+  const { mutate: sendMessage } = useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const form = useForm<PrivateMessageFormProps>({
-    resolver: zodResolver(PrivateMessageFormSchema),
+  const form = useForm<MessageFormProps>({
+    resolver: zodResolver(MessageFormSchema),
     defaultValues: {
       message: "",
       file: null,
-      receiverId: recipient.id,
     },
   });
 
@@ -58,10 +56,11 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const onSubmit = (data: PrivateMessageFormProps) => {
+  const onSubmit = (data: MessageFormProps) => {
     const { message } = data;
 
     if (noContent) return;
+
     if (visible === false) {
       setError("Vous ne pouvez pas envoyer de message en mode espion");
       return;
@@ -69,23 +68,34 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
 
     const formData = new FormData();
     formData.append("message", message);
-    formData.append("receiverId", recipient.id.toString());
+
+    // if (recipient.type === "room") {
+    //   formData.append("roomId", recipient.id.toString());
+    // } else {
+    //   formData.append("userId", recipient.id.toString());
+    // }
 
     if (image) {
       formData.append("image", image);
     }
 
-    sendMessage.mutate(formData, {
-      onSuccess: () => {
-        form.reset();
-        setImage(null);
-        resetInputRef();
-        setError(null);
-      },
-      onError: () => {
-        setError("Une erreur s'est produite lors de l'envoi du message");
-      },
-    });
+    if (!roomId) {
+      return;
+    }
+    sendMessage(
+      { formData, roomId },
+      {
+        onSuccess: () => {
+          form.reset();
+          setImage(null);
+          resetInputRef();
+          setError(null);
+        },
+        onError: () => {
+          setError("Une erreur s'est produite lors de l'envoi du message");
+        },
+      }
+    );
   };
 
   return (
@@ -110,12 +120,11 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
       )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
+        className="relative flex flex-col sm:flex-row  gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
         {openEmoji && (
           <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />
         )}
-
         <FormField
           control={form.control}
           name="message"
@@ -195,4 +204,4 @@ const SendMessage = ({ recipient }: SendMessagePrivateProps) => {
   );
 };
 
-export default SendMessage;
+export default SendRoomMessage;

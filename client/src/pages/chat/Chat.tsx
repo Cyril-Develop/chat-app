@@ -1,12 +1,12 @@
 import ChatUnselected from "@/components/chat/chat-unselected";
 import PrivateChat from "@/components/chat/private-chat";
-import { SearchUser } from "@/components/chat/search-user";
-import { Contact } from "@/components/contact-list";
 import { CreateRoom } from "@/components/dialog/create-room";
-import ContactRequest from "@/components/notification/contact-request";
-import Room from "@/components/room/room";
-import { RoomSelector } from "@/components/room/room-selector";
-import { RoomUsers } from "@/components/room/room-users";
+import Room from "@/components/room/room-chat";
+import { Contact } from "@/components/sidebar/contact/contact-list";
+import { SearchUser } from "@/components/sidebar/contact/search-user";
+import ContactRequest from "@/components/sidebar/notification/contact-request";
+import { RoomSelector } from "@/components/sidebar/room/room-selector";
+import { RoomUsers } from "@/components/sidebar/room/room-users";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/get-current-user";
 import { useAuthStore } from "@/store/auth.store";
@@ -14,6 +14,9 @@ import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useRef, useState } from "react";
+
+import useWindowWidth from "@/hooks/window-width";
+import { UserInfos, HandleUserStatusChangedProps } from "@/types/user";
 
 const Chat = () => {
   const { room } = useRoomStore();
@@ -47,6 +50,55 @@ const Chat = () => {
       prevRoomRef.current = room.id;
     }
   }, [room, socket, currentUser]);
+
+  const [usersInRoom, setUsersInRoom] = useState<UserInfos[]>([]);
+  const windowWidth = useWindowWidth();
+
+  useEffect(() => {
+    if (windowWidth < 1024) {
+      socket?.emit("requestUserInRoom", roomId);
+    }
+
+    const handleUserInRoom = (userList: UserInfos[]) => {
+      setUsersInRoom(userList);
+    };
+
+    const handleUserStatusChanged = ({
+      userId,
+      visible,
+    }: HandleUserStatusChangedProps) => {
+      setUsersInRoom((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, visible } : user
+        )
+      );
+    };
+
+    // Mise à jour des informations utilisateur (nom, photo, etc.)
+    const handleUpdatedUserInfos = (updatedUser: UserInfos) => {
+      setUsersInRoom((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id
+            ? {
+                ...user,
+                username: updatedUser.username,
+                profileImage: updatedUser.profileImage,
+              }
+            : user
+        )
+      );
+    };
+
+    socket?.on("getUserInRoom", handleUserInRoom);
+    socket?.on("userStatusChanged", handleUserStatusChanged);
+    socket?.on("updatedUserInfos", handleUpdatedUserInfos);
+
+    return () => {
+      socket?.off("getUserInRoom", handleUserInRoom);
+      socket?.off("userStatusChanged", handleUserStatusChanged);
+      socket?.off("updatedUserInfos", handleUpdatedUserInfos);
+    };
+  }, [socket, windowWidth, roomId]);
 
   return (
     <div className="chat">
@@ -98,9 +150,19 @@ const Chat = () => {
         </div>
         {room && currentUser && (
           <div className="chat_aside_container">
-            <h2 className="text-title">Utilisateurs</h2>
+            <div className="flex justify-between">
+              <h2 className="text-title">
+                {usersInRoom.filter((user) => user.visible === true).length ===
+                1
+                  ? "Membre"
+                  : "Membres"}
+              </h2>
+              <span className="text-additional-info self-end mb-1">
+                {usersInRoom.filter((user) => user.visible === true).length}
+              </span>
+            </div>
             <Separator />
-            <RoomUsers />
+            <RoomUsers usersInRoom={usersInRoom} />
           </div>
         )}
       </aside>

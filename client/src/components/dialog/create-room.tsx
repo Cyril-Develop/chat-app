@@ -1,10 +1,10 @@
+import DialogHeaderComp from "@/components/dialog/dialog-header";
+import CreateRoomForm from "@/components/sidebar/room/create-room-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import DialogHeaderComp from "@/components/dialog/dialog-header";
-import CreateRoomForm from "@/components/room/create-room-form";
-import { useState } from "react";
-import { CreateRoomProps } from "@/types/dialog";
 import { cn } from "@/lib/utils";
+import { CreateRoomProps } from "@/types/dialog";
+import { useState } from "react";
 
 export function CreateRoom({
   btnTrigger,

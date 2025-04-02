@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { HeaderChatProps } from "@/types/chat";
+import { PrivateChatHeaderProps } from "@/types/chat";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import DropDown from "@/components/chat/DropDown";
+import DropDown from "@/components/chat/private-chat-menu";
 import StatutIndicator from "@/components/statut-indicator";
 import { useSocketStore } from "@/store/socket.store";
 import { HandleUserStatusChangedProps } from "@/types/user";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
+const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
   const { socket, users } = useSocketStore();
   const [isConnected, setIsConnected] = useState(false);
 
@@ -64,4 +64,4 @@ const HeaderChat = ({ contactInfos }: HeaderChatProps) => {
   );
 };
 
-export default HeaderChat;
+export default PrivateChatHeader;

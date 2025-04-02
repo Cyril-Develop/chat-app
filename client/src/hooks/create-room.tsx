@@ -1,4 +1,4 @@
-import { useJoinRoomMutation } from "@/hooks/join-room";
+import { useJoinRoomMutation } from "@/hooks/join-chat";
 import { createRoom } from "@/services/Chat";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";

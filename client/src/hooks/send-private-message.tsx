@@ -18,9 +18,31 @@ export const useSendPrivateMessageMutation = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (formData: FormData) => sendPrivateMessage(formData),
+    mutationFn: ({
+      formData,
+      contactId,
+    }: {
+      formData: FormData;
+      contactId: number;
+    }) => sendPrivateMessage(formData, contactId),
     onSuccess: (data) => {
-      socket?.emit("sendPrivateMessage", data);
+      socket?.emit("sendPrivateMessage", {
+        createdAt: data.createdAt,
+        id: data.id,
+        image: data.image,
+        isRead: data.isRead,
+        message: data.message,
+        receiver: {
+          id: data.receiver.id,
+          username: data.receiver.username,
+          profileImage: data.receiver.profileImage,
+        },
+        user: {
+          id: data.user.id,
+          username: data.user.username,
+          profileImage: data.user.profileImage,
+        },
+      });
       if (data.receiver.notification === "accept") {
         sendNotificationByEmailMutation({
           receiverId: data.receiver.id,

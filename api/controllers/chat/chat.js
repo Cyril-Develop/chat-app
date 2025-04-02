@@ -50,12 +50,10 @@ exports.joinChatRoom = async (req, res) => {
     });
 
     if (!chatRoom) {
-      return res
-        .status(404)
-        .json({
-          error: "Le salon de discussion n'existe pas.",
-          errorCode: "ROOM_NOT_FOUND",
-        });
+      return res.status(404).json({
+        error: "Le salon de discussion n'existe pas.",
+        errorCode: "ROOM_NOT_FOUND",
+      });
     }
 
     if (chatRoom.isPrivate && !password) {
@@ -150,7 +148,9 @@ exports.getChatRooms = async (req, res) => {
     const chatRooms = await prisma.chatRoom.findMany();
     res.status(200).json(chatRooms);
   } catch (error) {
-    res.status(500).json({ error: "Impossible de récupérer la liste des salons." });
+    res
+      .status(500)
+      .json({ error: "Impossible de récupérer la liste des salons." });
   }
 };
 
@@ -177,24 +177,6 @@ exports.getChatRoom = async (req, res) => {
             },
           },
         },
-        messages: {
-          select: {
-            id: true,
-            message: true,
-            image: true,
-            createdAt: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                profileImage: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        },
       },
     });
 
@@ -207,6 +189,15 @@ exports.getChatRoom = async (req, res) => {
 
     // Map the users to return a simplified array of users
     const users = chatRoom.users.map((userChatRoom) => userChatRoom.user);
+
+    // Format messages to include the users who liked each message
+
+    // const formattedMessages = chatRoom.messages.map((message) => ({
+    //   ...message,
+    //   likes: message.likes.map((like) => like.user), // Extract the users who liked the message
+    // }));
+
+    //res.status(200).json({ ...chatRoom, users, messages: formattedMessages });
 
     res.status(200).json({ ...chatRoom, users });
   } catch (error) {

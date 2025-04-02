@@ -1,16 +1,16 @@
 import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
-import { joinRoom } from "@/services/Chat";
+import { joinChat } from "@/services/Chat";
 import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { JoinRoomProps } from "@/types/room";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import useGetUser from "./get-current-user";
 import { ApiError } from "@/types/api";
+import { JoinRoomProps } from "@/types/room";
 import { handleApiError } from "@/utils/error-handler";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import useGetUser from "./get-current-user";
 
 export const useJoinRoomMutation = () => {
   const { room, setRoom } = useRoomStore();
@@ -23,7 +23,7 @@ export const useJoinRoomMutation = () => {
   const { setAuthentication } = useAuthStore();
 
   return useMutation({
-    mutationFn: (data: JoinRoomProps) => joinRoom(data),
+    mutationFn: (data: JoinRoomProps) => joinChat(data),
     onSuccess: (data) => {
       toast({
         title: data.message,
@@ -31,9 +31,13 @@ export const useJoinRoomMutation = () => {
         logo: <Icons.check />,
       });
       setRoom({ id: data.roomId, name: data.roomName });
+      queryClient.invalidateQueries({
+        queryKey: ["messages-room", data.roomId],
+      });
       // Reset contactId when joining a new room for leaving the previous private chat
       if (contactId) {
         setContactId(null);
+        // queryClient.invalidateQueries({ queryKey: ["messages-private"] });
       }
       socket?.emit(
         "joinRoom",

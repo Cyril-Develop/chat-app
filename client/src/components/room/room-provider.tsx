@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import RoomList from "@/components/room/room-list";
-import { CommandSeparator } from "@/components/ui/command";
 import { JoinRoom } from "@/components/dialog/join-room";
-import { useRoomStore } from "@/store/room.store";
-import { RoomProviderProps, Room } from "@/types/room";
+import RoomList from "@/components/sidebar/room/room-list";
+import { CommandSeparator } from "@/components/ui/command";
+import { useJoinRoomMutation } from "@/hooks/join-chat";
 import { useLeaveRoomMutation } from "@/hooks/leave-room";
-import { useJoinRoomMutation } from "@/hooks/join-room";
+import { useRoomStore } from "@/store/room.store";
+import { Room, RoomProviderProps } from "@/types/room";
+import { useEffect, useState } from "react";
 
 const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
   const [selectedPrivateRoom, setSelectedPrivateRoom] = useState<{

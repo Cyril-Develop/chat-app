@@ -12,26 +12,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { useSendMessageMutation } from "@/hooks/send-message";
+import { useSendPrivateMessageMutation } from "@/hooks/send-private-message";
 import { cn } from "@/lib/utils";
-import { MessageFormSchema } from "@/schema/main";
+import { PrivateMessageFormSchema } from "@/schema/main";
 import { useAuthStore } from "@/store/auth.store";
-import { MessageFormProps, SendMessageProps } from "@/types/message";
+import { useContactStore } from "@/store/contact.store";
+import { PrivateMessageFormProps } from "@/types/message";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const SendMessage = ({ recipient }: SendMessageProps) => {
+const SendPrivateMessage = () => {
   const visible = useAuthStore((state) => state.visible);
-  const sendMessage = useSendMessageMutation();
+  const { mutate: sendMessage } = useSendPrivateMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const contactId = useContactStore((state) => state.contactId);
 
-  const form = useForm<MessageFormProps>({
-    resolver: zodResolver(MessageFormSchema),
+  const form = useForm<PrivateMessageFormProps>({
+    resolver: zodResolver(PrivateMessageFormSchema),
     defaultValues: {
       message: "",
       file: null,
@@ -54,7 +56,7 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const onSubmit = (data: MessageFormProps) => {
+  const onSubmit = (data: PrivateMessageFormProps) => {
     const { message } = data;
 
     if (noContent) return;
@@ -65,28 +67,29 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
 
     const formData = new FormData();
     formData.append("message", message);
-
-    if (recipient.type === "room") {
-      formData.append("roomId", recipient.id.toString());
-    } else {
-      formData.append("userId", recipient.id.toString());
-    }
-
     if (image) {
       formData.append("image", image);
     }
 
-    sendMessage.mutate(formData, {
-      onSuccess: () => {
-        form.reset();
-        setImage(null);
-        resetInputRef();
-        setError(null);
-      },
-      onError: () => {
-        setError("Une erreur s'est produite lors de l'envoi du message");
-      },
-    });
+    if (!contactId) {
+      return;
+    }
+    console.log("on envoie un message privé");
+
+    sendMessage(
+      { formData, contactId },
+      {
+        onSuccess: () => {
+          form.reset();
+          setImage(null);
+          resetInputRef();
+          setError(null);
+        },
+        onError: () => {
+          setError("Une erreur s'est produite lors de l'envoi du message");
+        },
+      }
+    );
   };
 
   return (
@@ -111,11 +114,12 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
       )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row  gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
+        className="relative flex flex-col sm:flex-row gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
         {openEmoji && (
           <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />
         )}
+
         <FormField
           control={form.control}
           name="message"
@@ -195,4 +199,4 @@ const SendMessage = ({ recipient }: SendMessageProps) => {
   );
 };
 
-export default SendMessage;
+export default SendPrivateMessage;

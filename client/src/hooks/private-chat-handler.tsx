@@ -6,7 +6,7 @@ import { PrivateMessageProps } from "@/types/message";
 
 export const usePrivateChat = (contactId: number) => {
   const { data: fetchedContactInfos } = useGetUserById(contactId);
-  const { data: privateMessages } = useGetPrivateMessage();
+  const { data: privateMessages } = useGetPrivateMessage(contactId);
   const [contactData, setContactData] = useState(fetchedContactInfos);
   const [messages, setMessages] = useState<PrivateMessageProps[]>([]);
   const { socket } = useSocketStore();

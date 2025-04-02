@@ -1,7 +1,7 @@
-import { SearchUser } from "@/components/chat/search-user";
-import { Contact } from "@/components/contact-list";
 import { Icons } from "@/components/Icons";
-import ContactRequest from "@/components/notification/contact-request";
+import { Contact } from "@/components/sidebar/contact/contact-list";
+import { SearchUser } from "@/components/sidebar/contact/search-user";
+import ContactRequest from "@/components/sidebar/notification/contact-request";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {

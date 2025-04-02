@@ -1,8 +1,8 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import JoinPrivateRoomForm from "@/components/room/join-private-room-form";
-import { JoinRoomProps } from "@/types/dialog";
+import JoinPrivateRoomForm from "@/components/sidebar/room/join-private-room-form";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { JoinRoomProps } from "@/types/dialog";
 
 export function JoinRoom({
   headerTitle,

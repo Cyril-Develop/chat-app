@@ -93,7 +93,7 @@ html.dark {
   @apply flex flex-col gap-4;
 }
 
-.page_room {
+.page_conversation {
   @apply bg-muted dark:bg-secondary py-4 px-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)];
 }
 

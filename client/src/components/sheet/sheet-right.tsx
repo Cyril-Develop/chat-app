@@ -1,7 +1,7 @@
 import { CreateRoom } from "@/components/dialog/create-room";
 import { Icons } from "@/components/Icons";
-import { RoomSelector } from "@/components/room/room-selector";
-import { RoomUsers } from "@/components/room/room-users";
+import { RoomSelector } from "@/components/sidebar/room/room-selector";
+import { RoomUsers } from "@/components/sidebar/room/room-users";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {

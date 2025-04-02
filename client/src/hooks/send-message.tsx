@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import { handleApiError } from "@/utils/error-handler";
+import { SendMessageSocketProps } from "@/types/message";
 
 export const useSendMessageMutation = () => {
   const { socket } = useSocketStore();
@@ -15,17 +16,26 @@ export const useSendMessageMutation = () => {
   const { setAuthentication } = useAuthStore();
 
   return useMutation({
-    mutationFn: (formData: FormData) => sendMessage(formData),
-    onSuccess: (data) => {
+    mutationFn: ({
+      formData,
+      roomId,
+    }: {
+      formData: FormData;
+      roomId: number;
+    }) => sendMessage(formData, roomId),
+    onSuccess: (data: SendMessageSocketProps) => {
       socket?.emit("sendMessage", {
+        createdAt: data.createdAt,
         id: data.id,
-        userId: data.user.id,
-        username: data.user.username,
-        profileImage: data.user.profileImage,
+        image: data.image,
         roomId: data.chatRoomId,
         message: data.message,
-        image: data.image,
-        createdAt: data.createdAt,
+        user: {
+          id: data.user.id,
+          username: data.user.username,
+          profileImage: data.user.profileImage,
+        },
+        likes: data.likes,
       });
     },
     onError: (error: ApiError) => {

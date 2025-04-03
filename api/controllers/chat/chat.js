@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 //**********  CREATE CHAT ROOM **********/
 exports.createChatRoom = async (req, res) => {
-  const { name, password } = req.body;
+  const { name, password, description } = req.body;
   const userId = req.userId;
 
   if (!name) {
@@ -23,6 +23,7 @@ exports.createChatRoom = async (req, res) => {
       data: {
         name,
         password: password,
+        description,
         isPrivate: !!password,
         createdBy: userId,
       },
@@ -165,6 +166,7 @@ exports.getChatRoom = async (req, res) => {
       select: {
         id: true,
         name: true,
+        description: true,
         createdBy: true,
         users: {
           select: {

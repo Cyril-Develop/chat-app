@@ -54,7 +54,7 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
           </div>
           <div>
             <h2 className="font-semibold">{contactInfos.username}</h2>
-            <p className="text-sm">{contactInfos.bio}</p>
+            <p className="text-additional-info">{contactInfos.bio}</p>
           </div>
         </div>
         <DropDown />

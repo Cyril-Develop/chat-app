@@ -14,7 +14,7 @@ const useGetRoom = (roomId: number) => {
   const { setAuthentication } = useAuthStore();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["chat", roomId],
+    queryKey: ["room", roomId],
     queryFn: async () => getRoom(roomId),
     enabled: isAuthenticated,
     retry: false,

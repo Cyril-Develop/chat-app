@@ -26,6 +26,7 @@ const CreateRoomForm = ({
     defaultValues: {
       name: "",
       password: "",
+      description: "",
     },
     resolver: zodResolver(RoomFormSchema),
   });
@@ -39,9 +40,9 @@ const CreateRoomForm = ({
   const onSubmit = async () => {
     setLoading(true);
     setApiError("");
-    const { name, password } = form.getValues();
+    const { name, password, description } = form.getValues();
     try {
-      await createRoom.mutateAsync({ name, password });
+      await createRoom.mutateAsync({ name, password, description });
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);
@@ -65,8 +66,24 @@ const CreateRoomForm = ({
               <FormItem>
                 <FormLabel className={cn("text-label")}>Nom</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text"className={cn("text-label")}/>
+                  <Input {...field} type="text" className={cn("text-label")} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className={cn("text-label")}>Description</FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" className={cn("text-label")} />
+                </FormControl>
+                <FormDescription className={cn("text-additional-info")}>
+                  Cette description sera visible par tous les membres du salon.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -76,7 +93,9 @@ const CreateRoomForm = ({
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="password" className={cn("text-label")}>Mot de passe</FormLabel>
+                <FormLabel htmlFor="password" className={cn("text-label")}>
+                  Mot de passe
+                </FormLabel>
                 <FormControl>
                   <ShowPassord
                     showPassword={showPassword}

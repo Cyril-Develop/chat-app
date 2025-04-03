@@ -30,6 +30,7 @@ export const useCreateRoomMutation = () => {
         "createRoom",
         data.id,
         data.name,
+        data.description,
         data.isPrivate,
         data.password,
         data.updatedAt,

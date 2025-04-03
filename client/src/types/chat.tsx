@@ -2,6 +2,7 @@ export interface HeaderRoomProps {
   room: {
     id: number;
     name: string;
+    description?: string;
     createdBy: number;
   };
   currentUser: {

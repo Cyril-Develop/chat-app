@@ -47,8 +47,8 @@ model User {
   sentFriendRequests     FriendRequest[] @relation("SenderFriendRequests")
   receivedFriendRequests FriendRequest[] @relation("ReceiverFriendRequests")
 
-  sentMessages       PrivateMessage[]     @relation("SentPrivateMessages")
-  receivedMessages   PrivateMessage[]     @relation("ReceivedPrivateMessages")
+  sentMessages         PrivateMessage[]     @relation("SentPrivateMessages")
+  receivedMessages     PrivateMessage[]     @relation("ReceivedPrivateMessages")
   likedPrivateMessages PrivateMessageLike[]
 }
 
@@ -93,7 +93,7 @@ model PrivateMessage {
   userId     Int
   receiverId Int
   isRead     Boolean              @default(false)
-  likes      PrivateMessageLike[] 
+  likes      PrivateMessageLike[]
 
   user     User @relation("SentPrivateMessages", fields: [userId], references: [id], onDelete: Cascade)
   receiver User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id], onDelete: Cascade)
@@ -105,20 +105,21 @@ model PrivateMessageLike {
   privateMessage   PrivateMessage @relation(fields: [privateMessageId], references: [id], onDelete: Cascade)
   user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([privateMessageId, userId]) 
+  @@id([privateMessageId, userId])
 }
 
 model ChatRoom {
-  id        Int            @id @default(autoincrement())
-  name      String
-  isPrivate Boolean        @default(false)
-  password  String?        @db.VarChar(255)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  createdBy Int
-  creator   User           @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms", onDelete: Cascade)
-  users     UserChatRoom[]
-  messages  Message[]      @relation("ChatRoomMessages")
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String?
+  isPrivate   Boolean        @default(false)
+  password    String?        @db.VarChar(255)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  createdBy   Int
+  creator     User           @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms", onDelete: Cascade)
+  users       UserChatRoom[]
+  messages    Message[]      @relation("ChatRoomMessages")
 }
 
 model UserChatRoom {

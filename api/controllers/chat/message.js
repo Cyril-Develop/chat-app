@@ -127,19 +127,17 @@ exports.sendRoomMessage = async (req, res) => {
 //********** LIKE MESSAGE **********/
 exports.likeMessage = async (req, res) => {
   const userId = req.userId;
-  // Type définit le type de message (room ou private)
   let { type, messageId } = req.params;
-  messageId = Number(messageId); // Assurer que messageId est un nombre
+  messageId = Number(messageId);
 
   try {
-    let messageExists, likeExists;
+    let messageExists, likeExists, likeData, roomId, senderId, receiverId;
 
     if (type === "room") {
-      // Vérifier si le message existe dans le salon (room)
+      // Vérifier si le message existe dans le chatRoom
       messageExists = await prisma.message.findFirst({
-        where: {
-          id: messageId,
-        },
+        where: { id: messageId },
+        include: { chatRoom: true, user: true },
       });
 
       if (!messageExists) {
@@ -147,6 +145,9 @@ exports.likeMessage = async (req, res) => {
           .status(404)
           .json({ error: "Message introuvable dans ce salon." });
       }
+
+      roomId = messageExists.chatRoom.id;
+      senderId = messageExists.userId; // ID de l'auteur du message
 
       // Vérifier si l'utilisateur a déjà liké ce message
       likeExists = await prisma.messageLike.findFirst({
@@ -159,16 +160,16 @@ exports.likeMessage = async (req, res) => {
           .json({ error: "Vous avez déjà liké ce message." });
       }
 
-      // Ajouter le like
-      await prisma.messageLike.create({
+      // Ajouter le like dans le salon
+      likeData = await prisma.messageLike.create({
         data: { userId, messageId },
+        include: { user: true },
       });
     } else if (type === "private") {
-      // Vérifier si le message existe dans la conversation privée
+      // Vérifier si le message privé existe
       messageExists = await prisma.privateMessage.findFirst({
-        where: {
-          id: messageId,
-        },
+        where: { id: messageId },
+        include: { user: true, receiver: true },
       });
 
       if (!messageExists) {
@@ -176,6 +177,9 @@ exports.likeMessage = async (req, res) => {
           error: "Message privé introuvable dans cette conversation.",
         });
       }
+
+      senderId = messageExists.userId; // ID de l'expéditeur (auteur) du message
+      receiverId = messageExists.receiverId; // ID du destinataire du message
 
       // Vérifier si l'utilisateur a déjà liké ce message
       likeExists = await prisma.privateMessageLike.findFirst({
@@ -188,15 +192,27 @@ exports.likeMessage = async (req, res) => {
           .json({ error: "Vous avez déjà liké ce message." });
       }
 
-      // Ajouter le like
-      await prisma.privateMessageLike.create({
+      // Ajouter le like dans la conversation privée
+      likeData = await prisma.privateMessageLike.create({
         data: { userId, privateMessageId: messageId },
+        include: { user: true },
       });
     } else {
       return res.status(400).json({ error: "Type de message invalide." });
     }
 
-    return res.status(201).json({ message: "Like ajouté avec succès." });
+    // Vérifier que les données sont bien envoyées
+    return res.status(201).json({
+      message: "Like ajouté avec succès.",
+      like: {
+        userId: likeData.user.id,
+        username: likeData.user.username,
+        messageId,
+        senderId: senderId,
+        roomId: roomId || null,
+        receiverId: receiverId || null,
+      },
+    });
   } catch (error) {
     console.error("Erreur lors du like :", error);
     return res.status(500).json({ error: "Erreur interne du serveur." });
@@ -210,9 +226,24 @@ exports.dislikeMessage = async (req, res) => {
   messageId = Number(messageId);
 
   try {
-    let existingLike;
+    let existingLike, messageInfo, roomId, senderId, receiverId;
 
     if (type === "room") {
+      // Récupérer les infos du message avant de supprimer le like
+      const messageData = await prisma.message.findUnique({
+        where: { id: messageId },
+        include: { chatRoom: true, user: true },
+      });
+
+      if (!messageData) {
+        return res
+          .status(404)
+          .json({ error: "Message introuvable dans ce salon." });
+      }
+
+      roomId = messageData.chatRoom.id;
+      senderId = messageData.userId;
+
       // Vérifier si l'utilisateur a liké ce message dans le salon
       existingLike = await prisma.messageLike.findUnique({
         where: {
@@ -221,6 +252,7 @@ exports.dislikeMessage = async (req, res) => {
             userId: userId,
           },
         },
+        include: { user: true },
       });
 
       if (!existingLike) {
@@ -238,7 +270,28 @@ exports.dislikeMessage = async (req, res) => {
           },
         },
       });
+
+      messageInfo = {
+        userId,
+        username: existingLike.user.username,
+        messageId,
+        roomId,
+        senderId,
+      };
     } else if (type === "private") {
+      // Récupérer les infos du message privé avant de supprimer le like
+      const privateMessageData = await prisma.privateMessage.findUnique({
+        where: { id: messageId },
+        include: { user: true, receiver: true },
+      });
+
+      if (!privateMessageData) {
+        return res.status(404).json({ error: "Message privé introuvable." });
+      }
+
+      senderId = privateMessageData.userId;
+      receiverId = privateMessageData.receiverId;
+
       // Vérifier si l'utilisateur a liké ce message privé
       existingLike = await prisma.privateMessageLike.findUnique({
         where: {
@@ -247,6 +300,7 @@ exports.dislikeMessage = async (req, res) => {
             userId: userId,
           },
         },
+        include: { user: true },
       });
 
       if (!existingLike) {
@@ -264,11 +318,22 @@ exports.dislikeMessage = async (req, res) => {
           },
         },
       });
+
+      messageInfo = {
+        userId,
+        username: existingLike.user.username,
+        messageId,
+        senderId,
+        receiverId,
+      };
     } else {
       return res.status(400).json({ error: "Type de message invalide." });
     }
 
-    return res.status(200).json({ message: "Like retiré avec succès." });
+    return res.status(200).json({
+      message: "Like retiré avec succès.",
+      dislike: messageInfo,
+    });
   } catch (error) {
     console.error("Erreur lors du dislike :", error);
     return res.status(500).json({ error: "Erreur interne du serveur." });

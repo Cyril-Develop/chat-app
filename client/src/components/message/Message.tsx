@@ -10,9 +10,12 @@ import { cn } from "@/lib/utils";
 import { MessageProps } from "@/types/message";
 import moment from "moment/min/moment-with-locales";
 import { useEffect, useState } from "react";
-import { useDislikeMessageMutation } from "../../hooks/dislike-message";
+import { useDislikeMessageMutation } from "@/hooks/dislike-message";
+import { useSocketStore } from "@/store/socket.store";
+import { LikeFromSocket } from "@/types/message";
 
 const Message = ({ message, type }: MessageProps) => {
+  const { socket } = useSocketStore();
   const { data: currentUser } = useGetUser();
   const { mutate: deleteMessageInRoom } = useDeleteMessageMutation();
   const { mutate: deletePrivateMessage } = useDeletePrivateMessageMutation();
@@ -54,6 +57,44 @@ const Message = ({ message, type }: MessageProps) => {
   const role = currentUser?.role;
   const isMyMessage = message.user.id === currentUser?.id;
   const canDeleteMessage = isMyMessage || role === "ADMIN";
+
+  const handleGetLike = (data: LikeFromSocket) => {
+    // Vérifier si le like reçu concerne ce message
+    if (data.messageId === message.id) {
+      setLikes((prevLikes) => {
+        // Si l'utilisateur a déjà liké, on évite de le dupliquer
+        const alreadyLiked = prevLikes.some(
+          (like) => like.userId === data.userId
+        );
+        if (!alreadyLiked) {
+          return [
+            ...prevLikes,
+            { userId: data.userId, username: data.username },
+          ];
+        }
+        return prevLikes;
+      });
+    }
+  };
+
+  const handleRemoveLike = (data: LikeFromSocket) => {
+    // Vérifier si le like reçu concerne ce message
+    if (data.messageId === message.id) {
+      setLikes((prevLikes) =>
+        prevLikes.filter((like) => like.userId !== data.userId)
+      );
+    }
+  };
+
+  useEffect(() => {
+    socket?.on("messageLiked", handleGetLike);
+    socket?.on("messageDisliked", handleRemoveLike);
+
+    return () => {
+      socket?.off("messageLiked", handleGetLike);
+      socket?.off("messageDisliked", handleRemoveLike);
+    };
+  }, [socket]);
 
   return (
     <div

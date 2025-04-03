@@ -1,7 +1,8 @@
 export interface Room {
   id: number;
   name: string;
-  isPrivate: boolean;
+  description?: string;
+  isPrivate?: boolean;
   password: string;
   updatedAt: string;
   createdAt: string;
@@ -35,6 +36,7 @@ export interface RoomProviderProps {
 export interface CreateRoomProps {
   name: string;
   password?: string;
+  description?: string;
 }
 
 export interface JoinRoomProps {

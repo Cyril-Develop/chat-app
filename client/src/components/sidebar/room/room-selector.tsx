@@ -20,7 +20,7 @@ import { Room } from "@/types/room";
 import { cn } from "@/lib/utils";
 
 export function RoomSelector() {
-  const { data } = useGetRooms();
+  const { data: fetchedRooms } = useGetRooms();
   const { setRoom, room } = useRoomStore();
   const { id: currentRoomId, name: currentRoomName } = room || {};
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -35,16 +35,17 @@ export function RoomSelector() {
   };
 
   useEffect(() => {
-    if (data) {
-      setRooms(data);
+    if (fetchedRooms) {
+      setRooms(fetchedRooms);
     }
-  }, [data]);
+  }, [fetchedRooms]);
 
   useEffect(() => {
     socket?.on("getRooms", (data) => {
       setNewRoom({
         id: data.id,
         name: data.name,
+        description: data.description,
         isPrivate: data.isPrivate,
         password: data.password,
         updatedAt: data.updatedAt,
@@ -70,7 +71,7 @@ export function RoomSelector() {
     }
   }, [newRoom]);
 
-  const roomsFound = data?.length > 0;
+  const roomsFound = fetchedRooms?.length > 0;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

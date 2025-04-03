@@ -150,6 +150,7 @@ export const ProfileFormSchema = z.object({
 export const RoomFormSchema = z.object({
   name: nameRoomSchema,
   password: z.string().optional(),
+  description : z.string().optional(),
 });
 
 export const ForgotPasswordFormSchema = z.object({

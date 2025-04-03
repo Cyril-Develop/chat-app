@@ -13,7 +13,7 @@ const useGetRooms = () => {
   const queryClient = useQueryClient();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["chat"],
+    queryKey: ["rooms"],
     queryFn: async () => getRooms(),
     enabled: isAuthenticated,
     retry: false,

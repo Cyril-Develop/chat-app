@@ -13,6 +13,15 @@ export interface MessageProps {
   type: "private" | "room";
 }
 
+export interface LikeFromSocket {
+  userId: number;
+  username: string;
+  messageId: number;
+  roomId?: number;
+  receiverId?: number;
+  senderId?: number;
+}
+
 export interface HandleEmojiPickerProps {
   form: UseFormReturn<any>;
   setOpenEmoji: (open: boolean) => void;

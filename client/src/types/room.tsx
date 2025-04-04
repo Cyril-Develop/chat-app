@@ -12,7 +12,7 @@ export interface Room {
 export interface RoomListProps {
   heading: string;
   rooms: Room[];
-  value: string;
+  roomName: string;
   onSelect: (room: Room) => void;
 }
 
@@ -29,7 +29,7 @@ export interface JoinPrivateRoomFormProps {
 
 export interface RoomProviderProps {
   data: Room[];
-  value: string;
+  roomName: string;
   setOpen: (open: boolean) => void;
 }
 

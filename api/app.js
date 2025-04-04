@@ -32,16 +32,12 @@ app.use("/images", express.static(path.join(__dirname, "/images")));
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chat");
-// const messageRoomRoutes = require("./routes/message-room");
-// const messagePrivateRoutes = require("./routes/message-private");
 const emailRoutes = require("./routes/email");
 
 // Using routes
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
-// app.use("/room", messageRoomRoutes);
-// app.use("/private/message", messagePrivateRoutes);
 app.use("/email", emailRoutes);
 
 module.exports = app;

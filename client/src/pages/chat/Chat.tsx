@@ -14,9 +14,9 @@ import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useRef, useState } from "react";
-
 import useWindowWidth from "@/hooks/window-width";
 import { UserInfos, HandleUserStatusChangedProps } from "@/types/user";
+import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
 
 const Chat = () => {
   const { room } = useRoomStore();
@@ -51,7 +51,7 @@ const Chat = () => {
     }
   }, [room, socket, currentUser]);
 
-  const [usersInRoom, setUsersInRoom] = useState<UserInfos[]>([]);
+  const { usersInRoom, setUsersInRoom, updateUserInRoom } = useRoomStore();
   const windowWidth = useWindowWidth();
 
   useEffect(() => {
@@ -67,26 +67,11 @@ const Chat = () => {
       userId,
       visible,
     }: HandleUserStatusChangedProps) => {
-      setUsersInRoom((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, visible } : user
-        )
-      );
+      updateUserInRoom({ id: userId, visible });
     };
 
-    // Mise à jour des informations utilisateur (nom, photo, etc.)
     const handleUpdatedUserInfos = (updatedUser: UserInfos) => {
-      setUsersInRoom((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === updatedUser.id
-            ? {
-                ...user,
-                username: updatedUser.username,
-                profileImage: updatedUser.profileImage,
-              }
-            : user
-        )
-      );
+      updateUserInRoom(updatedUser);
     };
 
     socket?.on("getUserInRoom", handleUserInRoom);
@@ -144,7 +129,7 @@ const Chat = () => {
           <CreateRoom
             btnTrigger="Créer un salon"
             headerTitle="Créer un salon"
-            headerDescription="Saisissez le nom du salon."
+            headerDescription="Saisissez les informations du salon."
           />
           <RoomSelector />
         </div>
@@ -152,13 +137,10 @@ const Chat = () => {
           <div className="chat_aside_container">
             <div className="flex justify-between">
               <h2 className="text-title">
-                {usersInRoom.filter((user) => user.visible === true).length ===
-                1
-                  ? "Membre"
-                  : "Membres"}
+                {getVisibleUsersLabel(usersInRoom)}
               </h2>
               <span className="text-additional-info self-end mb-1">
-                {usersInRoom.filter((user) => user.visible === true).length}
+                {getVisibleUsersCount(usersInRoom)}
               </span>
             </div>
             <Separator />

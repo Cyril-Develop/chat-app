@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PrivateChatHeaderProps } from "@/types/chat";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import DropDown from "@/components/chat/private-chat-menu";
+import PrivateChatMenu from "@/components/chat/private-chat-menu";
 import StatutIndicator from "@/components/statut-indicator";
 import { useSocketStore } from "@/store/socket.store";
 import { HandleUserStatusChangedProps } from "@/types/user";
@@ -57,7 +57,7 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
             <p className="text-additional-info">{contactInfos.bio}</p>
           </div>
         </div>
-        <DropDown />
+        <PrivateChatMenu />
       </div>
       <Separator />
     </>

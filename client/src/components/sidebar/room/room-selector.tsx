@@ -108,7 +108,7 @@ export function RoomSelector() {
 
               <RoomProvider
                 data={rooms}
-                value={currentRoomName ?? ""}
+                roomName={currentRoomName ?? ""}
                 setOpen={setOpen}
               />
             </CommandList>

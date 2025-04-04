@@ -1,3 +1,5 @@
+import { UserInfos } from "@/types/user";
+
 export interface UserState {
   token: string | null;
   statut: "online" | "spy";
@@ -14,7 +16,7 @@ export interface AuthState {
   visible: boolean;
   setAuthentication: (
     isAuthenticated: boolean,
-    user: { id: number; role: "USER" | "ADMIN" | "GUEST" } | null,
+    user: { id: number; role: "USER" | "ADMIN" | "GUEST" } | null
   ) => void;
   setVisible: (visible: boolean) => void;
   initializeAuth: () => void;
@@ -26,6 +28,9 @@ export interface Room {
 }
 
 export interface RoomState {
-  room: Room | null;
-  setRoom: (room: Room | null) => void;
+  room: { id: number; name: string } | null;
+  setRoom: (room: { id: number; name: string } | null) => void;
+  usersInRoom: UserInfos[];
+  setUsersInRoom: (users: UserInfos[]) => void;
+  updateUserInRoom: (user: Partial<UserInfos> & { id: number }) => void;
 }

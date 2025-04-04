@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useRoomStore } from "@/store/room.store";
+import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
 
 export function SheetRight() {
-  const { room } = useRoomStore();
+  const { room, usersInRoom } = useRoomStore();
 
   return (
     <Sheet>
@@ -39,20 +40,27 @@ export function SheetRight() {
             <CreateRoom
               btnTrigger="Créer un salon"
               headerTitle="Créer un salon"
-              headerDescription="Saisissez le nom du salon."
+              headerDescription="Saisissez les informations du salon."
             />
             <RoomSelector />
           </div>
         </SheetHeader>
         {room && (
           <SheetHeader className={cn("text-left mt-4")}>
-            <SheetTitle className={cn("text-title")}>Utilisateurs</SheetTitle>
+            <SheetTitle className={cn("text-title flex justify-between")}>
+              {getVisibleUsersLabel(usersInRoom)}
+              <span className="text-additional-info self-end mb-1">
+                {getVisibleUsersCount(usersInRoom)}
+              </span>
+            </SheetTitle>
             <Separator />
             <SheetDescription className="text-description">
-              Utilisateurs présents dans le salon.
+              {getVisibleUsersCount(usersInRoom) === 1
+                ? "Membre du salon."
+                : "Membres du salon."}
             </SheetDescription>
 
-            <RoomUsers />
+            <RoomUsers usersInRoom={usersInRoom} />
           </SheetHeader>
         )}
       </SheetContent>

@@ -82,7 +82,8 @@ const CreateRoomForm = ({
                   <Input {...field} type="text" className={cn("text-label")} />
                 </FormControl>
                 <FormDescription className={cn("text-additional-info")}>
-                  Cette description sera visible par tous les membres du salon.
+                  Si vous saisissez une description, elle sera visible par tous
+                  les membres.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

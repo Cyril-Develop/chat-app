@@ -1,4 +1,4 @@
-export interface HeaderRoomProps {
+export interface RoomHeaderProps {
   room: {
     id: number;
     name: string;
@@ -8,6 +8,15 @@ export interface HeaderRoomProps {
   currentUser: {
     id: number;
     role: string;
+  };
+}
+
+export interface RoomHeaderMenuProps {
+  room: {
+    id: number;
+    name: string;
+    description?: string;
+    createdBy: number;
   };
 }
 

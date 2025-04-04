@@ -7,7 +7,7 @@ import { useRoomStore } from "@/store/room.store";
 import { Room, RoomProviderProps } from "@/types/room";
 import { useEffect, useState } from "react";
 
-const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
+const RoomProvider = ({ data, roomName, setOpen }: RoomProviderProps) => {
   const [selectedPrivateRoom, setSelectedPrivateRoom] = useState<{
     id: number;
     name: string;
@@ -58,7 +58,7 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
           }
           rooms={publicRooms}
           onSelect={handlePublicRoomSelect}
-          value={value}
+          roomName={roomName}
         />
       )}
       <CommandSeparator />
@@ -69,7 +69,7 @@ const RoomProvider = ({ data, value, setOpen }: RoomProviderProps) => {
           }
           rooms={privateRooms}
           onSelect={handlePrivateRoomSelect}
-          value={value}
+          roomName={roomName}
         />
       )}
       {selectedPrivateRoom && (

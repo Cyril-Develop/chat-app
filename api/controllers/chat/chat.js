@@ -35,6 +35,55 @@ exports.createChatRoom = async (req, res) => {
   }
 };
 
+//**********  UPDATE DESCRIPTION CHAT ROOM **********/
+exports.updateChatRoom = async (req, res) => {
+  let { roomId } = req.params;
+  roomId = parseInt(roomId);
+  const { description } = req.body;
+  const userId = req.userId;
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const chatRoom = await prisma.chatRoom.findUnique({
+      where: { id: roomId },
+      select: {
+        id: true,
+        name: true,
+        createdBy: true,
+      },
+    });
+
+    if (!chatRoom) {
+      return res.status(404).json({
+        error: "Le salon de discussion n'existe pas.",
+      });
+    }
+
+    if (chatRoom.createdBy !== userId && user.role !== "ADMIN") {
+      return res.status(403).json({
+        error: "Vous n'êtes pas autorisé à modifier ce salon.",
+      });
+    }
+
+    const updatedChatRoom = await prisma.chatRoom.update({
+      where: { id: roomId },
+      data: { description },
+    });
+    res.status(200).json({
+      message: "Description du salon mise à jour avec succès.",
+      chatRoom: updatedChatRoom,
+    });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la mise à jour de la description du salon:",
+      error
+    );
+    res.status(500).json({
+      error: "Erreur lors de la mise à jour de la description du salon.",
+    });
+  }
+};
+
 //**********  JOIN CHAT ROOM **********/
 exports.joinChatRoom = async (req, res) => {
   const { roomId, password } = req.body;

@@ -28,9 +28,13 @@ export interface Room {
 }
 
 export interface RoomState {
-  room: { id: number; name: string } | null;
-  setRoom: (room: { id: number; name: string } | null) => void;
+  room: Room | null;
+  setRoom: (room: Room | null) => void;
   usersInRoom: UserInfos[];
   setUsersInRoom: (users: UserInfos[]) => void;
   updateUserInRoom: (user: Partial<UserInfos> & { id: number }) => void;
+  // rooms: Room[];
+  // setRooms: (rooms: Room[]) => void;
+  // updateRoomDescription: (roomId: number, description: string) => void;
+  // initializeRooms: () => void;
 }

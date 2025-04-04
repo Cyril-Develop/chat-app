@@ -11,14 +11,11 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { RoomHeaderMenuProps } from "@/types/chat";
 import { useDeleteRoomMutation } from "@/hooks/delete-room";
+import { UpdateRoom } from "../dialog/update-room";
 
 const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
   const { mutate: deleteRoom } = useDeleteRoomMutation();
   const [open, setOpen] = useState(false);
-
-  const handleUpdateDescription = () => {
-    // A faire
-  };
 
   const handleDeleteRoom = () => {
     deleteRoom(room.id);
@@ -35,7 +32,7 @@ const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className={cn(" mt-1")}>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={handleUpdateDescription}>
+            <DropdownMenuItem onClick={() => setOpen(true)}>
               <Icons.pen width={18} height={18} />
               <span>Modifier la description</span>
             </DropdownMenuItem>
@@ -46,6 +43,15 @@ const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+      {open && (
+        <UpdateRoom
+          headerTitle="Modifier le salon"
+          headerDescription="Mettre à jour la description du salon."
+          isOpen={open}
+          setIsOpen={setOpen}
+          roomDescription={room.description}
+        />
+      )}
     </>
   );
 };

@@ -16,62 +16,60 @@ import useGetRooms from "@/hooks/get-rooms";
 import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
 import { useSocketStore } from "@/store/socket.store";
-import { Room } from "@/types/room";
 import { cn } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function RoomSelector() {
-  const { data: fetchedRooms } = useGetRooms();
+  const { data: fetchedRooms, isLoading } = useGetRooms();
   const { setRoom, room } = useRoomStore();
   const { id: currentRoomId, name: currentRoomName } = room || {};
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [newRoom, setNewRoom] = useState<Room | null>(null);
   const { socket } = useSocketStore();
+  const queryClient = useQueryClient();
 
-  //Permet de gérer l'état de la popover, Radix UI, où un Popover se ferme immédiatement lorsqu'il est utilisé à l'intérieur d'un Dialog ou lorsqu'il y a des conflits d'auto-focus
+  // État local pour la gestion du Popover
   const [open, setOpen] = useState(false);
-
   const togglePopover = () => {
     setOpen((prev) => !prev);
   };
 
+  // Écouter les événements Socket.IO pour les mises à jour en temps réel
   useEffect(() => {
-    if (fetchedRooms) {
-      setRooms(fetchedRooms);
-    }
-  }, [fetchedRooms]);
+    if (!socket) return;
 
-  useEffect(() => {
-    socket?.on("getRooms", (data) => {
-      setNewRoom({
-        id: data.id,
-        name: data.name,
-        description: data.description,
-        isPrivate: data.isPrivate,
-        password: data.password,
-        updatedAt: data.updatedAt,
-        createdAt: data.createdAt,
-        createdBy: data.createdBy,
-      });
-    });
+    // Nouvelle room créée
+    const handleRoomCreated = () => {
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    };
 
-    // Si une salle est supprimée, on la retire de la liste
-    socket?.on("deleteRoom", (deletedRoomId) => {
+    // Room supprimée
+    const handleRoomDeleted = (deletedRoomId: number) => {
+      // Si c'est la room active, la réinitialiser
       if (currentRoomId === deletedRoomId) {
         setRoom(null);
       }
-      setRooms((prevRoom) =>
-        prevRoom.filter((room) => room.id !== deletedRoomId)
-      );
-    });
-  }, [room, socket]);
 
-  useEffect(() => {
-    if (newRoom) {
-      setRooms((prev) => [...prev, newRoom]);
-    }
-  }, [newRoom]);
+      // Invalider le cache pour forcer un refetch
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    };
 
-  const roomsFound = fetchedRooms?.length > 0;
+    // On met à jour la room active et rafraîchit la liste des rooms
+    const handleRoomUpdated = (roomId: number) => {
+      queryClient.invalidateQueries({ queryKey: ["room", roomId] });
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    };
+
+    socket.on("roomCreated", handleRoomCreated);
+    socket.on("roomUpdated", handleRoomUpdated);
+    socket.on("deleteRoom", handleRoomDeleted);
+
+    return () => {
+      socket.off("roomCreated", handleRoomCreated);
+      socket.off("roomUpdated", handleRoomUpdated);
+      socket.off("deleteRoom", handleRoomDeleted);
+    };
+  }, [socket, currentRoomId, setRoom, queryClient]);
+
+  const roomsFound = fetchedRooms && fetchedRooms.length > 0;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -82,18 +80,20 @@ export function RoomSelector() {
           aria-label="Voir les salons"
           aria-expanded={open}
           className={cn("w-[200px] justify-between p-3")}
-          disabled={!roomsFound}
+          disabled={isLoading || !roomsFound}
           onClick={togglePopover}
         >
           {currentRoomName
             ? currentRoomName
             : roomsFound
-            ? `Rechercher un salon (${rooms.length})`
-            : "Rechercher un salon"}
-
+            ? `Rechercher un salon (${fetchedRooms.length})`
+            : isLoading
+            ? "Chargement..."
+            : "Aucun salon"}
           {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>
+
       {roomsFound && (
         <PopoverContent
           className={cn("p-0 w-[200px]")}
@@ -105,9 +105,8 @@ export function RoomSelector() {
               <CommandEmpty className={cn("error p-3")}>
                 Aucun salon trouvé.
               </CommandEmpty>
-
               <RoomProvider
-                data={rooms}
+                rooms={fetchedRooms}
                 roomName={currentRoomName ?? ""}
                 setOpen={setOpen}
               />

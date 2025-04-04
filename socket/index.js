@@ -83,35 +83,28 @@ io.on("connection", (socket) => {
   });
 
   //********** CREATE ROOM **********/
-  socket.on(
-    "createRoom",
-    (
-      id,
-      name,
-      description,
-      isPrivate,
-      password,
-      updatedAt,
-      createdAt,
-      createdBy
-    ) => {
-      // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
-      if (createdBy !== socket.user.id) {
-        return;
-      }
-      socket.join(id);
-      io.emit("getRooms", {
-        id,
-        name,
-        description,
-        isPrivate,
-        password,
-        updatedAt,
-        createdAt,
-        createdBy,
-      });
+  socket.on("createRoom", (id, createdBy) => {
+    // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
+    if (createdBy !== socket.user.id) {
+      return;
     }
-  );
+    socket.join(id);
+
+    // Émettre simplement l'événement pour invalider le cache avec tanstack-query
+    io.emit("roomCreated");
+  });
+
+  //********** UPDATE ROOM **********/
+  socket.on("updateRoom", (id, createdBy) => {
+    // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
+    if (createdBy !== socket.user.id) {
+      return;
+    }
+    socket.join(id);
+
+    // Émettre simplement l'événement pour invalider le cache avec tanstack-query
+    io.emit("roomUpdated",  id);
+  });
 
   //********** JOIN ROOM **********/
   socket.on("joinRoom", (roomId, id, username, profileImage, visible) => {

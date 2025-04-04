@@ -25,6 +25,7 @@ import Terms from "@/pages/legal/Terms";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
 import { useNotificationStore } from "@/store/notification.store";
+import { useRoomStore } from "@/store/room.store";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   // Afficher les notifications peu importe la page sur laquelle l'utilisateur se trouve
@@ -42,6 +43,7 @@ function App() {
   const { connectSocket, disconnectSocket } = useSocketStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
+  //const initializeRooms = useRoomStore((state) => state.initializeRooms);
   const initializeNotifications = useNotificationStore(
     (state) => state.initializeNotifications
   );
@@ -53,6 +55,7 @@ function App() {
     if (isAuthenticated) {
       initializeAuth();
       initializeNotifications();
+      //initializeRooms();
     }
   }, [isAuthenticated, initializeAuth, initializeNotifications]);
 

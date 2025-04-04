@@ -19,6 +19,7 @@ export interface RoomListProps {
 export interface CreateRoomFormProps {
   btnSubmit: string;
   onSubmitSuccess: () => void;
+  roomDescription?: string;
 }
 
 export interface JoinPrivateRoomFormProps {
@@ -28,7 +29,7 @@ export interface JoinPrivateRoomFormProps {
 }
 
 export interface RoomProviderProps {
-  data: Room[];
+  rooms: Room[];
   roomName: string;
   setOpen: (open: boolean) => void;
 }
@@ -37,6 +38,11 @@ export interface CreateRoomProps {
   name: string;
   password?: string;
   description?: string;
+}
+
+export interface updateRoomDescriptionProps {
+  roomId: number;
+  description: string;
 }
 
 export interface JoinRoomProps {

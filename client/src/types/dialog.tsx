@@ -4,6 +4,14 @@ export interface CreateRoomProps {
   headerDescription: string;
 }
 
+export interface UpdateRoomProps {
+  headerTitle: string;
+  headerDescription: string;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  roomDescription?: string;
+}
+
 export interface DialogHeaderProps {
   title: string;
   description: string;

@@ -7,7 +7,7 @@ import { useRoomStore } from "@/store/room.store";
 import { Room, RoomProviderProps } from "@/types/room";
 import { useEffect, useState } from "react";
 
-const RoomProvider = ({ data, roomName, setOpen }: RoomProviderProps) => {
+const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
   const [selectedPrivateRoom, setSelectedPrivateRoom] = useState<{
     id: number;
     name: string;
@@ -46,8 +46,8 @@ const RoomProvider = ({ data, roomName, setOpen }: RoomProviderProps) => {
     }
   };
 
-  const privateRooms = data.filter((room) => room.isPrivate);
-  const publicRooms = data.filter((room) => !room.isPrivate);
+  const privateRooms = rooms.filter((room) => room.isPrivate);
+  const publicRooms = rooms.filter((room) => !room.isPrivate);
 
   return (
     <>

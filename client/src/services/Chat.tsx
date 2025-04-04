@@ -82,6 +82,42 @@ export const createRoom = async (data: CreateRoomProps) => {
   }
 };
 
+//********** UPDATE ROOM DESCRIPTION  **********/
+export const updateRoomDescription = async (
+  roomId: number,
+  description: string
+) => {
+  try {
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_REACT_APP_BASE_URL
+      }/chat/room/${roomId}/description`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ description }),
+        credentials: "include",
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 //********** JOIN ROOM OR PRIVATE DISCUSSION  **********/
 export const joinChat = async (data: JoinRoomProps) => {
   try {

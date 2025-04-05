@@ -1,53 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";
-import useGetUserById from "@/hooks/get-user-by-id";
-import useGetPrivateMessage from "@/hooks/get-private-messages";
-import { PrivateMessageProps } from "@/types/message";
+import useGetUserById from "@/hooks/api/user/get-user-by-id";
+import useGetPrivateMessage from "@/hooks/api/messages/get-private-messages";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const usePrivateChat = (contactId: number) => {
-  const { data: fetchedContactInfos } = useGetUserById(contactId);
+  const { data: fetchedContactInfos, isLoading } = useGetUserById(contactId);
   const { data: privateMessages } = useGetPrivateMessage(contactId);
-  const [contactData, setContactData] = useState(fetchedContactInfos);
-  const [messages, setMessages] = useState<PrivateMessageProps[]>([]);
   const { socket } = useSocketStore();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (fetchedContactInfos) setContactData(fetchedContactInfos);
-  }, [fetchedContactInfos]);
-
-  useEffect(() => {
-    if (privateMessages) setMessages(privateMessages);
-  }, [privateMessages]);
-
-  // Fonction pour gérer un nouveau message reçu
-  const handleGetMessage = (data: PrivateMessageProps) => {
-    setMessages((prev) => [...prev, data]);
+  // --- SOCKET HANDLERS ---
+  const handleGetMessage = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["messages-private", contactId],
+    });
   };
 
-  // Fonction pour mettre à jour les infos du contact
-  const handleUpdatedUserInfos = (user: any) => {
-    if (user.id === contactId) setContactData(user);
+  const handleUpdatedUserInfos = (userId: number) => {
+    // On met à jour les messages et les infos utilisateur
+    queryClient.invalidateQueries({
+      queryKey: ["messages-private", contactId],
+    });
+    queryClient.invalidateQueries({ queryKey: ["user", userId] });
   };
 
-  // Fonction pour supprimer un message de la liste
-  const handleDeleteMessage = (messageId: number) => {
-    setMessages((prevMessages) =>
-      prevMessages.filter((msg) => msg.id !== messageId)
-    );
+  const handleDeleteMessage = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["messages-private", contactId],
+    });
   };
 
-  // Gestion des événements Socket
+  // --- SOCKET SETUP ---
   useEffect(() => {
-    socket?.on("updatedUserInfos", handleUpdatedUserInfos);
     socket?.on("getPrivateMessage", handleGetMessage);
+    socket?.on("updatedUserInfos", handleUpdatedUserInfos);
     socket?.on("deletePrivateMessage", handleDeleteMessage);
 
     return () => {
-      socket?.off("updatedUserInfos", handleUpdatedUserInfos);
       socket?.off("getPrivateMessage", handleGetMessage);
+      socket?.off("updatedUserInfos", handleUpdatedUserInfos);
       socket?.off("deletePrivateMessage", handleDeleteMessage);
     };
-  }, [socket]);
+  }, [socket, contactId]);
 
-  return { contactData, messages, isLoading: !fetchedContactInfos };
+  return {
+    fetchedContactInfos,
+    privateMessages,
+    isLoading,
+  };
 };

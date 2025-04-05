@@ -1,14 +1,14 @@
 import Alert from "@/components/Alert";
 import { AccountForm } from "@/components/settings/account-form";
+import BlockedUsers from "@/components/settings/blocked-users";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import useGetUser from "@/hooks/get-current-user";
-import { useDeleteAccountMutation } from "@/hooks/delete-account";
-import BlockedUsers from "@/components/settings/blocked-users";
-import useGetBlockedUsers from "@/hooks/get-blocked-users";
+import { useDeleteAccountMutation } from "@/hooks/api/user/delete-account";
+import useGetUser from "@/hooks/api/user/get-current-user";
+import useGetBlockedUsers from "@/hooks/api/user/get-blocked-users";
 import { useSocketStore } from "@/store/socket.store";
-import { useCallback, useEffect, useState } from "react";
 import { BlockedUsersState } from "@/types/user";
+import { useCallback, useEffect, useState } from "react";
 
 export default function SettingsAccountPage() {
   const { data: currentUser } = useGetUser();

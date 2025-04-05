@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useEditNotificationMutation } from "@/hooks/edit-notification";
+import { useEditNotificationMutation } from "@/hooks/api/user/edit-notification";
 import { notificationsFormSchema } from "@/schema/main";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

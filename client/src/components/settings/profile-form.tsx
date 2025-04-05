@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { useEditUserMutation } from "@/hooks/edit-profil";
+import { useEditUserMutation } from "@/hooks/api/user/edit-profil";
 import { ProfileFormSchema } from "@/schema/main";
 import { ProfileFormProps, ProfileFormValues } from "@/types/setting";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";

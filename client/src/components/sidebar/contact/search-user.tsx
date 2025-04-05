@@ -15,12 +15,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import UserThumbnail from "@/components/user-thumbnail";
-import useGetUsers from "@/hooks/get-users";
+import useGetUsers from "@/hooks/api/user/get-users";
+import { useSendRequestMutation } from "@/hooks/api/user/send-request";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { useSocketStore } from "@/store/socket.store";
-import { useSendRequestMutation } from "@/hooks/send-request";
 import { FriendList, SearchUserProps, Users } from "@/types/chat";
+import { useState } from "react";
 import { useFriendRequestUpdates } from "@/hooks/friend-request-handler";
 
 export const SearchUser = ({
@@ -33,14 +32,10 @@ export const SearchUser = ({
   const [contacts, setContacts] = useState<Users[]>([]);
   const { data: users } = useGetUsers();
   const userId = currentUser?.id;
-  const sendRequestMutation = useSendRequestMutation();
-  const { socket } = useSocketStore();
-  const {
-    updateUserRelationship,
-    handleRemoveFriend,
-    addFriendRequest,
-    removeFriendRequest,
-  } = useFriendRequestUpdates();
+  const { mutate: sendRequestMutation } = useSendRequestMutation();
+
+  // Écouter les mises à jour des demandes d'amis
+  useFriendRequestUpdates();
 
   // Rechercher un utilisateur
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,31 +53,9 @@ export const SearchUser = ({
     }
   };
 
-  useEffect(() => {
-    socket?.on("updatedRelationship", (data) => updateUserRelationship(data));
-    socket?.on("removedRelationship", (data) => handleRemoveFriend(data));
-    socket?.on("receiveFriendRequest", (data) => addFriendRequest(data));
-    socket?.on("friendRequestSent", (data) => addFriendRequest(data));
-    socket?.on("friendRequestRejected", (data) => removeFriendRequest(data));
-
-    return () => {
-      socket?.off("updatedRelationship", updateUserRelationship);
-      socket?.off("removedRelationship", handleRemoveFriend);
-      socket?.off("receiveFriendRequest", addFriendRequest);
-      socket?.off("friendRequestSent", addFriendRequest);
-      socket?.off("friendRequestRejected", removeFriendRequest);
-    };
-  }, [
-    socket,
-    updateUserRelationship,
-    handleRemoveFriend,
-    addFriendRequest,
-    removeFriendRequest,
-  ]);
-
   // Ajouter un ami
   const handleAddFriend = (contactId: number) => {
-    sendRequestMutation.mutate(contactId);
+    sendRequestMutation(contactId);
     setQuery("");
   };
 
@@ -93,16 +66,12 @@ export const SearchUser = ({
 
   // Vérifier si une demande d'ami est en cours (envoyée ou reçue)
   const isRequestPending = (contact: Users) => {
-    // Vérifier si l'utilisateur courant a envoyé une demande à ce contact
     const hasSentRequest = contact.sentFriendRequests?.some(
       (request) => request.receiver.id === userId
     );
-
-    // Vérifier si ce contact a envoyé une demande à l'utilisateur courant
     const hasReceivedRequest = contact.receivedFriendRequests?.some(
       (request) => request.sender.id === userId
     );
-
     return hasSentRequest || hasReceivedRequest;
   };
 

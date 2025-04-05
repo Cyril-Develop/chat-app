@@ -14,11 +14,8 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { SheetLeftProps } from "@/types/chat";
-import { useState } from "react";
 
 export function SheetLeft({ currentUser }: SheetLeftProps) {
-  const [showNotification, setShowNotification] = useState(false);
-
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -39,21 +36,9 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
         </SheetHeader>
         <div className="flex flex-col gap-4 pt-2">
           {currentUser && <SearchUser currentUser={currentUser} />}
-          <Contact currentUser={currentUser} />
+          <Contact />
+          <ContactRequest currentUser={currentUser} />
         </div>
-        {showNotification && (
-          <SheetHeader className={cn("text-left mt-4")}>
-            <SheetTitle className={cn("text-title")}>Notifications</SheetTitle>
-            <Separator />
-            <SheetDescription className="text-description pb-2">
-              Acceptez ou refusez les demandes de contact.
-            </SheetDescription>
-          </SheetHeader>
-        )}
-        <ContactRequest
-          currentUser={currentUser}
-          setShowNotification={setShowNotification}
-        />
       </SheetContent>
     </Sheet>
   );

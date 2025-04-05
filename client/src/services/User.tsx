@@ -73,6 +73,32 @@ export const getCurrentUser = async () => {
   }
 };
 
+export const getFriends = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/friends`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const getUserById = async (userId: number) => {
   try {
     const response = await fetch(

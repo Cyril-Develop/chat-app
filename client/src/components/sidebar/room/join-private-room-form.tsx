@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useJoinRoomMutation } from "@/hooks/join-chat";
+import { useJoinRoomMutation } from "@/hooks/api/chat/join-chat";
 import { RoomPasswordSchema } from "@/schema/main";
 import { JoinPrivateRoomFormProps } from "@/types/room";
 import { zodResolver } from "@hookform/resolvers/zod";

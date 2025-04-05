@@ -1,6 +1,6 @@
 import NotificationForm from "@/components/settings/notification-form";
 import { Separator } from "@/components/ui/separator";
-import useGetUser from "@/hooks/get-current-user";
+import useGetUser from "@/hooks/api/user/get-current-user";
 
 export default function SettingsNotificationsPage() {
   const { data: currentUser } = useGetUser();

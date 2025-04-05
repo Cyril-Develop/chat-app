@@ -54,17 +54,6 @@ exports.getAllUsers = async (req, res) => {
             },
           },
         },
-        friendOf: {
-          select: {
-            user: {
-              select: {
-                id: true,
-                username: true,
-                profileImage: true,
-              },
-            },
-          },
-        },
         receivedFriendRequests: {
           where: {
             status: "pending",
@@ -87,6 +76,28 @@ exports.getAllUsers = async (req, res) => {
           select: {
             id: true,
             receiver: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+        },
+        blockedBy: {
+          select: {
+            blocked: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+              },
+            },
+          },
+        },
+        blockedUsers: {
+          select: {
+            blocker: {
               select: {
                 id: true,
                 username: true,
@@ -295,6 +306,49 @@ exports.getUserById = async (req, res) => {
     }
   } catch (err) {
     console.error("Error getting user:", err);
+    res.status(500).json({
+      error: "Une erreur est survenue... Veuillez réessayer plus tard",
+    });
+  }
+};
+
+//********** GET FRIENDS **********/
+exports.getFriends = async (req, res) => {
+  const userId = req.userId;
+  try {
+    const friends = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        friends: {
+          select: {
+            friend: {
+              select: {
+                id: true,
+                username: true,
+                profileImage: true,
+                createdAt: true,
+                bio: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (friends) {
+      const friendsList = [];
+      friends.friends.forEach((f) => {
+        if (!friendsList.some((friend) => friend.id === f.friend.id)) {
+          friendsList.push(f.friend);
+        }
+      });
+      res.status(200).json(friendsList);
+    } else {
+      res.status(404).json({ error: "Aucun ami trouvé." });
+    }
+  } catch (err) {
+    console.error("Error getting friends:", err);
     res.status(500).json({
       error: "Une erreur est survenue... Veuillez réessayer plus tard",
     });
@@ -730,12 +784,12 @@ exports.acceptFriendRequest = async (req, res) => {
 
     const user1 = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true }, 
+      select: { id: true },
     });
 
     const user2 = await prisma.user.findUnique({
       where: { id: contactId },
-      select: { id: true }, 
+      select: { id: true },
     });
 
     res.status(201).json({
@@ -823,6 +877,7 @@ exports.removeContact = async (req, res) => {
   try {
     // Utilisation d'une transaction pour assurer l'intégrité des données
     await prisma.$transaction([
+      // Suppression des relations d'amitié
       prisma.friend.deleteMany({
         where: {
           OR: [
@@ -837,25 +892,48 @@ exports.removeContact = async (req, res) => {
           ],
         },
       }),
+
+      // Suppression des messages privés entre les deux utilisateurs
+      prisma.privateMessage.deleteMany({
+        where: {
+          OR: [
+            {
+              userId: userId,
+              receiverId: contactId,
+            },
+            {
+              userId: contactId,
+              receiverId: userId,
+            },
+          ],
+        },
+      }),
+
+      // Suppression des likes associés aux messages privés
+      prisma.privateMessageLike.deleteMany({
+        where: {
+          OR: [
+            {
+              privateMessage: {
+                userId: userId,
+                receiverId: contactId,
+              },
+            },
+            {
+              privateMessage: {
+                userId: contactId,
+                receiverId: userId,
+              },
+            },
+          ],
+        },
+      }),
     ]);
-
-    // Récupère les informations des utilisateurs mis à jour
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { friends: true },
-    });
-
-    const contact = await prisma.user.findUnique({
-      where: { id: contactId },
-      include: { friends: true },
-    });
 
     res.status(200).json({
       message: "Contact retiré de votre liste d'amis.",
       contactId,
       userId,
-      user,
-      contact,
     });
   } catch (error) {
     console.error("Erreur lors de la suppression de l'ami:", error);
@@ -902,17 +980,6 @@ exports.blockUser = async (req, res) => {
       }),
     ]);
 
-    // Récupère les informations des utilisateurs mis à jour
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { friends: true },
-    });
-
-    const contact = await prisma.user.findUnique({
-      where: { id: contactId },
-      include: { friends: true },
-    });
-
     // Bloquer l'utilisateur
     await prisma.blockedUser.create({
       data: {
@@ -923,10 +990,8 @@ exports.blockUser = async (req, res) => {
 
     res.status(200).json({
       message: "Utilisateur bloqué et retiré de votre liste d'amis.",
-      contactId,
       userId,
-      user,
-      contact,
+      contactId,
     });
   } catch (error) {
     console.error(error);

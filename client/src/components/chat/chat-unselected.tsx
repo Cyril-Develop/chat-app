@@ -1,5 +1,5 @@
 import Logo from "@/assets/chatting.svg";
-import useGetUser from "@/hooks/get-current-user";
+import useGetUser from "@/hooks/api/user/get-current-user";
 
 interface ChatUnselectedProps {
   role: string | undefined;

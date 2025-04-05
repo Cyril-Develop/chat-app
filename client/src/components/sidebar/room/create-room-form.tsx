@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { RoomFormSchema } from "@/schema/main";
 import ShowPassord from "@/components/auth/show-password";
-import { useCreateRoomMutation } from "@/hooks/create-room";
+import { useCreateRoomMutation } from "@/hooks/api/chat/create-room";
 import { cn } from "@/lib/utils";
 import { CreateRoomFormProps } from "@/types/room";
 

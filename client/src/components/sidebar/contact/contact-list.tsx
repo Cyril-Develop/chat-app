@@ -1,12 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { useSocketStore } from "@/store/socket.store";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -15,16 +8,25 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { useRoomStore } from "@/store/room.store";
-import { useLeaveRoomMutation } from "@/hooks/leave-room";
-import { FriendProps, ContactProps } from "@/types/contact";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useLeaveRoomMutation } from "@/hooks/api/chat/leave-room";
+import { cn } from "@/lib/utils";
 import { useContactStore } from "@/store/contact.store";
 import { useNotificationStore } from "@/store/notification.store";
-import { cn } from "@/lib/utils";
+import { useRoomStore } from "@/store/room.store";
+import { useSocketStore } from "@/store/socket.store";
+import { FriendProps } from "@/types/contact";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import useGetFriends from "@/hooks/api/user/get-friends";
 
-export function Contact({ currentUser }: ContactProps) {
-  const [friends, setFriends] = useState<FriendProps[]>([]);
+export function Contact() {
+  const { data: friends } = useGetFriends();
   const { socket } = useSocketStore();
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
@@ -34,6 +36,7 @@ export function Contact({ currentUser }: ContactProps) {
   const location = useLocation();
   const { notifications, clearNotificationsForContact } =
     useNotificationStore();
+  const queryClient = useQueryClient();
 
   // Compter le nombre de notifications provenant de chaque contact
   const countNotifications = (contactId: number) => {
@@ -42,50 +45,23 @@ export function Contact({ currentUser }: ContactProps) {
     ).length;
   };
 
-  // Met à jour la liste des amis au montage du composant
-  useEffect(() => {
-    if (currentUser?.friendsList) {
-      setFriends(currentUser.friendsList);
+  // --- HANDLERS ---
+  const handleFriendRequestAccepted = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["friends"],
+    });
+  };
+
+  const handleFriendRemoved = (friendId: number) => {
+    if (friendId === contactId) {
+      setContactId(null);
     }
-  }, [currentUser]);
+    queryClient.invalidateQueries({
+      queryKey: ["friends"],
+    });
+  };
 
-  // Fonction pour gérer l'ajout d'un ami via la demande acceptée
-  const handleFriendRequestAccepted = useCallback(
-    (data: any) => {
-      if (
-        currentUser.id === data.senderId ||
-        currentUser.id === data.receiverId
-      ) {
-        const newFriend =
-          currentUser.id === data.senderId ? data.receiverId : data.senderId;
-        const newUsername =
-          currentUser.id === data.senderId
-            ? data.receiverName
-            : data.senderName;
-
-        setFriends((prevFriends) => [
-          ...prevFriends,
-          { id: newFriend, username: newUsername },
-        ]);
-      }
-    },
-    [currentUser]
-  );
-
-  // Fonction pour gérer la suppression d'un ami
-  const handleFriendRemoved = useCallback(
-    (friendId: number) => {
-      if (friendId === contactId) {
-        setContactId(null); // Si le contact supprimé était celui sélectionné, réinitialiser le contactId
-      }
-      setFriends((prevFriends) =>
-        prevFriends.filter((friend) => friend.id !== friendId)
-      );
-    },
-    [contactId, setContactId]
-  );
-
-  // Gérer les événements de socket
+  // Écouter les événements de socket lorsqu'un ami est ajouté ou retiré de la liste
   useEffect(() => {
     socket?.on("friendRequestAccepted", handleFriendRequestAccepted);
     socket?.on("friendRemoved", handleFriendRemoved);
@@ -94,7 +70,7 @@ export function Contact({ currentUser }: ContactProps) {
       socket?.off("friendRequestAccepted", handleFriendRequestAccepted);
       socket?.off("friendRemoved", handleFriendRemoved);
     };
-  }, [socket, handleFriendRequestAccepted, handleFriendRemoved]);
+  }, [socket, handleFriendRequestAccepted]);
 
   // Fonction pour gérer l'ouverture et la fermeture des discussions privées
   const handlePrivateChat = useCallback(
@@ -116,7 +92,7 @@ export function Contact({ currentUser }: ContactProps) {
   );
 
   const isOnChatPage = location.pathname === "/chateo/chat";
-  const haveContact = friends.length > 0;
+  const haveContact = friends?.length > 0;
   const haveNotification = notifications.length > 0;
 
   // Si l'utilisateur est sur la page de chat et si un contact est sélectionné, effacer les notifications
@@ -160,7 +136,7 @@ export function Contact({ currentUser }: ContactProps) {
                 Aucun contact trouvé.
               </CommandEmpty>
               <CommandGroup heading="Contacts">
-                {friends.map((friend) => (
+                {friends.map((friend: FriendProps) => (
                   <CommandItem
                     key={friend.id}
                     onSelect={() => handlePrivateChat(friend.id)}

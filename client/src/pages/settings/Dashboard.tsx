@@ -10,10 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import UserThumbnail from "@/components/user-thumbnail";
-import useGetUsers from "@/hooks/get-users";
+import { useDeleteUserAccountMutation } from "@/hooks/api/user/delete-user-account";
+import useGetUsers from "@/hooks/api/user/get-users";
 import { cn } from "@/lib/utils";
 import { DashboardProps } from "@/types/setting";
-import { useDeleteUserAccountMutation } from "@/hooks/delete-user-account";
 
 export default function Dashboard() {
   const { data: users, isLoading } = useGetUsers();
@@ -43,7 +43,9 @@ export default function Dashboard() {
         </p>
       ) : (
         <Table>
-          <TableCaption className={cn("text-gray-600 dark:text-gray-400 text-base")}>
+          <TableCaption
+            className={cn("text-gray-600 dark:text-gray-400 text-base")}
+          >
             {filteredUsers?.length}
             {handlePlural(filteredUsers?.length)}
           </TableCaption>

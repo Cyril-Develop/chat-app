@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
-import useGetRooms from "@/hooks/get-rooms";
+import useGetRooms from "@/hooks/api/chat/get-rooms";
 import { useRoomStore } from "@/store/room.store";
 import RoomProvider from "@/components/room/room-provider";
 import { useSocketStore } from "@/store/socket.store";

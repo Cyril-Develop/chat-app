@@ -15,13 +15,6 @@ export interface HandleUserStatusChangedProps {
   visible: boolean;
 }
 
-export interface UpdatedUserInfosProps {
-  id: number;
-  username: string;
-  bio: string;
-  profileImage: string;
-}
-
 export interface BlockedUsersState {
   id: number;
   username: string;

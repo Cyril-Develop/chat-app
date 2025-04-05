@@ -1,22 +1,19 @@
-import { getFriendRequests } from "@/services/User";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { getFriends } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
-import { useNavigate } from "react-router-dom";
 import { handleApiError } from "@/utils/error-handler";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const useGetRequest = () => {
-  const { isAuthenticated, setAuthentication } = useAuthStore();
+const useGetFriends = () => {
+  const { setAuthentication } = useAuthStore();
+  const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["request"],
-    queryFn: async () => getFriendRequests(),
-    enabled: isAuthenticated,
-    retry: false,
+    queryKey: ["friends"],
+    queryFn: async () => getFriends(),
   });
 
   useEffect(() => {
@@ -34,4 +31,4 @@ const useGetRequest = () => {
   return { data, isLoading };
 };
 
-export default useGetRequest;
+export default useGetFriends;

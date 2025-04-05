@@ -1,7 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
-import { useSendNotificationByEmailMutation } from "@/hooks/send-notification-email";
-import { sendFriendRequest } from "@/services/User";
+import { editProfile } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
@@ -10,31 +9,23 @@ import { handleApiError } from "@/utils/error-handler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-export const useSendRequestMutation = () => {
-  const { socket } = useSocketStore();
-  const { mutate: sendNotificationByEmailMutation } =
-    useSendNotificationByEmailMutation();
-  const { setAuthentication } = useAuthStore();
+export const useEditUserMutation = () => {
   const queryClient = useQueryClient();
+  const { socket } = useSocketStore();
+  const { setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (receiverId: number) => sendFriendRequest(receiverId),
+    mutationFn: (formData: FormData) => editProfile(formData),
     onSuccess: (data) => {
       toast({
         title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });
-      // Permet d'envoyer la demande d'ami à l'utilisateur concerné via le socket
-      socket?.emit("sendFriendRequest", data.newRequest);
-      if (data.newRequest.receiver.notification === "accept") {
-        sendNotificationByEmailMutation({
-          receiverId: data.newRequest.receiver.id,
-          type: "Friend request",
-        });
-      }
+      socket?.emit("updateUserInfos", data.user.id);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

@@ -1,7 +1,7 @@
 import { BlockedUsersProps } from "@/types/user";
 import UserThumbnail from "../user-thumbnail";
 import { Button } from "@/components/ui/button";
-import { useUnblockUserMutation } from "@/hooks/unblock-user";
+import { useUnblockUserMutation } from "@/hooks/api/user/unblock-user";
 import { Icons } from "@/components/Icons";
 
 const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {

@@ -24,19 +24,7 @@ export const useSendMessageMutation = () => {
       roomId: number;
     }) => sendMessage(formData, roomId),
     onSuccess: (data: SendMessageSocketProps) => {
-      socket?.emit("sendMessage", {
-        createdAt: data.createdAt,
-        id: data.id,
-        image: data.image,
-        roomId: data.chatRoomId,
-        message: data.message,
-        user: {
-          id: data.user.id,
-          username: data.user.username,
-          profileImage: data.user.profileImage,
-        },
-        likes: data.likes,
-      });
+      socket?.emit("sendMessage", data.chatRoomId);
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

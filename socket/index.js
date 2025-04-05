@@ -1,8 +1,17 @@
 const { Server } = require("socket.io");
 require("dotenv").config();
+const https = require("https");
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const io = new Server({
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
+};
+
+const server = https.createServer(options);
+
+const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -13,8 +22,6 @@ const io = new Server({
 let users = [];
 // Users in room
 let userInRoom = [];
-// Friend requests
-let friendRequests = [];
 
 const addUser = (userId, socketId, visible) => {
   if (!users.some((user) => user.userId === userId)) {
@@ -83,27 +90,23 @@ io.on("connection", (socket) => {
   });
 
   //********** CREATE ROOM **********/
-  socket.on("createRoom", (id, createdBy) => {
+  socket.on("createRoom", (createdBy) => {
     // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
     if (createdBy !== socket.user.id) {
       return;
     }
-    socket.join(id);
-
     // Émettre simplement l'événement pour invalider le cache avec tanstack-query
     io.emit("roomCreated");
   });
 
   //********** UPDATE ROOM **********/
-  socket.on("updateRoom", (id, createdBy) => {
+  socket.on("updateRoomDescription", (roomId, createdBy) => {
     // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
     if (createdBy !== socket.user.id) {
       return;
     }
-    socket.join(id);
-
     // Émettre simplement l'événement pour invalider le cache avec tanstack-query
-    io.emit("roomUpdated",  id);
+    io.emit("roomUpdated", roomId);
   });
 
   //********** JOIN ROOM **********/
@@ -135,8 +138,8 @@ io.on("connection", (socket) => {
   });
 
   //********** SEND MESSAGE IN ROOM **********/
-  socket.on("sendMessage", (data) => {
-    io.to(data.roomId).emit("getMessage", data);
+  socket.on("sendMessage", (roomId) => {
+    io.to(roomId).emit("messageSentInRoom");
   });
 
   //********** Like MESSAGE **********/
@@ -268,13 +271,17 @@ io.on("connection", (socket) => {
   });
 
   //********** DELETE MESSAGE IN ROOM **********/
-  socket.on("messageDeleted", (messageId, roomId) => {
-    io.to(roomId).emit("messageDeleted", messageId);
+  socket.on("deleteMessage", (roomId) => {
+    io.to(roomId).emit("messageDeleted");
   });
 
   //********** UPDATE MESSAGE IN ROOM **********/
-  socket.on("updateUserInfos", (data) => {
-    io.emit("updatedUserInfos", data);
+  socket.on("updateUserInfos", (userId) => {
+    // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
+    if (userId !== socket.user.id) {
+      return;
+    }
+    io.emit("updatedUserInfos", userId);
   });
 
   //********** CHANGE USER STATUS **********/
@@ -329,95 +336,49 @@ io.on("connection", (socket) => {
   });
 
   //********** SEND FRIEND REQUEST **********/
-  socket.on("sendFriendRequest", (data) => {
-    const { id } = data;
-    const receiverSocket = users.find(
-      (user) => user.userId === data.receiver.id
-    );
-    if (receiverSocket) {
-      const request = {
-        id: id,
-        sender: {
-          id: data.sender.id,
-          username: data.sender.username,
-          profileImage: data.sender.profileImage,
-        },
-        receiver: {
-          id: data.receiver.id,
-          username: data.receiver.username,
-          profileImage: data.receiver.profileImage,
-        },
-      };
-      friendRequests.push(request);
-      io.to(receiverSocket.socketId).emit("receiveFriendRequest", request);
+  socket.on("sendFriendRequest", (senderId, receiverId) => {
+    const receiverSocket = users.find((user) => user.userId === receiverId);
+    const senderSocket = users.find((user) => user.userId === senderId);
+    if (receiverSocket && senderSocket) {
+      io.to(receiverSocket.socketId).emit("receiveFriendRequest");
+      io.to(senderSocket.socketId).emit("friendRequestSent");
     }
   });
 
   //********** ACCEPT FRIEND REQUEST **********/
-  socket.on("acceptFriendRequest", (senderId, receiverId, requestId) => {
-    const requestIndex = friendRequests.findIndex(
-      (req) => req.id === requestId
-    );
-
-    // get sender and receiver names
-    const senderName = friendRequests[requestIndex].sender.username;
-    const receiverName = friendRequests[requestIndex].receiver.username;
-
-    const userSocket = users.find((user) => user.userId === receiverId);
-    const friendSocket = users.find((user) => user.userId === senderId);
-
-    if (userSocket) {
-      io.to(userSocket.socketId).emit("friendRequestAccepted", {
-        senderId,
-        senderName,
-        receiverId,
-        receiverName,
-      });
+  socket.on("acceptFriendRequest", (userId, friendId) => {
+    const userSocket = users.find((user) => user.userId === userId);
+    const friendSocket = users.find((user) => user.userId === friendId);
+    if (userSocket && friendSocket) {
+      io.to(userSocket.socketId).emit("friendRequestAccepted");
+      io.to(friendSocket.socketId).emit("friendRequestAccepted");
     }
-
-    if (friendSocket) {
-      io.to(friendSocket.socketId).emit("friendRequestAccepted", {
-        senderId,
-        senderName,
-        receiverId,
-        receiverName,
-      });
-    }
-  });
-
-  //********** UPDATE RELATIONSHIP **********/
-  socket.on("updateRelationship", (data) => {
-    io.emit("updatedRelationship", data);
   });
 
   //********** REJECT FRIEND REQUEST **********/
-  socket.on("rejectFriendRequest", (senderId, receiverId, requestId) => {
-    const requestIndex = friendRequests.findIndex(
-      (req) => req.id === requestId
-    );
+  socket.on("rejectFriendRequest", () => {
+    // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
+    io.emit("friendRequestRejected");
+  });
 
-    if (requestIndex !== -1) {
-      friendRequests.splice(requestIndex, 1);
-    }
+  //********** UPDATE USERS RELATIONSHIP (search user component) **********/
+  socket.on("updateRelationship", () => {
+    io.emit("updatedRelationship");
   });
 
   //********** REMOVE FRIEND **********/
-  socket.on("removeFriend", (data) => {
-    const userSocket = users.find((user) => user.userId === data.userId);
-    const friendSocket = users.find((user) => user.userId === data.contactId);
+  socket.on("removeFriend", (userId, contactId) => {
+    const userSocket = users.find((user) => user.userId === userId);
+    const friendSocket = users.find((user) => user.userId === contactId);
 
-    if (userSocket) {
-      io.to(userSocket.socketId).emit("friendRemoved", data.contactId);
+    // On supprime le contact de la liste pour les deux utilisateurs
+    if ((userSocket, friendSocket)) {
+      io.to(userSocket.socketId).emit("friendRemoved", contactId);
+      io.to(friendSocket.socketId).emit("friendRemoved", userId);
     }
 
-    if (friendSocket) {
-      io.to(friendSocket.socketId).emit("friendRemoved", data.userId);
-    }
-
-    io.emit("removedRelationship", {
-      user: data.user,
-      friend: data.contact,
-    });
+    // On supprime la relation pour mettre à jours la liste des utilisateurs
+    io.emit("removedRelationship");
   });
 
   //********** DISCONNECT **********/
@@ -446,6 +407,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.SOCKET_PORT || 3000;
-io.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Socket.IO server is running at https://localhost:${PORT}`);
 });

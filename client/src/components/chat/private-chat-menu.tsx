@@ -8,21 +8,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useRemoveContactMutation } from "@/hooks/remove-contact";
+import { useRemoveContactMutation } from "@/hooks/api/user/remove-contact";
 import { useContactStore } from "@/store/contact.store";
 import Alert from "@/components/Alert";
 import { useState } from "react";
-import { useBlockUserMutation } from "@/hooks/block-user";
+import { useBlockUserMutation } from "@/hooks/api/user/block-user";
 
 const PrivateChatMenu = () => {
-  const { contactId, setContactId } = useContactStore();
+  const { contactId } = useContactStore((state) => state);
   const { mutate: removeContact } = useRemoveContactMutation();
   const { mutate: blockUser } = useBlockUserMutation();
   const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
     removeContact(contactId);
-    setContactId(null);
   };
 
   const handleBlock = () => {

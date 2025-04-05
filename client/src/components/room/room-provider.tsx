@@ -1,8 +1,8 @@
 import { JoinRoom } from "@/components/dialog/join-room";
 import RoomList from "@/components/sidebar/room/room-list";
 import { CommandSeparator } from "@/components/ui/command";
-import { useJoinRoomMutation } from "@/hooks/join-chat";
-import { useLeaveRoomMutation } from "@/hooks/leave-room";
+import { useLeaveRoomMutation } from "@/hooks/api/chat/leave-room";
+import { useJoinRoomMutation } from "@/hooks/api/chat/join-chat";
 import { useRoomStore } from "@/store/room.store";
 import { Room, RoomProviderProps } from "@/types/room";
 import { useEffect, useState } from "react";

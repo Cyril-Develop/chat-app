@@ -27,39 +27,8 @@ export interface HandleEmojiPickerProps {
   setOpenEmoji: (open: boolean) => void;
 }
 
-export interface PrivateMessageProps {
-  id: number;
-  message: string;
-  image: string;
-  createdAt: string;
-  isRead: boolean;
-  user: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-  receiver: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-}
-
 export interface SendMessageSocketProps {
-  createdAt: string;
-  id: number;
-  image: string | null;
   chatRoomId: number;
-  message: string;
-  user: {
-    id: number;
-    username: string;
-    profileImage: string | null;
-  };
-  likes: {
-    id: number;
-    username: string;
-  }[];
 }
 
 export interface NotificationProps {

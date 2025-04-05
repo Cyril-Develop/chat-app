@@ -1,7 +1,7 @@
 import PreviewCard from "@/components/settings/preview-card";
 import ProfileForm from "@/components/settings/profile-form";
 import { Separator } from "@/components/ui/separator";
-import useGetUser from "@/hooks/get-current-user";
+import useGetUser from "@/hooks/api/user/get-current-user";
 
 const ProfilePage = () => {
   const { data: currentUser } = useGetUser();

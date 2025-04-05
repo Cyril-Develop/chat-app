@@ -2,17 +2,16 @@ import { Icons } from "@/components/Icons";
 import { HoverMessage } from "@/components/message/hover-message";
 import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
-import { useDeleteMessageMutation } from "@/hooks/delete-message";
-import { useDeletePrivateMessageMutation } from "@/hooks/delete-private-message";
-import useGetUser from "@/hooks/get-current-user";
-import { useLikeMessageMutation } from "@/hooks/like-message";
+import { useDeleteMessageMutation } from "@/hooks/api/messages/delete-message";
+import { useDeletePrivateMessageMutation } from "@/hooks/api/messages/delete-private-message";
+import { useDislikeMessageMutation } from "@/hooks/api/messages/dislike-message";
+import useGetUser from "@/hooks/api/user/get-current-user";
+import { useLikeMessageMutation } from "@/hooks/api/messages/like-message";
 import { cn } from "@/lib/utils";
-import { MessageProps } from "@/types/message";
+import { useSocketStore } from "@/store/socket.store";
+import { LikeFromSocket, MessageProps } from "@/types/message";
 import moment from "moment/min/moment-with-locales";
 import { useEffect, useState } from "react";
-import { useDislikeMessageMutation } from "@/hooks/dislike-message";
-import { useSocketStore } from "@/store/socket.store";
-import { LikeFromSocket } from "@/types/message";
 
 const Message = ({ message, type }: MessageProps) => {
   const { socket } = useSocketStore();

@@ -8,15 +8,15 @@ import ContactRequest from "@/components/sidebar/notification/contact-request";
 import { RoomSelector } from "@/components/sidebar/room/room-selector";
 import { RoomUsers } from "@/components/sidebar/room/room-users";
 import { Separator } from "@/components/ui/separator";
-import useGetUser from "@/hooks/get-current-user";
+import useGetUser from "@/hooks/api/user/get-current-user";
+import useWindowWidth from "@/hooks/window-width";
 import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { useEffect, useRef, useState } from "react";
-import useWindowWidth from "@/hooks/window-width";
-import { UserInfos, HandleUserStatusChangedProps } from "@/types/user";
+import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
 import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
+import { useEffect, useRef } from "react";
 
 const Chat = () => {
   const { room } = useRoomStore();
@@ -28,7 +28,6 @@ const Chat = () => {
   const { data: currentUser } = useGetUser();
   const { socket } = useSocketStore();
   const { contactId } = useContactStore();
-  const [showNotification, setShowNotification] = useState(false);
   const prevRoomRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -99,16 +98,7 @@ const Chat = () => {
           <Contact currentUser={currentUser} />
         </div>
         <div className="chat_aside_container">
-          {showNotification && (
-            <>
-              <h2 className="text-title">Notifications</h2>
-              <Separator />
-            </>
-          )}
-          <ContactRequest
-            currentUser={currentUser}
-            setShowNotification={setShowNotification}
-          />
+          <ContactRequest currentUser={currentUser} />
         </div>
       </aside>
 

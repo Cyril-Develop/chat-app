@@ -6,17 +6,18 @@ import { Icons } from "@/components/Icons";
 import { usePrivateChat } from "@/hooks/private-chat-handler";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
-  const { contactData, messages, isLoading } = usePrivateChat(contactId);
+  const { fetchedContactInfos, privateMessages, isLoading } =
+    usePrivateChat(contactId);
 
   return (
     <div className="page_conversation">
       {isLoading ? (
         <Icons.loader width={18} height={18} />
       ) : (
-        contactData && (
+        fetchedContactInfos && (
           <>
-            <HeaderChat contactInfos={contactData} />
-            <MessagesProvider messages={messages} type="private" />
+            <HeaderChat contactInfos={fetchedContactInfos} />
+            <MessagesProvider messages={privateMessages} type="private" />
             <SendPrivateMessage />
           </>
         )

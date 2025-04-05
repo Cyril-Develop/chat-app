@@ -10,7 +10,7 @@ import { JoinRoomProps } from "@/types/room";
 import { handleApiError } from "@/utils/error-handler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import useGetUser from "./get-current-user";
+import useGetUser from "@/hooks/api/user/get-current-user";
 
 export const useJoinRoomMutation = () => {
   const { room, setRoom } = useRoomStore();
@@ -37,7 +37,6 @@ export const useJoinRoomMutation = () => {
       // Reset contactId when joining a new room for leaving the previous private chat
       if (contactId) {
         setContactId(null);
-        // queryClient.invalidateQueries({ queryKey: ["messages-private"] });
       }
       socket?.emit(
         "joinRoom",

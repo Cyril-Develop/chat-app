@@ -3,7 +3,7 @@ import ModeToggle from "@/components/mode-toggle";
 import DropDown from "@/components/navbar/DropDown";
 import { SheetLeft } from "@/components/sheet/sheet-left";
 import { SheetRight } from "@/components/sheet/sheet-right";
-import useGetUser from "@/hooks/get-current-user";
+import useGetUser from "@/hooks/api/user/get-current-user";
 import useWindowWidth from "@/hooks/window-width";
 import { useAuthStore } from "@/store/auth.store";
 import { Link } from "react-router-dom";

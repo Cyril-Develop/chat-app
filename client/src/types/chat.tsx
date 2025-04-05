@@ -30,44 +30,6 @@ export interface RoomChatProps {
   };
 }
 
-export interface RoomDataProps {
-  createdBy: number;
-  id: number;
-  messages: {
-    id: number;
-    message: string;
-    createdAt: string;
-    image?: string;
-    user: {
-      id: number;
-      username: string;
-      profileImage: string;
-    };
-  }[];
-  name: string;
-  users: {
-    id: number;
-    profileImage: string;
-    username: string;
-  }[];
-}
-
-export interface MessageRoomProps {
-  id: number;
-  message: string;
-  image?: string;
-  createdAt: string;
-  user: {
-    id: number;
-    username: string;
-    profileImage: string;
-  };
-  likes: {
-    userId: number;
-    username: string;
-  }[];
-}
-
 export interface ChatUnselectedProps {
   role: "USER" | "ADMIN" | "GUEST";
 }

@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { AccountFormSchema } from "@/schema/main";
-import { useEditAccountMutation } from "@/hooks/edit-account";
+import { useEditAccountMutation } from "@/hooks/api/user/edit-account";
 import { AccountFormValues } from "@/types/setting";
 import { cn } from "@/lib/utils";
 

@@ -13,7 +13,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { UpdateRoomFormSchema } from "@/schema/main";
-import { useUpdateRoomDescriptionMutation } from "@/hooks/update-room";
+import { useUpdateRoomDescriptionMutation } from "@/hooks/api/chat/update-room";
 import { cn } from "@/lib/utils";
 import { CreateRoomFormProps } from "@/types/room";
 import { useRoomStore } from "@/store/room.store";

@@ -10,7 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { RoomHeaderMenuProps } from "@/types/chat";
-import { useDeleteRoomMutation } from "@/hooks/delete-room";
+import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
 import { UpdateRoom } from "../dialog/update-room";
 
 const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {

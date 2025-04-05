@@ -28,7 +28,7 @@
     "src",
     "src/pages/chat/Chat.tsx",
     "public/service-worker.js",
-    "src/hooks/dislike-message.tsx"
+    "src/hooks/api/messages/dislike-message.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

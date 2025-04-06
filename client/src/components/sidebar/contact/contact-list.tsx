@@ -23,8 +23,11 @@ import { FriendProps } from "@/types/contact";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useGetFriends from "@/hooks/api/user/get-friends";
+import useGetBlockedUsers from "@/hooks/api/user/get-blocked-users";
+import { useUnblockUserMutation } from "@/hooks/api/user/unblock-user";
 
 export function Contact() {
+  const { data: blockedUsers } = useGetBlockedUsers();
   const { data: friends } = useGetFriends();
   const { socket } = useSocketStore();
   const { room } = useRoomStore();
@@ -35,42 +38,37 @@ export function Contact() {
   const location = useLocation();
   const { notifications, clearNotificationsForContact } =
     useNotificationStore();
+  const { mutate: unblockUser } = useUnblockUserMutation();
 
-  // Compter le nombre de notifications provenant de chaque contact
+  // --- UTILS ---
   const countNotifications = (contactId: number) => {
     return notifications.filter(
       (notification) => notification.senderId === contactId
     ).length;
   };
 
-  // --- HANDLERS ---
   const handleFriendRemoved = (friendId: number) => {
     if (friendId === contactId) {
       setContactId(null);
     }
   };
 
-  // Écouter l'événement "friendRemoved" pour mettre à jour le contact courant, si une discussion est ouverte
   useEffect(() => {
     socket?.on("friendRemoved", handleFriendRemoved);
-
     return () => {
       socket?.off("friendRemoved", handleFriendRemoved);
     };
   }, [socket, handleFriendRemoved]);
 
-  // Fonction pour gérer l'ouverture et la fermeture des discussions privées
   const handlePrivateChat = useCallback(
     (friendId: number) => {
       if (roomId) {
         leaveRoom(roomId);
       }
-      // Vérifié si la discussion privée est déjà ouverte pour le contact sélectionné
       if (contactId === friendId) {
         setContactId(null);
       } else {
         setContactId(friendId);
-        // Effacer les notifications pour le contact sélectionné si on ouvre la discussion
         clearNotificationsForContact(friendId);
       }
       setOpen(false);
@@ -79,10 +77,11 @@ export function Contact() {
   );
 
   const isOnChatPage = location.pathname === "/chateo/chat";
-  const haveContact = friends?.length > 0;
+  const haveContact = (friends?.length || 0) > 0;
+  const haveBlockedContact = (blockedUsers?.length || 0) > 0;
   const haveNotification = notifications.length > 0;
+  const shouldShowPopover = haveContact || haveBlockedContact;
 
-  // Si l'utilisateur est sur la page de chat et si un contact est sélectionné, effacer les notifications
   useEffect(() => {
     if (contactId && isOnChatPage) {
       clearNotificationsForContact(contactId);
@@ -97,53 +96,78 @@ export function Contact() {
           aria-label="Voir mes contacts"
           size="box"
           aria-expanded={open}
-          className={
-            haveNotification
-              ? cn(
-                  "w-[200px] justify-between p-3 bg-green-700 hover:bg-green-700/80 dark:bg-green-600 dark:hover:bg-green-600/80"
-                )
-              : cn("w-[200px] justify-between p-3")
-          }
-          disabled={!haveContact}
+          className={cn(
+            "w-[200px] justify-between p-3",
+            haveNotification &&
+              "bg-green-700 hover:bg-green-700/80 dark:bg-green-600 dark:hover:bg-green-600/80"
+          )}
+          disabled={!shouldShowPopover}
         >
           Voir mes contacts
-          {haveContact && ` (${friends.length})`}
+          {(haveContact || haveBlockedContact) && (
+            <> ({(friends?.length || 0) + (blockedUsers?.length || 0)})</>
+          )}
           {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
         </Button>
       </PopoverTrigger>
-      {haveContact && (
+
+      {shouldShowPopover && (
         <PopoverContent
-          className={cn("p-0 w-[200px]")}
+          className="p-0 w-[200px]"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <Command>
             <CommandInput placeholder="Rechercher un contact" />
             <CommandList>
-              <CommandEmpty className={cn("error p-3")}>
+              <CommandEmpty className="error p-3">
                 Aucun contact trouvé.
               </CommandEmpty>
-              <CommandGroup heading="Contacts">
-                {friends.map((friend: FriendProps) => (
-                  <CommandItem
-                    key={friend.id}
-                    onSelect={() => handlePrivateChat(friend.id)}
-                    title={
-                      contactId === friend.id
-                        ? "Fermer la discussion"
-                        : "Ouvrir la discussion"
-                    }
-                  >
-                    <div className="flex items-center justify-between w-full cursor-pointer">
-                      {friend.username}
-                      {countNotifications(friend.id) > 0 && (
-                        <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                          {countNotifications(friend.id)}
-                        </span>
-                      )}
-                    </div>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+
+              {haveContact && (
+                <CommandGroup heading="Contacts">
+                  {friends.map((friend: FriendProps) => (
+                    <CommandItem
+                      key={friend.id}
+                      onSelect={() => handlePrivateChat(friend.id)}
+                      title={
+                        contactId === friend.id
+                          ? "Fermer la discussion"
+                          : "Ouvrir la discussion"
+                      }
+                    >
+                      <div className="flex items-center justify-between w-full cursor-pointer">
+                        {friend.username}
+                        {countNotifications(friend.id) > 0 && (
+                          <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                            {countNotifications(friend.id)}
+                          </span>
+                        )}
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+
+              {haveBlockedContact && (
+                <CommandGroup heading="Contacts bloqués">
+                  {blockedUsers.map((user: any) => (
+                    <CommandItem
+                      key={user.id}
+                      className={cn("flex items-center justify-between")}
+                    >
+                      {user.username}
+                      <Button
+                        variant="linkForm"
+                        className={cn("p-0")}
+                        onClick={() => unblockUser(user.id)}
+                        title="Débloquer l'utilisateur"
+                      >
+                        <Icons.close height={20} width={20} />
+                      </Button>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
             </CommandList>
           </Command>
         </PopoverContent>

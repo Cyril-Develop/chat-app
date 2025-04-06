@@ -399,7 +399,7 @@ io.on("connection", (socket) => {
       const userSocket = users.find((user) => user.userId === userId);
 
       if (userSocket) {
-        io.to(userSocket.socketId).emit("accountDeletedForUser", userId);
+        io.to(userSocket.socketId).emit("accountDeletedForUser");
       }
     });
 

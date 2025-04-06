@@ -17,8 +17,11 @@ import { useSocketStore } from "@/store/socket.store";
 import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
 import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
 import { useEffect, useRef } from "react";
+import { useSocketHandler } from "@/hooks/socket-handler";
 
 const Chat = () => {
+  // --- SOCKET HANDLER ---
+  useSocketHandler();
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
   const { role, visible } = useAuthStore((state) => ({
@@ -95,7 +98,7 @@ const Chat = () => {
               <SearchUser currentUser={currentUser} />
             </>
           )}
-          <Contact currentUser={currentUser} />
+          <Contact />
         </div>
         <div className="chat_aside_container">
           <ContactRequest currentUser={currentUser} />

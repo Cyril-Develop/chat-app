@@ -1,5 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-const e = require("express");
 const fs = require("fs");
 const path = require("path");
 const prisma = new PrismaClient();
@@ -22,7 +21,7 @@ exports.getAllUsers = async (req, res) => {
           {
             blockedBy: {
               none: {
-                blockerId: currentUserId,
+                blockerId: currentUserId, // Bloqué par l'utilisateur actuel
               },
             },
           },
@@ -30,7 +29,7 @@ exports.getAllUsers = async (req, res) => {
           {
             blockedUsers: {
               none: {
-                blockedId: currentUserId,
+                blockedId: currentUserId, // Utilisateur actuel bloqué par quelqu'un
               },
             },
           },

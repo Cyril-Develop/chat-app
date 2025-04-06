@@ -54,7 +54,7 @@ export function AccountForm({ user }: AccountFormValues) {
       <form
         noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6"
+        className="space-y-8"
       >
         <div className="space-y-6">
           {user.role !== "GUEST" && (

@@ -104,6 +104,7 @@ const Message = ({ message, type }: MessageProps) => {
       <UserThumbnail
         image={message.user.profileImage}
         username={message.user.username}
+        gender={message.user.gender}
         imageSize="6"
         textSize="text-label"
       />
@@ -113,7 +114,7 @@ const Message = ({ message, type }: MessageProps) => {
           <p
             className={`p-3 border rounded-md break-words whitespace-pre-wrap  ${
               isMyMessage
-                ? "bg-primary text-secondary"
+                ? "bg-primary text-secondary dark:text-primary-foreground"
                 : "bg-primary-foreground"
             }`}
           >
@@ -132,7 +133,7 @@ const Message = ({ message, type }: MessageProps) => {
       </div>
 
       <div className="flex justify-between min-w-[220px]">
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-gray-600 dark:text-gray-400">
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
 

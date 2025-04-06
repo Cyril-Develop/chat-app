@@ -57,6 +57,10 @@ const passwordSchema = z
   })
   .min(8, { message: "Minimum 8 caractères" });
 
+const sexeSchema = z.enum(["homme", "femme"], {
+  message: "Le sexe est requis",
+});
+
 // ACCOUNT
 const newEmailSchema = z
   .string()
@@ -110,6 +114,7 @@ export const RegisterFormSchema = z.object({
   username: usernameSchema,
   email: emailSchema,
   password: passwordSchema,
+  sexe: sexeSchema,
 });
 
 export const ValidateAccountFormSchema = z.object({

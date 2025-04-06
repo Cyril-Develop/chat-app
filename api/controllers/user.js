@@ -6,13 +6,8 @@ const prisma = new PrismaClient();
 //********** GET ALL USERS **********/
 exports.getAllUsers = async (req, res) => {
   try {
-    const currentUserId = req.userId;
-
-    // Récupérer l'utilisateur actuel pour vérifier son rôle
-    const currentUser = await prisma.user.findUnique({
-      where: { id: currentUserId },
-      select: { role: true },
-    });
+    const userId = req.userId;
+    const userRole = req.role;
 
     const usersQuery = {
       where: {
@@ -21,7 +16,7 @@ exports.getAllUsers = async (req, res) => {
           {
             blockedBy: {
               none: {
-                blockerId: currentUserId,
+                blockerId: userId,
               },
             },
           },
@@ -29,7 +24,7 @@ exports.getAllUsers = async (req, res) => {
           {
             blockedUsers: {
               none: {
-                blockedId: currentUserId,
+                blockedId: userId,
               },
             },
           },
@@ -39,6 +34,7 @@ exports.getAllUsers = async (req, res) => {
         id: true,
         createdAt: true,
         username: true,
+        gender: true,
         bio: true,
         profileImage: true,
         role: true,
@@ -98,7 +94,7 @@ exports.getAllUsers = async (req, res) => {
     };
 
     // Si l'utilisateur est un administrateur, ne pas appliquer les filtres de blocage pour afficher tous les utilisateurs dans le Dashboard
-    if (currentUser.role === "ADMIN") {
+    if (userRole === "ADMIN") {
       delete usersQuery.where;
     }
 
@@ -147,6 +143,7 @@ exports.getCurrentUser = async (req, res) => {
         createdAt: true,
         email: true,
         username: true,
+        gender: true,
         bio: true,
         profileImage: true,
         notification: true,
@@ -195,11 +192,13 @@ exports.getCurrentUser = async (req, res) => {
 
 //********** GET USER BY ID **********/
 exports.getUserById = async (req, res) => {
-  const userId = req.params.id;
+  let userId = req.params.id;
+  // Convertir userId en entier
+  userId = Number(userId);
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: userId,
       },
       select: {
         id: true,
@@ -234,35 +233,11 @@ exports.getUserById = async (req, res) => {
             },
           },
         },
-        friendOf: {
-          select: {
-            user: {
-              select: {
-                id: true,
-                username: true,
-                profileImage: true,
-              },
-            },
-          },
-        },
       },
     });
 
     if (user) {
-      // Combine friends and friendOf into a single list of unique friends
-      const friendsList = [];
-
-      user.friends.forEach((f) => {
-        if (!friendsList.some((friend) => friend.id === f.friend.id)) {
-          friendsList.push(f.friend);
-        }
-      });
-
-      user.friendOf.forEach((f) => {
-        if (!friendsList.some((friend) => friend.id === f.user.id)) {
-          friendsList.push(f.user);
-        }
-      });
+      const friendsList = user.friends.map((f) => f.friend);
 
       res.status(200).json({ ...user, friendsList });
     } else {
@@ -291,6 +266,7 @@ exports.getFriends = async (req, res) => {
               select: {
                 id: true,
                 username: true,
+                gender: true,
                 profileImage: true,
                 createdAt: true,
                 bio: true,
@@ -627,6 +603,17 @@ exports.sendFriendRequest = async (req, res) => {
     });
   }
 
+  // ne pas envoyé la demande d'ami si c'est l'invité qui la reçoit
+  const receiver = await prisma.user.findUnique({
+    where: { id: receiverId },
+    select: { role: true },
+  });
+  if (receiver && receiver.role === "GUEST") {
+    return res.status(403).json({
+      error: "Vous ne pouvez pas envoyer de demande d'ami à cet utilisateur.",
+    });
+  }
+
   if (!senderId || !receiverId) {
     return res
       .status(400)
@@ -726,6 +713,7 @@ exports.getFriendRequest = async (req, res) => {
           select: {
             id: true,
             username: true,
+            gender: true,
             profileImage: true,
           },
         },
@@ -1032,6 +1020,7 @@ exports.getBlockedUsers = async (req, res) => {
           select: {
             id: true,
             username: true,
+            gender: true,
             profileImage: true,
           },
         },

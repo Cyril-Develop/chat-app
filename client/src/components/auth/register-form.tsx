@@ -3,7 +3,7 @@ import { RegisterFormSchema } from "@/schema/main";
 import { sendOtp, verifyIfUserExists } from "@/services/Auth";
 import { useForm } from "react-hook-form";
 //import Line from "@/components/auth/line";
-//import { Icons } from "@/components/Icons";
+//import Icons from "@/components/icons";
 //import { Button } from "../ui/button";
 import ShowPassord from "@/components/auth/show-password";
 import ButtonForm from "@/components/button-form";
@@ -21,6 +21,13 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { ValidateAccount } from "@/components/auth/validate-account";
 import { Link } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -32,6 +39,7 @@ const RegisterForm = () => {
     username: "",
     email: "",
     password: "",
+    sexe: "",
   });
 
   const form = useForm({
@@ -39,6 +47,7 @@ const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
+      sexe: "",
     },
     resolver: zodResolver(RegisterFormSchema),
   });
@@ -47,8 +56,8 @@ const RegisterForm = () => {
     setLoading(true);
     setApiError("");
     try {
-      const { username, email, password } = form.getValues();
-      setNewUser({ username, email, password });
+      const { username, email, password, sexe } = form.getValues();
+      setNewUser({ username, email, password, sexe });
 
       const userExists = await verifyIfUserExists(username, email);
 
@@ -90,6 +99,7 @@ const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
+      sexe: "",
     });
   };
 
@@ -109,26 +119,61 @@ const RegisterForm = () => {
             className={cn("space-y-4  md:space-y-8")}
           >
             <div className="flex gap-4 justify-between flex-col md:gap-8 ">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={cn("text-label")}>
-                      Nom d'utilisateur
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        placeholder="John Doe"
-                        className={cn("text-label")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-4 justify-between flex-col md:flex-row md:gap-8">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem className={cn("flex-1")}>
+                      <FormLabel className={cn("text-label")}>
+                        Nom d'utilisateur
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="text"
+                          placeholder="John Doe"
+                          maxLength={15}
+                          className={cn("text-label")}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="sexe"
+                  render={({ field }) => (
+                    <FormItem className={cn("flex-1")}>
+                      <FormLabel className={cn("text-label")}>Sexe</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl
+                          className={cn(
+                            "h-11 w-full rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover px-3"
+                          )}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Genre" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent
+                          className={cn(
+                            "dark:bg-primary-foreground dark:border-popover"
+                          )}
+                        >
+                          <SelectItem value="homme">Homme</SelectItem>
+                          <SelectItem value="femme">Femme</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="email"

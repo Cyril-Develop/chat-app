@@ -43,6 +43,7 @@ export const useJoinRoomMutation = () => {
         data.roomId,
         currentUser.id,
         currentUser.username,
+        currentUser.gender,
         currentUser.profileImage,
         visible
       );

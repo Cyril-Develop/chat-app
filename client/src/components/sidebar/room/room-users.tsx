@@ -17,6 +17,7 @@ export function RoomUsers({ usersInRoom }: { usersInRoom: UserInfos[] }) {
                 imageSize="8"
                 username={user.username}
                 image={user.profileImage}
+                gender={user.gender}
               />
             </div>
           ))}

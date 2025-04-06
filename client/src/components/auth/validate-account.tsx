@@ -18,6 +18,9 @@ export function ValidateAccount({
     handleAccountCreationSuccess();
   };
 
+  console.log("ValidateAccount component rendered with newUser:", newUser);
+  
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className={cn("sm:max-w-[425px]")}>

@@ -46,7 +46,7 @@ export interface ValidateAccountFormProps {
 }
 
 export interface ValidateAccountProps {
-  newUser: { username: string; email: string; password: string };
+  newUser: { username: string; email: string; password: string, sexe: string };
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   headerTitle: string;

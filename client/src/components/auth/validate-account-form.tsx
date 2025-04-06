@@ -11,7 +11,6 @@ import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { ValidateAccountFormSchema } from "@/schema/main";
 import { registerByEmail, verifyOtp } from "@/services/Auth";
-import { useSocketStore } from "@/store/socket.store";
 import { ValidateAccountFormProps } from "@/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -30,9 +29,6 @@ export function ValidateAccountForm({
 
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
-  const { socket } = useSocketStore();
-
-  
 
   const onSubmit = async (data: { otp: string }) => {
     setLoading(true);
@@ -51,9 +47,6 @@ export function ValidateAccountForm({
         variant: "success",
         logo: <Icons.check className="h-6 w-6" />,
       });
-      console.log(socket);
-      
-      socket?.emit("createAccount");
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);

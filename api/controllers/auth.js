@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 //**********  REGISTER **********/
 exports.register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, gender } = req.body;
 
     const usernameCapitalized =
       username.charAt(0).toUpperCase() + username.slice(1);
@@ -22,6 +22,7 @@ exports.register = async (req, res) => {
         username: usernameCapitalized,
         email,
         password: hashedPassword,
+        gender: gender.toUpperCase(),
       },
     });
     res.status(201).json(user);

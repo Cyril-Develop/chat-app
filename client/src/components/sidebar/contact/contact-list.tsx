@@ -19,12 +19,13 @@ import { useContactStore } from "@/store/contact.store";
 import { useNotificationStore } from "@/store/notification.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { FriendProps } from "@/types/contact";
+import { FriendProps, BlockedUsersProps } from "@/types/contact";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useGetFriends from "@/hooks/api/user/get-friends";
 import useGetBlockedUsers from "@/hooks/api/user/get-blocked-users";
 import { useUnblockUserMutation } from "@/hooks/api/user/unblock-user";
+import { genderColor } from "@/utils/gender-color";
 
 export function Contact() {
   const { data: blockedUsers } = useGetBlockedUsers();
@@ -136,7 +137,9 @@ export function Contact() {
                       }
                     >
                       <div className="flex items-center justify-between w-full cursor-pointer">
-                        {friend.username}
+                        <span className={`${genderColor[friend.gender]}`}>
+                          {friend.username}
+                        </span>
                         {countNotifications(friend.id) > 0 && (
                           <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
                             {countNotifications(friend.id)}
@@ -150,12 +153,14 @@ export function Contact() {
 
               {haveBlockedContact && (
                 <CommandGroup heading="Contacts bloqués">
-                  {blockedUsers.map((user: any) => (
+                  {blockedUsers.map((user: BlockedUsersProps) => (
                     <CommandItem
                       key={user.id}
                       className={cn("flex items-center justify-between")}
                     >
-                      {user.username}
+                      <span className={`${genderColor[user.gender]}`}>
+                        {user.username}
+                      </span>
                       <Button
                         variant="linkForm"
                         className={cn("p-0")}

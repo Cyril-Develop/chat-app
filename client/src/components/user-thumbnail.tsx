@@ -1,17 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { genderColor } from "@/utils/gender-color";
 
 interface UserThumbnailProps {
   image: string;
   username: string;
   imageSize: string;
   textSize?: string;
+  gender: "HOMME" | "FEMME" | "AUTRE";
 }
 
 const UserThumbnail = ({
   image,
   username,
   imageSize,
-  textSize,
+  textSize = "text-base",
+  gender,
 }: UserThumbnailProps) => {
   return (
     <div className="flex items-center gap-2">
@@ -23,10 +26,12 @@ const UserThumbnail = ({
           alt={`${username} - picture`}
         />
         <AvatarFallback>
-          <span>{username}</span>
+          <span className={`${textSize} ${genderColor[gender]}`}>
+            {username}
+          </span>
         </AvatarFallback>
       </Avatar>
-      <span className={textSize}>{username}</span>
+      <span className={`${textSize} ${genderColor[gender]}`}>{username}</span>
     </div>
   );
 };

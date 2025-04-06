@@ -7,8 +7,18 @@ export interface MessageProps {
     image?: string;
     likes?: { userId: number; username: string }[];
     message: string;
-    user: { id: number; username: string; profileImage: string };
-    receiver?: { id: number; username: string; profileImage: string };
+    user: {
+      id: number;
+      username: string;
+      profileImage: string;
+      gender: "HOMME" | "FEMME" | "AUTRE";
+    };
+    receiver?: {
+      id: number;
+      username: string;
+      profileImage: string;
+      gender: "HOMME" | "FEMME" | "AUTRE";
+    };
   };
   type: "private" | "room";
 }
@@ -57,8 +67,18 @@ export interface MessagesProviderProps {
     image?: string;
     likes?: { userId: number; username: string }[];
     message: string;
-    user: { id: number; username: string; profileImage: string };
-    receiver?: { id: number; username: string; profileImage: string };
+    user: {
+      id: number;
+      username: string;
+      profileImage: string;
+      gender: "HOMME" | "FEMME" | "AUTRE";
+    };
+    receiver?: {
+      id: number;
+      username: string;
+      profileImage: string;
+      gender: "HOMME" | "FEMME" | "AUTRE";
+    };
   }[];
   type: "private" | "room";
 }

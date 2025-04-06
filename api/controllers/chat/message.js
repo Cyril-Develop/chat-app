@@ -42,6 +42,7 @@ exports.getRoomMessage = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
+            gender: true,
           },
         },
         likes: {
@@ -419,8 +420,22 @@ exports.getPrivateMessages = async (req, res) => {
         image: true,
         createdAt: true,
         isRead: true,
-        user: { select: { id: true, username: true, profileImage: true } },
-        receiver: { select: { id: true, username: true, profileImage: true } },
+        user: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+            gender: true,
+          },
+        },
+        receiver: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+            gender: true,
+          },
+        },
         likes: {
           select: {
             user: {

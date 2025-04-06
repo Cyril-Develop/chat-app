@@ -25,7 +25,6 @@ import Terms from "@/pages/legal/Terms";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
 import { useNotificationStore } from "@/store/notification.store";
-import { useRoomStore } from "@/store/room.store";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   // Afficher les notifications peu importe la page sur laquelle l'utilisateur se trouve

@@ -2,6 +2,7 @@ export interface UserInfos {
   id: number;
   username: string;
   email: string;
+  gender: "HOMME" | "FEMME" | "AUTRE";
   bio: string;
   profileImage: string;
   createdAt: string;

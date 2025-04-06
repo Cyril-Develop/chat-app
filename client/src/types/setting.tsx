@@ -26,5 +26,6 @@ export interface DashboardProps {
   id: number;
   username: string;
   profileImage: string;
+  gender: "HOMME" | "FEMME" | "AUTRE";
   role: string;
 }

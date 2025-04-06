@@ -102,6 +102,7 @@ export interface Users {
   id: number;
   username: string;
   profileImage: string;
+  gender: "HOMME" | "FEMME" | "AUTRE";
   friends: FriendList[];
   receivedFriendRequests: ReceivedFriendRequests[];
   sentFriendRequests: SentFriendRequests[];

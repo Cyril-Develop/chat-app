@@ -68,6 +68,7 @@ export default function Dashboard() {
                     imageSize="8"
                     image={user.profileImage}
                     username={user.username}
+                    gender={user.gender}
                   />
                 </TableCell>
                 <TableCell>

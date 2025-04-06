@@ -9,6 +9,7 @@ import { useRejectFriendRequestMutation } from "@/hooks/api/user/reject-friend-r
 import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { genderColor } from "@/utils/gender-color";
 
 const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
   const userId = currentUser?.id;
@@ -51,13 +52,16 @@ const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
         <div className="flex flex-col gap-4">
           {receivedRequests.map((request: FriendRequest) => (
             <div key={request.id} className="flex items-center justify-between">
-              <div>{request.sender.username}</div>
+              <span className={`${genderColor[request.sender.gender]}`}>
+                {request.sender.username}
+              </span>
               <div className="flex gap-2">
                 <Button onClick={() => acceptFriendRequest(request.sender.id)}>
                   Accepter
                 </Button>
                 <Button
                   variant="destructive"
+                  className="text-primary-foreground"
                   onClick={() => rejectFriendRequest(request.sender.id)}
                 >
                   Refuser

@@ -1,8 +1,17 @@
 const { Server } = require("socket.io");
 require("dotenv").config();
+const https = require("https");
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const io = new Server({
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
+};
+
+const server = https.createServer(options);
+
+const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -20,9 +29,9 @@ const addUser = (userId, socketId, visible) => {
   }
 };
 
-const addUserInRoom = (id, roomId, username, profileImage, visible) => {
+const addUserInRoom = (roomId, id, username, gender, profileImage, visible) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
-    userInRoom.push({ id, username, profileImage, roomId, visible });
+    userInRoom.push({ roomId, id, username, gender, profileImage, visible });
   }
 };
 
@@ -101,13 +110,16 @@ io.on("connection", (socket) => {
   });
 
   //********** JOIN ROOM **********/
-  socket.on("joinRoom", (roomId, id, username, profileImage, visible) => {
-    socket.join(roomId);
-    addUserInRoom(id, roomId, username, profileImage, visible);
+  socket.on(
+    "joinRoom",
+    (roomId, id, username, gender, profileImage, visible) => {
+      socket.join(roomId);
+      addUserInRoom(roomId, id, username, gender, profileImage, visible);
 
-    const usersInThisRoom = getUsersInRoom(roomId);
-    io.to(roomId).emit("getUserInRoom", usersInThisRoom);
-  });
+      const usersInThisRoom = getUsersInRoom(roomId);
+      io.to(roomId).emit("getUserInRoom", usersInThisRoom);
+    }
+  );
 
   //********** LEAVE ROOM **********/
   socket.on("leaveRoom", (roomId) => {
@@ -330,8 +342,12 @@ io.on("connection", (socket) => {
   socket.on("sendFriendRequest", (senderId, receiverId) => {
     const receiverSocket = users.find((user) => user.userId === receiverId);
     const senderSocket = users.find((user) => user.userId === senderId);
-    if (receiverSocket && senderSocket) {
+
+    if (receiverSocket) {
       io.to(receiverSocket.socketId).emit("receiveFriendRequest");
+    }
+
+    if (senderSocket) {
       io.to(senderSocket.socketId).emit("friendRequestSent");
     }
 
@@ -343,8 +359,12 @@ io.on("connection", (socket) => {
   socket.on("acceptFriendRequest", (userId, friendId) => {
     const userSocket = users.find((user) => user.userId === userId);
     const friendSocket = users.find((user) => user.userId === friendId);
-    if (userSocket && friendSocket) {
+
+    if (userSocket) {
       io.to(userSocket.socketId).emit("friendRequestAccepted");
+    }
+
+    if (friendSocket) {
       io.to(friendSocket.socketId).emit("friendRequestAccepted");
     }
 
@@ -364,8 +384,11 @@ io.on("connection", (socket) => {
     const friendSocket = users.find((user) => user.userId === contactId);
 
     // On supprime le contact de la liste pour les deux utilisateurs
-    if ((userSocket, friendSocket)) {
+    if (userSocket) {
       io.to(userSocket.socketId).emit("friendRemoved", contactId);
+    }
+
+    if (friendSocket) {
       io.to(friendSocket.socketId).emit("friendRemoved", userId);
     }
 
@@ -433,6 +456,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.SOCKET_PORT || 3000;
-io.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Socket.IO server is running at https://localhost:${PORT}`);
 });

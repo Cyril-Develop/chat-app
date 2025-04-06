@@ -3,9 +3,29 @@ import UserThumbnail from "../user-thumbnail";
 import { Button } from "@/components/ui/button";
 import { useUnblockUserMutation } from "@/hooks/api/user/unblock-user";
 import { Icons } from "@/components/Icons";
+import { useSocketStore } from "@/store/socket.store";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 const BlockedUsers = ({ blockedUsers }: BlockedUsersProps) => {
   const { mutate: unblockUser } = useUnblockUserMutation();
+  const { socket } = useSocketStore();
+  const queryClient = useQueryClient();
+
+  // --- HANDLERS ---
+  const handleUnblockUser = () => {
+    // Invalidate la liste des utilisateurs bloqués lorsqu'un utilisateur bloqué voit son compte supprimé
+    queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
+  };
+
+  // Écouter l'événement "accountDeletedForUser" émit lorsqu'un compte est supprimé
+  useEffect(() => {
+    socket?.on("accountDeletedForUser", handleUnblockUser);
+
+    return () => {
+      socket?.off("accountDeletedForUser", handleUnblockUser);
+    };
+  }, [socket, handleUnblockUser]);
 
   return (
     <div>

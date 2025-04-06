@@ -15,12 +15,6 @@ export interface HandleUserStatusChangedProps {
   visible: boolean;
 }
 
-export interface BlockedUsersState {
-  id: number;
-  username: string;
-  profileImage: string;
-}
-
 export interface BlockedUsersProps {
-  blockedUsers: BlockedUsersState[];
+  blockedUsers: UserInfos[];
 }

@@ -7,25 +7,25 @@ import { ApiError } from "@/types/api";
 import { handleApiError } from "@/utils/error-handler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useSocketStore } from "@/store/socket.store";
 
 export const useUnblockUserMutation = () => {
   const { setAuthentication } = useAuthStore();
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
+  const { socket } = useSocketStore();
 
   return useMutation({
     mutationFn: (blockedId: number | null) => unblockUser(blockedId),
-    onSuccess: (data, variables) => {
-      console.log(variables);
-      
+    onSuccess: (data) => {
       toast({
         title: data.message,
         variant: "success",
         logo: <Icons.check />,
       });
+      socket?.emit("unblockUser", data.userId, data.unblockedId);
       queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
-      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

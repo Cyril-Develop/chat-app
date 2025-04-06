@@ -43,8 +43,8 @@ const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
   return (
     <>
       <h2 className="text-xl font-semibold flex justify-between">
-        {receivedRequests.length > 1 ? "Demandes" : "Demande"} d'ami {""}
-        {receivedRequests.length > 1 ? "s" : ""}({receivedRequests.length})
+        {receivedRequests.length > 1 ? "Demandes" : "Demande"} d'ami
+        {receivedRequests.length > 1 ? "s" : ""} {""}({receivedRequests.length})
       </h2>
       <Separator />
       <ScrollArea className={cn("h-72")}>

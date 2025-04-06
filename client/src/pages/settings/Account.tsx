@@ -6,35 +6,11 @@ import { Separator } from "@/components/ui/separator";
 import { useDeleteAccountMutation } from "@/hooks/api/user/delete-account";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import useGetBlockedUsers from "@/hooks/api/user/get-blocked-users";
-import { useSocketStore } from "@/store/socket.store";
-import { BlockedUsersState } from "@/types/user";
-import { useCallback, useEffect, useState } from "react";
 
 export default function SettingsAccountPage() {
   const { data: currentUser } = useGetUser();
-  const { data } = useGetBlockedUsers();
+  const { data: blockedUsers } = useGetBlockedUsers();
   const { mutate: deleteAccount } = useDeleteAccountMutation();
-  const { socket } = useSocketStore();
-  const [blockedUsers, setBlockedUsers] = useState<BlockedUsersState[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      setBlockedUsers(data);
-    }
-  }, [data]);
-
-  // Si l'événement "accountDeleted" est émis, mise à jour de la liste des utilisateurs bloqués pour exclure l'utilisateur supprimé
-  const handleAccountDeleted = useCallback((userId: number) => {
-    setBlockedUsers((prev) => prev.filter((user) => user.id !== userId));
-  }, []);
-
-  useEffect(() => {
-    socket?.on("accountDeleted", handleAccountDeleted);
-
-    return () => {
-      socket?.off("accountDeleted", handleAccountDeleted);
-    };
-  }, [socket, handleAccountDeleted]);
 
   return (
     <div className="space-y-6">

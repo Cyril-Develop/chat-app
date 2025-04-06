@@ -24,9 +24,10 @@ export const useBlockUserMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
-      // On émet un événement le même événement que lorsqu'on retire un contact de sa liste
+      // On émet l'événement pour mettre à jour la liste des utilisateurs concernés
       socket?.emit("removeFriend", data.userId, data.contactId);
-      // On met à jour la liste des contacts bloqués
+      // On émet l'événement pour mettre à jour la liste des utilisateurs
+      socket?.emit("blockUser", data.userId, data.contactId);
       queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
     },
     onError: (error: ApiError) => {

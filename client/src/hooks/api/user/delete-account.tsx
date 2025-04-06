@@ -10,6 +10,7 @@ import { ApiError } from "@/types/api";
 import { handleApiError } from "@/utils/error-handler";
 import { useSocketStore } from "@/store/socket.store";
 
+// Lorsque l'utilisateur supprime son compte
 export const useDeleteAccountMutation = () => {
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
@@ -25,13 +26,12 @@ export const useDeleteAccountMutation = () => {
         variant: "success",
         logo: <Icons.check />,
       });
+      socket?.emit("deleteAccount", data.affectedUserIds);
+
       if (room && room.id) {
         setRoom(null);
       }
-      socket?.emit("deleteAccount", { userId: data.user.id });
-      ["users", "blocked-users"].forEach((key) =>
-        queryClient.invalidateQueries({ queryKey: [key] })
-      );
+
       setAuthentication(false, null);
       queryClient.clear();
       navigate("/chateo/login");

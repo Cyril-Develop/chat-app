@@ -20,7 +20,7 @@ import { useSendRequestMutation } from "@/hooks/api/user/send-request";
 import { cn } from "@/lib/utils";
 import { FriendList, SearchUserProps, Users } from "@/types/chat";
 import { useState } from "react";
-import { useFriendRequestUpdates } from "@/hooks/friend-request-handler";
+import { useSocketHandler } from "@/hooks/socket-handler";
 
 export const SearchUser = ({
   currentUser,
@@ -35,7 +35,7 @@ export const SearchUser = ({
   const { mutate: sendRequestMutation } = useSendRequestMutation();
 
   // Écouter les mises à jour des demandes d'amis
-  useFriendRequestUpdates();
+  useSocketHandler();
 
   // Rechercher un utilisateur
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

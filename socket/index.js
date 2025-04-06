@@ -1,17 +1,8 @@
 const { Server } = require("socket.io");
 require("dotenv").config();
-const https = require("https");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
-};
-
-const server = https.createServer(options);
-
-const io = new Server(server, {
+const io = new Server({
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -142,7 +133,7 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("messageSentInRoom");
   });
 
-  //********** Like MESSAGE **********/
+  //********** LIKE MESSAGE **********/
   socket.on("likeMessage", (data) => {
     const { userId, username, messageId, roomId, receiverId, senderId } = data;
 
@@ -208,7 +199,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  //********** Dislike MESSAGE **********/
+  //********** DISLIKE MESSAGE **********/
   socket.on("dislikeMessage", (data) => {
     const { userId, username, messageId, roomId, receiverId, senderId } = data;
 
@@ -343,6 +334,9 @@ io.on("connection", (socket) => {
       io.to(receiverSocket.socketId).emit("receiveFriendRequest");
       io.to(senderSocket.socketId).emit("friendRequestSent");
     }
+
+    // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
+    io.emit("requestPending");
   });
 
   //********** ACCEPT FRIEND REQUEST **********/
@@ -353,17 +347,15 @@ io.on("connection", (socket) => {
       io.to(userSocket.socketId).emit("friendRequestAccepted");
       io.to(friendSocket.socketId).emit("friendRequestAccepted");
     }
+
+    // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
+    io.emit("friendRequestAccepted");
   });
 
   //********** REJECT FRIEND REQUEST **********/
   socket.on("rejectFriendRequest", () => {
     // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
     io.emit("friendRequestRejected");
-  });
-
-  //********** UPDATE USERS RELATIONSHIP (search user component) **********/
-  socket.on("updateRelationship", () => {
-    io.emit("updatedRelationship");
   });
 
   //********** REMOVE FRIEND **********/
@@ -379,6 +371,40 @@ io.on("connection", (socket) => {
 
     // On supprime la relation pour mettre à jours la liste des utilisateurs
     io.emit("removedRelationship");
+  });
+
+  //********** BLOCK USER **********/
+  socket.on("blockUser", () => {
+    // On bloque la relation pour retirer l'utilisateur de la liste des utilisateurs dans search user
+    io.emit("blockedRelationship");
+  });
+
+  //********** UNBLOCK USER **********/
+  socket.on("unblockUser", () => {
+    // On débloque la relation pour remettre l'utilisateur dans la liste des utilisateurs dans search user
+    io.emit("unblockedRelationship");
+  });
+
+  //! Pas encore implémenté côté client efficacement côté client
+  //********** CREATE ACCOUNT **********/
+  socket.on("createAccount", () => {
+    console.log("new account created");
+
+    io.emit("accountCreated");
+  });
+
+  //********** DELETE ACCOUNT **********/
+  socket.on("deleteAccount", (affectedUserIds) => {
+    affectedUserIds.forEach((userId) => {
+      const userSocket = users.find((user) => user.userId === userId);
+
+      if (userSocket) {
+        io.to(userSocket.socketId).emit("accountDeletedForUser", userId);
+      }
+    });
+
+    // Envoie l'événement global pour mettre à jour les listes
+    io.emit("accountDeletedGlobal");
   });
 
   //********** DISCONNECT **********/
@@ -407,6 +433,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.SOCKET_PORT || 3000;
-server.listen(PORT, () => {
+io.listen(PORT, () => {
   console.log(`Socket.IO server is running at https://localhost:${PORT}`);
 });

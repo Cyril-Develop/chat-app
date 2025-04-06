@@ -6,14 +6,17 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Fetch la liste des amis de l'utilisateur courant
 const useGetFriends = () => {
-  const { setAuthentication } = useAuthStore();
+  const { isAuthenticated, setAuthentication } = useAuthStore();
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["friends"],
     queryFn: async () => getFriends(),
+    enabled: isAuthenticated,
+    retry: false,
   });
 
   useEffect(() => {

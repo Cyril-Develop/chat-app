@@ -20,7 +20,6 @@ import { useNotificationStore } from "@/store/notification.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { FriendProps } from "@/types/contact";
-import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useGetFriends from "@/hooks/api/user/get-friends";
@@ -36,7 +35,6 @@ export function Contact() {
   const location = useLocation();
   const { notifications, clearNotificationsForContact } =
     useNotificationStore();
-  const queryClient = useQueryClient();
 
   // Compter le nombre de notifications provenant de chaque contact
   const countNotifications = (contactId: number) => {
@@ -46,31 +44,20 @@ export function Contact() {
   };
 
   // --- HANDLERS ---
-  const handleFriendRequestAccepted = () => {
-    queryClient.invalidateQueries({
-      queryKey: ["friends"],
-    });
-  };
-
   const handleFriendRemoved = (friendId: number) => {
     if (friendId === contactId) {
       setContactId(null);
     }
-    queryClient.invalidateQueries({
-      queryKey: ["friends"],
-    });
   };
 
-  // Écouter les événements de socket lorsqu'un ami est ajouté ou retiré de la liste
+  // Écouter l'événement "friendRemoved" pour mettre à jour le contact courant, si une discussion est ouverte
   useEffect(() => {
-    socket?.on("friendRequestAccepted", handleFriendRequestAccepted);
     socket?.on("friendRemoved", handleFriendRemoved);
 
     return () => {
-      socket?.off("friendRequestAccepted", handleFriendRequestAccepted);
       socket?.off("friendRemoved", handleFriendRemoved);
     };
-  }, [socket, handleFriendRequestAccepted]);
+  }, [socket, handleFriendRemoved]);
 
   // Fonction pour gérer l'ouverture et la fermeture des discussions privées
   const handlePrivateChat = useCallback(

@@ -85,7 +85,9 @@ export function AccountForm({ user }: AccountFormValues) {
             name="newEmail"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-label")}>Modifier votre adresse email</FormLabel>
+                <FormLabel className={cn("text-label")}>
+                  Modifier votre adresse email
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}

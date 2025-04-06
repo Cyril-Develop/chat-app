@@ -187,35 +187,11 @@ exports.getCurrentUser = async (req, res) => {
             },
           },
         },
-        friendOf: {
-          select: {
-            user: {
-              select: {
-                id: true,
-                username: true,
-                profileImage: true,
-              },
-            },
-          },
-        },
       },
     });
 
     if (user) {
-      // Combine friends and friendOf into a single list of unique friends
-      const friendsList = [];
-
-      user.friends.forEach((f) => {
-        if (!friendsList.some((friend) => friend.id === f.friend.id)) {
-          friendsList.push(f.friend);
-        }
-      });
-
-      user.friendOf.forEach((f) => {
-        if (!friendsList.some((friend) => friend.id === f.user.id)) {
-          friendsList.push(f.user);
-        }
-      });
+      const friendsList = user.friends.map((f) => f.friend);
 
       res.status(200).json({ ...user, friendsList });
     } else {
@@ -471,13 +447,11 @@ exports.deleteAccount = async (req, res) => {
     }
 
     // Vérifier si l'utilisateur est membre d'un salon de discussion
-    // retourne l'id de l'utilisateur et l'id du salon de discussion
     const existingMembership = await prisma.userChatRoom.findFirst({
       where: { userId: userId },
     });
 
     if (existingMembership) {
-      // Supprimer l'utilisateur du salon de discussion
       await prisma.userChatRoom.delete({
         where: {
           userId_chatRoomId: {
@@ -488,7 +462,38 @@ exports.deleteAccount = async (req, res) => {
       });
     }
 
-    // Ensuite supprimer l'utilisateur de la base de données
+    // Récupérer les amis (dans les deux sens)
+    const friends = await prisma.friend.findMany({
+      where: {
+        OR: [{ userId: userId }, { friendId: userId }],
+      },
+      select: {
+        userId: true,
+        friendId: true,
+      },
+    });
+
+    // Récupérer ceux qui ont bloqué l'utilisateur
+    const blockers = await prisma.blockedUser.findMany({
+      where: {
+        blockedId: userId,
+      },
+      select: {
+        blockerId: true,
+      },
+    });
+
+    // Construire la liste des utilisateurs affectés
+    const affectedUserIds = new Set();
+
+    friends.forEach((f) => {
+      if (f.userId !== userId) affectedUserIds.add(f.userId);
+      if (f.friendId !== userId) affectedUserIds.add(f.friendId);
+    });
+
+    blockers.forEach((b) => affectedUserIds.add(b.blockerId));
+
+    // Supprimer l'utilisateur de la base de données
     await prisma.user.delete({
       where: {
         id: userId,
@@ -498,9 +503,7 @@ exports.deleteAccount = async (req, res) => {
     res.status(200).json({
       message:
         "Compte supprimé avec succès, nous espérons vous revoir bientôt! 😔",
-      user: {
-        id: userId,
-      },
+      affectedUserIds: Array.from(affectedUserIds),
     });
   } catch (err) {
     console.error("Error deleting user:", err);
@@ -1031,17 +1034,23 @@ exports.getBlockedUsers = async (req, res) => {
 //********** UNBLOCK USER **********/
 exports.unblockUser = async (req, res) => {
   const userId = req.userId;
-  const blockedId = req.params.blockedId;
+  let blockedId = req.params.blockedId;
+  // convertir blockedId en entier
+  blockedId = Number(blockedId);
 
   try {
     await prisma.blockedUser.deleteMany({
       where: {
         blockerId: userId,
-        blockedId: parseInt(blockedId),
+        blockedId: blockedId,
       },
     });
 
-    res.json({ message: "Utilisateur débloqué avec succès." });
+    res.json({
+      message: "Utilisateur débloqué avec succès.",
+      userId,
+      unblockedId: blockedId,
+    });
   } catch (error) {
     console.error(error);
     res

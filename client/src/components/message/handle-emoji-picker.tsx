@@ -20,7 +20,10 @@ export default function HandleEmojiPicker({
     <div className="absolute z-20 bottom-32 sm:bottom-20 right-0 sm:right-2">
       <Button
         type="button"
-        className={cn("relative left-0 top-1 rounded-bl-none rounded-br-none")}
+        title="Fermer les emojis"
+        className={cn(
+          "relative left-0 top-1 rounded-bl-none rounded-br-none border dark:border-popover"
+        )}
         onClick={() => setOpenEmoji(false)}
       >
         <Icons.close width="18" height="18" />

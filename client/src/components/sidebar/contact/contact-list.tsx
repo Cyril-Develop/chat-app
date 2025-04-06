@@ -160,7 +160,7 @@ export function Contact() {
                         variant="linkForm"
                         className={cn("p-0")}
                         onClick={() => unblockUser(user.id)}
-                        title="Débloquer l'utilisateur"
+                        title="Débloquer le contact"
                       >
                         <Icons.close height={20} width={20} />
                       </Button>

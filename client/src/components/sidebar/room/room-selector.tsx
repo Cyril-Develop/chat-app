@@ -60,12 +60,12 @@ export function RoomSelector() {
 
     socket.on("roomCreated", handleRoomCreated);
     socket.on("roomUpdated", handleRoomUpdated);
-    socket.on("deleteRoom", handleRoomDeleted);
+    socket.on("roomDeleted", handleRoomDeleted);
 
     return () => {
       socket.off("roomCreated", handleRoomCreated);
       socket.off("roomUpdated", handleRoomUpdated);
-      socket.off("deleteRoom", handleRoomDeleted);
+      socket.off("roomDeleted", handleRoomDeleted);
     };
   }, [socket, currentRoomId, setRoom, queryClient]);
 

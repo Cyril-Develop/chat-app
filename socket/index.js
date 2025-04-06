@@ -125,7 +125,7 @@ io.on("connection", (socket) => {
 
   //********** DELETE ROOM **********/
   socket.on("deleteRoom", (id) => {
-    io.emit("deleteRoom", id);
+    io.emit("roomDeleted", id);
   });
 
   //********** SEND MESSAGE IN ROOM **********/

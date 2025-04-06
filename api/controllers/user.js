@@ -21,7 +21,7 @@ exports.getAllUsers = async (req, res) => {
           {
             blockedBy: {
               none: {
-                blockerId: currentUserId, // Bloqué par l'utilisateur actuel
+                blockerId: currentUserId,
               },
             },
           },
@@ -29,7 +29,7 @@ exports.getAllUsers = async (req, res) => {
           {
             blockedUsers: {
               none: {
-                blockedId: currentUserId, // Utilisateur actuel bloqué par quelqu'un
+                blockedId: currentUserId,
               },
             },
           },
@@ -83,17 +83,6 @@ exports.getAllUsers = async (req, res) => {
             },
           },
         },
-        blockedBy: {
-          select: {
-            blocked: {
-              select: {
-                id: true,
-                username: true,
-                profileImage: true,
-              },
-            },
-          },
-        },
         blockedUsers: {
           select: {
             blocker: {
@@ -108,9 +97,9 @@ exports.getAllUsers = async (req, res) => {
       },
     };
 
-    // Si l'utilisateur est un administrateur, ne pas appliquer les filtres de blocage
+    // Si l'utilisateur est un administrateur, ne pas appliquer les filtres de blocage pour afficher tous les utilisateurs dans le Dashboard
     if (currentUser.role === "ADMIN") {
-      delete usersQuery.where; // Enlève la condition de filtrage si admin
+      delete usersQuery.where;
     }
 
     const users = await prisma.user.findMany(usersQuery);
@@ -515,7 +504,8 @@ exports.deleteAccount = async (req, res) => {
 //********** DELETE USER ACCOUNT **********/
 exports.deleteUserAccount = async (req, res) => {
   try {
-    const userId = req.params.id;
+    let userId = req.params.id;
+    userId = Number(userId);
     const userRole = req.role;
 
     if (userRole !== "ADMIN") {
@@ -527,7 +517,7 @@ exports.deleteUserAccount = async (req, res) => {
     // Vérifier si l'utilisateur est membre d'un salon de discussion
     // retourne l'id de l'utilisateur et l'id du salon de discussion
     const existingMembership = await prisma.userChatRoom.findFirst({
-      where: { userId: parseInt(userId) },
+      where: { userId },
     });
 
     if (existingMembership) {
@@ -535,12 +525,43 @@ exports.deleteUserAccount = async (req, res) => {
       await prisma.userChatRoom.delete({
         where: {
           userId_chatRoomId: {
-            userId: parseInt(userId),
+            userId,
             chatRoomId: existingMembership.chatRoomId,
           },
         },
       });
     }
+
+    // Récupérer les amis (dans les deux sens)
+    const friends = await prisma.friend.findMany({
+      where: {
+        OR: [{ userId: userId }, { friendId: userId }],
+      },
+      select: {
+        userId: true,
+        friendId: true,
+      },
+    });
+
+    // Récupérer ceux qui ont bloqué l'utilisateur
+    const blockers = await prisma.blockedUser.findMany({
+      where: {
+        blockedId: userId,
+      },
+      select: {
+        blockerId: true,
+      },
+    });
+
+    // Construire la liste des utilisateurs affectés
+    const affectedUserIds = new Set();
+
+    friends.forEach((f) => {
+      if (f.userId !== userId) affectedUserIds.add(f.userId);
+      if (f.friendId !== userId) affectedUserIds.add(f.friendId);
+    });
+
+    blockers.forEach((b) => affectedUserIds.add(b.blockerId));
 
     // Ensuite supprimer l'utilisateur de la base de données
     await prisma.user.delete({
@@ -551,9 +572,7 @@ exports.deleteUserAccount = async (req, res) => {
 
     res.status(200).json({
       message: "L'utilisateur a été supprimé avec succès.",
-      user: {
-        id: parseInt(userId),
-      },
+      affectedUserIds: Array.from(affectedUserIds),
     });
   } catch (err) {
     console.error("Error deleting user:", err);

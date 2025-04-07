@@ -57,7 +57,7 @@ const passwordSchema = z
   })
   .min(8, { message: "Minimum 8 caractères" });
 
-const genderSchema = z.enum(["homme", "femme"], {
+const genderSchema = z.enum(["HOMME", "FEMME"], {
   message: "Le sexe est requis",
 });
 

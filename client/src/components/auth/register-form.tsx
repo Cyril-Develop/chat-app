@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { NewUser, Gender } from "@/types/auth";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,7 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [openRequestOtp, setOpenRequestOtp] = useState(false);
 
-  const [newUser, setNewUser] = useState({
+  const [newUser, setNewUser] = useState<NewUser>({
     username: "",
     email: "",
     password: "",
@@ -57,7 +58,7 @@ const RegisterForm = () => {
     setApiError("");
     try {
       const { username, email, password, gender } = form.getValues();
-      setNewUser({ username, email, password, gender });
+      setNewUser({ username, email, password, gender: gender as Gender });
 
       const userExists = await verifyIfUserExists(username, email);
 
@@ -165,8 +166,8 @@ const RegisterForm = () => {
                             "dark:bg-primary-foreground dark:border-popover"
                           )}
                         >
-                          <SelectItem value="homme">Homme</SelectItem>
-                          <SelectItem value="femme">Femme</SelectItem>
+                          <SelectItem value="HOMME">Homme</SelectItem>
+                          <SelectItem value="FEMME">Femme</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -249,7 +250,14 @@ const RegisterForm = () => {
         </Form>
         {openRequestOtp && (
           <ValidateAccount
-            newUser={newUser}
+            newUser={
+              newUser as {
+                username: string;
+                email: string;
+                password: string;
+                gender: "HOMME" | "FEMME";
+              }
+            }
             isOpen={openRequestOtp}
             setIsOpen={setOpenRequestOtp}
             handleAccountCreationSuccess={handleAccountCreationSuccess}

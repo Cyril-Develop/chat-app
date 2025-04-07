@@ -65,7 +65,7 @@ export interface MessagesProviderProps {
     createdAt: string;
     id: number;
     image?: string;
-    likes?: { userId: number; username: string }[];
+    likes?: { userId: number; username: string, gender: "HOMME" | "FEMME"; }[];
     message: string;
     user: {
       id: number;

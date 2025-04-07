@@ -1,3 +1,12 @@
+export type Gender = "HOMME" | "FEMME";
+
+export type NewUser = {
+  username: string;
+  email: string;
+  password: string;
+  gender: Gender | "";
+};
+
 export interface RegisterByEmailProps {
   username: string;
   email: string;

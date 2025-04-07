@@ -5,23 +5,22 @@ import {
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
 import { Icons } from "../Icons";
+import { genderColor } from "@/utils/gender-color";
 
 interface HoverMessageProps {
   trigger: number;
-  users: string[];
+  users: {
+    username: string;
+    gender: "HOMME" | "FEMME";
+  }[];
 }
 
 export function HoverMessage({ trigger, users }: HoverMessageProps) {
+  // Si la liste des utilisateurs est vide, on ne retourne pas le composant
+  if (users?.length === 0) return null;
+
   const totalLikes = users.length;
-
-  // Récupérer les 3 derniers utilisateurs qui ont liké
-  const recentLikers = users.slice(-3).join(", ");
-
-  // Définir le texte à afficher
-  const likeText =
-    totalLikes > 3
-      ? `Plus de ${totalLikes} personnes ont liké ce message, dont ${recentLikers}`
-      : `${recentLikers} ${totalLikes > 1 ? "ont" : "a"} liké ce message`;
+  const recentLikers = users.slice(-3);
 
   return (
     <HoverCard>
@@ -33,8 +32,38 @@ export function HoverMessage({ trigger, users }: HoverMessageProps) {
           "max-w-60 max-h-40 overflow-y-auto scrollbar-webkit scrollbar-firefox text-additional-info break-words whitespace-normal"
         )}
       >
-        <span className="flex flex-wrap items-center">
-          {likeText} :{" "}
+        <span className="flex flex-wrap items-center gap-1">
+          {totalLikes > 3 ? (
+            <>
+              <span className="mr-1">
+                Plus de {totalLikes} personnes ont liké ce message, dont
+              </span>
+              {recentLikers.map((user, index) => (
+                <span
+                  key={user.username + index}
+                  className={cn(genderColor[user.gender])}
+                >
+                  {user.username}
+                  {index < recentLikers.length - 1 && ","}
+                </span>
+              ))}
+            </>
+          ) : (
+            <>
+              {recentLikers.map((user, index) => (
+                <span
+                  key={user.username + index}
+                  className={cn(genderColor[user.gender])}
+                >
+                  {user.username}
+                  {index < recentLikers.length - 1 && ","}
+                </span>
+              ))}
+              <span className="ml-1">
+                {totalLikes > 1 ? "ont" : "a"} liké ce message
+              </span>
+            </>
+          )}
           <span className="ml-1">
             <Icons.like fill="#3570D1" width={16} height={16} />
           </span>

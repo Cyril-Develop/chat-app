@@ -6,7 +6,7 @@ interface UserThumbnailProps {
   username: string;
   imageSize: string;
   textSize?: string;
-  gender: "HOMME" | "FEMME" | "AUTRE";
+  gender: "HOMME" | "FEMME";
 }
 
 const UserThumbnail = ({

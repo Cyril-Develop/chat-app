@@ -14,15 +14,15 @@ exports.register = async (req, res) => {
 
     const usernameCapitalized =
       username.charAt(0).toUpperCase() + username.slice(1);
-
     const hashedPassword = await argon2.hash(password);
+    const userGender = gender.toUpperCase();
 
     const user = await prisma.user.create({
       data: {
         username: usernameCapitalized,
         email,
         password: hashedPassword,
-        gender: gender.toUpperCase(),
+        gender: userGender,
       },
     });
     res.status(201).json(user);

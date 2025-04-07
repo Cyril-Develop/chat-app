@@ -5,19 +5,18 @@ export interface MessageProps {
     createdAt: string;
     id: number;
     image?: string;
-    likes?: { userId: number; username: string }[];
+    likes?: { userId: number; username: string; gender: "HOMME" | "FEMME" }[];
     message: string;
     user: {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME" | "AUTRE";
+      gender: "HOMME" | "FEMME";
     };
     receiver?: {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME" | "AUTRE";
     };
   };
   type: "private" | "room";
@@ -25,6 +24,7 @@ export interface MessageProps {
 
 export interface LikeFromSocket {
   userId: number;
+  gender: "HOMME" | "FEMME";
   username: string;
   messageId: number;
   roomId?: number;
@@ -71,13 +71,13 @@ export interface MessagesProviderProps {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME" | "AUTRE";
+      gender: "HOMME" | "FEMME";
     };
     receiver?: {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME" | "AUTRE";
+      gender: "HOMME" | "FEMME";
     };
   }[];
   type: "private" | "room";

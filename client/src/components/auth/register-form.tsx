@@ -39,7 +39,7 @@ const RegisterForm = () => {
     username: "",
     email: "",
     password: "",
-    sexe: "",
+    gender: "",
   });
 
   const form = useForm({
@@ -47,7 +47,7 @@ const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
-      sexe: "",
+      gender: "",
     },
     resolver: zodResolver(RegisterFormSchema),
   });
@@ -56,8 +56,8 @@ const RegisterForm = () => {
     setLoading(true);
     setApiError("");
     try {
-      const { username, email, password, sexe } = form.getValues();
-      setNewUser({ username, email, password, sexe });
+      const { username, email, password, gender } = form.getValues();
+      setNewUser({ username, email, password, gender });
 
       const userExists = await verifyIfUserExists(username, email);
 
@@ -99,7 +99,7 @@ const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
-      sexe: "",
+      gender: "",
     });
   };
 
@@ -143,7 +143,7 @@ const RegisterForm = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="sexe"
+                  name="gender"
                   render={({ field }) => (
                     <FormItem className={cn("flex-1")}>
                       <FormLabel className={cn("text-label")}>Sexe</FormLabel>

@@ -2,6 +2,7 @@ export interface RegisterByEmailProps {
   username: string;
   email: string;
   password: string;
+  gender: "HOMME" | "FEMME";
 }
 
 export interface LoginByEmailProps {
@@ -41,12 +42,22 @@ export interface ShowPassordProps {
 }
 
 export interface ValidateAccountFormProps {
-  newUser: { username: string; email: string; password: string };
+  newUser: {
+    username: string;
+    email: string;
+    password: string;
+    gender: "HOMME" | "FEMME";
+  };
   onSubmitSuccess: () => void;
 }
 
 export interface ValidateAccountProps {
-  newUser: { username: string; email: string; password: string, sexe: string };
+  newUser: {
+    username: string;
+    email: string;
+    password: string;
+    gender: "HOMME" | "FEMME";
+  };
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   headerTitle: string;

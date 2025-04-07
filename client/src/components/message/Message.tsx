@@ -40,7 +40,11 @@ const Message = ({ message, type }: MessageProps) => {
 
       setLikes([
         ...likes,
-        { userId: currentUser?.id, username: currentUser?.username },
+        {
+          userId: currentUser?.id,
+          username: currentUser?.username,
+          gender: currentUser?.gender,
+        },
       ]);
     }
   };
@@ -68,7 +72,11 @@ const Message = ({ message, type }: MessageProps) => {
         if (!alreadyLiked) {
           return [
             ...prevLikes,
-            { userId: data.userId, username: data.username },
+            {
+              userId: data.userId,
+              username: data.username,
+              gender: data.gender,
+            },
           ];
         }
         return prevLikes;
@@ -154,12 +162,13 @@ const Message = ({ message, type }: MessageProps) => {
               />
             </Button>
 
-            {likes.length > 0 && (
-              <HoverMessage
-                trigger={likes.length}
-                users={likes.map((like) => like.username)}
-              />
-            )}
+            <HoverMessage
+              trigger={likes.length}
+              users={likes.map((like) => ({
+                username: like.username,
+                gender: like.gender,
+              }))}
+            />
           </div>
           {canDeleteMessage && (
             <Button

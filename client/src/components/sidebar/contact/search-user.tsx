@@ -1,4 +1,5 @@
 import { Icons } from "@/components/Icons";
+import { SkeletonInput } from "@/components/skeleton/skeleton";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -15,17 +16,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import UserThumbnail from "@/components/user-thumbnail";
+import useGetUser from "@/hooks/api/user/get-current-user";
 import useGetUsers from "@/hooks/api/user/get-users";
 import { useSendRequestMutation } from "@/hooks/api/user/send-request";
 import { cn } from "@/lib/utils";
-import { FriendList, SearchUserProps, Users } from "@/types/chat";
+import { FriendList, Users } from "@/types/chat";
 import { useState } from "react";
 
-export const SearchUser = ({
-  currentUser,
-}: {
-  currentUser: SearchUserProps;
-}) => {
+export const SearchUser = () => {
+  const { data: currentUser, isLoading } = useGetUser();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [contacts, setContacts] = useState<Users[]>([]);
@@ -72,70 +71,78 @@ export const SearchUser = ({
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background dark:bg-primary-foreground border border-input rounded-md">
-          <Label htmlFor="searchUser">
-            <Icons.search style={{ stroke: "#80838B" }} />
-          </Label>
-          <Input
-            type="text"
-            placeholder="Rechercher un contact"
-            id="searchUser"
-            value={query}
-            onChange={handleSearch}
-            className="flex h-auto rounded-md text-foreground p-0 text-sm outline-none border-none focus:border-none focus: placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-        </div>
-      </PopoverTrigger>
-      {query.length >= 3 && (
-        <PopoverContent
-          className={cn("w-[200px] p-0 border-none")}
-          onOpenAutoFocus={(e) => e.preventDefault()}
-        >
-          <Command>
-            <CommandList>
-              {contacts.length === 0 && (
-                <CommandEmpty className={cn("error p-3")}>
-                  Aucun contact trouvé.
-                </CommandEmpty>
-              )}
-              {contacts.map(
-                (contact) =>
-                  contact.id !== userId && (
-                    <CommandGroup key={contact.id}>
-                      <CommandItem
-                        value={contact.username}
-                        className={cn("flex items-center justify-between p-2")}
-                      >
-                        <UserThumbnail
-                          imageSize="8"
-                          image={contact.profileImage}
-                          username={contact.username}
-                          gender={contact.gender}
-                        />
-                        {isFriend(contact.friends) ? (
-                          <Icons.check width={16} height={16} />
-                        ) : isRequestPending(contact) ? (
-                          <Icons.loader width={16} height={16} />
-                        ) : (
-                          <Button
-                            variant="linkForm"
-                            title="Ajouter à la liste de contacts"
-                            className={cn("p-0")}
-                            onClick={() => handleAddFriend(contact.id)}
+    <>
+      {isLoading ? (
+        <SkeletonInput />
+      ) : (
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background dark:bg-primary-foreground border border-input rounded-md">
+              <Label htmlFor="searchUser">
+                <Icons.search style={{ stroke: "#80838B" }} />
+              </Label>
+              <Input
+                type="text"
+                placeholder="Rechercher un contact"
+                id="searchUser"
+                value={query}
+                onChange={handleSearch}
+                className="flex h-auto rounded-md text-foreground p-0 text-sm outline-none border-none focus:border-none focus: placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
+          </PopoverTrigger>
+          {query.length >= 3 && (
+            <PopoverContent
+              className={cn("w-[200px] p-0 border-none")}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+              <Command>
+                <CommandList>
+                  {contacts.length === 0 && (
+                    <CommandEmpty className={cn("error p-3")}>
+                      Aucun contact trouvé.
+                    </CommandEmpty>
+                  )}
+                  {contacts.map(
+                    (contact) =>
+                      contact.id !== userId && (
+                        <CommandGroup key={contact.id}>
+                          <CommandItem
+                            value={contact.username}
+                            className={cn(
+                              "flex items-center justify-between p-2"
+                            )}
                           >
-                            <Icons.add width={16} height={16} />
-                          </Button>
-                        )}
-                      </CommandItem>
-                    </CommandGroup>
-                  )
-              )}
-            </CommandList>
-          </Command>
-        </PopoverContent>
+                            <UserThumbnail
+                              imageSize="8"
+                              image={contact.profileImage}
+                              username={contact.username}
+                              gender={contact.gender}
+                            />
+                            {isFriend(contact.friends) ? (
+                              <Icons.check width={16} height={16} />
+                            ) : isRequestPending(contact) ? (
+                              <Icons.loader width={16} height={16} />
+                            ) : (
+                              <Button
+                                variant="linkForm"
+                                title="Ajouter à la liste de contacts"
+                                className={cn("p-0")}
+                                onClick={() => handleAddFriend(contact.id)}
+                              >
+                                <Icons.add width={16} height={16} />
+                              </Button>
+                            )}
+                          </CommandItem>
+                        </CommandGroup>
+                      )
+                  )}
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          )}
+        </Popover>
       )}
-    </Popover>
+    </>
   );
 };

@@ -147,12 +147,21 @@ io.on("connection", (socket) => {
 
   //********** LIKE MESSAGE **********/
   socket.on("likeMessage", (data) => {
-    const { userId, username, messageId, roomId, receiverId, senderId } = data;
+    const {
+      userId,
+      gender,
+      username,
+      messageId,
+      roomId,
+      receiverId,
+      senderId,
+    } = data;
 
-    // Si roomId est défini, émettre l'événement dans la salle
+    // Cas des messages dans une room (groupe)
     if (roomId) {
       io.to(roomId).emit("messageLiked", {
         userId,
+        gender,
         username,
         messageId,
         roomId,
@@ -160,54 +169,24 @@ io.on("connection", (socket) => {
       return;
     }
 
-    // Pour les messages privés, déterminer qui doit recevoir la notification
-    // Si senderId n'est pas fourni dans les données, traiter userId comme l'utilisateur qui like
-    const messageAuthorId = senderId || null;
-    const likerUserId = userId;
-
-    // Trouver les sockets des utilisateurs concernés
-    const messageAuthorSocket = messageAuthorId
-      ? users.find((u) => u.userId === messageAuthorId)
-      : null;
+    // Cas du message privé : envoyer à sender ET receiver
+    const senderSocket = users.find((u) => u.userId === senderId);
     const receiverSocket = users.find((u) => u.userId === receiverId);
-    const likerSocket = users.find((u) => u.userId === likerUserId);
 
-    // Si l'auteur du message like son propre message
-    if (messageAuthorId === likerUserId) {
-      // Envoyer notification au destinataire si connecté
-      if (receiverSocket) {
-        io.to(receiverSocket.socketId).emit("messageLiked", {
-          userId: likerUserId,
-          username,
-          messageId,
-          senderId: messageAuthorId,
-          receiverId,
-        });
-      }
-    }
-    // Si le destinataire like le message
-    else if (receiverId === likerUserId) {
-      // Envoyer notification à l'auteur du message si connecté
-      if (messageAuthorSocket) {
-        io.to(messageAuthorSocket.socketId).emit("messageLiked", {
-          userId: likerUserId,
-          username,
-          messageId,
-          senderId: messageAuthorId,
-          receiverId,
-        });
-      }
-    }
+    const payload = {
+      userId,
+      gender,
+      username,
+      messageId,
+      senderId,
+      receiverId,
+    };
 
-    // Dans tous les cas, mettre à jour l'interface de l'utilisateur qui a liké
-    if (likerSocket) {
-      io.to(likerSocket.socketId).emit("messageLiked", {
-        userId: likerUserId,
-        username,
-        messageId,
-        senderId: messageAuthorId,
-        receiverId,
-      });
+    if (senderSocket) {
+      io.to(senderSocket.socketId).emit("messageLiked", payload);
+    }
+    if (receiverSocket) {
+      io.to(receiverSocket.socketId).emit("messageLiked", payload);
     }
   });
 
@@ -215,7 +194,7 @@ io.on("connection", (socket) => {
   socket.on("dislikeMessage", (data) => {
     const { userId, username, messageId, roomId, receiverId, senderId } = data;
 
-    // Si roomId est défini, émettre l'événement dans la salle
+    // Cas des messages dans une room (groupe)
     if (roomId) {
       io.to(roomId).emit("messageDisliked", {
         userId,
@@ -226,50 +205,23 @@ io.on("connection", (socket) => {
       return;
     }
 
-    // Pour les messages privés, déterminer qui doit recevoir la notification
-    const dislikerUserId = userId;
-
-    // Trouver les sockets des utilisateurs concernés
-    const messageAuthorSocket = users.find((u) => u.userId === senderId);
+    // Cas message privé : juste envoyer à sender + receiver
+    const senderSocket = users.find((u) => u.userId === senderId);
     const receiverSocket = users.find((u) => u.userId === receiverId);
-    const dislikerSocket = users.find((u) => u.userId === dislikerUserId);
 
-    // Si l'auteur du message dislike son propre message
-    if (senderId === dislikerUserId) {
-      // Envoyer notification au destinataire si connecté
-      if (receiverSocket) {
-        io.to(receiverSocket.socketId).emit("messageDisliked", {
-          userId: dislikerUserId,
-          username,
-          messageId,
-          senderId,
-          receiverId,
-        });
-      }
-    }
-    // Si le destinataire dislike le message
-    else if (receiverId === dislikerUserId) {
-      // Envoyer notification à l'auteur du message si connecté
-      if (messageAuthorSocket) {
-        io.to(messageAuthorSocket.socketId).emit("messageDisliked", {
-          userId: dislikerUserId,
-          username,
-          messageId,
-          senderId,
-          receiverId,
-        });
-      }
-    }
+    const payload = {
+      userId,
+      username,
+      messageId,
+      senderId,
+      receiverId,
+    };
 
-    // Dans tous les cas, mettre à jour l'interface de l'utilisateur qui a disliké
-    if (dislikerSocket) {
-      io.to(dislikerSocket.socketId).emit("messageDisliked", {
-        userId: dislikerUserId,
-        username,
-        messageId,
-        senderId,
-        receiverId,
-      });
+    if (senderSocket) {
+      io.to(senderSocket.socketId).emit("messageDisliked", payload);
+    }
+    if (receiverSocket) {
+      io.to(receiverSocket.socketId).emit("messageDisliked", payload);
     }
   });
 

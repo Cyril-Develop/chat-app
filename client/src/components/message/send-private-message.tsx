@@ -74,7 +74,6 @@ const SendPrivateMessage = () => {
     if (!contactId) {
       return;
     }
-    console.log("on envoie un message privé");
 
     sendMessage(
       { formData, contactId },
@@ -114,7 +113,7 @@ const SendPrivateMessage = () => {
       )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row gap-4 mt-1 mb-1 xl:mt-4 xl:mb-4"
+        className="relative flex flex-col sm:flex-row gap-2 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
         {openEmoji && (
           <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />

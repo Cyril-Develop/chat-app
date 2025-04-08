@@ -13,9 +13,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { SheetLeftProps } from "@/types/chat";
 
-export function SheetLeft({ currentUser }: SheetLeftProps) {
+export function SheetLeft() {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -35,9 +34,9 @@ export function SheetLeft({ currentUser }: SheetLeftProps) {
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4 pt-2">
-          {currentUser && <SearchUser currentUser={currentUser} />}
+          <SearchUser />
           <Contact />
-          <ContactRequest currentUser={currentUser} />
+          <ContactRequest />
         </div>
       </SheetContent>
     </Sheet>

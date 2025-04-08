@@ -170,8 +170,6 @@ export const sendPrivateMessage = async (
   formData: FormData,
   contactId: number
 ) => {
-  console.log("on envoie un message privé");
-
   try {
     const response = await fetch(
       `${

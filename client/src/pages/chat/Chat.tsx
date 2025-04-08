@@ -9,13 +9,10 @@ import { RoomSelector } from "@/components/sidebar/room/room-selector";
 import { RoomUsers } from "@/components/sidebar/room/room-users";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
-import useWindowWidth from "@/hooks/window-width";
 import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
-import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
-import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
 import { useEffect, useRef } from "react";
 import { useSocketHandler } from "@/hooks/socket-handler";
 
@@ -24,15 +21,13 @@ const Chat = () => {
   useSocketHandler();
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
-  const { role, visible } = useAuthStore((state) => ({
-    role: state.user?.role,
-    visible: state.visible,
-  }));
+  const { visible } = useAuthStore((state) => ({ visible: state.visible }));
   const { data: currentUser } = useGetUser();
   const { socket } = useSocketStore();
   const { contactId } = useContactStore();
   const prevRoomRef = useRef<number | null>(null);
 
+  //! Essayer de refactoriser ce useEffect
   useEffect(() => {
     if (room && currentUser) {
       const prevRoom = prevRoomRef.current;
@@ -54,55 +49,17 @@ const Chat = () => {
     }
   }, [room, socket, currentUser]);
 
-  const { usersInRoom, setUsersInRoom, updateUserInRoom } = useRoomStore();
-  const windowWidth = useWindowWidth();
-
-  useEffect(() => {
-    if (windowWidth < 1024) {
-      socket?.emit("requestUserInRoom", roomId);
-    }
-
-    const handleUserInRoom = (userList: UserInfos[]) => {
-      setUsersInRoom(userList);
-    };
-
-    const handleUserStatusChanged = ({
-      userId,
-      visible,
-    }: HandleUserStatusChangedProps) => {
-      updateUserInRoom({ id: userId, visible });
-    };
-
-    const handleUpdatedUserInfos = (updatedUser: UserInfos) => {
-      updateUserInRoom(updatedUser);
-    };
-
-    socket?.on("getUserInRoom", handleUserInRoom);
-    socket?.on("userStatusChanged", handleUserStatusChanged);
-    socket?.on("updatedUserInfos", handleUpdatedUserInfos);
-
-    return () => {
-      socket?.off("getUserInRoom", handleUserInRoom);
-      socket?.off("userStatusChanged", handleUserStatusChanged);
-      socket?.off("updatedUserInfos", handleUpdatedUserInfos);
-    };
-  }, [socket, windowWidth, roomId]);
-
   return (
     <div className="chat">
       <aside className="chat_aside border-r-2">
         <div className="chat_aside_container">
           <h2 className="text-title">Contacts</h2>
-          {currentUser && (
-            <>
-              <Separator />
-              <SearchUser currentUser={currentUser} />
-            </>
-          )}
+          <Separator />
+          <SearchUser />
           <Contact />
         </div>
         <div className="chat_aside_container">
-          <ContactRequest currentUser={currentUser} />
+          <ContactRequest />
         </div>
       </aside>
 
@@ -112,7 +69,7 @@ const Chat = () => {
         ) : contactId ? (
           <PrivateChat contactId={contactId} />
         ) : (
-          <ChatUnselected role={role} />
+          <ChatUnselected />
         )}
       </main>
 
@@ -127,20 +84,9 @@ const Chat = () => {
           />
           <RoomSelector />
         </div>
-        {room && currentUser && (
-          <div className="chat_aside_container">
-            <div className="flex justify-between">
-              <h2 className="text-title">
-                {getVisibleUsersLabel(usersInRoom)}
-              </h2>
-              <span className="text-additional-info self-end mb-1">
-                {getVisibleUsersCount(usersInRoom)}
-              </span>
-            </div>
-            <Separator />
-            <RoomUsers usersInRoom={usersInRoom} />
-          </div>
-        )}
+        <div className="chat_aside_container">
+          <RoomUsers />
+        </div>
       </aside>
     </div>
   );

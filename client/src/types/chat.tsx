@@ -34,22 +34,6 @@ export interface ChatUnselectedProps {
   role: "USER" | "ADMIN" | "GUEST";
 }
 
-export interface SheetLeftProps {
-  currentUser: {
-    bio: string;
-    createdAt: string;
-    friendOf: [];
-    friends: [];
-    id: number;
-    profileImage: string;
-    receivedFriendRequests: [];
-    role: string;
-    sentFriendRequests: [];
-    username: string;
-    friendsList: { id: number; username: string }[];
-  };
-}
-
 export interface SearchUserProps {
   bio: string;
   createdAt: string;

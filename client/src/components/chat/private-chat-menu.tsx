@@ -3,6 +3,7 @@ import { Icons } from "@/components/Icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -37,12 +38,13 @@ const PrivateChatMenu = () => {
             <Icons.ellipsis width={18} height={18} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className={cn(" mt-1")}>
+        <DropdownMenuContent className={cn("dark:bg-primary-foreground")}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => setOpen(true)}>
               <Icons.block width={18} height={18} />
               <span>Bloquer le contact</span>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDelete}>
               <Icons.delete width={18} height={18} />
               <span>Supprimer le contact</span>

@@ -3,6 +3,7 @@ import { Icons } from "@/components/Icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -30,12 +31,13 @@ const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
             <Icons.ellipsis width={18} height={18} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className={cn(" mt-1")}>
+        <DropdownMenuContent className={cn("dark:bg-primary-foreground")}>
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => setOpen(true)}>
               <Icons.pen width={18} height={18} />
               <span>Modifier la description</span>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDeleteRoom}>
               <Icons.delete width={18} height={18} />
               <span>Supprimer le salon</span>

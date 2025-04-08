@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from "react";
 import useGetRequest from "@/hooks/api/user/get-friend-requests";
-import { FriendRequest, CurrentUserId } from "@/types/contact";
+import { FriendRequest } from "@/types/contact";
 import { useSocketStore } from "@/store/socket.store";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,8 +10,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { genderColor } from "@/utils/gender-color";
+import useGetUser from "@/hooks/api/user/get-current-user";
 
-const ContactRequest = ({ currentUser }: { currentUser?: CurrentUserId }) => {
+const ContactRequest = () => {
+  const { data: currentUser } = useGetUser();
   const userId = currentUser?.id;
   const { data: friendRequests } = useGetRequest();
   const queryClient = useQueryClient();

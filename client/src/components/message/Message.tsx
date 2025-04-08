@@ -145,7 +145,7 @@ const Message = ({ message, type }: MessageProps) => {
           {moment(message.createdAt).locale("fr").fromNow()}
         </span>
 
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <div className="flex gap-1">
             <Button
               variant="btnMenu"

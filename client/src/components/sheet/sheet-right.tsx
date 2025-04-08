@@ -13,12 +13,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { useRoomStore } from "@/store/room.store";
-import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
 
 export function SheetRight() {
-  const { room, usersInRoom } = useRoomStore();
-
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -45,24 +41,9 @@ export function SheetRight() {
             <RoomSelector />
           </div>
         </SheetHeader>
-        {room && (
-          <SheetHeader className={cn("text-left mt-4")}>
-            <SheetTitle className={cn("text-title flex justify-between")}>
-              {getVisibleUsersLabel(usersInRoom)}
-              <span className="text-additional-info self-end mb-1">
-                {getVisibleUsersCount(usersInRoom)}
-              </span>
-            </SheetTitle>
-            <Separator />
-            <SheetDescription className="text-description">
-              {getVisibleUsersCount(usersInRoom) === 1
-                ? "Membre du salon."
-                : "Membres du salon."}
-            </SheetDescription>
-
-            <RoomUsers usersInRoom={usersInRoom} />
-          </SheetHeader>
-        )}
+        <SheetHeader className={cn("text-left")}>
+          <RoomUsers />
+        </SheetHeader>
       </SheetContent>
     </Sheet>
   );

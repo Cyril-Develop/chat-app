@@ -3,7 +3,6 @@ import ModeToggle from "@/components/mode-toggle";
 import DropDown from "@/components/navbar/DropDown";
 import { SheetLeft } from "@/components/sheet/sheet-left";
 import { SheetRight } from "@/components/sheet/sheet-right";
-import useGetUser from "@/hooks/api/user/get-current-user";
 import useWindowWidth from "@/hooks/window-width";
 import { useAuthStore } from "@/store/auth.store";
 import { Link } from "react-router-dom";
@@ -12,7 +11,6 @@ const Navbar = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const windowWidth = useWindowWidth();
   const isMobileView = windowWidth < 1024;
-  const { data: currentUser } = useGetUser();
 
   return (
     <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-background md:px-10">
@@ -30,7 +28,7 @@ const Navbar = () => {
       <div className="flex items-center gap-2 md:gap-5">
         {isMobileView && isAuthenticated && (
           <>
-            <SheetLeft currentUser={currentUser} />
+            <SheetLeft />
             <SheetRight />
           </>
         )}

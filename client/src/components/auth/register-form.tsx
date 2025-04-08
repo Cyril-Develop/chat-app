@@ -105,87 +105,35 @@ const RegisterForm = () => {
   };
 
   return (
-    <>
-      <CardWrapper
-        title="Créer un compte "
-        description="Commencez gratuitement."
-        backButtonHref="/chateo/login"
-        backButtonLabel="Se connecter"
-        text="Vous possédez déjà un compte ?"
-      >
-        <Form {...form}>
-          <form
-            noValidate
-            onSubmit={form.handleSubmit(onSubmit)}
-            className={cn("space-y-4  md:space-y-8")}
-          >
-            <div className="flex gap-4 justify-between flex-col md:gap-8 ">
-              <div className="flex gap-4 justify-between flex-col md:flex-row md:gap-8">
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem className={cn("flex-1")}>
-                      <FormLabel className={cn("text-label")}>
-                        Nom d'utilisateur
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="text"
-                          placeholder="John Doe"
-                          maxLength={15}
-                          className={cn("text-label")}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem className={cn("flex-1")}>
-                      <FormLabel className={cn("text-label")}>Sexe</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl
-                          className={cn(
-                            "h-11 w-full rounded-md border border-input bg-background dark:bg-primary-foreground dark:border-popover px-3"
-                          )}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Genre" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent
-                          className={cn(
-                            "dark:bg-primary-foreground dark:border-popover"
-                          )}
-                        >
-                          <SelectItem value="HOMME">Homme</SelectItem>
-                          <SelectItem value="FEMME">Femme</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+    <CardWrapper
+      title="Créer un compte "
+      description="Commencez gratuitement."
+      backButtonHref="/chateo/login"
+      backButtonLabel="Se connecter"
+      text="Vous possédez déjà un compte ?"
+    >
+      <Form {...form}>
+        <form
+          noValidate
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={cn("space-y-4  md:space-y-8")}
+        >
+          <div className="flex gap-4 justify-between flex-col md:gap-8 ">
+            <div className="flex gap-4 justify-between flex-col md:flex-row md:gap-8">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={cn("text-label")}>Email</FormLabel>
+                  <FormItem className={cn("flex-1")}>
+                    <FormLabel className={cn("text-label")}>
+                      Nom d'utilisateur
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        type="email"
-                        placeholder="john.doe@gmail.com"
+                        type="text"
+                        placeholder="John Doe"
+                        maxLength={15}
                         className={cn("text-label")}
                       />
                     </FormControl>
@@ -195,43 +143,90 @@ const RegisterForm = () => {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="gender"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={cn("text-label")}>
-                      Mot de passe
-                    </FormLabel>
-                    <FormControl>
-                      <ShowPassord
-                        showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                        field={field}
-                      />
-                    </FormControl>
+                  <FormItem className={cn("flex-1")}>
+                    <FormLabel className={cn("text-label")}>Sexe</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl
+                        className={cn(
+                          "h-11 w-full rounded-md border border-input dark:bg-primary-foreground text-muted-foreground  dark:border-popover"
+                        )}
+                      >
+                        <SelectTrigger className={cn("h-11")}>
+                          <SelectValue placeholder="Genre" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="HOMME">Homme</SelectItem>
+                        <SelectItem value="FEMME">Femme</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="flex flex-col gap-1">
-              <ButtonForm
-                loading={loading}
-                disabled={loading}
-                defaultValue="Créer un compte"
-                spinnerValue="Création en cours"
-              />
-              <p className="text-additional-info text-center">
-                En vous inscrivant, vous acceptez nos{" "}
-                <Link
-                  to="/chateo/terms"
-                  className="text-primary no-underline rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring underline-offset-4 hover:underline focus:underline font-semibold"
-                >
-                  conditions générales d'utilisation
-                </Link>
-                .
-              </p>
-            </div>
-            {/* <div className="flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={cn("text-label")}>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="john.doe@gmail.com"
+                      className={cn("text-label")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={cn("text-label")}>
+                    Mot de passe
+                  </FormLabel>
+                  <FormControl>
+                    <ShowPassord
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <ButtonForm
+              loading={loading}
+              disabled={loading}
+              defaultValue="Créer un compte"
+              spinnerValue="Création en cours"
+            />
+            <p className="text-additional-info text-center">
+              En vous inscrivant, vous acceptez nos{" "}
+              <Link
+                to="/chateo/terms"
+                className="text-primary no-underline rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring underline-offset-4 hover:underline focus:underline font-semibold"
+              >
+                conditions générales d'utilisation
+              </Link>
+              .
+            </p>
+          </div>
+          {/* <div className="flex flex-col gap-4">
               <Line />
 
               <Button
@@ -245,28 +240,27 @@ const RegisterForm = () => {
                 Continuer avec Google
               </Button>
             </div> */}
-            {apiError && <p className="error">{apiError}</p>}
-          </form>
-        </Form>
-        {openRequestOtp && (
-          <ValidateAccount
-            newUser={
-              newUser as {
-                username: string;
-                email: string;
-                password: string;
-                gender: "HOMME" | "FEMME";
-              }
+          {apiError && <p className="error">{apiError}</p>}
+        </form>
+      </Form>
+      {openRequestOtp && (
+        <ValidateAccount
+          newUser={
+            newUser as {
+              username: string;
+              email: string;
+              password: string;
+              gender: "HOMME" | "FEMME";
             }
-            isOpen={openRequestOtp}
-            setIsOpen={setOpenRequestOtp}
-            handleAccountCreationSuccess={handleAccountCreationSuccess}
-            headerTitle="Valider votre compte"
-            headerDescription="Un code de validation à 6 chiffres a été envoyé à l'adresse email indiquée."
-          />
-        )}
-      </CardWrapper>
-    </>
+          }
+          isOpen={openRequestOtp}
+          setIsOpen={setOpenRequestOtp}
+          handleAccountCreationSuccess={handleAccountCreationSuccess}
+          headerTitle="Valider votre compte"
+          headerDescription="Un code de validation à 6 chiffres a été envoyé à l'adresse email indiquée."
+        />
+      )}
+    </CardWrapper>
   );
 };
 

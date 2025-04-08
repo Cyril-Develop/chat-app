@@ -31,9 +31,6 @@ export interface FriendRequest {
   createdAt: string;
 }
 
-export interface CurrentUserId {
-  id: number;
-}
 export interface FriendRequestAcceptedProps {
   senderId: number;
   receiverId: number;

@@ -1,4 +1,6 @@
 import { Icons } from "@/components/Icons";
+import RoomProvider from "@/components/room/room-provider";
+import { SkeletonInput } from "@/components/skeleton/skeleton";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -11,13 +13,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect, useState } from "react";
 import useGetRooms from "@/hooks/api/chat/get-rooms";
-import { useRoomStore } from "@/store/room.store";
-import RoomProvider from "@/components/room/room-provider";
-import { useSocketStore } from "@/store/socket.store";
 import { cn } from "@/lib/utils";
+import { useRoomStore } from "@/store/room.store";
+import { useSocketStore } from "@/store/socket.store";
 import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 export function RoomSelector() {
   const { data: fetchedRooms, isLoading } = useGetRooms();
@@ -72,48 +73,56 @@ export function RoomSelector() {
   const roomsFound = fetchedRooms && fetchedRooms.length > 0;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          role="combobox"
-          size="box"
-          aria-label="Voir les salons"
-          aria-expanded={open}
-          className={cn("w-[200px] justify-between p-3")}
-          disabled={isLoading || !roomsFound}
-          onClick={togglePopover}
-        >
-          {currentRoomName
-            ? currentRoomName
-            : roomsFound
-            ? `Rechercher un salon (${fetchedRooms.length})`
-            : isLoading
-            ? "Chargement..."
-            : "Aucun salon"}
-          {open ? <Icons.chevronUp /> : <Icons.chevronDown />}
-        </Button>
-      </PopoverTrigger>
+    <>
+      {isLoading ? (
+        <SkeletonInput />
+      ) : (
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              role="combobox"
+              size="box"
+              aria-label="Voir les salons"
+              aria-expanded={open}
+              className={cn("w-[200px] justify-between p-3")}
+              disabled={isLoading || !roomsFound}
+              onClick={togglePopover}
+            >
+              {currentRoomName
+                ? currentRoomName
+                : roomsFound
+                ? `Rechercher un salon (${fetchedRooms.length})`
+                : "Aucun salon"}
+              {open ? (
+                <Icons.chevronUp width={16} height={16} />
+              ) : (
+                <Icons.chevronDown width={16} height={16} />
+              )}
+            </Button>
+          </PopoverTrigger>
 
-      {roomsFound && (
-        <PopoverContent
-          className={cn("p-0 w-[200px]")}
-          onOpenAutoFocus={(e) => e.preventDefault()}
-        >
-          <Command>
-            <CommandInput placeholder="Rechercher un salon" />
-            <CommandList>
-              <CommandEmpty className={cn("error p-3")}>
-                Aucun salon trouvé.
-              </CommandEmpty>
-              <RoomProvider
-                rooms={fetchedRooms}
-                roomName={currentRoomName ?? ""}
-                setOpen={setOpen}
-              />
-            </CommandList>
-          </Command>
-        </PopoverContent>
+          {roomsFound && (
+            <PopoverContent
+              className={cn("p-0 w-[200px]")}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+              <Command>
+                <CommandInput placeholder="Rechercher un salon" />
+                <CommandList>
+                  <CommandEmpty className={cn("error p-3")}>
+                    Aucun salon trouvé.
+                  </CommandEmpty>
+                  <RoomProvider
+                    rooms={fetchedRooms}
+                    roomName={currentRoomName ?? ""}
+                    setOpen={setOpen}
+                  />
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          )}
+        </Popover>
       )}
-    </Popover>
+    </>
   );
 }

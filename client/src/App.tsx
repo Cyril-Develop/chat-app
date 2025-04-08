@@ -42,7 +42,6 @@ function App() {
   const { connectSocket, disconnectSocket } = useSocketStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
-  //const initializeRooms = useRoomStore((state) => state.initializeRooms);
   const initializeNotifications = useNotificationStore(
     (state) => state.initializeNotifications
   );
@@ -54,7 +53,6 @@ function App() {
     if (isAuthenticated) {
       initializeAuth();
       initializeNotifications();
-      //initializeRooms();
     }
   }, [isAuthenticated, initializeAuth, initializeNotifications]);
 

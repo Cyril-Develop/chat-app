@@ -18,7 +18,7 @@ const RoomList = ({ heading, rooms, onSelect, roomName }: RoomListProps) => (
             onSelect={() => onSelect(room)}
           >
             {room.name}
-            {room.name === roomName && <Icons.check width={14} height={14} />}
+            {room.name === roomName && <Icons.check width={16} height={16} />}
           </CommandItem>
         </HoverCardTrigger>
         {room.description && (

@@ -59,21 +59,6 @@ export function SkeletonMessage() {
             </div>
           </div>
         </div>
-        {/* message */}
-        <div className="flex flex-col gap-2 max-w-[235px] 2xl:max-w-[255px] xl:ml-8">
-          <div className="flex gap-2 items-center">
-            <Skeleton className="h-6 w-6 rounded-full" />
-            <Skeleton className="h-2 w-[100px]" />
-          </div>
-          <Skeleton className="h-20 w-full rounded-md" />
-          <div className="flex justify-between gap-4 ">
-            <Skeleton className="h-2 w-[200px]" />
-            <div className="flex gap-2">
-              <Skeleton className="h-4 w-4 rounded-sm" />
-              <Skeleton className="h-4 w-4 rounded-sm" />
-            </div>
-          </div>
-        </div>
       </div>
       {/* SendRoomMessage */}
       <div className="relative flex flex-col sm:flex-row gap-2 mt-1 mb-1 xl:mt-4 xl:mb-4">

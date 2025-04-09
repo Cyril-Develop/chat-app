@@ -1,16 +1,17 @@
 import Logo from "@/assets/chatting.svg";
-import { SkeletonChatUnselected } from "@/components/skeleton/skeleton";
+// import { SkeletonChatUnselected } from "@/components/skeleton/skeleton";
 import useGetUser from "@/hooks/api/user/get-current-user";
+import { Icons } from "@/components/Icons";
 
 const ChatUnselected = () => {
   const { data: currentUser, isLoading } = useGetUser();
 
   return (
-    <>
+    <div className="bg-muted h-full flex justify-center items-center">
       {isLoading ? (
-        <SkeletonChatUnselected />
+        <Icons.loader />
       ) : (
-        <div className="bg-muted flex flex-col justify-center items-center grow h-full p-2 pl-2 xl:p-2 xl:pl-0 xl:flex-row">
+        <div className="flex flex-col h-full justify-center items-center grow  p-2 pl-2 xl:p-2 xl:pl-0 xl:flex-row">
           <img src={Logo} alt="logo-messaging" className="w-full md:w-1/3" />
 
           <div className="flex flex-col items-center gap-2">
@@ -34,7 +35,7 @@ const ChatUnselected = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

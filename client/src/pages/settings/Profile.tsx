@@ -2,12 +2,15 @@ import PreviewCard from "@/components/settings/preview-card";
 import ProfileForm from "@/components/settings/profile-form";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
+import { SkeletonProfile } from "@/components/skeleton/skeleton";
 
 const ProfilePage = () => {
-  const { data: currentUser } = useGetUser();
+  const { data: currentUser, isLoading } = useGetUser();
   return (
     <div className="space-y-6 md:pb-10">
-      {currentUser && (
+      {isLoading ? (
+        <SkeletonProfile />
+      ) : (
         <>
           <div>
             <h3 className="text-lg font-medium">Profil</h3>

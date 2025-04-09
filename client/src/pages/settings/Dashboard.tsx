@@ -14,6 +14,7 @@ import { useDeleteUserAccountMutation } from "@/hooks/api/user/delete-user-accou
 import useGetUsers from "@/hooks/api/user/get-users";
 import { cn } from "@/lib/utils";
 import { DashboardProps } from "@/types/setting";
+import { SkeletonDashboard } from "@/components/skeleton/skeleton";
 
 export default function Dashboard() {
   const { data: users, isLoading } = useGetUsers();
@@ -34,9 +35,7 @@ export default function Dashboard() {
   return (
     <>
       {isLoading ? (
-        <span className="flex justify-center">
-          <Icons.loader />
-        </span>
+        <SkeletonDashboard />
       ) : noUsersFound ? (
         <p className="text-gray-600 dark:text-gray-400 flex justify-center">
           Aucun utilisateur enregistré

@@ -90,8 +90,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               </FormControl>
               <FormMessage />
               <FormDescription className={cn("text-additional-info")}>
-                Il s'agit de votre nom d'affichage public. Il peut s'agir de
-                votre vrai nom ou d'un pseudonyme.
+                Il s'agit de votre nom d'affichage public.
               </FormDescription>
             </FormItem>
           )}
@@ -142,7 +141,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
               </FormControl>
               <FormMessage />
               <FormDescription className={cn("text-additional-info")}>
-                L'image doit être au format JPG, JPEG, PNG ou SVG.
+                Formats pris en charge : JPG, JPEG, PNG, SVG.
               </FormDescription>
             </FormItem>
           )}

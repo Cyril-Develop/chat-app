@@ -4,14 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useDeleteAccountMutation } from "@/hooks/api/user/delete-account";
 import useGetUser from "@/hooks/api/user/get-current-user";
+import { SkeletonAccount } from "@/components/skeleton/skeleton";
 
 export default function SettingsAccountPage() {
-  const { data: currentUser } = useGetUser();
+  const { data: currentUser, isLoading } = useGetUser();
   const { mutate: deleteAccount } = useDeleteAccountMutation();
 
   return (
     <div className="space-y-6">
-      {currentUser && (
+      {isLoading ? (
+        <SkeletonAccount />
+      ) : (
         <>
           <div>
             <h3 className="text-lg font-medium">Compte</h3>

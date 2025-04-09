@@ -1,5 +1,4 @@
 import { SidebarNav } from "@/components/settings/sidebar-nav";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 import ImageAccount from "@/assets/account.svg";
 import ImageProfile from "@/assets/profile.svg";
 import ImageDashboard from "@/assets/dashboard.svg";
@@ -67,7 +66,6 @@ const Settings = ({ children }: SettingsLayoutProps) => {
             de messagerie.
           </p>
         </div>
-        <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
           <aside className="lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />

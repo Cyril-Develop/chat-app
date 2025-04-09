@@ -1,12 +1,15 @@
 import NotificationForm from "@/components/settings/notification-form";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
+import { SkeletonNotification } from "@/components/skeleton/skeleton";
 
 export default function SettingsNotificationsPage() {
-  const { data: currentUser } = useGetUser();
+  const { data: currentUser, isLoading } = useGetUser();
   return (
     <div className="space-y-6">
-      {currentUser && (
+      {isLoading ? (
+        <SkeletonNotification />
+      ) : (
         <>
           <div>
             <h3 className="text-lg font-medium">Notifications</h3>

@@ -360,7 +360,7 @@ io.on("connection", (socket) => {
     io.emit("unblockedRelationship");
   });
 
-  //! Pas encore implémenté côté client efficacement côté client
+  //! Pas encore implémenté côté client
   //********** CREATE ACCOUNT **********/
   socket.on("createAccount", () => {
     console.log("new account created");

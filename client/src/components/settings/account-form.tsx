@@ -22,7 +22,7 @@ export function AccountForm({ user }: AccountFormValues) {
   const editAccount = useEditAccountMutation();
 
   const [defaultValues] = useState({
-    email: user.email,
+    email: user.role === "GUEST" ? "guest@guest.com" : user.email,
     newEmail: "",
   });
 
@@ -57,29 +57,27 @@ export function AccountForm({ user }: AccountFormValues) {
         className="space-y-8"
       >
         <div className="space-y-6">
-          {user.role !== "GUEST" && (
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn("text-label")}>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      disabled
-                      className="disabled:cursor-not-allowed text-label"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                  <FormDescription className={cn("text-additional-info")}>
-                    Votre addresse email actuelle.
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className={cn("text-label")}>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    disabled
+                    className="disabled:cursor-not-allowed text-label"
+                  />
+                </FormControl>
+                <FormMessage />
+                <FormDescription className={cn("text-additional-info")}>
+                  Votre addresse email actuelle.
+                </FormDescription>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="newEmail"

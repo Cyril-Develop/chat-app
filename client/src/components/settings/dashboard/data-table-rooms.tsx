@@ -37,7 +37,7 @@ export default function DataTableRooms() {
   // Définir l'état de pagination avec une taille de page de 5
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5, // Modifié de 10 à 5
+    pageSize: 5,
   });
 
   const filteredRooms = useMemo(() => {
@@ -100,7 +100,7 @@ export default function DataTableRooms() {
           className="text-label"
         />
       </div>
-      <div className="rounded-md border border-foreground/5 min-h-[315px]">
+      <div className="rounded-md border border-foreground/5 max-h-[315px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

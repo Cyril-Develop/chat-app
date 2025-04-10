@@ -16,8 +16,8 @@ import { cn } from "@/lib/utils";
 
 export function SheetRight() {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Sheet defaultOpen={true} >
+      <SheetTrigger asChild >
         <Button variant="btn" size="menu" title="Rejoindre un salon">
           <Icons.chat />
           <span className="hidden-text" title="Salons">
@@ -41,9 +41,7 @@ export function SheetRight() {
             <RoomSelector />
           </div>
         </SheetHeader>
-        <SheetHeader className={cn("text-left")}>
-          <RoomUsers />
-        </SheetHeader>
+        <RoomUsers />
       </SheetContent>
     </Sheet>
   );

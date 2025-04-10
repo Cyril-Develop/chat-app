@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRoomStore } from "@/store/room.store";
+import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
 
 // Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
   const { socket } = useSocketStore();
   const queryClient = useQueryClient();
+  const roomId = useRoomStore((state) => state.room?.id);
+  const { setUsersInRoom, updateUserInRoom } = useRoomStore();
 
   // --- HANDLERS ---
   const invalidateUsers = () => {
@@ -30,9 +34,20 @@ export const useSocketHandler = () => {
     queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
   };
 
-  // Nouvelle fonction pour invalider le cache des rooms
+  //**********  ROOM **********/
   const invalidateRooms = () => {
     queryClient.invalidateQueries({ queryKey: ["rooms"] });
+  };
+
+  const handleUserInRoom = (userList: UserInfos[]) => {
+    setUsersInRoom(userList);
+  };
+
+  const handleUserStatusChanged = ({
+    userId,
+    visible,
+  }: HandleUserStatusChangedProps) => {
+    updateUserInRoom({ id: userId, visible });
   };
 
   // --- SOCKET SETUP ---
@@ -59,6 +74,8 @@ export const useSocketHandler = () => {
     socket?.on("accountDeletedForUser", invalidateFriendsAndBlockedUsers);
     //**********  ROOM **********/
     socket?.on("roomCreated", invalidateRooms);
+    socket?.on("getUserInRoom", handleUserInRoom);
+    socket?.on("userStatusChanged", handleUserStatusChanged);
 
     return () => {
       socket?.off("requestPending", invalidateUsers);
@@ -73,6 +90,8 @@ export const useSocketHandler = () => {
       socket?.off("accountDeletedForUser", invalidateFriendsAndBlockedUsers);
       //**********  ROOM **********/
       socket?.off("roomCreated", invalidateRooms);
+      socket?.off("getUserInRoom", handleUserInRoom);
+      socket?.off("userStatusChanged", handleUserStatusChanged);
     };
-  }, [socket, queryClient]);
+  }, [socket, queryClient, roomId]);
 };

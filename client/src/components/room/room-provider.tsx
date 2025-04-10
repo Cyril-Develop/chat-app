@@ -13,8 +13,7 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
     name: string;
   } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const { room } = useRoomStore();
-  const { id: currentRoomId } = room || {};
+  const currentRoomId = useRoomStore((state) => state.room?.id);
   const { mutate: leaveRoom } = useLeaveRoomMutation();
   const { mutate: joinRoom } = useJoinRoomMutation();
 

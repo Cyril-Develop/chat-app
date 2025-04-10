@@ -130,11 +130,6 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
   });
 
-  socket.on("requestUserInRoom", (roomId) => {
-    const usersInRoom = getUsersInRoom(roomId);
-    socket.emit("getUserInRoom", usersInRoom);
-  });
-
   //********** DELETE ROOM **********/
   socket.on("deleteRoom", (id) => {
     io.emit("roomDeleted", id);
@@ -363,8 +358,6 @@ io.on("connection", (socket) => {
   //! Pas encore implémenté côté client
   //********** CREATE ACCOUNT **********/
   socket.on("createAccount", () => {
-    console.log("new account created");
-
     io.emit("accountCreated");
   });
 

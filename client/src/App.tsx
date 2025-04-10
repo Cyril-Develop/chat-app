@@ -10,9 +10,7 @@ import Notification from "@/pages/settings/Notification";
 import Profile from "@/pages/settings/Profile";
 import Settings from "@/pages/settings/Settings";
 import { useAuthStore } from "@/store/auth.store";
-import { useSocketStore } from "@/store/socket.store";
 import { ThemeProvider } from "@/theme/theme-provider";
-import { useEffect } from "react";
 import {
   createBrowserRouter,
   Navigate,
@@ -24,14 +22,14 @@ import Password from "@/pages/password/Password";
 import Terms from "@/pages/legal/Terms";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
-import { useNotificationStore } from "@/store/notification.store";
 import { useSocketHandler } from "@/hooks/socket-handler";
+import { AppInitializer } from "./components/app-initializer";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  // Afficher les notifications peu importe la page sur laquelle l'utilisateur se trouve
   useGlobalNotifications();
   return (
     <>
+      <AppInitializer />
       <Navbar />
       {children}
       <GlobalNotifications />
@@ -40,34 +38,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const { connectSocket, disconnectSocket } = useSocketStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const initializeAuth = useAuthStore((state) => state.initializeAuth);
-  const initializeNotifications = useNotificationStore(
-    (state) => state.initializeNotifications
-  );
-  const visible = useAuthStore((state) => state.visible);
   const role = useAuthStore((state) => state.user?.role);
 
-  // --- SOCKET HANDLER ---
+  //********** SOCKET HANDLER **********/
   useSocketHandler();
-
-  // On initialise les notifications et l'authentification au chargement de l'application
-  useEffect(() => {
-    if (isAuthenticated) {
-      initializeAuth();
-      initializeNotifications();
-    }
-  }, [isAuthenticated, initializeAuth, initializeNotifications]);
-
-  // On connecte le socket si l'utilisateur est authentifié
-  useEffect(() => {
-    if (isAuthenticated) {
-      connectSocket(visible);
-    } else {
-      disconnectSocket();
-    }
-  }, [isAuthenticated, connectSocket, disconnectSocket]);
 
   const router = createBrowserRouter([
     {

@@ -16,8 +16,7 @@ import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useRef } from "react";
 
 const Chat = () => {
-  const { room } = useRoomStore();
-  const { id: roomId } = room || {};
+  const roomId = useRoomStore((state) => state.room?.id);
   const { visible } = useAuthStore((state) => ({ visible: state.visible }));
   const { data: currentUser } = useGetUser();
   const { socket } = useSocketStore();
@@ -26,7 +25,7 @@ const Chat = () => {
 
   //! Essayer de refactoriser ce useEffect
   useEffect(() => {
-    if (room && currentUser) {
+    if (roomId && currentUser) {
       const prevRoom = prevRoomRef.current;
       if (prevRoom) {
         socket?.emit("leaveRoom", prevRoom, currentUser?.id);
@@ -42,9 +41,9 @@ const Chat = () => {
         visible
       );
 
-      prevRoomRef.current = room.id;
+      prevRoomRef.current = roomId;
     }
-  }, [room, socket, currentUser]);
+  }, [roomId, socket, currentUser]);
 
   return (
     <div className="chat">

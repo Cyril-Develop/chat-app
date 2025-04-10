@@ -37,11 +37,6 @@ export function RoomSelector() {
   useEffect(() => {
     if (!socket) return;
 
-    // Nouvelle room créée
-    const handleRoomCreated = () => {
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
-    };
-
     // Room supprimée
     const handleRoomDeleted = (deletedRoomId: number) => {
       // Si c'est la room active, la réinitialiser
@@ -59,12 +54,10 @@ export function RoomSelector() {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
     };
 
-    socket.on("roomCreated", handleRoomCreated);
     socket.on("roomUpdated", handleRoomUpdated);
     socket.on("roomDeleted", handleRoomDeleted);
 
     return () => {
-      socket.off("roomCreated", handleRoomCreated);
       socket.off("roomUpdated", handleRoomUpdated);
       socket.off("roomDeleted", handleRoomDeleted);
     };

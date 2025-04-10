@@ -25,6 +25,8 @@ export const useDeleteRoomMutation = () => {
         logo: <Icons.check />,
       });
       socket?.emit("deleteRoom", data.roomId);
+      // Actualise la liste des utilisateurs pour l'admin
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

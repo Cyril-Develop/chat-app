@@ -467,6 +467,26 @@ export const Icons = {
       <path d="M12 17h.01" />
     </svg>
   ),
+  arrowUpDown: ({ width = 24, height = 24, ...props }: IconProps) => (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-arrow-up-down-icon lucide-arrow-up-down"
+    >
+      <path d="m21 16-4 4-4-4" />
+      <path d="M17 20V4" />
+      <path d="m3 8 4-4 4 4" />
+      <path d="M7 4v16" />
+    </svg>
+  ),
   chevronDown: ({ width = 24, height = 24, ...props }: IconProps) => (
     <svg
       {...props}

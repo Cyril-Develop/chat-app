@@ -14,11 +14,8 @@ import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { useEffect, useRef } from "react";
-import { useSocketHandler } from "@/hooks/socket-handler";
 
 const Chat = () => {
-  // --- SOCKET HANDLER ---
-  useSocketHandler();
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
   const { visible } = useAuthStore((state) => ({ visible: state.visible }));

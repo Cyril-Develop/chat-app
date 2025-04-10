@@ -25,6 +25,7 @@ import Terms from "@/pages/legal/Terms";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
 import { useNotificationStore } from "@/store/notification.store";
+import { useSocketHandler } from "@/hooks/socket-handler";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   // Afficher les notifications peu importe la page sur laquelle l'utilisateur se trouve
@@ -47,6 +48,9 @@ function App() {
   );
   const visible = useAuthStore((state) => state.visible);
   const role = useAuthStore((state) => state.user?.role);
+
+  // --- SOCKET HANDLER ---
+  useSocketHandler();
 
   // On initialise les notifications et l'authentification au chargement de l'application
   useEffect(() => {

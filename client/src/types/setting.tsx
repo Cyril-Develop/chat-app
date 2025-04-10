@@ -22,10 +22,15 @@ export interface ProfileFormProps {
   user: UserInfos;
 }
 
-export interface DashboardProps {
+export interface DashboardUsersProps {
   id: number;
   username: string;
   profileImage: string;
   gender: "HOMME" | "FEMME";
   role: string;
+}
+
+export interface DashboardRoomsProps {
+  id: number;
+  name: string;
 }

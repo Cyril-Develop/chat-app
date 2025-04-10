@@ -2,15 +2,13 @@ import { useEffect } from "react";
 import { useSocketStore } from "@/store/socket.store";
 import { useQueryClient } from "@tanstack/react-query";
 
-// Invalidate les requêtes liées aux utilisateurs lorsque des événements de relation sont reçus via le socket
+// Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
   const { socket } = useSocketStore();
   const queryClient = useQueryClient();
 
   // --- HANDLERS ---
   const invalidateUsers = () => {
-    console.log("invalidateUsers");
-
     queryClient.invalidateQueries({ queryKey: ["users"] });
   };
 
@@ -32,6 +30,11 @@ export const useSocketHandler = () => {
     queryClient.invalidateQueries({ queryKey: ["blocked-users"] });
   };
 
+  // Nouvelle fonction pour invalider le cache des rooms
+  const invalidateRooms = () => {
+    queryClient.invalidateQueries({ queryKey: ["rooms"] });
+  };
+
   // --- SOCKET SETUP ---
   useEffect(() => {
     // Une demande d'ami a été envoyée
@@ -48,12 +51,14 @@ export const useSocketHandler = () => {
     socket?.on("friendRequestRejected", invalidateUsers);
     // Une demande d'ami a été acceptée
     socket?.on("friendRequestAccepted", invalidateUsersAndFriends);
-    //! Ne fonctionne pas
+    // Un compte a été créé
     socket?.on("accountCreated", invalidateUsers);
-    //!
     // Un compte a été supprimé
     socket?.on("accountDeletedGlobal", invalidateUsers);
+    // Un compte a été supprimé pour un utilisateur spécifique
     socket?.on("accountDeletedForUser", invalidateFriendsAndBlockedUsers);
+    //**********  ROOM **********/
+    socket?.on("roomCreated", invalidateRooms);
 
     return () => {
       socket?.off("requestPending", invalidateUsers);
@@ -66,6 +71,8 @@ export const useSocketHandler = () => {
       socket?.off("accountCreated", invalidateUsers);
       socket?.off("accountDeletedGlobal", invalidateUsers);
       socket?.off("accountDeletedForUser", invalidateFriendsAndBlockedUsers);
+      //**********  ROOM **********/
+      socket?.off("roomCreated", invalidateRooms);
     };
   }, [socket, queryClient]);
 };

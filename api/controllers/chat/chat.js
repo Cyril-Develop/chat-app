@@ -18,10 +18,12 @@ exports.createChatRoom = async (req, res) => {
     return res.status(400).json({ error: "Le nom du salon  est déjà pris." });
   }
 
+  const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
   try {
     const chatRoom = await prisma.chatRoom.create({
       data: {
-        name,
+        name: nameCapitalized,
         password: password,
         description,
         isPrivate: !!password,

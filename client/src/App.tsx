@@ -8,6 +8,7 @@ import Account from "@/pages/settings/Account";
 import Dashboard from "@/pages/settings/Dashboard";
 import Notification from "@/pages/settings/Notification";
 import Profile from "@/pages/settings/Profile";
+import Appearance from "@/pages/settings/Appearance";
 import Settings from "@/pages/settings/Settings";
 import { useAuthStore } from "@/store/auth.store";
 import { ThemeProvider } from "@/theme/theme-provider";
@@ -78,6 +79,16 @@ function App() {
           element: isAuthenticated ? (
             <Settings>
               <Profile />
+            </Settings>
+          ) : (
+            <Navigate to="/chateo/login" />
+          ),
+        },
+        {
+          path: "/chateo/settings/appearance",
+          element: isAuthenticated ? (
+            <Settings>
+              <Appearance />
             </Settings>
           ) : (
             <Navigate to="/chateo/login" />

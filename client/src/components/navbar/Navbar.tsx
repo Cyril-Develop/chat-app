@@ -1,11 +1,11 @@
 import { Icons } from "@/components/Icons";
-import ModeToggle from "@/components/mode-toggle";
 import DropDown from "@/components/navbar/DropDown";
 import { SheetLeft } from "@/components/sheet/sheet-left";
 import { SheetRight } from "@/components/sheet/sheet-right";
 import useWindowWidth from "@/hooks/window-width";
 import { useAuthStore } from "@/store/auth.store";
 import { Link } from "react-router-dom";
+import { PopoverNotification } from "../sidebar/notification/popover-notification";
 
 const Navbar = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -32,6 +32,7 @@ const Navbar = () => {
             <SheetRight />
           </>
         )}
+        <PopoverNotification />
         {isAuthenticated ? (
           <DropDown />
         ) : (
@@ -40,7 +41,6 @@ const Navbar = () => {
             <span className="hidden-text">Se connecter</span>
           </Link>
         )}
-        <ModeToggle />
       </div>
     </nav>
   );

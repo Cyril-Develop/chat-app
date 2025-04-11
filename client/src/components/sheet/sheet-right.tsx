@@ -16,9 +16,9 @@ import { cn } from "@/lib/utils";
 
 export function SheetRight() {
   return (
-    <Sheet defaultOpen={true} >
+    <Sheet>
       <SheetTrigger asChild >
-        <Button variant="btn" size="menu" title="Rejoindre un salon">
+        <Button variant="btn" size="menu" title="Salons">
           <Icons.chat />
           <span className="hidden-text" title="Salons">
             Salons

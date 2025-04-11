@@ -17,6 +17,10 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       href: "/chateo/settings/profile",
     },
     {
+      title: "Apparence",
+      href: "/chateo/settings/appearance",
+    },
+    {
       title: "Compte",
       href: "/chateo/settings/account",
     },
@@ -35,6 +39,11 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       href: "/chateo/settings/profile",
       img: ImageProfile,
       alt: "profile",
+    },
+    {
+      href: "/chateo/settings/appearance",
+      img: ImageProfile,
+      alt: "appearance",
     },
     {
       href: "/chateo/settings/account",

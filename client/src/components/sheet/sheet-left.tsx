@@ -1,7 +1,7 @@
 import { Icons } from "@/components/Icons";
 import { Contact } from "@/components/sidebar/contact/contact-list";
 import { SearchUser } from "@/components/sidebar/contact/search-user";
-import ContactRequest from "@/components/sidebar/notification/contact-request";
+//import ContactRequest from "@/components/sidebar/notification/contact-request";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -18,7 +18,7 @@ export function SheetLeft() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="btn" size="menu" title="Voir mes contacts">
+        <Button variant="btn" size="menu" title="Contacts">
           <Icons.user />
           <span className="hidden-text" title="Contacts">
             Contacts
@@ -36,7 +36,7 @@ export function SheetLeft() {
         <div className="flex flex-col gap-4 pt-2">
           <SearchUser />
           <Contact />
-          <ContactRequest />
+          {/* <ContactRequest /> */}
         </div>
       </SheetContent>
     </Sheet>

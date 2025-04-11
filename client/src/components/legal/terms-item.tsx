@@ -19,7 +19,7 @@ export default function TermItem({ term }: { term: TermProps }) {
       value={`item-${term.number}`}
       className={cn("border-border dark:border-secondary-foreground/10")}
     >
-      <AccordionTrigger className="group text-lg sm:text-xl font-semibold w-full flex items-center gap-2 justify-between hover:underline">
+      <AccordionTrigger className="group text-lg sm:text-xl w-full flex items-center gap-3 justify-between hover:underline">
         <div className="group-hover:no-underline">
           <NumberBox number={term.number} />
         </div>

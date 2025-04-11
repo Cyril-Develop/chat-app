@@ -52,11 +52,11 @@ const DropDown = () => {
 
         <DropdownMenuContent className={cn("mt-5 dark:bg-primary-foreground")}>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => navigate("/chateo")}>
+            <DropdownMenuItem onClick={() => navigate("/chateo")} className={cn("p-2")}>
               <Icons.home width={18} height={18} />
               Accueil
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate("/chateo/chat")}>
+            <DropdownMenuItem onClick={() => navigate("/chateo/chat")} className={cn("p-2")}>
               <Icons.chat width={18} height={18} />
               Messagerie
             </DropdownMenuItem>
@@ -65,7 +65,7 @@ const DropDown = () => {
 
           <DropdownMenuGroup>
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
+              <DropdownMenuSubTrigger className={cn("p-2")}>
                 <Icons.circle
                   width={18}
                   height={18}
@@ -88,7 +88,7 @@ const DropDown = () => {
                     En ligne
                     {visible === true && <Icons.check width={14} height={14} />}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleVisibility(false)}>
+                  <DropdownMenuItem onClick={() => handleVisibility(false)} >
                     <Icons.spy
                       width={18}
                       height={18}
@@ -103,12 +103,12 @@ const DropDown = () => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           </DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => navigate("chateo/settings/profile")}>
+          <DropdownMenuItem onClick={() => navigate("chateo/settings/profile")} className={cn("p-2")}>
             <Icons.settings width={18} height={18} />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem onClick={handleLogout} className={cn("p-2")}>
             <Icons.logout width={18} height={18} />
             Se déconnecter
           </DropdownMenuItem>

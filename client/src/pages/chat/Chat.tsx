@@ -4,7 +4,7 @@ import { CreateRoom } from "@/components/dialog/create-room";
 import Room from "@/components/room/room-chat";
 import { Contact } from "@/components/sidebar/contact/contact-list";
 import { SearchUser } from "@/components/sidebar/contact/search-user";
-import ContactRequest from "@/components/sidebar/notification/contact-request";
+//import ContactRequest from "@/components/sidebar/notification/contact-request";
 import { RoomSelector } from "@/components/sidebar/room/room-selector";
 import { RoomUsers } from "@/components/sidebar/room/room-users";
 import { Separator } from "@/components/ui/separator";
@@ -54,9 +54,9 @@ const Chat = () => {
           <SearchUser />
           <Contact />
         </div>
-        <div className="chat_aside_container">
+        {/* <div className="chat_aside_container">
           <ContactRequest />
-        </div>
+        </div> */}
       </aside>
 
       <main className="w-full lg:flex-grow h-full bg-primary-foreground dark:bg-primary-background">

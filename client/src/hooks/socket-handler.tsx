@@ -50,6 +50,10 @@ export const useSocketHandler = () => {
     updateUserInRoom({ id: userId, visible });
   };
 
+  const handleReceiveFriendRequest = () => {
+    queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+  };
+
   // --- SOCKET SETUP ---
   useEffect(() => {
     // Une demande d'ami a été envoyée
@@ -76,6 +80,8 @@ export const useSocketHandler = () => {
     socket?.on("roomCreated", invalidateRooms);
     socket?.on("getUserInRoom", handleUserInRoom);
     socket?.on("userStatusChanged", handleUserStatusChanged);
+    //**********  FRIEND REQUEST **********/
+    socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
 
     return () => {
       socket?.off("requestPending", invalidateUsers);
@@ -92,6 +98,8 @@ export const useSocketHandler = () => {
       socket?.off("roomCreated", invalidateRooms);
       socket?.off("getUserInRoom", handleUserInRoom);
       socket?.off("userStatusChanged", handleUserStatusChanged);
+      //**********  FRIEND REQUEST **********/
+      socket?.off("receiveFriendRequest", handleReceiveFriendRequest);
     };
   }, [socket, queryClient, roomId]);
 };

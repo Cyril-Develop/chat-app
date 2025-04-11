@@ -37,15 +37,12 @@ export function Contact() {
   const { contactId, setContactId } = useContactStore();
   const { mutate: leaveRoom } = useLeaveRoomMutation();
   const [open, setOpen] = useState(false);
-  const { notifications, clearNotificationsForContact } =
-    useNotificationStore();
+  const { messages, clearNotificationsForContact } = useNotificationStore();
   const { mutate: unblockUser } = useUnblockUserMutation();
 
   // --- UTILS ---
-  const countNotifications = (contactId: number) => {
-    return notifications.filter(
-      (notification) => notification.senderId === contactId
-    ).length;
+  const countUnreadMessages = (contactId: number) => {
+    return messages.filter((message) => message.user.id === contactId).length;
   };
 
   const handleFriendRemoved = (friendId: number) => {
@@ -72,7 +69,9 @@ export function Contact() {
       if (contactId === friendId) {
         setContactId(null);
       } else {
+        // Sinon, on ouvre la discussion avec le contact sélectionné et on vide les notifications
         setContactId(friendId);
+        clearNotificationsForContact(friendId);
       }
       setOpen(false);
     },
@@ -81,7 +80,7 @@ export function Contact() {
 
   const haveContact = (friends?.length || 0) > 0;
   const haveBlockedContact = (blockedUsers?.length || 0) > 0;
-  const haveNotification = notifications.length > 0;
+  const haveNewMessage = messages.length > 0;
   const shouldShowPopover = haveContact || haveBlockedContact;
 
   return (
@@ -98,7 +97,7 @@ export function Contact() {
               aria-expanded={open}
               className={cn(
                 "w-[200px] justify-between p-3",
-                haveNotification &&
+                haveNewMessage &&
                   "bg-green-700 hover:bg-green-700/80 dark:bg-green-600 dark:hover:bg-green-600/80"
               )}
               disabled={!shouldShowPopover}
@@ -143,9 +142,9 @@ export function Contact() {
                             <span className={`${genderColor[friend.gender]}`}>
                               {friend.username}
                             </span>
-                            {countNotifications(friend.id) > 0 && (
+                            {countUnreadMessages(friend.id) > 0 && (
                               <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                                {countNotifications(friend.id)}
+                                {countUnreadMessages(friend.id)}
                               </span>
                             )}
                           </div>

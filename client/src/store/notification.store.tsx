@@ -1,58 +1,107 @@
 import { create } from "zustand";
 import { NotificationProps, UnreadMessagesProps } from "@/types/message";
+import { FriendRequest } from "@/types/contact";
 import {
   fetchUnreadPrivateMessages,
   markPrivateMessagesAsRead,
 } from "@/services/Message";
+import { getFriendRequests } from "@/services/User";
 
 interface NotificationStore {
-  notifications: NotificationProps[];
-  addNotification: (message: NotificationProps) => void;
+  messages: NotificationProps[];
+  requests: NotificationProps[];
+  addNotification: (notification: NotificationProps) => void;
   clearNotificationsForContact: (contactId: number) => void;
-  initializeNotifications: () => Promise<void>;
+  clearRequestFromSender: (senderId: number) => void;
+  initializeNotifications: (currentUserId: number) => Promise<void>;
 }
 
 export const useNotificationStore = create<NotificationStore>((set) => ({
-  notifications: [],
+  messages: [],
+  requests: [],
 
-  addNotification: (message) =>
-    set((state) => ({
-      notifications: [...state.notifications, message],
-    })),
+  // Ajoute une notification dans le tableau approprié
+  addNotification: (notification) =>
+    set((state) => {
+      if (notification.type === "message") {
+        return { messages: [...state.messages, notification] };
+      } else if (notification.type === "request") {
+        return { requests: [...state.requests, notification] };
+      }
+      return state;
+    }),
 
-  // Initialise les notifications depuis la base de données au chargement de l'application
-  initializeNotifications: async () => {
+  // Initialisation des notifications (messages et demandes d'amis)
+  initializeNotifications: async (currentUserId) => {
     try {
       const unreadMessages = await fetchUnreadPrivateMessages();
+      const messageNotifications: NotificationProps[] = unreadMessages.map(
+        (msg: UnreadMessagesProps) => ({
+          type: "message",
+          id: msg.id,
+          receiver: {
+            id: msg.receiver.id,
+          },
+          user: {
+            id: msg.user.id,
+            username: msg.user.username,
+            gender: msg.user.gender,
+            profileImage: msg.user.profileImage,
+          },
+        })
+      );
+
+      const receivedRequests = await getFriendRequests();
+      const requestNotifications: NotificationProps[] = receivedRequests
+        .filter(
+          (request: FriendRequest) => request.receiver.id === currentUserId
+        )
+        .map((request: FriendRequest) => ({
+          type: "request",
+          id: request.id,
+          receiver: {
+            id: request.receiver.id,
+          },
+          sender: {
+            id: request.sender.id,
+            username: request.sender.username,
+            gender: request.sender.gender,
+            profileImage: request.sender.profileImage,
+          },
+        }));
 
       set({
-        notifications: unreadMessages.map((msg: UnreadMessagesProps) => ({
-          messageId: msg.id,
-          senderId: msg.user.id,
-          receiverId: msg.receiver.id,
-        })),
+        messages: messageNotifications,
+        requests: requestNotifications,
       });
     } catch (error) {
       console.error(
         "Erreur lors de l'initialisation des notifications:",
         error
       );
-      // En cas d'erreur, nous gardons les notifications vides
-      set({ notifications: [] });
+      set({ messages: [], requests: [] });
     }
   },
 
-  // Efface les notifications pour un contact donné et met à jour la BDD
+  // Effacer les notifications pour un contact donné
   clearNotificationsForContact: async (contactId) => {
     try {
       await markPrivateMessagesAsRead(contactId);
       set((state) => ({
-        notifications: state.notifications.filter(
-          (notification) => notification.senderId !== contactId
+        messages: state.messages.filter(
+          (notification) => notification.user.id !== contactId
         ),
       }));
     } catch (error) {
       console.error("Erreur lors de la mise à jour des messages lus:", error);
     }
   },
+
+  // Effacer une demande d'ami d'un expéditeur donné
+  clearRequestFromSender: (senderId) =>
+    set((state) => ({
+      requests: state.requests.filter(
+        (notification) => notification.sender.id !== senderId
+      ),
+    })),
 }));

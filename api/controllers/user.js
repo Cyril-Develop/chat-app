@@ -665,6 +665,7 @@ exports.sendFriendRequest = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
+            gender: true,
           },
         },
         receiver: {
@@ -720,8 +721,6 @@ exports.getFriendRequest = async (req, res) => {
         receiver: {
           select: {
             id: true,
-            username: true,
-            profileImage: true,
           },
         },
       },

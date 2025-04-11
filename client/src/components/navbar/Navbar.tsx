@@ -32,9 +32,11 @@ const Navbar = () => {
             <SheetRight />
           </>
         )}
-        <PopoverNotification />
         {isAuthenticated ? (
-          <DropDown />
+          <>
+            <PopoverNotification />
+            <DropDown />
+          </>
         ) : (
           <Link to="chateo/login" className="link-nav" title="Se connecter">
             <Icons.login />

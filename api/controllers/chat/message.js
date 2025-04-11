@@ -530,7 +530,14 @@ exports.getUnreadMessages = async (req, res) => {
         message: true,
         image: true,
         createdAt: true,
-        user: { select: { id: true } },
+        user: {
+          select: {
+            id: true,
+            username: true,
+            profileImage: true,
+            gender: true,
+          },
+        },
         receiver: { select: { id: true } },
       },
       orderBy: { createdAt: "asc" },

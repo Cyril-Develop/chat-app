@@ -265,18 +265,25 @@ io.on("connection", (socket) => {
     if (receiverSocket) {
       io.to(receiverSocket.socketId).emit("getPrivateMessage", data);
 
-      // Nouvelle émission uniquement pour la notification du destinataire
-      io.to(receiverSocket.socketId).emit("newPrivateMessageNotification", {
-        type: "message",
-        messageId: data.id,
-        senderId: data.user.id,
-        receiverId: data.receiver.id,
-      });
-    }
+      // Envoyer le message à l'expéditeur (pour qu'il l'affiche aussi)
+      if (senderSocket) {
+        io.to(senderSocket.socketId).emit("getPrivateMessage", data);
+      }
 
-    // Envoyer le message à l'expéditeur (pour qu'il l'affiche aussi)
-    if (senderSocket) {
-      io.to(senderSocket.socketId).emit("getPrivateMessage", data);
+      // Nouvelle émission uniquement pour la notification du destinataire
+      io.to(receiverSocket.socketId).emit("newNotification", {
+        type: "message",
+        id: data.id,
+        receiver: {
+          id: data.receiver.id,
+        },
+        user: {
+          id: data.user.id,
+          username: data.user.username,
+          profileImage: data.user.profileImage,
+          gender: data.user.gender,
+        },
+      });
     }
   });
 
@@ -286,21 +293,45 @@ io.on("connection", (socket) => {
   });
 
   //********** SEND FRIEND REQUEST **********/
-  socket.on("sendFriendRequest", (senderId, receiverId) => {
-    const receiverSocket = users.find((user) => user.userId === receiverId);
-    const senderSocket = users.find((user) => user.userId === senderId);
+  socket.on(
+    "sendFriendRequest",
+    (
+      requestId,
+      receiverId,
+      senderId,
+      senderName,
+      senderGender,
+      senderProfileImage
+    ) => {
+      const receiverSocket = users.find((user) => user.userId === receiverId);
+      const senderSocket = users.find((user) => user.userId === senderId);
 
-    if (receiverSocket) {
-      io.to(receiverSocket.socketId).emit("receiveFriendRequest");
+      if (receiverSocket) {
+        io.to(receiverSocket.socketId).emit("receiveFriendRequest");
+      }
+
+      if (senderSocket) {
+        io.to(senderSocket.socketId).emit("friendRequestSent");
+      }
+      // Nouvelle émission uniquement pour la notification du destinataire
+      io.to(receiverSocket.socketId).emit("newNotification", {
+        type: "request",
+        id: requestId,
+        receiver: {
+          id: receiverId,
+        },
+        sender: {
+          id: senderId,
+          username: senderName,
+          gender: senderGender,
+          profileImage: senderProfileImage,
+        },
+      });
+
+      // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
+      io.emit("requestPending");
     }
-
-    if (senderSocket) {
-      io.to(senderSocket.socketId).emit("friendRequestSent");
-    }
-
-    // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
-    io.emit("requestPending");
-  });
+  );
 
   //********** ACCEPT FRIEND REQUEST **********/
   socket.on("acceptFriendRequest", (userId, friendId) => {

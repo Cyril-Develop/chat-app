@@ -8,34 +8,36 @@ import { useLocation } from "react-router-dom";
 
 export const useGlobalNotifications = () => {
   const { socket } = useSocketStore();
-  const { notifications, addNotification, clearNotificationsForContact } =
+  const { messages, addNotification, clearNotificationsForContact } =
     useNotificationStore();
   const { contactId } = useContactStore();
   const currentUserId = useAuthStore((state) => state.user?.id);
   const location = useLocation();
   const isOnChatPage = location.pathname === "/chateo/chat";
 
-  // Lorsqu’un message est reçu en live
+  // Lorsqu’un message ou une demande est reçu en live
   useEffect(() => {
     if (!socket || !currentUserId) return;
 
-    const handleNewMessage = (data: NotificationProps) => {
-      const isForCurrentUser = data.receiverId === currentUserId;
-      const isSameContact = contactId === data.senderId;
+    const handleNewNotification = (data: NotificationProps) => {
+      const isSameContact = contactId === data.user?.id;
+      if (data.type === "message") {
+        if (isOnChatPage && isSameContact && data.user) {
+          clearNotificationsForContact(data.user.id);
+        } else {
+          addNotification(data);
+        }
+      }
 
-      if (!isForCurrentUser) return;
-
-      if (isOnChatPage && isSameContact) {
-        clearNotificationsForContact(data.senderId);
-      } else {
+      if (data.type === "request") {
         addNotification(data);
       }
     };
 
-    socket.on("newPrivateMessageNotification", handleNewMessage);
+    socket.on("newNotification", handleNewNotification);
 
     return () => {
-      socket.off("newPrivateMessageNotification", handleNewMessage);
+      socket.off("newNotification", handleNewNotification);
     };
   }, [
     socket,
@@ -46,15 +48,13 @@ export const useGlobalNotifications = () => {
     isOnChatPage,
   ]);
 
-  // Lorsqu’on revient / reload la page avec une conversation déjà ouverte
+  // Lorsqu’on revient / reload sur une conversation déjà ouverte
   useEffect(() => {
     if (contactId && isOnChatPage) {
-      const hasNotif = notifications.some(
-        (notif) => notif.senderId === contactId
-      );
+      const hasNotif = messages.some((notif) => notif.user?.id === contactId);
       if (hasNotif) {
         clearNotificationsForContact(contactId);
       }
     }
-  }, [contactId, isOnChatPage, notifications, clearNotificationsForContact]);
+  }, [contactId, isOnChatPage, messages, clearNotificationsForContact]);
 };

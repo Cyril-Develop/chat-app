@@ -42,9 +42,25 @@ export interface SendMessageSocketProps {
 }
 
 export interface NotificationProps {
-  messageId: number;
-  senderId: number;
-  receiverId: number;
+  type: "message" | "request"; // Type de notification : message ou demande
+  id: number; // du message ou de la demande
+  // Concerne les messages privés
+  user: {
+    id: number;
+    username: string;
+    gender: "HOMME" | "FEMME";
+    profileImage: string;
+  };
+  // concerne les demandes d'amis
+  sender: {
+    id: number;
+    username: string;
+    gender: "HOMME" | "FEMME";
+    profileImage: string;
+  };
+  receiver: {
+    id: number;
+  };
 }
 
 export interface UnreadMessagesProps {
@@ -54,6 +70,9 @@ export interface UnreadMessagesProps {
   createdAt: string;
   user: {
     id: number;
+    username: string;
+    profileImage: string;
+    gender: "HOMME" | "FEMME";
   };
   receiver: {
     id: number;
@@ -65,7 +84,7 @@ export interface MessagesProviderProps {
     createdAt: string;
     id: number;
     image?: string;
-    likes?: { userId: number; username: string, gender: "HOMME" | "FEMME"; }[];
+    likes?: { userId: number; username: string; gender: "HOMME" | "FEMME" }[];
     message: string;
     user: {
       id: number;

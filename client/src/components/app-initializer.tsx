@@ -33,14 +33,14 @@ export const AppInitializer = () => {
 
   // On initialise les notifications et l'authentification au chargement de l'application
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && currentUser) {
       initializeAuth();
-      initializeNotifications();
+      initializeNotifications(currentUser.id);
       connectSocket(visible);
     } else {
       disconnectSocket();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, currentUser]);
 
   return null;
 };

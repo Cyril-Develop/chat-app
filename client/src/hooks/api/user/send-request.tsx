@@ -30,8 +30,12 @@ export const useSendRequestMutation = () => {
       // Permet d'envoyer la demande d'ami à l'utilisateur concerné via le socket
       socket?.emit(
         "sendFriendRequest",
+        data.newRequest.id,
+        data.newRequest.receiver.id,
         data.newRequest.sender.id,
-        data.newRequest.receiver.id
+        data.newRequest.sender.username,
+        data.newRequest.sender.gender,
+        data.newRequest.sender.profileImage
       );
 
       // Si celui qui reçoit la demande d'ami a activé les notifications par mail, on lui envoie un mail

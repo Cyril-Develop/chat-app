@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/Icons";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -11,12 +9,29 @@ import {
 import { cn } from "@/lib/utils";
 import ContactRequest from "./contact-request";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useNotificationStore } from "@/store/notification.store";
+import { useEffect, useState } from "react";
 
 export function PopoverNotification() {
+  const { requests } = useNotificationStore();
+  const [open, setOpen] = useState(false);
+
+  const haveRequest = requests.length > 0;
+
+  useEffect(() => {
+    if (!haveRequest) {
+      setOpen(false);
+    }
+  }, [haveRequest]);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild title="Notifications">
-        <Button variant="btn" size="menu">
+        <Button
+          variant={haveRequest ? "success" : "btn"}
+          size="menu"
+          disabled={!haveRequest}
+        >
           <Icons.bell />
         </Button>
       </PopoverTrigger>

@@ -2,6 +2,7 @@ import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
 import { acceptFriendRequest } from "@/services/User";
 import { useAuthStore } from "@/store/auth.store";
+import { useNotificationStore } from "@/store/notification.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { ApiError } from "@/types/api";
@@ -15,6 +16,7 @@ export const useAcceptFriendRequestMutation = () => {
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
+  const { clearRequestFromSender } = useNotificationStore();
 
   return useMutation({
     mutationFn: (contactId: number) => acceptFriendRequest(contactId),
@@ -25,7 +27,7 @@ export const useAcceptFriendRequestMutation = () => {
         logo: <Icons.check />,
       });
       socket?.emit("acceptFriendRequest", data.user.id, data.friend.id);
-      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+      clearRequestFromSender(data.friend.id);
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

@@ -11,13 +11,15 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
         destructive:
           "bg-red-600 dark:bg-red-500   hover:bg-red-600/80 dark:hover:bg-red-500/80",
-        alert:"hover:text-destructive",
+        alert: "hover:text-destructive",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary: "text-secondary-foreground hover:text-primary",
         btn: "text-secondary hover:bg-secondary hover:text-foreground dark:text-foreground",
         linkForm: "hover:text-primary",
         btnMenu: "flex gap-2 text-md justify-start",
+        success:
+          "bg-green-700 dark:bg-green-600 text-primary-foreground dark:text-foreground hover:bg-green-700/90 dark:hover:bg-green-600/90",
       },
       size: {
         menu: "h-full p-1 md:p-2",

@@ -3,25 +3,35 @@ import { useNotificationStore } from "@/store/notification.store";
 import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/Icons";
 
+// Affiche un toast lorsqu'un message privé ou une demande d'ami est reçu
 export const GlobalNotifications: React.FC = () => {
-  const { notifications } = useNotificationStore();
+  const { messages, requests } = useNotificationStore();
 
   useEffect(() => {
-    if (notifications.length > 0) {
-      //const latestNotification = notifications[notifications.length - 1];
-      //console.log("latestNotification", latestNotification);
-
+    if (messages.length > 0) {
       toast({
         title: `${
-          notifications.length > 1
-            ? `${notifications.length} messages non lus`
-            : `${notifications.length} message non lu`
+          messages.length > 1
+            ? `${messages.length} messages non lus`
+            : `${messages.length} message non lu`
         }`,
-        logo: <Icons.siren />,
+        logo: <Icons.chat />,
         variant: "success",
       });
     }
-  }, [notifications]);
+
+    if (requests.length > 0) {
+      toast({
+        title: `${
+          requests.length > 1
+            ? `${requests.length} demandes d'amis en attente`
+            : `${requests.length} demande d'ami en attente`
+        }`,
+        logo: <Icons.user />,
+        variant: "success",
+      });
+    }
+  }, [messages, requests]);
 
   return null;
 };

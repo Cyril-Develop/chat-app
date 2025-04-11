@@ -1,7 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { Contact } from "@/components/sidebar/contact/contact-list";
 import { SearchUser } from "@/components/sidebar/contact/search-user";
-//import ContactRequest from "@/components/sidebar/notification/contact-request";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,12 +12,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useNotificationStore } from "@/store/notification.store";
 
 export function SheetLeft() {
+  const { messages } = useNotificationStore();
+  const haveMessage = messages.length > 0;
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="btn" size="menu" title="Contacts">
+        <Button
+          variant={haveMessage ? "success" : "btn"}
+          size="menu"
+          title="Contacts"
+        >
           <Icons.user />
           <span className="hidden-text" title="Contacts">
             Contacts
@@ -36,7 +42,6 @@ export function SheetLeft() {
         <div className="flex flex-col gap-4 pt-2">
           <SearchUser />
           <Contact />
-          {/* <ContactRequest /> */}
         </div>
       </SheetContent>
     </Sheet>

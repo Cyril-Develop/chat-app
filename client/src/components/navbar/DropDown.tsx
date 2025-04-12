@@ -50,7 +50,10 @@ const DropDown = () => {
           <span className="hidden-text">Menu</span>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className={cn("mt-5 dark:bg-primary-foreground")}>
+        <DropdownMenuContent
+          className={cn("dark:bg-primary-foreground")}
+          sideOffset={25}
+        >
           <DropdownMenuGroup>
             <DropdownMenuItem
               onClick={() => navigate("/chateo")}

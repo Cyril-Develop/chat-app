@@ -24,10 +24,12 @@ export function PopoverNotification() {
       </PopoverTrigger>
 
       <PopoverContent
-        className={cn("mt-5 max-w-96 dark:bg-primary-foreground")}
+        sideOffset={25}
+        align="center"
+        className={cn("max-w-96 dark:bg-primary-foreground")}
       >
         {!haveRequest ? (
-          <div className="flex items-center justify-center p-1 text-sm text-muted-foreground">
+          <div className="flex items-center justify-center p-1 ">
             Pas de nouvelles notifications
           </div>
         ) : (

@@ -25,7 +25,7 @@ const Navbar = () => {
         </Link>
       </h1>
 
-      <div className="flex items-center gap-2 md:gap-5">
+      <div className="flex items-center gap-3 md:gap-5">
         {isMobileView && isAuthenticated && (
           <>
             <SheetLeft />

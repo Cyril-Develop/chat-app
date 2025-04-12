@@ -82,14 +82,12 @@ const ForgotPasswordForm = ({
             )}
           />
         </div>
-        <div className="flex flex-col gap-4">
-          <ButtonForm
-            loading={loading}
-            disabled={loading}
-            defaultValue={btnSubmit}
-            spinnerValue="Envoi..."
-          />
-        </div>
+        <ButtonForm
+          loading={loading}
+          disabled={loading}
+          defaultValue={btnSubmit}
+          spinnerValue="Envoi..."
+        />
         {apiError && <p className="error">{apiError}</p>}
       </form>
     </Form>

@@ -43,11 +43,11 @@ const DropDown = () => {
         <DropdownMenuTrigger
           title="Menu"
           className={cn(
-            "flex items-center gap-2 p-1 md:p-2 rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:text-secondary-foreground text-primary-foreground dark:text-foreground"
+            "flex items-center gap-2 p-1 md:p-2 rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:text-secondary-foreground text-primary-foreground dark:text-foreground text-lg"
           )}
         >
           <Icons.menu />
-          <span className="hidden-text">Menu</span>
+          <span className="hidden-text ">Menu</span>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent

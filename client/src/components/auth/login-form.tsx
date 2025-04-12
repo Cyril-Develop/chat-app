@@ -90,17 +90,10 @@ const LoginForm = () => {
       backButtonLabel="S'enregistrer"
       text="Vous n'avez pas encore de compte ?"
     >
-      <Line />
-      <Button
-        className="block mx-auto text-button w-full my-4 "
-        onClick={handleLoginAsGuest}
-      >
-        Découvrir en tant qu'invité
-      </Button>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className={cn("space-y-4  sm:space-y-8")}
+          className={cn("space-y-6")}
           noValidate
         >
           <div className="space-y-4  sm:space-y-8">
@@ -176,6 +169,15 @@ const LoginForm = () => {
           {apiError && <p className="error">{apiError}</p>}
         </form>
       </Form>
+      <Line />
+      <Button
+        size="lg"
+        variant="default"
+        className="text-button w-full"
+        onClick={handleLoginAsGuest}
+      >
+        Découvrir en tant qu'invité
+      </Button>
       {isForgotPasswordOpen && (
         <ForgotPassword
           isOpen={isForgotPasswordOpen}

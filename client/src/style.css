@@ -110,7 +110,7 @@ html.dark {
 }
 
 .link-nav {
-  @apply flex items-center gap-2 p-2 text-xl font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:bg-transparent sm:hover:text-white sm:hover:underline sm:underline-offset-4 text-primary-foreground dark:text-foreground;
+  @apply flex items-center gap-2 p-2 text-lg font-semibold rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-secondary hover:text-foreground sm:hover:bg-transparent sm:hover:text-white sm:hover:underline sm:underline-offset-4 text-primary-foreground dark:text-foreground;
 }
 
 .hidden-text {

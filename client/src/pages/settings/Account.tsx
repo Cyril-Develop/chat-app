@@ -28,8 +28,8 @@ export default function SettingsAccountPage() {
           <Alert
             trigger={
               <Button
-                size={"lg"}
-                className="text-button w-full sm:w-auto"
+                size="lg"
+                className="text-button w-full sm:w-auto sm:p-3"
                 variant="destructive"
               >
                 Supprimer le compte

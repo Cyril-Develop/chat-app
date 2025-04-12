@@ -116,9 +116,9 @@ const RegisterForm = () => {
         <form
           noValidate
           onSubmit={form.handleSubmit(onSubmit)}
-          className={cn("space-y-4  md:space-y-8")}
+          className={cn("space-y-6")}
         >
-          <div className="flex gap-4 justify-between flex-col md:gap-8 ">
+          <div className="flex gap-4 justify-between flex-col md:gap-4 ">
             <div className="flex gap-4 justify-between flex-col md:flex-row md:gap-8">
               <FormField
                 control={form.control}

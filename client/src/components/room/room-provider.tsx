@@ -53,7 +53,7 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
       {publicRooms && publicRooms.length > 0 && (
         <RoomList
           heading={
-            publicRooms.length <= 1 ? "Salon Public 💬" : "Salons Publics 💬"
+            publicRooms.length <= 1 ? `Salon Public 💬` : `Salons Publics 💬`
           }
           rooms={publicRooms}
           onSelect={handlePublicRoomSelect}

@@ -33,11 +33,13 @@ export function SheetLeft() {
       </SheetTrigger>
       <SheetContent side="left" className={cn("flex flex-col gap-4")}>
         <SheetHeader className={cn("text-left space-y-4")}>
-          <SheetTitle className={cn("text-title")}>Contacts</SheetTitle>
+          <div>
+            <SheetTitle className={cn("text-title")}>Contacts</SheetTitle>
+            <SheetDescription className={cn("text-paragraph")}>
+              Recherchez et discutez avec vos amis.
+            </SheetDescription>
+          </div>
           <Separator />
-          <SheetDescription className={cn("text-paragraph")}>
-            Recherchez et discutez avec vos amis.
-          </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4">
           <SearchUser />

@@ -27,11 +27,13 @@ export function SheetRight() {
       </SheetTrigger>
       <SheetContent side="right" className={cn("flex flex-col gap-4")}>
         <SheetHeader className={cn("text-left space-y-4")}>
-          <SheetTitle className={cn("text-title")}>Salons</SheetTitle>
+          <div>
+            <SheetTitle className={cn("text-title")}>Salons</SheetTitle>
+            <SheetDescription className={cn("text-paragraph")}>
+              Créer ou rejoignez un salon pour discuter.
+            </SheetDescription>
+          </div>
           <Separator />
-          <SheetDescription className={cn("text-paragraph")}>
-            Créer ou rejoignez un salon pour discuter.
-          </SheetDescription>
           <div className="flex flex-col gap-4">
             <CreateRoom
               btnTrigger="Créer un salon"

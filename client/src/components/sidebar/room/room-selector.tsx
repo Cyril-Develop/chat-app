@@ -77,14 +77,14 @@ export function RoomSelector() {
               size="box"
               aria-label="Voir les salons"
               aria-expanded={open}
-              className={cn("w-[200px] justify-between p-3")}
+              className={cn("w-[200px] justify-between p-3 text-button")}
               disabled={isLoading || !roomsFound}
               onClick={togglePopover}
             >
               {currentRoomName
                 ? currentRoomName
                 : roomsFound
-                ? `Rechercher un salon (${fetchedRooms.length})`
+                ? `Rejoindre un salon (${fetchedRooms.length})`
                 : "Aucun salon"}
               {open ? (
                 <Icons.chevronUp width={16} height={16} />

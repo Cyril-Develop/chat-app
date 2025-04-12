@@ -54,9 +54,6 @@ const Chat = () => {
           <SearchUser />
           <Contact />
         </div>
-        {/* <div className="chat_aside_container">
-          <ContactRequest />
-        </div> */}
       </aside>
 
       <main className="w-full lg:flex-grow h-full bg-primary-foreground dark:bg-primary-background">

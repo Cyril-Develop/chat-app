@@ -96,7 +96,7 @@ export function Contact() {
               size="box"
               aria-expanded={open}
               className={cn(
-                "w-[200px] justify-between p-3",
+                "w-[200px] justify-between p-3 text-button",
                 haveNewMessage &&
                   "bg-green-700 hover:bg-green-700/80 dark:bg-green-600 dark:hover:bg-green-600/80"
               )}

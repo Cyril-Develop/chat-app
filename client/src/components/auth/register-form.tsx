@@ -125,7 +125,7 @@ const RegisterForm = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem className={cn("flex-1")}>
-                    <FormLabel className={cn("text-label")}>
+                    <FormLabel className={cn("text-base")}>
                       Nom d'utilisateur
                     </FormLabel>
                     <FormControl>
@@ -134,7 +134,7 @@ const RegisterForm = () => {
                         type="text"
                         placeholder="John Doe"
                         maxLength={15}
-                        className={cn("text-label")}
+                        className={cn("text-base")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -146,7 +146,7 @@ const RegisterForm = () => {
                 name="gender"
                 render={({ field }) => (
                   <FormItem className={cn("flex-1")}>
-                    <FormLabel className={cn("text-label")}>Sexe</FormLabel>
+                    <FormLabel className={cn("text-base")}>Sexe</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -175,13 +175,13 @@ const RegisterForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-label")}>Email</FormLabel>
+                  <FormLabel className={cn("text-base")}>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       placeholder="john.doe@gmail.com"
-                      className={cn("text-label")}
+                      className={cn("text-base")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -193,7 +193,7 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-label")}>
+                  <FormLabel className={cn("text-base")}>
                     Mot de passe
                   </FormLabel>
                   <FormControl>

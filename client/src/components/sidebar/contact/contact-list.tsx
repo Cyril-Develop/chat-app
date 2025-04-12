@@ -102,10 +102,15 @@ export function Contact() {
               )}
               disabled={!shouldShowPopover}
             >
-              Voir mes contacts
-              {(haveContact || haveBlockedContact) && (
-                <> ({(friends?.length || 0) + (blockedUsers?.length || 0)})</>
+              {!haveContact && !haveBlockedContact ? (
+                "Aucun contact"
+              ) : (
+                <>
+                  Voir mes contacts (
+                  {(friends?.length || 0) + (blockedUsers?.length || 0)})
+                </>
               )}
+
               {open ? (
                 <Icons.chevronUp width={16} height={16} />
               ) : (

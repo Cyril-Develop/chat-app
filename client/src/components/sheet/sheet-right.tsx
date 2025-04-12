@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 export function SheetRight() {
   return (
     <Sheet>
-      <SheetTrigger asChild >
+      <SheetTrigger asChild>
         <Button variant="btn" size="menu" title="Salons">
           <Icons.chat />
           <span className="hidden-text" title="Salons">
@@ -26,10 +26,10 @@ export function SheetRight() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className={cn("flex flex-col gap-4")}>
-        <SheetHeader className={cn("text-left")}>
+        <SheetHeader className={cn("text-left space-y-4")}>
           <SheetTitle className={cn("text-title")}>Salons</SheetTitle>
           <Separator />
-          <SheetDescription className={cn("text-description")}>
+          <SheetDescription className={cn("text-paragraph")}>
             Créer ou rejoignez un salon pour discuter.
           </SheetDescription>
           <div className="flex flex-col gap-4">

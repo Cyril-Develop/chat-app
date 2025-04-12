@@ -82,11 +82,11 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn("text-label")}>
+              <FormLabel className={cn("text-base")}>
                 Nom d'utilisateur
               </FormLabel>
               <FormControl>
-                <Input {...field} type="text" className={cn("text-label")} />
+                <Input {...field} type="text" className={cn("text-base")} />
               </FormControl>
               <FormMessage />
               <FormDescription className={cn("text-additional-info")}>
@@ -100,12 +100,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <p className="text-label leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <p className="text-base leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Image
               </p>
               <FormLabel
                 className={cn(
-                  "input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary text-label"
+                  "input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary text-base"
                 )}
                 tabIndex={0}
                 aria-label="Sélectionner une image"
@@ -113,7 +113,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 onClick={() => handleLabelClick("fileInput")}
               >
                 {imageUploaded ? (
-                  <div className="flex items-center gap-2 text-label">
+                  <div className="flex items-center gap-2 text-base">
                     Image chargée
                     <img
                       src={URL.createObjectURL(imageUploaded)}
@@ -122,7 +122,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                     />
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 text-label">
+                  <div className="flex items-center gap-2 text-base">
                     Sélectionner une image
                     <Icons.image />
                   </div>
@@ -151,12 +151,12 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="bio"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn("text-label")}>Bio</FormLabel>
+              <FormLabel className={cn("text-base")}>Bio</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Parle nous un peu de toi..."
                   className={cn(
-                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-label"
+                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base"
                   )}
                   maxLength={150}
                   {...field}

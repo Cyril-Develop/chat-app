@@ -83,7 +83,7 @@ export default function ResetPassword() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="password" className={cn("text-label")}>Mot de passe</FormLabel>
+                    <FormLabel htmlFor="password" className={cn("text-base")}>Mot de passe</FormLabel>
                     <FormControl>
                       <ShowPassord
                         showPassword={showPassword}
@@ -100,7 +100,7 @@ export default function ResetPassword() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="confirmPassword" className={cn("text-label")}>
+                    <FormLabel htmlFor="confirmPassword" className={cn("text-base")}>
                       Confirmer le mot de passe
                     </FormLabel>
                     <FormControl>

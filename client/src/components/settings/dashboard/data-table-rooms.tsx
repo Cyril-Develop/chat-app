@@ -97,7 +97,7 @@ export default function DataTableRooms() {
           onChange={(e) =>
             table.getColumn("name")?.setFilterValue(e.target.value)
           }
-          className="text-label"
+          className="text-base"
         />
       </div>
       <div className="rounded-md border border-foreground/5 max-h-[315px]">

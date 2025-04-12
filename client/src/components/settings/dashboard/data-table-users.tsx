@@ -105,7 +105,7 @@ export default function DataTableUsers() {
           onChange={(e) =>
             table.getColumn("username")?.setFilterValue(e.target.value)
           }
-          className="text-label"
+          className="text-base"
         />
       </div>
       <div className="rounded-md border border-foreground/5 max-h-[315px]">

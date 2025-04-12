@@ -70,7 +70,7 @@ const Settings = ({ children }: SettingsLayoutProps) => {
             <Icons.settings className="w-6 h-6" />
             Paramètres
           </h2>
-          <p className="text-description">
+          <p className="text-paragraph">
             Gérez les paramètres de votre compte et définissez vos préférences
             de messagerie.
           </p>

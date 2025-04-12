@@ -66,11 +66,11 @@ const UpdateRoomForm = ({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn("text-label")}>Description</FormLabel>
+              <FormLabel className={cn("text-base")}>Description</FormLabel>
               <FormControl>
                 <Textarea
                   className={cn(
-                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-label"
+                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base"
                   )}
                   maxLength={150}
                   {...field}

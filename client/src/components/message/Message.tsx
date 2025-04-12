@@ -114,7 +114,7 @@ const Message = ({ message, type }: MessageProps) => {
         username={message.user.username}
         gender={message.user.gender}
         imageSize="6"
-        textSize="text-label"
+        textSize="text-base"
       />
 
       <div className="flex flex-col gap-2 max-w-[235px] 2xl:max-w-[500px]">

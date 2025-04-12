@@ -77,13 +77,13 @@ const ContactForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-label")}>Nom *</FormLabel>
+                  <FormLabel className={cn("text-base")}>Nom</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
                       placeholder="John Doe"
-                      className={cn("text-label")}
+                      className={cn("text-base")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -95,13 +95,13 @@ const ContactForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-label")}>Email *</FormLabel>
+                  <FormLabel className={cn("text-base")}>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       placeholder="john.doe@gmail.com"
-                      className={cn("text-label")}
+                      className={cn("text-base")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -114,13 +114,13 @@ const ContactForm = () => {
             name="subject"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-label")}>Objet *</FormLabel>
+                <FormLabel className={cn("text-base")}>Objet</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="text"
                     placeholder="Sujet de votre message"
-                    className={cn("text-label")}
+                    className={cn("text-base")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -132,11 +132,11 @@ const ContactForm = () => {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-label")}>Message *</FormLabel>
+                <FormLabel className={cn("text-base")}>Message</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Votre message ici..."
-                    className="text-label resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
+                    className="text-base resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover"
                     maxLength={150}
                     {...field}
                   />

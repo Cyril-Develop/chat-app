@@ -136,7 +136,7 @@ const SendRoomMessage = () => {
                   placeholder="Message..."
                   aria-label="Envoyer un message"
                   className={cn(
-                    "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox text-label"
+                    "resize-none min-h-[50px] h-11 scrollbar-webkit scrollbar-firefox text-base"
                   )}
                 />
               </FormControl>

@@ -11,9 +11,6 @@ export function RoomUsers() {
   const { usersInRoom } = useRoomStore();
   const roomId = useRoomStore((state) => state.room?.id);
 
-  //console.log("usersInRoom", usersInRoom);
-  
-
   return (
     <>
       {roomId && (

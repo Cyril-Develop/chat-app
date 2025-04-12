@@ -31,15 +31,15 @@ export function SheetLeft() {
           </span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left">
-        <SheetHeader className={cn("text-left")}>
+      <SheetContent side="left" className={cn("flex flex-col gap-4")}>
+        <SheetHeader className={cn("text-left space-y-4")}>
           <SheetTitle className={cn("text-title")}>Contacts</SheetTitle>
           <Separator />
-          <SheetDescription className={cn("text-description")}>
+          <SheetDescription className={cn("text-paragraph")}>
             Recherchez et discutez avec vos amis.
           </SheetDescription>
         </SheetHeader>
-        <div className="flex flex-col gap-4 pt-2">
+        <div className="flex flex-col gap-4">
           <SearchUser />
           <Contact />
         </div>

@@ -10,7 +10,7 @@ const DialogHeaderComp = ({ title, description }: DialogHeaderProps) => {
   return (
     <DialogHeader>
       <DialogTitle className={cn("text-title")}>{title}</DialogTitle>
-      <DialogDescription className={cn("text-description")}>
+      <DialogDescription className={cn("text-paragraph")}>
         {description}
       </DialogDescription>
     </DialogHeader>

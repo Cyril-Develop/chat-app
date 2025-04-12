@@ -8,7 +8,7 @@ const ThemeSelector = () => {
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-label font-semibold">Thème</p>
+        <p className="text-base font-semibold">Thème</p>
         <p className="text-additional-info">
           Choisissez entre un thème clair ou sombre. Le thème sombre est plus
           adapté à une utilisation nocturne, tandis que le thème clair est idéal

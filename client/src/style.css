@@ -129,24 +129,16 @@ html.dark {
   @apply text-gray-600 dark:text-gray-400 text-lg sm:text-xl;
 }
 
-.text-description {
-  @apply text-gray-600 dark:text-gray-400 text-base sm:text-lg;
-}
-
 .text-paragraph {
   @apply text-base sm:text-lg text-gray-600 dark:text-gray-400;
 }
 
-.text-button {
-  @apply text-base text-primary-foreground;
-}
-
-.text-label {
-  @apply text-base;
-}
-
 .text-additional-info {
   @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.text-button {
+  @apply text-base text-primary-foreground;
 }
 
 .animate-spin {

@@ -62,13 +62,13 @@ export function AccountForm({ user }: AccountFormValues) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-label")}>Email</FormLabel>
+                <FormLabel className={cn("text-base")}>Email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="email"
                     disabled
-                    className="disabled:cursor-not-allowed text-label"
+                    className="disabled:cursor-not-allowed text-base"
                   />
                 </FormControl>
                 <FormMessage />
@@ -83,7 +83,7 @@ export function AccountForm({ user }: AccountFormValues) {
             name="newEmail"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-label")}>
+                <FormLabel className={cn("text-base")}>
                   Modifier votre adresse email
                 </FormLabel>
                 <FormControl>
@@ -91,7 +91,7 @@ export function AccountForm({ user }: AccountFormValues) {
                     {...field}
                     type="email"
                     placeholder="john.doe@gmail.com"
-                    className={cn("text-label")}
+                    className={cn("text-base")}
                   />
                 </FormControl>
                 <FormMessage />

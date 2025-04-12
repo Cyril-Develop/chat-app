@@ -161,8 +161,8 @@ const RegisterForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="MALE">MALE</SelectItem>
-                        <SelectItem value="FEMALE">FEMALE</SelectItem>
+                        <SelectItem value="MALE">Homme</SelectItem>
+                        <SelectItem value="FEMALE">Femme</SelectItem>
                         <SelectItem value="NON_BINARY">Non-binaire</SelectItem>
                         <SelectItem value="UNDISCLOSED">
                           Ne souhaite pas le dire

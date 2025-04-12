@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 //import Icons from "@/components/icons";
 //import { Button } from "../ui/button";
 import ShowPassord from "@/components/auth/show-password";
+import { ValidateAccount } from "@/components/auth/validate-account";
 import ButtonForm from "@/components/button-form";
 import {
   Form,
@@ -15,12 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { ValidateAccount } from "@/components/auth/validate-account";
-import { Link } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -28,7 +24,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NewUser, Gender } from "@/types/auth";
+import { cn } from "@/lib/utils";
+import { NewUser, Sex } from "@/types/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ const RegisterForm = () => {
     username: "",
     email: "",
     password: "",
-    gender: "",
+    sex: "",
   });
 
   const form = useForm({
@@ -48,7 +48,7 @@ const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
-      gender: "",
+      sex: "",
     },
     resolver: zodResolver(RegisterFormSchema),
   });
@@ -57,8 +57,8 @@ const RegisterForm = () => {
     setLoading(true);
     setApiError("");
     try {
-      const { username, email, password, gender } = form.getValues();
-      setNewUser({ username, email, password, gender: gender as Gender });
+      const { username, email, password, sex } = form.getValues();
+      setNewUser({ username, email, password, sex: sex as Sex });
 
       const userExists = await verifyIfUserExists(username, email);
 
@@ -100,7 +100,7 @@ const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
-      gender: "",
+      sex: "",
     });
   };
 
@@ -143,7 +143,7 @@ const RegisterForm = () => {
               />
               <FormField
                 control={form.control}
-                name="gender"
+                name="sex"
                 render={({ field }) => (
                   <FormItem className={cn("flex-1")}>
                     <FormLabel className={cn("text-base")}>Sexe</FormLabel>
@@ -157,12 +157,16 @@ const RegisterForm = () => {
                         )}
                       >
                         <SelectTrigger className={cn("h-11")}>
-                          <SelectValue placeholder="Genre" />
+                          <SelectValue placeholder="Sélectionner" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="HOMME">Homme</SelectItem>
-                        <SelectItem value="FEMME">Femme</SelectItem>
+                        <SelectItem value="MALE">MALE</SelectItem>
+                        <SelectItem value="FEMALE">FEMALE</SelectItem>
+                        <SelectItem value="NON_BINARY">Non-binaire</SelectItem>
+                        <SelectItem value="UNDISCLOSED">
+                          Ne souhaite pas le dire
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -250,7 +254,7 @@ const RegisterForm = () => {
               username: string;
               email: string;
               password: string;
-              gender: "HOMME" | "FEMME";
+              sex: "MALE" | "FEMALE";
             }
           }
           isOpen={openRequestOtp}

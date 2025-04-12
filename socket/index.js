@@ -29,9 +29,9 @@ const addUser = (userId, socketId, visible) => {
   }
 };
 
-const addUserInRoom = (roomId, id, username, gender, profileImage, visible) => {
+const addUserInRoom = (roomId, id, username, sex, profileImage, visible) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
-    userInRoom.push({ roomId, id, username, gender, profileImage, visible });
+    userInRoom.push({ roomId, id, username, sex, profileImage, visible });
   }
 };
 
@@ -112,9 +112,9 @@ io.on("connection", (socket) => {
   //********** JOIN ROOM **********/
   socket.on(
     "joinRoom",
-    (roomId, id, username, gender, profileImage, visible) => {
+    (roomId, id, username, sex, profileImage, visible) => {
       socket.join(roomId);
-      addUserInRoom(roomId, id, username, gender, profileImage, visible);
+      addUserInRoom(roomId, id, username, sex, profileImage, visible);
 
       const usersInThisRoom = getUsersInRoom(roomId);
       io.to(roomId).emit("getUserInRoom", usersInThisRoom);
@@ -144,7 +144,7 @@ io.on("connection", (socket) => {
   socket.on("likeMessage", (data) => {
     const {
       userId,
-      gender,
+      sex,
       username,
       messageId,
       roomId,
@@ -156,7 +156,7 @@ io.on("connection", (socket) => {
     if (roomId) {
       io.to(roomId).emit("messageLiked", {
         userId,
-        gender,
+        sex,
         username,
         messageId,
         roomId,
@@ -170,7 +170,7 @@ io.on("connection", (socket) => {
 
     const payload = {
       userId,
-      gender,
+      sex,
       username,
       messageId,
       senderId,
@@ -281,7 +281,7 @@ io.on("connection", (socket) => {
           id: data.user.id,
           username: data.user.username,
           profileImage: data.user.profileImage,
-          gender: data.user.gender,
+          sex: data.user.sex,
         },
       });
     }
@@ -300,7 +300,7 @@ io.on("connection", (socket) => {
       receiverId,
       senderId,
       senderName,
-      senderGender,
+      sendersex,
       senderProfileImage
     ) => {
       const receiverSocket = users.find((user) => user.userId === receiverId);
@@ -323,7 +323,7 @@ io.on("connection", (socket) => {
         sender: {
           id: senderId,
           username: senderName,
-          gender: senderGender,
+          sex: sendersex,
           profileImage: senderProfileImage,
         },
       });

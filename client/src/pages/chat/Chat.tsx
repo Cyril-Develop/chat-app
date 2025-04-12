@@ -36,7 +36,7 @@ const Chat = () => {
         roomId,
         currentUser.id,
         currentUser.username,
-        currentUser.gender,
+        currentUser.sex,
         currentUser.profileImage,
         visible
       );

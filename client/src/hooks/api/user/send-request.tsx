@@ -34,7 +34,7 @@ export const useSendRequestMutation = () => {
         data.newRequest.receiver.id,
         data.newRequest.sender.id,
         data.newRequest.sender.username,
-        data.newRequest.sender.gender,
+        data.newRequest.sender.sex,
         data.newRequest.sender.profileImage
       );
 

@@ -26,7 +26,7 @@ export interface DashboardUsersProps {
   id: number;
   username: string;
   profileImage: string;
-  gender: "HOMME" | "FEMME";
+  sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   role: string;
 }
 

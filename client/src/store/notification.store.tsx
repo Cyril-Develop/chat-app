@@ -45,7 +45,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
           user: {
             id: msg.user.id,
             username: msg.user.username,
-            gender: msg.user.gender,
+            sex: msg.user.sex,
             profileImage: msg.user.profileImage,
           },
         })
@@ -65,7 +65,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
           sender: {
             id: request.sender.id,
             username: request.sender.username,
-            gender: request.sender.gender,
+            sex: request.sender.sex,
             profileImage: request.sender.profileImage,
           },
         }));

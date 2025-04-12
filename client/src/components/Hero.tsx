@@ -35,7 +35,7 @@ const Hero = () => {
           <Button
             size="lg"
             variant="default"
-            className="text-button w-full sm:w-auto sm:mx-auto sm:p-3"
+            className="text-button w-auto mx-auto px-3"
           >
             <Link to="chat">Commencer</Link>
           </Button>

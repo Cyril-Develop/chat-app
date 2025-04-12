@@ -25,7 +25,7 @@ const ContactRequest = () => {
                 imageSize="8"
                 username={request.sender.username}
                 image={request.sender.profileImage}
-                gender={request.sender.gender}
+                sex={request.sender.sex}
               />
               <div className="flex gap-2">
                 <Button

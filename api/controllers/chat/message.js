@@ -42,7 +42,7 @@ exports.getRoomMessage = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
-            gender: true,
+            sex: true,
           },
         },
         likes: {
@@ -51,7 +51,7 @@ exports.getRoomMessage = async (req, res) => {
               select: {
                 id: true,
                 username: true,
-                gender: true,
+                sex: true,
               },
             },
           },
@@ -68,7 +68,7 @@ exports.getRoomMessage = async (req, res) => {
       likes: message.likes.map((like) => ({
         userId: like.user.id,
         username: like.user.username,
-        gender: like.user.gender,
+        sex: like.user.sex,
       })),
     }));
 
@@ -209,7 +209,7 @@ exports.likeMessage = async (req, res) => {
       message: "Like ajouté avec succès.",
       like: {
         userId: likeData.user.id,
-        gender: likeData.user.gender,
+        sex: likeData.user.sex,
         username: likeData.user.username,
         messageId,
         senderId: senderId,
@@ -428,7 +428,7 @@ exports.getPrivateMessages = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
-            gender: true,
+            sex: true,
           },
         },
         receiver: {
@@ -436,7 +436,7 @@ exports.getPrivateMessages = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
-            gender: true,
+            sex: true,
           },
         },
         likes: {
@@ -445,7 +445,7 @@ exports.getPrivateMessages = async (req, res) => {
               select: {
                 id: true,
                 username: true,
-                gender: true,
+                sex: true,
               },
             },
           },
@@ -460,7 +460,7 @@ exports.getPrivateMessages = async (req, res) => {
       likes: message.likes.map((like) => ({
         userId: like.user.id,
         username: like.user.username,
-        gender: like.user.gender,
+        sex: like.user.sex,
       })),
     }));
 
@@ -535,7 +535,7 @@ exports.getUnreadMessages = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
-            gender: true,
+            sex: true,
           },
         },
         receiver: { select: { id: true } },

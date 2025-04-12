@@ -33,7 +33,7 @@ export function RoomUsers() {
                       imageSize="8"
                       username={user.username}
                       image={user.profileImage}
-                      gender={user.gender}
+                      sex={user.sex}
                     />
                   </div>
                 ))}

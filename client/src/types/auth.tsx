@@ -1,17 +1,17 @@
-export type Gender = "HOMME" | "FEMME";
+export type Sex = "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
 
 export type NewUser = {
   username: string;
   email: string;
   password: string;
-  gender: Gender | "";
+  sex: Sex | "";
 };
 
 export interface RegisterByEmailProps {
   username: string;
   email: string;
   password: string;
-  gender: "HOMME" | "FEMME";
+  sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
 }
 
 export interface LoginByEmailProps {
@@ -55,7 +55,7 @@ export interface ValidateAccountFormProps {
     username: string;
     email: string;
     password: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   };
   onSubmitSuccess: () => void;
 }
@@ -65,7 +65,7 @@ export interface ValidateAccountProps {
     username: string;
     email: string;
     password: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   };
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;

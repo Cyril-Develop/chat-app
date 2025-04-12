@@ -24,7 +24,7 @@ import { useNotificationStore } from "@/store/notification.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
 import { BlockedUsersProps, FriendProps } from "@/types/contact";
-import { genderColor } from "@/utils/gender-color";
+import { sexColor } from "@/utils/sex-color";
 import { useCallback, useEffect, useState } from "react";
 
 export function Contact() {
@@ -144,7 +144,7 @@ export function Contact() {
                           }
                         >
                           <div className="flex items-center justify-between w-full cursor-pointer">
-                            <span className={`${genderColor[friend.gender]}`}>
+                            <span className={`${sexColor[friend.sex]}`}>
                               {friend.username}
                             </span>
                             {countUnreadMessages(friend.id) > 0 && (
@@ -165,7 +165,7 @@ export function Contact() {
                           key={user.id}
                           className={cn("flex items-center justify-between")}
                         >
-                          <span className={`${genderColor[user.gender]}`}>
+                          <span className={`${sexColor[user.sex]}`}>
                             {user.username}
                           </span>
                           <Button

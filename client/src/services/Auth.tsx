@@ -47,7 +47,7 @@ export const registerByEmail = async ({
   username,
   email,
   password,
-  gender
+  sex
 }: RegisterByEmailProps) => {
   try {
     const response = await fetch(
@@ -57,7 +57,7 @@ export const registerByEmail = async ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password, gender }),
+        body: JSON.stringify({ username, email, password, sex }),
       }
     );
     const data = await response.json();

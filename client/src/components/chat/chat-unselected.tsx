@@ -1,7 +1,7 @@
 import Logo from "@/assets/chatting.svg";
-// import { SkeletonChatUnselected } from "@/components/skeleton/skeleton";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { Icons } from "@/components/Icons";
+import { sexColor } from "@/utils/sex-color";
 
 const ChatUnselected = () => {
   const { data: currentUser, isLoading } = useGetUser();
@@ -18,7 +18,11 @@ const ChatUnselected = () => {
             <h1 className="text-xl sm:text-2xl">
               Bienvenue{" "}
               {currentUser?.role !== "GUEST" && (
-                <span className="font-semibold text-primary">
+                <span
+                  className={`font-semibold ${
+                    sexColor[currentUser?.sex as keyof typeof sexColor]
+                  }`}
+                >
                   {currentUser?.username}
                 </span>
               )}{" "}

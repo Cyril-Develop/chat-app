@@ -86,7 +86,7 @@ export interface Users {
   id: number;
   username: string;
   profileImage: string;
-  gender: "HOMME" | "FEMME";
+  sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   friends: FriendList[];
   receivedFriendRequests: ReceivedFriendRequests[];
   sentFriendRequests: SentFriendRequests[];

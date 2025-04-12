@@ -34,7 +34,7 @@ exports.getAllUsers = async (req, res) => {
         id: true,
         createdAt: true,
         username: true,
-        gender: true,
+        sex: true,
         bio: true,
         profileImage: true,
         role: true,
@@ -143,7 +143,7 @@ exports.getCurrentUser = async (req, res) => {
         createdAt: true,
         email: true,
         username: true,
-        gender: true,
+        sex: true,
         bio: true,
         profileImage: true,
         notification: true,
@@ -266,7 +266,7 @@ exports.getFriends = async (req, res) => {
               select: {
                 id: true,
                 username: true,
-                gender: true,
+                sex: true,
                 profileImage: true,
                 createdAt: true,
                 bio: true,
@@ -665,7 +665,7 @@ exports.sendFriendRequest = async (req, res) => {
             id: true,
             username: true,
             profileImage: true,
-            gender: true,
+            sex: true,
           },
         },
         receiver: {
@@ -714,7 +714,7 @@ exports.getFriendRequest = async (req, res) => {
           select: {
             id: true,
             username: true,
-            gender: true,
+            sex: true,
             profileImage: true,
           },
         },
@@ -1019,7 +1019,7 @@ exports.getBlockedUsers = async (req, res) => {
           select: {
             id: true,
             username: true,
-            gender: true,
+            sex: true,
             profileImage: true,
           },
         },

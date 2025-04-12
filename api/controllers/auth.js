@@ -10,19 +10,19 @@ const prisma = new PrismaClient();
 //**********  REGISTER **********/
 exports.register = async (req, res) => {
   try {
-    const { username, email, password, gender } = req.body;
+    const { username, email, password, sex } = req.body;
 
     const usernameCapitalized =
       username.charAt(0).toUpperCase() + username.slice(1);
     const hashedPassword = await argon2.hash(password);
-    const userGender = gender.toUpperCase();
+    const usersex = sex.toUpperCase();
 
     const user = await prisma.user.create({
       data: {
         username: usernameCapitalized,
         email,
         password: hashedPassword,
-        gender: userGender,
+        sex: usersex,
       },
     });
     res.status(201).json(user);

@@ -71,7 +71,7 @@ export default function DataTableUsers() {
               imageSize="6"
               image={user.profileImage}
               username={user.username}
-              gender={user.gender}
+              sex={user.sex}
             />
           </Button>
         );

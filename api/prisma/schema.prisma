@@ -34,7 +34,7 @@ model User {
   profileImage String        @default("default.jpg")
   notification String        @default("accept")
   role         Role          @default(USER)
-  gender       Gender
+  sex          Sex           @default(UNDISCLOSED)
   blockedUsers BlockedUser[] @relation("BlockerRelation")
   blockedBy    BlockedUser[] @relation("BlockedRelation")
 
@@ -159,9 +159,11 @@ enum RequestStatus {
   DECLINED
 }
 
-enum Gender {
-  HOMME
-  FEMME
+enum Sex {
+  MALE
+  FEMALE
+  NON_BINARY
+  UNDISCLOSED
 }
 
 enum Role {

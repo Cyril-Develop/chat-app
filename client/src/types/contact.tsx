@@ -5,13 +5,13 @@ export interface FriendsListProps {
 export interface FriendProps {
   id: number;
   username: string;
-  gender: "HOMME" | "FEMME";
+  sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
 }
 
 export interface BlockedUsersProps {
   id: number;
   username: string;
-  gender: "HOMME" | "FEMME";
+  sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
 }
 
 export interface FriendRequest {
@@ -20,7 +20,7 @@ export interface FriendRequest {
   sender: {
     id: number;
     username: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     profileImage: string;
   };
   receiver: {

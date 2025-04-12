@@ -117,7 +117,7 @@ export const SearchUser = () => {
                               imageSize="8"
                               image={contact.profileImage}
                               username={contact.username}
-                              gender={contact.gender}
+                              sex={contact.sex}
                             />
                             {isFriend(contact.friends) ? (
                               <Icons.check width={16} height={16} />

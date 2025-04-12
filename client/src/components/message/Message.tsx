@@ -43,7 +43,7 @@ const Message = ({ message, type }: MessageProps) => {
         {
           userId: currentUser?.id,
           username: currentUser?.username,
-          gender: currentUser?.gender,
+          sex: currentUser?.sex,
         },
       ]);
     }
@@ -75,7 +75,7 @@ const Message = ({ message, type }: MessageProps) => {
             {
               userId: data.userId,
               username: data.username,
-              gender: data.gender,
+              sex: data.sex,
             },
           ];
         }
@@ -112,7 +112,7 @@ const Message = ({ message, type }: MessageProps) => {
       <UserThumbnail
         image={message.user.profileImage}
         username={message.user.username}
-        gender={message.user.gender}
+        sex={message.user.sex}
         imageSize="6"
         textSize="text-base"
       />
@@ -166,7 +166,7 @@ const Message = ({ message, type }: MessageProps) => {
               trigger={likes.length}
               users={likes.map((like) => ({
                 username: like.username,
-                gender: like.gender,
+                sex: like.sex,
               }))}
             />
           </div>

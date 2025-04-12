@@ -4,14 +4,14 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
+import { sexColor } from "@/utils/sex-color";
 import { Icons } from "../Icons";
-import { genderColor } from "@/utils/gender-color";
 
 interface HoverMessageProps {
   trigger: number;
   users: {
     username: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   }[];
 }
 
@@ -41,7 +41,7 @@ export function HoverMessage({ trigger, users }: HoverMessageProps) {
               {recentLikers.map((user, index) => (
                 <span
                   key={user.username + index}
-                  className={cn(genderColor[user.gender])}
+                  className={cn(sexColor[user.sex])}
                 >
                   {user.username}
                   {index < recentLikers.length - 1 && ","}
@@ -53,7 +53,7 @@ export function HoverMessage({ trigger, users }: HoverMessageProps) {
               {recentLikers.map((user, index) => (
                 <span
                   key={user.username + index}
-                  className={cn(genderColor[user.gender])}
+                  className={cn(sexColor[user.sex])}
                 >
                   {user.username}
                   {index < recentLikers.length - 1 && ","}

@@ -33,7 +33,7 @@ export const useLikeMessageMutation = () => {
       // Envoyé un événement pour que les autres utilisateurs voient l'ajout du like en temps réel (room ou message privé)
       socket?.emit("likeMessage", {
         userId: data.like.userId,
-        gender: data.like.gender,
+        sex: data.like.sex,
         username: data.like.username,
         messageId: data.like.messageId,
         roomId: data.like.roomId,

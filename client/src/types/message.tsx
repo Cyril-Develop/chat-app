@@ -5,13 +5,17 @@ export interface MessageProps {
     createdAt: string;
     id: number;
     image?: string;
-    likes?: { userId: number; username: string; gender: "HOMME" | "FEMME" }[];
+    likes?: {
+      userId: number;
+      username: string;
+      sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
+    }[];
     message: string;
     user: {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME";
+      sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     };
     receiver?: {
       id: number;
@@ -24,7 +28,7 @@ export interface MessageProps {
 
 export interface LikeFromSocket {
   userId: number;
-  gender: "HOMME" | "FEMME";
+  sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   username: string;
   messageId: number;
   roomId?: number;
@@ -48,14 +52,14 @@ export interface NotificationProps {
   user: {
     id: number;
     username: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     profileImage: string;
   };
   // concerne les demandes d'amis
   sender: {
     id: number;
     username: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     profileImage: string;
   };
   receiver: {
@@ -72,7 +76,7 @@ export interface UnreadMessagesProps {
     id: number;
     username: string;
     profileImage: string;
-    gender: "HOMME" | "FEMME";
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   };
   receiver: {
     id: number;
@@ -84,19 +88,23 @@ export interface MessagesProviderProps {
     createdAt: string;
     id: number;
     image?: string;
-    likes?: { userId: number; username: string; gender: "HOMME" | "FEMME" }[];
+    likes?: {
+      userId: number;
+      username: string;
+      sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
+    }[];
     message: string;
     user: {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME";
+      sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     };
     receiver?: {
       id: number;
       username: string;
       profileImage: string;
-      gender: "HOMME" | "FEMME";
+      sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     };
   }[];
   type: "private" | "room";

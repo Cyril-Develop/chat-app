@@ -19,7 +19,7 @@ export const useAuthStore = create(
 
       setVisible: (visible) => set({ visible }),
 
-      // Récupére l'état d'authentification de l'utilisateur actuel lorsque la page est actualisée (isAuthenticated = true, userData = {id, role})
+      // Récupére l'état d'authentification de l'utilisateur actuel lorsque la page est actualisée
       initializeAuth: async () => {
         try {
           const response = await isAuthenticated();

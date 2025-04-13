@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: process.env.COOKIE_MAX_AGE,
+      maxAge: parseInt(process.env.COOKIE_MAX_AGE, 10),
     });
 
     res.json({

@@ -16,6 +16,11 @@ export const AppInitializer = () => {
   const roomId = useRoomStore((state) => state.room?.id);
   const { data: currentUser } = useGetCurrentUser();
 
+  // Initialisation de l'authentification et des notifications au démarrage de l'application
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
   // Si l'utilisateur est dans une room, on le connecte à cette room après un rafraîchissement
   useEffect(() => {
     if (roomId && currentUser) {
@@ -32,15 +37,15 @@ export const AppInitializer = () => {
   }, [socket, roomId, currentUser, visible]);
 
   // On initialise les notifications et l'authentification au chargement de l'application
+  // Initialisation des notifications et connexion/déconnexion au socket
   useEffect(() => {
     if (isAuthenticated && currentUser) {
-      initializeAuth();
       initializeNotifications(currentUser.id);
       connectSocket(visible);
     } else {
       disconnectSocket();
     }
-  }, [isAuthenticated, currentUser]);
+  }, [isAuthenticated, currentUser, visible]);
 
   return null;
 };

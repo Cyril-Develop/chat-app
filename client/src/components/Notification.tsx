@@ -15,7 +15,7 @@ export const GlobalNotifications: React.FC = () => {
             ? `${messages.length} messages non lus`
             : `${messages.length} message non lu`
         }`,
-        logo: <Icons.chat />,
+        logo: <Icons.user />,
         variant: "success",
       });
     }
@@ -27,7 +27,7 @@ export const GlobalNotifications: React.FC = () => {
             ? `${requests.length} demandes d'amis en attente`
             : `${requests.length} demande d'ami en attente`
         }`,
-        logo: <Icons.user />,
+        logo: <Icons.bell />,
         variant: "success",
       });
     }

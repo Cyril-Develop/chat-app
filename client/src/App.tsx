@@ -25,12 +25,14 @@ import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
 import { useSocketHandler } from "@/hooks/socket-handler";
 import { AppInitializer } from "./components/app-initializer";
+import CoockieBanner from "./components/coockie-banner";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   useGlobalNotifications();
   return (
     <>
       <AppInitializer />
+      <CoockieBanner />
       <Navbar />
       {children}
       <GlobalNotifications />

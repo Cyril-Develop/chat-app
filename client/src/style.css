@@ -94,7 +94,7 @@ html.dark {
 }
 
 .page_conversation {
-  @apply bg-muted dark:bg-secondary py-4 px-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)];
+  @apply relative bg-muted dark:bg-secondary py-4 px-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)];
 }
 
 .page_settings {
@@ -126,7 +126,7 @@ html.dark {
 }
 
 .text-description-form {
-  @apply text-gray-600 dark:text-gray-400 text-lg sm:text-xl;
+  @apply text-gray-600 dark:text-gray-400 text-lg;
 }
 
 .text-paragraph {
@@ -138,7 +138,7 @@ html.dark {
 }
 
 .text-button {
-  @apply text-base text-primary-foreground;
+  @apply text-base font-normal text-primary-foreground;
 }
 
 .animate-spin {

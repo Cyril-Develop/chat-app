@@ -20,8 +20,9 @@ import { useRoomStore } from "@/store/room.store";
 import { MessageFormProps } from "@/types/message";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import ImageUploader from "@/components/image-uploader";
 
 const SendRoomMessage = () => {
   const roomId = useRoomStore((state) => state.room?.id);
@@ -40,67 +41,70 @@ const SendRoomMessage = () => {
     },
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
-    }
-  };
-
-  const deleteImage = () => {
+  // Fonction unifiée pour réinitialiser l'image
+  const resetImage = useCallback(() => {
     setImage(null);
-    resetInputRef();
-  };
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }, []);
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0] || null;
+      setImage(file);
+    },
+    []
+  );
+
+  // Utilise la fonction resetImage
+  const deleteImage = useCallback(() => {
+    resetImage();
+  }, [resetImage]);
 
   const noContent = !form.getValues("message") && !image;
-  const resetInputRef = () => {
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
 
-  const onSubmit = (data: MessageFormProps) => {
-    const { message } = data;
+  const onSubmit = useCallback(
+    (data: MessageFormProps) => {
+      const { message } = data;
 
-    if (noContent) return;
+      if (noContent) return;
 
-    if (visible === false) {
-      setError("Vous ne pouvez pas envoyer de message en mode espion");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("message", message);
-
-    // if (recipient.type === "room") {
-    //   formData.append("roomId", recipient.id.toString());
-    // } else {
-    //   formData.append("userId", recipient.id.toString());
-    // }
-
-    if (image) {
-      formData.append("image", image);
-    }
-
-    if (!roomId) {
-      return;
-    }
-    sendMessage(
-      { formData, roomId },
-      {
-        onSuccess: () => {
-          form.reset();
-          setImage(null);
-          resetInputRef();
-          setError(null);
-        },
-        onError: () => {
-          setError("Une erreur s'est produite lors de l'envoi du message");
-        },
+      if (visible === false) {
+        setError("Vous ne pouvez pas envoyer de message en mode espion");
+        return;
       }
-    );
-  };
+
+      const formData = new FormData();
+      formData.append("message", message);
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      if (!roomId) {
+        return;
+      }
+
+      sendMessage(
+        { formData, roomId },
+        {
+          onSuccess: () => {
+            form.reset();
+            resetImage();
+            setError(null);
+          },
+          onError: () => {
+            setError("Une erreur s'est produite lors de l'envoi du message");
+          },
+        }
+      );
+    },
+    [form, image, noContent, resetImage, roomId, sendMessage, visible]
+  );
 
   return (
     <Form {...form}>
       <Separator className="mb-4" />
+      <ImageUploader onDropImage={(file) => setImage(file)} />
       {image && (
         <div className="relative w-fit">
           <img

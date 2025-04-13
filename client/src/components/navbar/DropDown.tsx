@@ -47,7 +47,7 @@ const DropDown = () => {
           )}
         >
           <Icons.menu />
-          <span className="hidden-text ">Menu</span>
+          <span className="hidden-text font-semibold">Menu</span>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent

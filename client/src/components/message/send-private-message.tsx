@@ -20,8 +20,9 @@ import { useContactStore } from "@/store/contact.store";
 import { PrivateMessageFormProps } from "@/types/message";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
+import ImageUploader from "@/components/image-uploader";
 
 const SendPrivateMessage = () => {
   const visible = useAuthStore((state) => state.visible);
@@ -40,21 +41,25 @@ const SendPrivateMessage = () => {
     },
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
-    }
-  };
-
-  const deleteImage = () => {
+  // Fonction pour réinitialiser l'image
+  const resetImage = useCallback(() => {
     setImage(null);
-    resetInputRef();
-  };
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }, []);
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0] || null;
+      setImage(file);
+    },
+    []
+  );
+
+  const deleteImage = useCallback(() => {
+    resetImage();
+  }, [resetImage]);
 
   const noContent = !form.getValues("message") && !image;
-  const resetInputRef = () => {
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
 
   const onSubmit = (data: PrivateMessageFormProps) => {
     const { message } = data;
@@ -81,7 +86,7 @@ const SendPrivateMessage = () => {
         onSuccess: () => {
           form.reset();
           setImage(null);
-          resetInputRef();
+          resetImage();
           setError(null);
         },
         onError: () => {
@@ -94,6 +99,7 @@ const SendPrivateMessage = () => {
   return (
     <Form {...form}>
       <Separator className="mb-4" />
+      <ImageUploader onDropImage={(file) => setImage(file)} />
       {image && (
         <div className="relative w-fit">
           <img
@@ -111,6 +117,7 @@ const SendPrivateMessage = () => {
           </Button>
         </div>
       )}
+
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative flex flex-col sm:flex-row gap-2 mt-1 mb-1 xl:mt-4 xl:mb-4"

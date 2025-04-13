@@ -20,7 +20,9 @@ export const useSocketStore = create<SocketStore>((set) => {
       if (socket) return;
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
+        path: "/socket.io/",
         withCredentials: true,
+        transports: ["websocket", "polling"],
       });
 
       socket.on("connect", () => {

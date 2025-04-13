@@ -26,6 +26,15 @@ export interface MessageProps {
   type: "private" | "room";
 }
 
+export interface MessageContentProps {
+  message: {
+    message: string;
+    image?: string;
+    user: { username: string };
+  };
+  isMyMessage: boolean;
+}
+
 export interface LikeFromSocket {
   userId: number;
   sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
@@ -117,10 +126,9 @@ export interface EmojiObject {
 export interface MessageFormProps {
   message: string;
   file: File | null;
+  receiverId: number;
 }
 
-export interface PrivateMessageFormProps {
-  message: string;
-  file: File | null;
-  receiverId: number;
+export interface SendMessageProps {
+  type: "private" | "room";
 }

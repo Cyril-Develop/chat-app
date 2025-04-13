@@ -1,17 +1,14 @@
-import { Icons } from "@/components/Icons";
-import { HoverMessage } from "@/components/message/hover-message";
-import { Button } from "@/components/ui/button";
 import UserThumbnail from "@/components/user-thumbnail";
 import { useDeleteMessageMutation } from "@/hooks/api/messages/delete-message";
 import { useDeletePrivateMessageMutation } from "@/hooks/api/messages/delete-private-message";
 import { useDislikeMessageMutation } from "@/hooks/api/messages/dislike-message";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { useLikeMessageMutation } from "@/hooks/api/messages/like-message";
-import { cn } from "@/lib/utils";
 import { useSocketStore } from "@/store/socket.store";
 import { LikeFromSocket, MessageProps } from "@/types/message";
-import moment from "moment/min/moment-with-locales";
 import { useEffect, useState } from "react";
+import MessageContent from "@/components/message/message-content";
+import MessageFooter from "@/components/message/message-footer";
 
 const Message = ({ message, type }: MessageProps) => {
   const { socket } = useSocketStore();
@@ -104,7 +101,7 @@ const Message = ({ message, type }: MessageProps) => {
   }, [socket]);
 
   return (
-    <div
+    <article
       className={`w-fit flex flex-col gap-2 p-3 xl:py-4  ${
         isMyMessage ? "ml-auto xl:mr-8" : "xl:ml-8"
       }`}
@@ -117,72 +114,17 @@ const Message = ({ message, type }: MessageProps) => {
         textSize="text-base"
       />
 
-      <div className="flex flex-col gap-2 max-w-[235px] 2xl:max-w-[500px]">
-        {message.message && (
-          <p
-            className={`p-3 border rounded-md break-words whitespace-pre-wrap  ${
-              isMyMessage
-                ? "bg-primary text-secondary dark:text-primary-foreground"
-                : "bg-primary-foreground"
-            }`}
-          >
-            {message.message}
-          </p>
-        )}
-        {message.image && (
-          <img
-            src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/message/${
-              message.image
-            }`}
-            className="object-cover rounded-md"
-            alt={message.user.username}
-          />
-        )}
-      </div>
+      <MessageContent message={message} isMyMessage={isMyMessage} />
 
-      <div className="flex justify-between min-w-[220px]">
-        <span className="text-xs text-gray-600 dark:text-gray-400">
-          {moment(message.createdAt).locale("fr").fromNow()}
-        </span>
-
-        <div className="flex gap-4">
-          <div className="flex gap-1">
-            <Button
-              variant="btnMenu"
-              title={isMessageLiked ? "Retirer le like" : "Liker le message"}
-              className={cn(
-                `p-0 hover:text-primary ${isMessageLiked && "text-primary "}`
-              )}
-              onClick={handleLike}
-            >
-              <Icons.like
-                fill={isMessageLiked ? "#3570D1" : "none"}
-                width={16}
-                height={16}
-              />
-            </Button>
-
-            <HoverMessage
-              trigger={likes.length}
-              users={likes.map((like) => ({
-                username: like.username,
-                sex: like.sex,
-              }))}
-            />
-          </div>
-          {canDeleteMessage && (
-            <Button
-              variant="alert"
-              title="Supprimer le message"
-              className={cn("p-0")}
-              onClick={() => handleDelete(message.id)}
-            >
-              <Icons.delete width={16} height={16} />
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
+      <MessageFooter
+        message={message}
+        canDeleteMessage={canDeleteMessage}
+        isMessageLiked={isMessageLiked}
+        likes={likes}
+        handleLike={handleLike}
+        handleDelete={handleDelete}
+      />
+    </article>
   );
 };
 

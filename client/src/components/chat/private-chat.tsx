@@ -1,9 +1,9 @@
 import HeaderChat from "@/components/chat/private-chat-header";
 import MessagesProvider from "@/components/message/messages-provider";
 import { PrivateChatProps } from "@/types/chat";
-import SendPrivateMessage from "../message/send-private-message";
 import { usePrivateChat } from "@/hooks/private-chat-handler";
 import { SkeletonMessage } from "@/components/skeleton/skeleton";
+import SendMessage from "@/components/message/send-message";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
   const { fetchedContactInfos, privateMessages, isLoading } =
@@ -18,7 +18,7 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
           <>
             <HeaderChat contactInfos={fetchedContactInfos} />
             <MessagesProvider messages={privateMessages} type="private" />
-            <SendPrivateMessage />
+            <SendMessage type="private" />
           </>
         )
       )}

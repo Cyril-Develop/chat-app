@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -81,7 +79,7 @@ const ImageUploader = ({
       >
         <input {...getInputProps()} />
         <div className="text-gray-600 dark:text-gray-400 font-semibold">
-          <p>{isDragActive && "Déposez l'image ici"}</p>
+          <p>{isDragActive && "Déposer l'image ici"}</p>
         </div>
       </div>
     </div>

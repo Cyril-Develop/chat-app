@@ -30,7 +30,7 @@ export function PopoverNotification() {
       >
         {!haveRequest ? (
           <div className="flex items-center justify-center text-gray-600 dark:text-gray-400">
-            Pas de nouvelles notifications
+            Aucune notification
           </div>
         ) : (
           <>

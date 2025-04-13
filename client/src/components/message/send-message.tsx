@@ -13,27 +13,33 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useSendPrivateMessageMutation } from "@/hooks/api/messages/send-private-message";
+import { useSendMessageMutation } from "@/hooks/api/messages/send-message";
 import { cn } from "@/lib/utils";
 import { PrivateMessageFormSchema } from "@/schema/main";
 import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
-import { PrivateMessageFormProps } from "@/types/message";
+import { MessageFormProps, SendMessageProps } from "@/types/message";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import ImageUploader from "@/components/image-uploader";
+import { useRoomStore } from "@/store/room.store";
 
-const SendPrivateMessage = () => {
+const SendMessage = ({ type }: SendMessageProps) => {
   const visible = useAuthStore((state) => state.visible);
-  const { mutate: sendMessage } = useSendPrivateMessageMutation();
+  const roomId = useRoomStore((state) => state.room?.id);
+  const contactId = useContactStore((state) => state.contactId);
+  const { mutate: sendPrivateMessage, isPending: sendingPrivateMessage } =
+    useSendPrivateMessageMutation();
+  const { mutate: sendMessage, isPending: sendingMessage } =
+    useSendMessageMutation();
   const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const contactId = useContactStore((state) => state.contactId);
 
-  const form = useForm<PrivateMessageFormProps>({
+  const form = useForm<MessageFormProps>({
     resolver: zodResolver(PrivateMessageFormSchema),
     defaultValues: {
       message: "",
@@ -59,12 +65,21 @@ const SendPrivateMessage = () => {
     resetImage();
   }, [resetImage]);
 
-  const noContent = !form.getValues("message") && !image;
+  const resetForm = () => {
+    form.reset();
+    setImage(null);
+    resetImage();
+    setError(null);
+  };
 
-  const onSubmit = (data: PrivateMessageFormProps) => {
+  const noContent = !form.getValues("message") && !image;
+  const isSendingMessage = sendingPrivateMessage || sendingMessage;
+
+  const onSubmit = (data: MessageFormProps) => {
     const { message } = data;
 
     if (noContent) return;
+
     if (visible === false) {
       setError("Vous ne pouvez pas envoyer de message en mode espion");
       return;
@@ -76,24 +91,27 @@ const SendPrivateMessage = () => {
       formData.append("image", image);
     }
 
-    if (!contactId) {
-      return;
+    if (type === "private" && contactId) {
+      sendPrivateMessage(
+        { formData, contactId },
+        {
+          onSuccess: () => {
+            resetForm();
+          },
+        }
+      );
     }
 
-    sendMessage(
-      { formData, contactId },
-      {
-        onSuccess: () => {
-          form.reset();
-          setImage(null);
-          resetImage();
-          setError(null);
-        },
-        onError: () => {
-          setError("Une erreur s'est produite lors de l'envoi du message");
-        },
-      }
-    );
+    if (type === "room" && roomId) {
+      sendMessage(
+        { formData, roomId },
+        {
+          onSuccess: () => {
+            resetForm();
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -194,9 +212,13 @@ const SendPrivateMessage = () => {
             size="message"
             title="Envoyer"
             className={cn("ml-auto")}
-            disabled={noContent}
+            disabled={isSendingMessage || noContent}
           >
-            <Icons.send aria-label="Envoyer" />
+            {isSendingMessage ? (
+              <Icons.loader />
+            ) : (
+              <Icons.send aria-label="Envoyer" />
+            )}
           </Button>
         </div>
       </form>
@@ -205,4 +227,4 @@ const SendPrivateMessage = () => {
   );
 };
 
-export default SendPrivateMessage;
+export default SendMessage;

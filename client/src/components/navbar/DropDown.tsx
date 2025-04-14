@@ -39,7 +39,7 @@ const DropDown = () => {
     if (updatedVisible === false) {
       toast({
         description:
-          "Lorsque vous êtes en mode espion, vous ne pouvez plus envoyer de message dans les salons. Regardez les messages des autres utilisateurs sans être vu.",
+          "Lorsque vous êtes en mode espion, vous ne pouvez plus envoyer de message dans les salons... Regardez les messages des autres utilisateurs sans être vu.",
         duration: 8000,
       });
     }

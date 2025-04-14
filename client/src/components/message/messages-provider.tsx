@@ -8,7 +8,7 @@ const MessagesProvider = ({ messages, type }: MessagesProviderProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [initialScrollDone, setInitialScrollDone] = useState(false);
-  const messagesCount = 5;
+  const messagesCount = 10;
   const [visibleCount, setVisibleCount] = useState(messagesCount);
 
   useEffect(() => {

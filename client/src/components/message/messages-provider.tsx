@@ -7,6 +7,9 @@ const MessagesProvider = ({ messages, type }: MessagesProviderProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [initialScrollDone, setInitialScrollDone] = useState(false);
+  const messagesCount = 5;
+  const [visibleCount, setVisibleCount] = useState(messagesCount);
 
   useEffect(() => {
     const scrollToBottom = () => {
@@ -15,81 +18,95 @@ const MessagesProvider = ({ messages, type }: MessagesProviderProps) => {
       }
     };
 
-    // Détecter si l'utilisateur a scrollé manuellement
     const handleScroll = () => {
       const container = containerRef.current;
       if (!container) return;
 
       const { scrollTop, scrollHeight, clientHeight } = container;
-      // On considère qu'on est proche du bas si on est à moins de 100px du bas
       const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
       setShouldScrollToBottom(isNearBottom);
+
+      // Ne charger que si scroll initial terminé
+      if (
+        initialScrollDone &&
+        scrollTop < 100 &&
+        visibleCount < messages.length
+      ) {
+        setVisibleCount((prev) => prev + messagesCount);
+      }
     };
 
     const container = containerRef.current;
     if (!container) return;
 
-    // Ajouter l'écouteur d'événement
     container.addEventListener("scroll", handleScroll);
 
     const images = container.querySelectorAll("img");
     let loadedCount = 0;
 
-    if (images.length === 0) {
+    const scrollAfterImages = () => {
       scrollToBottom();
-      return;
-    }
-
-    const handleImageLoad = () => {
-      loadedCount++;
-      if (loadedCount === images.length) {
-        scrollToBottom();
-      }
     };
 
-    images.forEach((img) => {
-      if (img.complete) {
+    if (images.length === 0) {
+      scrollAfterImages();
+    } else {
+      const handleImageLoad = () => {
         loadedCount++;
         if (loadedCount === images.length) {
-          scrollToBottom();
+          scrollAfterImages();
         }
-      } else {
-        img.onload = img.onerror = handleImageLoad;
-      }
-    });
+      };
+
+      images.forEach((img) => {
+        if (img.complete) {
+          loadedCount++;
+          if (loadedCount === images.length) {
+            scrollAfterImages();
+          }
+        } else {
+          img.onload = img.onerror = handleImageLoad;
+        }
+      });
+    }
 
     // Toujours scroller en bas lorsque les messages changent
     scrollToBottom();
 
-    // Nettoyage
+    // Marquer le scroll initial comme terminé après un délai
+    const timeout = setTimeout(() => {
+      setInitialScrollDone(true);
+    }, 500);
+
     return () => {
+      clearTimeout(timeout);
       container.removeEventListener("scroll", handleScroll);
       images.forEach((img) => {
         img.onload = img.onerror = null;
       });
     };
-  }, [messages, shouldScrollToBottom]);
+  }, [messages, shouldScrollToBottom, visibleCount, initialScrollDone]);
 
-  // Optimisation: mémoiser le calcul de firstTodayIndex
-  const firstTodayIndex = messages?.findIndex((msg) =>
+  const displayedMessages = messages?.slice(-visibleCount);
+  const firstTodayIndex = displayedMessages?.findIndex((msg) =>
     moment(msg.createdAt).isSame(moment(), "day")
   );
 
   return (
-    <div
+    <section
       ref={containerRef}
       className="grow mt-2 mb-2 overflow-y-scroll scrollbar-webkit scrollbar-firefox whitespace-pre xl:mt-4 xl:mb-4"
     >
-      {messages?.map((message, index) => (
-        <div key={message.id}>
+      {displayedMessages?.map((message, index) => (
+        <article key={message.id}>
           {index === firstTodayIndex && (
             <p className="text-center text-additional-info my-2">Aujourd'hui</p>
           )}
           <Message message={message} type={type} />
-        </div>
+        </article>
       ))}
       <div ref={scrollRef} />
-    </div>
+    </section>
   );
 };
 

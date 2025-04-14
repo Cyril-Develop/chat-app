@@ -101,7 +101,7 @@ const Message = ({ message, type }: MessageProps) => {
   }, [socket]);
 
   return (
-    <article
+    <div
       className={`w-fit flex flex-col gap-2 p-3 xl:py-4  ${
         isMyMessage ? "ml-auto xl:mr-8" : "xl:ml-8"
       }`}
@@ -124,7 +124,7 @@ const Message = ({ message, type }: MessageProps) => {
         handleLike={handleLike}
         handleDelete={handleDelete}
       />
-    </article>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ const SpyIndicator = () => {
   return (
     <div
       className={cn(
-        "absolute top-2 md:top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-2"
+        "absolute top-1 md:top-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2"
       )}
       title="Mode espion activé"
     >

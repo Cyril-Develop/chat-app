@@ -2,18 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "@/App.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import RootLayout from "@/components/RootLayout.tsx";
+import ToasterProvider from "@/components/toaster-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId="435789967890-vmgo5kea1l8s7u91i7hrs3bboss9rkd3.apps.googleusercontent.com">
     <React.StrictMode>
-      <RootLayout>
+      <ToasterProvider>
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>
-      </RootLayout>
+      </ToasterProvider>
     </React.StrictMode>
   </GoogleOAuthProvider>
 );

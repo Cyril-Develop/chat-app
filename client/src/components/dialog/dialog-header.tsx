@@ -8,7 +8,7 @@ import { DialogHeaderProps } from "@/types/dialog";
 
 const DialogHeaderComp = ({ title, description }: DialogHeaderProps) => {
   return (
-    <DialogHeader>
+    <DialogHeader className={cn("space-y-1")}>
       <DialogTitle className={cn("text-title")}>{title}</DialogTitle>
       <DialogDescription className={cn("text-paragraph")}>
         {description}

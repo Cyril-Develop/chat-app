@@ -24,16 +24,26 @@ const CookieBanner = () => {
         Ce site utilise des cookies pour améliorer votre expérience, notamment
         pour vous maintenir connecté(e).
       </p>
-
-      <Button
-        type="submit"
-        size="lg"
-        variant="default"
-        className="text-button px-3"
-        onClick={handleAccept}
-      >
-        Accepter
-      </Button>
+      <div className="flex flex-row items-center gap-2">
+        <Button
+          type="submit"
+          size="lg"
+          variant="default"
+          className="text-button px-3"
+          onClick={handleAccept}
+        >
+          Accepter
+        </Button>
+        <Button
+          type="button"
+          size="lg"
+          variant="destructive"
+          className="text-button px-3"
+          onClick={() => setShowBanner(false)}
+        >
+          Refuser
+        </Button>
+      </div>
     </div>
   );
 };

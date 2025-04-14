@@ -14,7 +14,6 @@ import { useAuthStore } from "@/store/auth.store";
 import { ThemeProvider } from "@/theme/theme-provider";
 import {
   createBrowserRouter,
-  Navigate,
   Outlet,
   RouterProvider,
 } from "react-router-dom";
@@ -26,12 +25,23 @@ import { useGlobalNotifications } from "@/hooks/notification";
 import { useSocketHandler } from "@/hooks/socket-handler";
 import { AppInitializer } from "./components/app-initializer";
 import CoockieBanner from "./components/coockie-banner";
+import SpyIndicator from "@/components/indicator/spy-indicator";
+import PrivateRoute from "@/components/routes/private-route";
+import AdminRoute from "@/components/routes/admin-route";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({
+  children,
+  isAuthenticated,
+}: {
+  children: React.ReactNode;
+  isAuthenticated: boolean;
+}) => {
   useGlobalNotifications();
+
   return (
     <>
       <AppInitializer />
+      {isAuthenticated && <SpyIndicator />}
       <CoockieBanner />
       <Navbar />
       {children}
@@ -51,7 +61,7 @@ function App() {
     {
       path: "/",
       element: (
-        <Layout>
+        <Layout isAuthenticated={isAuthenticated}>
           <Outlet />
         </Layout>
       ),
@@ -64,68 +74,80 @@ function App() {
         { path: "/chateo/terms", element: <Terms /> },
         {
           path: "/chateo/chat",
-          element: isAuthenticated ? <Chat /> : <Navigate to="/chateo/login" />,
+          element: <PrivateRoute element={<Chat />} />,
         },
         {
           path: "/chateo/settings",
-          element: isAuthenticated ? (
-            <Settings>
-              <Profile />
-            </Settings>
-          ) : (
-            <Navigate to="/chateo/login" />
+          element: (
+            <PrivateRoute
+              element={
+                <Settings>
+                  <Profile />
+                </Settings>
+              }
+            />
           ),
         },
         {
           path: "/chateo/settings/profile",
-          element: isAuthenticated ? (
-            <Settings>
-              <Profile />
-            </Settings>
-          ) : (
-            <Navigate to="/chateo/login" />
+          element: (
+            <PrivateRoute
+              element={
+                <Settings>
+                  <Profile />
+                </Settings>
+              }
+            />
           ),
         },
         {
           path: "/chateo/settings/appearance",
-          element: isAuthenticated ? (
-            <Settings>
-              <Appearance />
-            </Settings>
-          ) : (
-            <Navigate to="/chateo/login" />
+          element: (
+            <PrivateRoute
+              element={
+                <Settings>
+                  <Appearance />
+                </Settings>
+              }
+            />
           ),
         },
         {
           path: "/chateo/settings/account",
-          element: isAuthenticated ? (
-            <Settings>
-              <Account />
-            </Settings>
-          ) : (
-            <Navigate to="/chateo/login" />
+          element: (
+            <PrivateRoute
+              element={
+                <Settings>
+                  <Account />
+                </Settings>
+              }
+            />
           ),
         },
         {
           path: "/chateo/settings/notifications",
-          element: isAuthenticated ? (
-            <Settings>
-              <Notification />
-            </Settings>
-          ) : (
-            <Navigate to="/chateo/login" />
+          element: (
+            <PrivateRoute
+              element={
+                <Settings>
+                  <Notification />
+                </Settings>
+              }
+            />
           ),
         },
         {
           path: "/chateo/settings/dashboard",
-          element:
-            isAuthenticated && role === "ADMIN" ? (
-              <Settings>
-                <Dashboard />
-              </Settings>
-            ) : (
-              <Navigate to="/chateo" />
-            ),
+          element: (
+            <AdminRoute
+              element={
+                <Settings>
+                  <Dashboard />
+                </Settings>
+              }
+              role={role}
+            />
+          ),
         },
       ],
     },

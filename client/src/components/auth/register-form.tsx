@@ -156,7 +156,7 @@ const RegisterForm = () => {
                           "h-11 w-full rounded-md border border-input dark:bg-primary-foreground text-muted-foreground  dark:border-popover"
                         )}
                       >
-                        <SelectTrigger className={cn("h-11")}>
+                        <SelectTrigger className={cn("h-11 text-base")}>
                           <SelectValue placeholder="Sélectionner" />
                         </SelectTrigger>
                       </FormControl>

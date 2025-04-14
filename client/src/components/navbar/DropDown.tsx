@@ -18,6 +18,7 @@ import { useSocketStore } from "@/store/socket.store";
 import { useTheme } from "@/theme/theme-provider";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/use-toast";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -35,6 +36,13 @@ const DropDown = () => {
       return;
     }
     setVisible(updatedVisible);
+    if (updatedVisible === false) {
+      toast({
+        description:
+          "Lorsque vous êtes en mode espion, vous ne pouvez plus envoyer de message dans les salons. Regardez les messages des autres utilisateurs sans être vu.",
+        duration: 8000,
+      });
+    }
   };
 
   return (
@@ -104,10 +112,10 @@ const DropDown = () => {
                     onClick={() => handleVisibility(false)}
                     className={cn("p-2")}
                   >
-                    <Icons.spy
+                    <Icons.mask
                       width={18}
                       height={18}
-                      stroke={theme === "dark" ? "#fff" : "#000"}
+                      fill={theme === "dark" ? "#fff" : "#000"}
                     />
                     Espion
                     {visible === false && (

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { PrivateChatHeaderProps } from "@/types/chat";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PrivateChatMenu from "@/components/chat/private-chat-menu";
-import StatutIndicator from "@/components/statut-indicator";
-import { useSocketStore } from "@/store/socket.store";
-import { HandleUserStatusChangedProps } from "@/types/user";
+import StatutIndicator from "@/components/indicator/statut-indicator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { useSocketStore } from "@/store/socket.store";
+import { PrivateChatHeaderProps } from "@/types/chat";
+import { HandleUserStatusChangedProps } from "@/types/user";
+import { useEffect, useState } from "react";
 
 const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
   const { socket, users } = useSocketStore();

@@ -1,11 +1,10 @@
-import UserThumbnail from "@/components/user-thumbnail";
-import StatutIndicator from "@/components/statut-indicator";
+import StatutIndicator from "@/components/indicator/statut-indicator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import UserThumbnail from "@/components/user-thumbnail";
 import { cn } from "@/lib/utils";
 import { useRoomStore } from "@/store/room.store";
-import { getVisibleUsersCount } from "@/utils/room";
-import { getVisibleUsersLabel } from "@/utils/room";
-import { Separator } from "@/components/ui/separator";
+import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
 
 export function RoomUsers() {
   const { usersInRoom } = useRoomStore();

@@ -164,7 +164,7 @@ const SendMessage = ({ type }: SendMessageProps) => {
           )}
         />
 
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-4 md:gap-2 items-center">
           <FormField
             control={form.control}
             name="file"

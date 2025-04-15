@@ -12,11 +12,7 @@ import Appearance from "@/pages/settings/Appearance";
 import Settings from "@/pages/settings/Settings";
 import { useAuthStore } from "@/store/auth.store";
 import { ThemeProvider } from "@/theme/theme-provider";
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Contact from "@/pages/contact/Contact";
 import Password from "@/pages/password/Password";
 import Terms from "@/pages/legal/Terms";
@@ -29,19 +25,12 @@ import SpyIndicator from "@/components/indicator/spy-indicator";
 import PrivateRoute from "@/components/routes/private-route";
 import AdminRoute from "@/components/routes/admin-route";
 
-const Layout = ({
-  children,
-  isAuthenticated,
-}: {
-  children: React.ReactNode;
-  isAuthenticated: boolean;
-}) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   useGlobalNotifications();
-
   return (
     <>
       <AppInitializer />
-      {isAuthenticated && <SpyIndicator />}
+      <SpyIndicator />
       <CoockieBanner />
       <Navbar />
       {children}
@@ -51,7 +40,6 @@ const Layout = ({
 };
 
 function App() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const role = useAuthStore((state) => state.user?.role);
 
   //********** SOCKET HANDLER **********/
@@ -61,7 +49,7 @@ function App() {
     {
       path: "/",
       element: (
-        <Layout isAuthenticated={isAuthenticated}>
+        <Layout>
           <Outlet />
         </Layout>
       ),

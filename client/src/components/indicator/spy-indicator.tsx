@@ -3,9 +3,12 @@ import { useAuthStore } from "@/store/auth.store";
 import { cn } from "@/lib/utils";
 
 const SpyIndicator = () => {
-  const { visible } = useAuthStore();
+  const visible = useAuthStore((state) => state.visible);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  if (visible) return null;
+  if (!isAuthenticated || visible) {
+    return null;
+  }
 
   return (
     <div
@@ -14,7 +17,7 @@ const SpyIndicator = () => {
       )}
       title="Mode espion activé"
     >
-      <Icons.mask width={24} height={24} fill="#fff" />
+      <Icons.mask width={24} height={24} fill="#f8fafc" />
     </div>
   );
 };

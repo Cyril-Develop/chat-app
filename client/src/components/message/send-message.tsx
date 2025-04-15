@@ -1,5 +1,4 @@
 import { Icons } from "@/components/Icons";
-import HandleEmojiPicker from "@/components/message/handle-emoji-picker";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,6 +24,7 @@ import { useRef, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import ImageUploader from "@/components/image-uploader";
 import { useRoomStore } from "@/store/room.store";
+import Emoji from "@/components/emoji/Emoji";
 
 const SendMessage = ({ type }: SendMessageProps) => {
   const visible = useAuthStore((state) => state.visible);
@@ -34,7 +34,6 @@ const SendMessage = ({ type }: SendMessageProps) => {
     useSendPrivateMessageMutation();
   const { mutate: sendMessage, isPending: sendingMessage } =
     useSendMessageMutation();
-  const [openEmoji, setOpenEmoji] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -140,9 +139,11 @@ const SendMessage = ({ type }: SendMessageProps) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative flex flex-col sm:flex-row gap-2 mt-1 mb-1 xl:mt-4 xl:mb-4"
       >
-        {openEmoji && (
+        {/* {openEmoji && (
           <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />
-        )}
+        )} */}
+
+
 
         <FormField
           control={form.control}
@@ -164,63 +165,57 @@ const SendMessage = ({ type }: SendMessageProps) => {
           )}
         />
 
-        <div className="flex gap-4 md:gap-2 items-center">
-          <FormField
-            control={form.control}
-            name="file"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 p-2 w-11 h-11 cursor-pointer"
-                  tabIndex={0}
-                  aria-label="Joindre une image"
-                  title="Joindre une image"
-                  onKeyDown={handleKeydown}
-                  onClick={() => handleLabelClick("fileInput")}
-                >
-                  <Icons.image />
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="file"
-                    accept=".jpg,.jpeg,.png,.svg"
-                    className="hidden"
-                    value={undefined}
-                    onChange={handleFileChange}
-                    id="fileInput"
-                    ref={fileInputRef}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+<div className="flex gap-4 md:gap-2 items-center">
+  <FormField
+    control={form.control}
+    name="file"
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel
+          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 p-2 w-11 h-11 cursor-pointer"
+          tabIndex={0}
+          aria-label="Joindre une image"
+          title="Joindre une image"
+          onKeyDown={handleKeydown}
+          onClick={() => handleLabelClick("fileInput")}
+        >
+          <Icons.image />
+        </FormLabel>
+        <FormControl>
+          <Input
+            {...field}
+            type="file"
+            accept=".jpg,.jpeg,.png,.svg"
+            className="hidden"
+            value={undefined}
+            onChange={handleFileChange}
+            id="fileInput"
+            ref={fileInputRef}
           />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
 
-          <Button
-            type="button"
-            size="message"
-            title={openEmoji ? "Fermer les emojis" : "Ouvrir les emojis"}
-            onClick={() => setOpenEmoji(!openEmoji)}
-          >
-            <Icons.emoji
-              aria-label={openEmoji ? "Fermer les emojis" : "Ouvrir les emojis"}
-            />
-          </Button>
-          <Button
-            type="submit"
-            size="message"
-            title="Envoyer"
-            className={cn("ml-auto")}
-            disabled={isSendingMessage || noContent}
-          >
-            {isSendingMessage ? (
-              <Icons.loader />
-            ) : (
-              <Icons.send aria-label="Envoyer" />
-            )}
-          </Button>
-        </div>
+  <Emoji
+    onSelect={(emoji) => {
+      const current = form.getValues("message") || "";
+      form.setValue("message", current + emoji, { shouldDirty: true });
+    }}
+  />
+
+  <Button
+    type="submit"
+    size="message"
+    title="Envoyer"
+    className={cn("ml-auto")}
+    disabled={isSendingMessage || noContent}
+  >
+    {isSendingMessage ? <Icons.loader /> : <Icons.send aria-label="Envoyer" />}
+  </Button>
+</div>
+
       </form>
       {error && visible === false && <p className="error">{error}</p>}
     </Form>

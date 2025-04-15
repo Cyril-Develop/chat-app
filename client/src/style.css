@@ -138,7 +138,7 @@ html.dark {
 }
 
 .text-button {
-  @apply text-sm lg:text-base font-normal text-primary-foreground;
+  @apply text-sm lg:text-base text-primary-foreground;
 }
 
 .animate-spin {

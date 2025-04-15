@@ -60,6 +60,7 @@ export function EmojiPickerSearch() {
         type="text"
         id="emoji-search"
         value={search}
+        autoFocus={false}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Rechercher un emoji..."
         className={cn(

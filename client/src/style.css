@@ -50,7 +50,7 @@
 }
 
 html {
-  max-width: 2500px;
+  max-width: 2600px;
   margin: 0 auto;
   width: 100%;
 }
@@ -94,7 +94,7 @@ html.dark {
 }
 
 .page_conversation {
-  @apply relative bg-muted dark:bg-secondary py-4 px-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)];
+  @apply relative bg-muted dark:bg-secondary p-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)];
 }
 
 .page_settings {
@@ -130,7 +130,7 @@ html.dark {
 }
 
 .text-paragraph {
-  @apply text-base sm:text-lg text-gray-600 dark:text-gray-400;
+  @apply text-base text-gray-600 dark:text-gray-400;
 }
 
 .text-additional-info {

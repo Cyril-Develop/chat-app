@@ -55,8 +55,12 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
                 aria-labelledby="notification-label"
                 className={cn("flex flex-col space-y-1")}
               >
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <RadioGroupItem id="accept" value="accept" />
+                <FormItem className="flex space-x-3 space-y-0">
+                  <RadioGroupItem
+                    id="accept"
+                    value="accept"
+                    className={cn("mt-1")}
+                  />
                   <FormLabel
                     htmlFor="accept"
                     className={cn("font-normal hover:cursor-pointer text-base")}

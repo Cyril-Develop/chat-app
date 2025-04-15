@@ -62,7 +62,7 @@ const ContactForm = () => {
 
   return (
     <CardWrapper
-      title="Nous contacter"
+      title="Contactez nous"
       description="Une question, une suggestion ?"
     >
       <Form {...form}>

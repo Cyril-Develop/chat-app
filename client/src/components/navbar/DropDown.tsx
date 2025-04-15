@@ -64,15 +64,8 @@ const DropDown = () => {
         >
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() => navigate("/chateo")}
-              className={cn("p-2")}
-            >
-              <Icons.home width={18} height={18} />
-              Accueil
-            </DropdownMenuItem>
-            <DropdownMenuItem
               onClick={() => navigate("/chateo/chat")}
-              className={cn("p-2")}
+              className={cn("p-2 font-semibold")}
             >
               <Icons.chat width={18} height={18} />
               Messagerie
@@ -82,7 +75,7 @@ const DropDown = () => {
 
           <DropdownMenuGroup>
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger className={cn("p-2")}>
+              <DropdownMenuSubTrigger className={cn("p-2 font-semibold")}>
                 <Icons.circle
                   width={18}
                   height={18}
@@ -97,7 +90,7 @@ const DropDown = () => {
                 >
                   <DropdownMenuItem
                     onClick={() => handleVisibility(true)}
-                    className={cn("p-2")}
+                    className={cn("p-2 font-semibold")}
                   >
                     <Icons.circle
                       width={18}
@@ -110,7 +103,7 @@ const DropDown = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleVisibility(false)}
-                    className={cn("p-2")}
+                    className={cn("p-2 font-semibold")}
                   >
                     <Icons.mask
                       width={18}
@@ -128,13 +121,16 @@ const DropDown = () => {
           </DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => navigate("chateo/settings/profile")}
-            className={cn("p-2")}
+            className={cn("p-2 font-semibold")}
           >
             <Icons.settings width={18} height={18} />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout} className={cn("p-2")}>
+          <DropdownMenuItem
+            onClick={handleLogout}
+            className={cn("p-2 font-semibold")}
+          >
             <Icons.logout width={18} height={18} />
             Se déconnecter
           </DropdownMenuItem>

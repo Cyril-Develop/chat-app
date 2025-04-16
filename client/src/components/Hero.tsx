@@ -33,7 +33,7 @@ const Hero = () => {
       <img
         src={Logo}
         alt="hero"
-        className="xl:flex-1 max-w-[280px] sm:max-w-[400px] md:max-w-[500px] 2xl:max-w-[600px]"
+        className="xl:flex-1 max-w-[250px] sm:max-w-[400px] md:max-w-[500px] 2xl:max-w-[600px]"
       />
     </main>
   );

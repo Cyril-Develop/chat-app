@@ -11,20 +11,20 @@ function Footer() {
             <Icons.logo width="20" height="20" />
             Chateo
           </div>
-          <p className="text-paragraph">
+          <p className="dark:text-muted-foreground">
             Une application de messagerie moderne qui connecte les personnes et
             les communautés.
           </p>
         </div>
 
-        <div className="flex flex-col justify-start xl:flex-row gap-3 xl:gap-20">
+        <div className="flex flex-col justify-start md:flex-row gap-3 md:gap-20">
           <div className="flex flex-col space-y-1">
-            <h3>Support</h3>
+            <h2>Support</h2>
             <ul>
               <li>
                 <Link
                   to="/chateo/contact"
-                  className="hover:underline underline-offset-4 text-paragraph"
+                  className="hover:underline underline-offset-4 dark:text-muted-foreground"
                 >
                   Contactez nous
                 </Link>
@@ -33,12 +33,12 @@ function Footer() {
           </div>
 
           <div className="flex flex-col space-y-1">
-            <h3>Légal</h3>
+            <h2>Légal</h2>
             <ul>
               <li>
                 <Link
                   to="/chateo/terms"
-                  className="hover:underline underline-offset-4 text-paragraph"
+                  className="hover:underline underline-offset-4 dark:text-muted-foreground"
                 >
                   Conditions générales d'utilisation
                 </Link>

@@ -77,7 +77,7 @@ html.dark {
 
 /* HOME */
 .home {
-  @apply bg-muted dark:bg-secondary flex flex-col justify-center items-center;
+  @apply bg-muted dark:bg-secondary;
 }
 
 /* CHAT */

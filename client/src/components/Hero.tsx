@@ -11,7 +11,7 @@ import Logo from "@/assets/hero.svg";
 
 const Hero = () => {
   return (
-    <main className="flex flex-col-reverse xl:flex-row justify-center items-center xl:items-center space-x-0 xl:space-x-6 p-4 md:p-10 min-h-[calc(100vh-100px)] w-full max-w-[1600px] mx-auto">
+    <main className="flex flex-col-reverse xl:flex-row justify-center items-center xl:items-center space-x-0 xl:space-x-6 p-4 md:p-10 h-[calc(100dvh-96px)] w-full max-w-[1600px] mx-auto">
       <div className="xl:flex-1 flex flex-col space-y-4 md:space-y-8 text-center ">
         <h1 className="flex flex-col text-3xl  md:text-5xl lg:text-6xl 2xl:text-7xl font-bold whitespace-nowrap ">
           <span>Vos conversations,</span>

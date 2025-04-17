@@ -8,10 +8,10 @@ export default function Terms() {
     <div className="flex flex-col items-center bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)]">
       <div className="flex flex-col gap-4 grow p-4 md:p-10 max-w-4xl w-full ">
         <div className="flex flex-col gap-1">
-          <h1 className="text-title font-semibold text-center">
+          <h2 className="font-semibold text-center text-2xl md:text-3xl">
             Conditions générales d'utilisation
-          </h1>
-          <p className="text-muted-foreground text-md text-center">
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 text-md text-center">
             📅 Dernière mise à jour : 17 avril 2025
           </p>
         </div>

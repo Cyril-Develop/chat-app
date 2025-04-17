@@ -26,7 +26,7 @@ export default function TermItem({ term }: { term: TermProps }) {
         <span className="flex-1 text-left">{term.title}</span>
       </AccordionTrigger>
 
-      <AccordionContent className="text-muted-foreground text-base sm:text-lg">
+      <AccordionContent className="text-gray-600 dark:text-gray-400 text-base sm:text-lg">
         {term.text}
       </AccordionContent>
     </AccordionItem>

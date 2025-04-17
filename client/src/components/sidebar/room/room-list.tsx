@@ -15,6 +15,7 @@ const RoomList = ({ heading, rooms, onSelect, roomName }: RoomListProps) => (
         <HoverCardTrigger asChild>
           <CommandItem
             className={cn("cursor-pointer flex gap-2 h-11")}
+            title={`Rejoindre le salon ${room.name}`}
             onSelect={() => onSelect(room)}
           >
             {room.name}

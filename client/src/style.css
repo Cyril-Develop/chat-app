@@ -82,7 +82,7 @@ html.dark {
 
 /* CHAT */
 .chat {
-  @apply flex justify-center items-center h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)] relative flex-col lg:flex-row;
+  @apply flex justify-center items-center h-[calc(100svh-96px)] relative flex-col lg:flex-row;
 }
 
 .chat_aside {
@@ -94,7 +94,7 @@ html.dark {
 }
 
 .page_conversation {
-  @apply relative bg-muted dark:bg-secondary p-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)] sm:h-[calc(100dvh-96px)];
+  @apply relative bg-muted dark:bg-secondary p-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)];
 }
 
 .page_settings {
@@ -106,7 +106,7 @@ html.dark {
 }
 
 .link-form {
-  @apply text-primary no-underline p-1 rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:underline focus:underline;
+  @apply text-primary no-underline p-1 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:underline focus:underline;
 }
 
 .link-nav {
@@ -122,11 +122,15 @@ html.dark {
 }
 
 .text-title {
-  @apply text-xl font-semibold sm:text-2xl;
+  @apply text-2xl font-semibold;
 }
 
-.text-description-form {
-  @apply text-gray-600 dark:text-gray-400 text-lg;
+.form-label {
+  @apply text-base;
+}
+
+.form-input {
+  @apply h-11 md:h-12 text-base;
 }
 
 .text-paragraph {
@@ -138,7 +142,7 @@ html.dark {
 }
 
 .text-button {
-  @apply text-sm lg:text-base text-primary-foreground;
+  @apply text-sm md:text-base text-primary-foreground;
 }
 
 .animate-spin {

@@ -18,9 +18,11 @@ import { ProfileFormProps, ProfileFormValues } from "@/types/setting";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Siren } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useImageHandlers } from "@/hooks/image-handler";
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
@@ -37,7 +39,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   });
 
   const [imageUploaded, setImageUploaded] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { fileInputRef, removeImage } = useImageHandlers(setImageUploaded);
 
   const resetInputRef = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -82,11 +84,11 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={cn("text-base")}>
+              <FormLabel className={cn("form-label")}>
                 Nom d'utilisateur
               </FormLabel>
               <FormControl>
-                <Input {...field} type="text" className={cn("text-base")} />
+                <Input {...field} type="text" className={cn("form-input")} />
               </FormControl>
               <FormMessage />
               <FormDescription className={cn("text-additional-info")}>
@@ -100,34 +102,38 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <p className="text-base leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <p className="form-label font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Image
               </p>
-              <FormLabel
-                className={cn(
-                  "input-style h-11 hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary text-base"
-                )}
-                tabIndex={0}
-                aria-label="Sélectionner une image"
-                onKeyDown={handleKeydown}
-                onClick={() => handleLabelClick("fileInput")}
-              >
-                {imageUploaded ? (
-                  <div className="flex items-center gap-2 text-base">
-                    Image chargée
-                    <img
-                      src={URL.createObjectURL(imageUploaded)}
-                      alt="preview image"
-                      className="w-11 h-11 rounded-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 text-base">
-                    Sélectionner une image
-                    <Icons.image />
-                  </div>
-                )}
-              </FormLabel>
+              {imageUploaded ? (
+                <div className="relative w-fit">
+                  <img
+                    src={URL.createObjectURL(imageUploaded)}
+                    alt="Image jointe au message"
+                    className="h-20 w-20 object-cover rounded-md"
+                  />
+                  <Button
+                    type="button"
+                    title="Retirer l'image"
+                    className="absolute top-0 right-0 z-10 p-0 h-6 w-6"
+                    onClick={removeImage}
+                  >
+                    <Icons.close width={16} height={16} />
+                  </Button>
+                </div>
+              ) : (
+                <FormLabel
+                  className={cn(
+                    "input-style hover:bg-primary hover:text-primary-foreground dark:bg-primary-foreground dark:border-popover dark:hover:bg-primary form-input"
+                  )}
+                  tabIndex={0}
+                  aria-label="Sélectionner une image"
+                  onKeyDown={handleKeydown}
+                  onClick={() => handleLabelClick("fileInput")}
+                >
+                  <span className="px-1">Sélectionner une image</span>
+                </FormLabel>
+              )}
               <FormControl>
                 <Input
                   {...field}

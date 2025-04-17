@@ -68,13 +68,13 @@ const ForgotPasswordForm = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-base")}>Email</FormLabel>
+                <FormLabel className={cn("form-label")}>Email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="email"
                     placeholder="john.doe@gmail.com"
-                    className={cn("text-base")}
+                    className={cn("form-input")}
                   />
                 </FormControl>
                 <FormMessage />

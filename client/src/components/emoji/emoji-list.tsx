@@ -80,7 +80,7 @@ export const EMOJIS = {
     { symbol: "💩", name: "caca" },
     { symbol: "💀", name: "crâne" },
     { symbol: "👻", name: "fantôme" },
-    { symbol: "👽", name: "visage avec masque de gaz" },
+    { symbol: "👽", name: "alien" },
     { symbol: "🤖", name: "robot" },
     { symbol: "🎃", name: "citrouille d'Halloween" },
     { symbol: "😈", name: "visage souriant avec des cornes" },

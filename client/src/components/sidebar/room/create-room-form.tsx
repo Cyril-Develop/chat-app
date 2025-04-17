@@ -64,9 +64,9 @@ const CreateRoomForm = ({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-base")}>Nom</FormLabel>
+                <FormLabel className={cn("form-label")}>Nom</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" className={cn("text-base")} />
+                  <Input {...field} type="text" className={cn("form-input")} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -77,9 +77,9 @@ const CreateRoomForm = ({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("text-base")}>Description</FormLabel>
+                <FormLabel className={cn("form-label")}>Description</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" className={cn("text-base")} />
+                  <Input {...field} type="text" className={cn("form-input")} />
                 </FormControl>
                 <FormDescription className={cn("text-additional-info")}>
                   Si vous saisissez une description, elle sera visible par tous

@@ -118,14 +118,14 @@ const RegisterForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className={cn("space-y-6")}
         >
-          <div className="flex gap-4 justify-between flex-col md:gap-4 ">
-            <div className="flex gap-4 justify-between flex-col md:flex-row md:gap-8">
+          <div className="flex gap-4 justify-between flex-col sm:gap-8 ">
+            <div className="flex gap-4 justify-between flex-col sm:flex-row sm:gap-8">
               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem className={cn("flex-1")}>
-                    <FormLabel className={cn("text-base")}>
+                    <FormLabel className={cn("form-label")}>
                       Nom d'utilisateur
                     </FormLabel>
                     <FormControl>
@@ -134,7 +134,7 @@ const RegisterForm = () => {
                         type="text"
                         placeholder="John Doe"
                         maxLength={15}
-                        className={cn("text-base")}
+                        className={cn("form-input")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -146,7 +146,7 @@ const RegisterForm = () => {
                 name="sex"
                 render={({ field }) => (
                   <FormItem className={cn("flex-1")}>
-                    <FormLabel className={cn("text-base")}>Sexe</FormLabel>
+                    <FormLabel className={cn("form-label")}>Sexe</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -156,7 +156,7 @@ const RegisterForm = () => {
                           "h-11 w-full rounded-md border border-input dark:bg-primary-foreground text-muted-foreground  dark:border-popover"
                         )}
                       >
-                        <SelectTrigger className={cn("h-11 text-base")}>
+                        <SelectTrigger className={cn("form-input")}>
                           <SelectValue placeholder="Sélectionner" />
                         </SelectTrigger>
                       </FormControl>
@@ -179,13 +179,13 @@ const RegisterForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-base")}>Email</FormLabel>
+                  <FormLabel className={cn("form-label")}>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       placeholder="john.doe@gmail.com"
-                      className={cn("text-base")}
+                      className={cn("form-input")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -197,7 +197,7 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-base")}>
+                  <FormLabel className={cn("form-label")}>
                     Mot de passe
                   </FormLabel>
                   <FormControl>

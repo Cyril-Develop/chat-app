@@ -77,13 +77,13 @@ export const SearchUser = () => {
       ) : (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <div className="w-[200px] h-11 flex gap-2 items-center p-3 bg-background dark:bg-primary-foreground border border-input rounded-md">
+            <div className="w-[200px] h-11 md:h-12 flex gap-2 items-center p-3 bg-background dark:bg-primary-foreground border border-input rounded-md">
               <Label htmlFor="searchUser">
-                <Icons.search style={{ stroke: "#80838B" }} />
+                <Icons.search style={{ stroke: "#80838B" }} aria-label="Ajouter un contact" />
               </Label>
               <Input
                 type="text"
-                placeholder="Rechercher un contact"
+                placeholder="Ajouter un contact..."
                 id="searchUser"
                 value={query}
                 onChange={handleSearch}

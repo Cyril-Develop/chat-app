@@ -74,7 +74,7 @@ export function RoomSelector() {
           <PopoverTrigger asChild>
             <Button
               role="combobox"
-              size="box"
+              size="lg"
               aria-label="Voir les salons"
               aria-expanded={open}
               className={cn("w-[200px] justify-between p-3 text-button")}

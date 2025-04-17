@@ -93,7 +93,7 @@ export function Contact() {
             <Button
               role="combobox"
               aria-label="Voir mes contacts"
-              size="box"
+              size="lg"
               aria-expanded={open}
               className={cn(
                 "w-[200px] justify-between p-3 text-button",

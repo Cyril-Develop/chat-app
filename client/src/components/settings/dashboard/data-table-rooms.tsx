@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   ColumnDef,
   SortingState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -10,24 +9,18 @@ import {
   useReactTable,
   PaginationState,
 } from "@tanstack/react-table";
-
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
+import { Table } from "@/components/ui/table";
 import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
 import useGetRooms from "@/hooks/api/chat/get-rooms";
 import { DashboardRoomsProps } from "@/types/setting";
 import { Icons } from "@/components/Icons";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import DataTableButton from "@/components/settings/dashboard/data-table-button";
+import DataTableBody from "@/components/settings/dashboard/data-table-body";
+import DataTableHeader from "@/components/settings/dashboard/data-table-header";
+import DataTableSearchInput from "./table-input-search";
 
 export default function DataTableRooms() {
   const { data: rooms = [] } = useGetRooms();
@@ -50,6 +43,7 @@ export default function DataTableRooms() {
       header: ({ column }) => (
         <Button
           variant="btnMenu"
+          className={cn("p-0")}
           title="Trier par ordre alphabétique"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -60,14 +54,17 @@ export default function DataTableRooms() {
       cell: ({ row }) => {
         const room = row.original;
         return (
-          <Button
-            variant="btnMenu"
-            title={`Supprimer le salon ${room.name}`}
-            className="p-4 w-full h-14"
-            onClick={() => deleteRoom(room.id)}
-          >
-            {room.name}
-          </Button>
+          <div className="flex justify-between p-4 w-full h-14">
+            <span className="text-base">{room.name}</span>
+            <Button
+              variant="alert"
+              title={`Supprimer le salon : ${room.name}`}
+              className={cn("p-0")}
+              onClick={() => deleteRoom(room.id)}
+            >
+              <Icons.delete width={18} height={18} />
+            </Button>
+          </div>
         );
       },
     },
@@ -91,65 +88,16 @@ export default function DataTableRooms() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
+        <DataTableSearchInput
+          table={table}
+          columnId="name"
           placeholder="Rechercher un salon..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(e) =>
-            table.getColumn("name")?.setFilterValue(e.target.value)
-          }
-          className="text-base"
         />
       </div>
       <div className="rounded-md border border-foreground/5 max-h-[315px]">
         <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className={cn("border-b-foreground/5 text-base")}
-              >
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className={cn("hover:bg-foreground/5 border-b-foreground/5")}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className={cn("p-0")}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={roomColumns.length}
-                  className="h-24 text-center text-gray-600 dark:text-gray-400"
-                >
-                  Aucun salon trouvé
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <DataTableHeader table={table} />
+          <DataTableBody table={table} columnsLength={roomColumns.length} />
         </Table>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
@@ -161,22 +109,7 @@ export default function DataTableRooms() {
             : `${filteredRooms.length} salons`}
         </p>
 
-        <div className="space-x-2">
-          <Button
-            title="Page précédente"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Précédent
-          </Button>
-          <Button
-            title="Page suivante"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Suivant
-          </Button>
-        </div>
+        <DataTableButton table={table} />
       </div>
     </div>
   );

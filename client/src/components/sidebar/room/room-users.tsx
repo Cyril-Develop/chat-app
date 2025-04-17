@@ -14,9 +14,9 @@ export function RoomUsers() {
     <>
       {roomId && (
         <>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <h2 className="text-title">{getVisibleUsersLabel(usersInRoom)}</h2>
-            <span className="text-additional-info self-end">
+            <span className="text-gray-600 dark:text-gray-400">
               {getVisibleUsersCount(usersInRoom)}
             </span>
           </div>

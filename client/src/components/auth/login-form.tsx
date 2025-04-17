@@ -102,13 +102,13 @@ const LoginForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("text-base")}>Email</FormLabel>
+                  <FormLabel className={cn("form-label")}>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       placeholder="john.doe@gmail.com"
-                      className={cn("text-base")}
+                      className={cn("form-input")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -120,7 +120,7 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="password" className={cn("text-base")}>
+                  <FormLabel htmlFor="password" className={cn("form-label")}>
                     Mot de passe
                   </FormLabel>
                   <FormControl>

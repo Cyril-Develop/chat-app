@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   ColumnDef,
   SortingState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -10,18 +9,8 @@ import {
   useReactTable,
   PaginationState,
 } from "@tanstack/react-table";
-
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
+import { Table } from "@/components/ui/table";
 import UserThumbnail from "@/components/user-thumbnail";
 import { useDeleteUserAccountMutation } from "@/hooks/api/user/delete-user-account";
 import useGetUsers from "@/hooks/api/user/get-users";
@@ -29,6 +18,11 @@ import { DashboardUsersProps } from "@/types/setting";
 import { Icons } from "@/components/Icons";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import DataTableButton from "@/components/settings/dashboard/data-table-button";
+import DataTableBody from "@/components/settings/dashboard/data-table-body";
+import DataTableHeader from "@/components/settings/dashboard/data-table-header";
+import SortButton from "@/components/settings/dashboard/sort-button";
+import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
 
 export default function DataTableUsers() {
   const { data: users = [] } = useGetUsers();
@@ -48,32 +42,26 @@ export default function DataTableUsers() {
   const userColumns: ColumnDef<DashboardUsersProps>[] = [
     {
       accessorKey: "username",
-      header: ({ column }) => (
-        <Button
-          variant="btnMenu"
-          title="Trier par ordre alphabétique"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Utilisateur
-          <Icons.arrowUpDown height={16} width={16} />
-        </Button>
-      ),
+      header: ({ column }) => <SortButton column={column} />,
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <Button
-            variant="btnMenu"
-            className="p-4 w-full"
-            title={`Supprimer l'utilisateur ${user.username}`}
-            onClick={() => deleteUserAccount(user.id)}
-          >
+          <div className="flex justify-between p-4 w-full h-14">
             <UserThumbnail
               imageSize="6"
               image={user.profileImage}
               username={user.username}
               sex={user.sex}
             />
-          </Button>
+            <Button
+              variant="alert"
+              className={cn("p-0")}
+              title={`Supprimer l'utilisateur : ${user.username}`}
+              onClick={() => deleteUserAccount(user.id)}
+            >
+              <Icons.delete width={18} height={18} />
+            </Button>
+          </div>
         );
       },
     },
@@ -96,68 +84,17 @@ export default function DataTableUsers() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
+      <div className="py-4">
+        <DataTableSearchInput
+          table={table}
+          columnId="username"
           placeholder="Rechercher un utilisateur..."
-          value={
-            (table.getColumn("username")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(e) =>
-            table.getColumn("username")?.setFilterValue(e.target.value)
-          }
-          className="text-base"
         />
       </div>
       <div className="rounded-md border border-foreground/5 max-h-[315px]">
         <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className={cn("border-b-foreground/5 text-base")}
-              >
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className={cn("hover:bg-foreground/5 border-b-foreground/5")}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className={cn("p-0")}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={userColumns.length}
-                  className="h-24 text-center text-gray-600 dark:text-gray-400"
-                >
-                  Aucun utilisateur enregistré
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <DataTableHeader table={table} />
+          <DataTableBody table={table} columnsLength={userColumns.length} />
         </Table>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
@@ -168,22 +105,7 @@ export default function DataTableUsers() {
             ? "1 utilisateur"
             : `${filteredUsers.length} utilisateurs`}
         </p>
-        <div className="space-x-2">
-          <Button
-            title="Page précédente"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Précédent
-          </Button>
-          <Button
-            title="Page suivante"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Suivant
-          </Button>
-        </div>
+        <DataTableButton table={table} />
       </div>
     </div>
   );

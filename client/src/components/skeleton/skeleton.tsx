@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 
 //******** INPUT **********/
 export function SkeletonInput() {
-  return <Skeleton className="w-[200px] h-11 border border-input " />;
+  return <Skeleton className="w-[200px] h-11 md:h-12 border border-input " />;
 }
 
 //******** CHAT UNSELECTED **********/
@@ -157,14 +157,14 @@ export function SkeletonProfile() {
         {/* Username */}
         <div className="space-y-2.5">
           <Skeleton className="h-[21px] w-[140px] " /> {/* Label */}
-          <Skeleton className="h-[44px] w-full " /> {/* Input */}
+          <Skeleton className=" h-11 md:h-12 w-full " /> {/* Input */}
           <Skeleton className="h-[19px] w-2/3 " /> {/* Description */}
         </div>
 
         {/* Image Upload */}
         <div className="space-y-2.5">
           <Skeleton className="h-[24px] w-[80px] " /> {/* Label */}
-          <Skeleton className="h-[42px] w-[250px] " />{" "}
+          <Skeleton className=" h-11 md:h-12 w-[250px] " />{" "}
           {/* Button style label */}
           <Skeleton className="h-[16px] w-2/3 " /> {/* Description */}
         </div>
@@ -177,7 +177,7 @@ export function SkeletonProfile() {
         </div>
 
         {/* Submit Button */}
-        <Skeleton className="h-[48px] w-full " />
+        <Skeleton className="h-11 md:h-12 w-full " />
       </div>
     </div>
   );
@@ -201,23 +201,23 @@ export function SkeletonAccount() {
           {/* Email */}
           <div className="space-y-2.5">
             <Skeleton className="h-[21px] w-[140px] " /> {/* Label */}
-            <Skeleton className="h-[44px] w-full " /> {/* Input */}
+            <Skeleton className=" h-11 md:h-12 w-full " /> {/* Input */}
             <Skeleton className="h-[19px] w-2/3 " /> {/* Description */}
           </div>
 
           {/* Update email */}
           <div className="space-y-2.5">
             <Skeleton className="h-[22px] w-[140px] " /> {/* Label */}
-            <Skeleton className="h-[44px] w-full " /> {/* Input */}
+            <Skeleton className=" h-11 md:h-12 w-full " /> {/* Input */}
           </div>
         </div>
 
         {/* Submit Button */}
-        <Skeleton className="h-[48px] w-full " />
+        <Skeleton className=" h-11 md:h-12 w-full " />
       </div>
       <Separator />
       {/* Delete Account Button */}
-      <Skeleton className="h-[48px] w-full sm:w-[200px] " />
+      <Skeleton className=" h-11 md:h-12 w-full sm:w-[177px] " />
     </div>
   );
 }
@@ -257,7 +257,7 @@ export function SkeletonNotification() {
           </div>
         </div>
         {/* Submit Button */}
-        <Skeleton className="h-[48px] w-full " />
+        <Skeleton className=" h-11 md:h-12 w-full " />
       </div>
     </div>
   );

@@ -11,11 +11,15 @@ const ChatUnselected = () => {
       {isLoading ? (
         <Icons.loader />
       ) : (
-        <div className="flex flex-col h-full justify-center items-center grow p-4 md:p-10 xl:flex-row">
-          <img src={Logo} alt="logo-messaging" className="w-full md:w-1/3" />
+        <div className="flex flex-col h-full justify-center items-center grow p-4 py-8 2xl:flex-row">
+          <img
+            src={Logo}
+            alt="logo-messaging"
+            className="max-w-[250px] md:max-w-[400px] 2xl:max-w-[500px]"
+          />
 
-          <div className="flex flex-col items-center gap-2">
-            <h1 className="text-xl sm:text-2xl">
+          <div className="flex flex-col items-center space-y-2 md:space-y-4">
+            <h1 className="text-3xl md:text-5xl">
               Bienvenue{" "}
               {currentUser?.role !== "GUEST" && (
                 <span
@@ -29,11 +33,11 @@ const ChatUnselected = () => {
             </h1>
 
             {currentUser?.role === "GUEST" && (
-              <p className="text-paragraph text-center">
+              <p className="lg:text-xl text-gray-600 dark:text-gray-400 text-center">
                 En tant qu'invité, certaines fonctionnalités sont limitées.
               </p>
             )}
-            <p className="text-paragraph text-center">
+            <p className="lg:text-xl text-gray-600 dark:text-gray-400 text-center">
               Pour commencer à discuter vous devez créer ou rejoindre un salon.
             </p>
           </div>

@@ -12,7 +12,7 @@ export default function Terms() {
             Conditions générales d'utilisation
           </h1>
           <p className="text-muted-foreground text-md text-center">
-            📅 Dernière mise à jour : 10 avril 2025
+            📅 Dernière mise à jour : 17 avril 2025
           </p>
         </div>
         <Accordion type="single" collapsible>

@@ -77,8 +77,14 @@ export function EmojiPickerContent() {
   return (
     <div className="space-y-4 h-[265px] overflow-y-scroll scrollbar-webkit scrollbar-firefox">
       {Object.entries(EMOJIS).map(([category, emojis]) => {
+        const normalize = (str: string) =>
+          str
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+
         const filtered = emojis.filter((e) =>
-          e.name.toLowerCase().includes(search.toLowerCase())
+          normalize(e.name).includes(normalize(search))
         );
 
         if (filtered.length === 0) return null;

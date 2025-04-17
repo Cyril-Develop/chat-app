@@ -32,14 +32,22 @@ const ChatUnselected = () => {
               )}{" "}
             </h1>
 
-            {currentUser?.role === "GUEST" && (
+            {currentUser?.role === "GUEST" ? (
+              <div>
+                <p className="lg:text-xl text-gray-600 dark:text-gray-400 text-center">
+                  En tant qu'invité, certaines fonctionnalités sont limitées.
+                </p>
+                <p className="lg:text-xl text-gray-600 dark:text-gray-400 text-center">
+                  Pour commencer à discuter vous devez créer ou rejoindre un
+                  salon.
+                </p>
+              </div>
+            ) : (
               <p className="lg:text-xl text-gray-600 dark:text-gray-400 text-center">
-                En tant qu'invité, certaines fonctionnalités sont limitées.
+                Pour commencer à discuter vous devez créer ou rejoindre un
+                salon.
               </p>
             )}
-            <p className="lg:text-xl text-gray-600 dark:text-gray-400 text-center">
-              Pour commencer à discuter vous devez créer ou rejoindre un salon.
-            </p>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Logo from "@/assets/notFound.png";
+import Logo from "@/assets/notFound.svg";
 import { useAuthStore } from "@/store/auth.store";
 
 const NotFound = () => {
@@ -16,7 +16,7 @@ const NotFound = () => {
           revenir à la page d'accueil.
         </p>
       </div>
-      <img src={Logo} alt="404" className="min-w-72 max-w-[1000px] w-2/3" />
+      <img src={Logo} alt="404" className="min-w-72 max-w-[800px] w-2/3" />
 
       <Link
         to={isAuthenticated ? "/chateo/chat" : "/chateo"}

@@ -20,7 +20,7 @@ const PreviewCard = ({ user }: PreviewCardProps) => {
       </Avatar>
       <div className="flex flex-col gap-2 overflow-hidden">
         <div className="flex flex-col justify-center overflow-hidden">
-          <h2 className="font-semibold">{user.username}</h2>
+          <h4 className="font-semibold">{user.username}</h4>
           <p className="line-clamp">{user.bio}</p>
         </div>
         <p className="text-xs italic text-right text-muted-foreground">

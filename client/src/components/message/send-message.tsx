@@ -180,6 +180,7 @@ const SendMessage = ({ type }: SendMessageProps) => {
                     onChange={handleFileChange}
                     id="fileInput"
                     ref={fileInputRef}
+                    aria-label="Joindre une image"
                   />
                 </FormControl>
                 <FormMessage />

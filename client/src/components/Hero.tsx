@@ -13,7 +13,6 @@ const Hero = () => {
           Créez des espaces de discussion personnalisés, échangez en temps réel
           et construisez votre communauté dans un environnement sécurisé.
         </p>
-
         <Link
           to="chat"
           className="bg-primary font-semibold text-base lg:text-xl text-primary-foreground hover:bg-primary/80 h-11 md:h-14 rounded-md flex items-center justify-center mx-auto px-4 lg:px-6"

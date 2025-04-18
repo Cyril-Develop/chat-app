@@ -24,7 +24,7 @@ const ButtonForm = ({
     >
       {loading ? (
         <p className="flex items-center gap-2">
-          {spinnerValue} <Icons.spinner className="animate-spin" />{" "}
+          {spinnerValue} <Icons.loader className="animate-spin" />{" "}
         </p>
       ) : (
         defaultValue

@@ -4,9 +4,11 @@ export interface RoomHeaderProps {
     name: string;
     description?: string;
     createdBy: number;
+    isPrivate: boolean;
   };
   currentUser: {
     id: number;
+    username: string;
     role: string;
   };
 }
@@ -101,6 +103,7 @@ export interface PrivateChatHeaderProps {
     id: number;
     username: string;
     profileImage: string;
+    sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     bio: string;
     createdAt: string;
   };

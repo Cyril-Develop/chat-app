@@ -75,6 +75,26 @@ html.dark {
   @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100dvh-96px)] relative p-4;
 }
 
+.form-label {
+  @apply text-base;
+}
+
+.form-input {
+  @apply h-11 md:h-12 text-base;
+}
+
+.error {
+  @apply text-center text-sm text-red-600 dark:text-red-500;
+}
+
+.input-style {
+  @apply flex gap-2 font-normal items-center w-fit rounded-md border border-input bg-background p-2 text-base ring-offset-background  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-muted cursor-pointer;
+}
+
+.link-form {
+  @apply text-primary no-underline p-1 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:underline focus:underline;
+}
+
 /* HOME */
 .home {
   @apply bg-muted dark:bg-secondary;
@@ -97,16 +117,14 @@ html.dark {
   @apply relative bg-muted dark:bg-secondary p-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)];
 }
 
+/* SETTINGS */
 .page_settings {
   @apply space-y-6 p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
 }
 
-.input-style {
-  @apply flex gap-2 font-normal items-center w-fit rounded-md border border-input bg-background p-2 text-base ring-offset-background  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-muted cursor-pointer;
-}
-
-.link-form {
-  @apply text-primary no-underline p-1 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring  underline-offset-4 hover:underline focus:underline;
+/* TERMS */
+.terms {
+  @apply flex flex-col items-center p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
 }
 
 .link-nav {
@@ -117,20 +135,8 @@ html.dark {
   @apply hidden lg:block;
 }
 
-.error {
-  @apply text-center text-sm text-red-600 dark:text-red-500;
-}
-
 .text-title {
   @apply text-2xl font-semibold;
-}
-
-.form-label {
-  @apply text-base;
-}
-
-.form-input {
-  @apply h-11 md:h-12 text-base;
 }
 
 .text-paragraph {
@@ -145,6 +151,11 @@ html.dark {
   @apply text-sm md:text-base text-primary-foreground;
 }
 
+.item-nav{
+  @apply p-2 font-semibold text-sm md:text-base;
+}
+
+/* ANIMATION */
 .animate-spin {
   animation: spin 1s linear infinite;
 }

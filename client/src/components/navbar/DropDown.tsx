@@ -65,7 +65,7 @@ const DropDown = () => {
           <DropdownMenuGroup>
             <DropdownMenuItem
               onClick={() => navigate("/chateo/chat")}
-              className={cn("p-2 font-semibold")}
+              className={cn("item-nav")}
             >
               <Icons.chat width={18} height={18} />
               Messagerie
@@ -75,7 +75,7 @@ const DropDown = () => {
 
           <DropdownMenuGroup>
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger className={cn("p-2 font-semibold")}>
+              <DropdownMenuSubTrigger className={cn("item-nav")}>
                 <Icons.circle
                   width={18}
                   height={18}
@@ -90,7 +90,7 @@ const DropDown = () => {
                 >
                   <DropdownMenuItem
                     onClick={() => handleVisibility(true)}
-                    className={cn("p-2 font-semibold")}
+                    className={cn("item-nav")}
                   >
                     <Icons.circle
                       width={18}
@@ -103,7 +103,7 @@ const DropDown = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleVisibility(false)}
-                    className={cn("p-2 font-semibold")}
+                    className={cn("item-nav")}
                   >
                     <Icons.mask
                       width={18}
@@ -121,7 +121,7 @@ const DropDown = () => {
           </DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => navigate("chateo/settings/profile")}
-            className={cn("p-2 font-semibold")}
+            className={cn("item-nav")}
           >
             <Icons.settings width={18} height={18} />
             Paramètres
@@ -129,7 +129,7 @@ const DropDown = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={handleLogout}
-            className={cn("p-2 font-semibold")}
+            className={cn("item-nav")}
           >
             <Icons.logout width={18} height={18} />
             Se déconnecter

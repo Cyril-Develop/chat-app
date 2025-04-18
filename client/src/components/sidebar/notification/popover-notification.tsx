@@ -29,7 +29,7 @@ export function PopoverNotification() {
         className={cn("max-w-96 dark:bg-primary-foreground")}
       >
         {!haveRequest ? (
-          <div className="flex items-center justify-center text-gray-600 dark:text-gray-400">
+          <div className="flex items-center justify-center text-gray-600 dark:text-gray-400 text-sm md:text-base">
             Aucune notification
           </div>
         ) : (

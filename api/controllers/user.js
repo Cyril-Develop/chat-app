@@ -207,6 +207,7 @@ exports.getUserById = async (req, res) => {
         email: true,
         username: true,
         bio: true,
+        sex: true,
         profileImage: true,
         notification: true,
         role: true,

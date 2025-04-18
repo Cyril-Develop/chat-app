@@ -70,7 +70,7 @@ export function RoomSelector() {
       {isLoading ? (
         <SkeletonInput />
       ) : (
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={setOpen} modal={true}>
           <PopoverTrigger asChild>
             <Button
               role="combobox"

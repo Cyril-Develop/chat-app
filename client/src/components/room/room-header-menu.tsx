@@ -33,12 +33,18 @@ const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className={cn("dark:bg-primary-foreground")}>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setOpen(true)}>
+            <DropdownMenuItem
+              onClick={() => setOpen(true)}
+              className={cn("text-sm md:text-base")}
+            >
               <Icons.pen width={18} height={18} />
               <span>Modifier la description</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDeleteRoom}>
+            <DropdownMenuItem
+              onClick={handleDeleteRoom}
+              className={cn("text-sm md:text-base")}
+            >
               <Icons.delete width={18} height={18} />
               <span>Supprimer le salon</span>
             </DropdownMenuItem>

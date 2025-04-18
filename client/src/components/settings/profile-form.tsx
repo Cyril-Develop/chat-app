@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useImageHandlers } from "@/hooks/image-handler";
+import Emoji from "@/components/emoji/Emoji";
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
@@ -158,20 +159,34 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className={cn("text-base")}>Bio</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Parle nous un peu de toi..."
-                  className={cn(
-                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base"
-                  )}
-                  maxLength={150}
-                  {...field}
-                />
-              </FormControl>
+              <div className="relative">
+                <FormControl>
+                  <Textarea
+                    placeholder="Parle nous un peu de toi..."
+                    className={cn(
+                      "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-6 sm:pr-8"
+                    )}
+                    maxLength={90}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription className={cn("text-additional-info mt-2")}>
+                  Votre bio apparaîtra sur votre profil.
+                </FormDescription>
+                <div className="absolute top-0 right-0.5 flex items-center">
+                  <Emoji
+                    onSelect={(emoji) => {
+                      const current = form.getValues("bio") || "";
+                      form.setValue("bio", current + emoji, {
+                        shouldDirty: true,
+                      });
+                    }}
+                    variant="linkForm"
+                    size="icon"
+                  />
+                </div>
+              </div>
               <FormMessage />
-              <FormDescription className={cn("text-additional-info")}>
-                Votre bio apparaîtra sur votre profil.
-              </FormDescription>
             </FormItem>
           )}
         />

@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -17,6 +18,7 @@ import ShowPassord from "@/components/auth/show-password";
 import { useCreateRoomMutation } from "@/hooks/api/chat/create-room";
 import { cn } from "@/lib/utils";
 import { CreateRoomFormProps } from "@/types/room";
+import Emoji from "@/components/emoji/Emoji";
 
 const CreateRoomForm = ({
   btnSubmit,
@@ -65,9 +67,28 @@ const CreateRoomForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className={cn("form-label")}>Nom</FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" className={cn("form-input")} />
-                </FormControl>
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      maxLength={15}
+                      className={cn("form-input")}
+                    />
+                  </FormControl>
+                  <div className="absolute inset-y-0 right-0.5 flex items-center">
+                    <Emoji
+                      onSelect={(emoji) => {
+                        const current = form.getValues("name") || "";
+                        form.setValue("name", current + emoji, {
+                          shouldDirty: true,
+                        });
+                      }}
+                      variant="linkForm"
+                      size="icon"
+                    />
+                  </div>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -77,14 +98,34 @@ const CreateRoomForm = ({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("form-label")}>Description</FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" className={cn("form-input")} />
-                </FormControl>
-                <FormDescription className={cn("text-additional-info")}>
-                  Si vous saisissez une description, elle sera visible par tous
-                  les membres.
-                </FormDescription>
+                <FormLabel className={cn("text-base")}>Description</FormLabel>
+                <div className="relative">
+                  <FormControl>
+                    <Textarea
+                      className={cn(
+                        "resize-none min-h-[70px] whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-8"
+                      )}
+                      maxLength={90}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription className={cn("text-additional-info mt-2")}>
+                    Si vous saisissez une description, elle sera visible par
+                    tous les membres.
+                  </FormDescription>
+                  <div className="absolute top-0 right-0.5 flex items-center">
+                    <Emoji
+                      onSelect={(emoji) => {
+                        const current = form.getValues("description") || "";
+                        form.setValue("description", current + emoji, {
+                          shouldDirty: true,
+                        });
+                      }}
+                      variant="linkForm"
+                      size="icon"
+                    />
+                  </div>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

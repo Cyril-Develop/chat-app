@@ -219,6 +219,7 @@ exports.getChatRoom = async (req, res) => {
         name: true,
         description: true,
         createdBy: true,
+        isPrivate: true,
         users: {
           select: {
             user: {
@@ -242,15 +243,6 @@ exports.getChatRoom = async (req, res) => {
 
     // Map the users to return a simplified array of users
     const users = chatRoom.users.map((userChatRoom) => userChatRoom.user);
-
-    // Format messages to include the users who liked each message
-
-    // const formattedMessages = chatRoom.messages.map((message) => ({
-    //   ...message,
-    //   likes: message.likes.map((like) => like.user), // Extract the users who liked the message
-    // }));
-
-    //res.status(200).json({ ...chatRoom, users, messages: formattedMessages });
 
     res.status(200).json({ ...chatRoom, users });
   } catch (error) {

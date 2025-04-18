@@ -1,12 +1,11 @@
 import PrivateChatMenu from "@/components/chat/private-chat-menu";
 import StatutIndicator from "@/components/indicator/statut-indicator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import { useSocketStore } from "@/store/socket.store";
 import { PrivateChatHeaderProps } from "@/types/chat";
 import { HandleUserStatusChangedProps } from "@/types/user";
 import { useEffect, useState } from "react";
+import UserThumbnail from "@/components/user-thumbnail";
 
 const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
   const { socket, users } = useSocketStore();
@@ -35,30 +34,24 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
 
   return (
     <>
-      <div className="flex justify-between text-md pb-4">
+      <section className="flex flex-col text-md pb-4 min-h-12">
         <div className="flex gap-2">
-          <div className="flex relative w-10 h-10">
+          <div className="flex justify-between relative w-full">
             {isConnected && <StatutIndicator />}
-            <Avatar>
-              <AvatarImage
-                src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${
-                  contactInfos.profileImage
-                }`}
-                className={cn("rounded-full object-cover")}
-                alt={contactInfos.username}
-              />
-              <AvatarFallback>
-                <span>{contactInfos.username}</span>
-              </AvatarFallback>
-            </Avatar>
-          </div>
-          <div>
-            <h2 className="font-semibold">{contactInfos.username}</h2>
-            <p className="text-additional-info">{contactInfos.bio}</p>
+            <UserThumbnail
+              imageSize="9"
+              username={contactInfos.username}
+              image={contactInfos.profileImage}
+              sex={contactInfos.sex}
+              textSize="text-xl"
+            />
+            <PrivateChatMenu />
           </div>
         </div>
-        <PrivateChatMenu />
-      </div>
+        <p className="text-additional-info break-words whitespace-pre-wrap">
+          {contactInfos.bio}
+        </p>
+      </section>
       <Separator />
     </>
   );

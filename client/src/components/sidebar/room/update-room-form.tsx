@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { CreateRoomFormProps } from "@/types/room";
 import { useRoomStore } from "@/store/room.store";
 import { Textarea } from "@/components/ui/textarea";
+import Emoji from "@/components/emoji/Emoji";
 
 const UpdateRoomForm = ({
   btnSubmit,
@@ -67,24 +68,37 @@ const UpdateRoomForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel className={cn("text-base")}>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  className={cn(
-                    "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base"
-                  )}
-                  maxLength={150}
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription className={cn("text-additional-info")}>
-                Si vous saisissez une description, elle sera visible par tous
-                les membres.
-              </FormDescription>
+              <div className="relative">
+                <FormControl>
+                  <Textarea
+                    className={cn(
+                      "resize-none min-h-[70px] whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-8"
+                    )}
+                    maxLength={90}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription className={cn("text-additional-info mt-2")}>
+                  Si vous saisissez une description, elle sera visible par tous
+                  les membres.
+                </FormDescription>
+                <div className="absolute top-0 right-0.5 flex items-center">
+                  <Emoji
+                    onSelect={(emoji) => {
+                      const current = form.getValues("description") || "";
+                      form.setValue("description", current + emoji, {
+                        shouldDirty: true,
+                      });
+                    }}
+                    variant="linkForm"
+                    size="icon"
+                  />
+                </div>
+              </div>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={loading}

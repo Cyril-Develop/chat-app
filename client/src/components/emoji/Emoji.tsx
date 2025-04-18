@@ -14,15 +14,27 @@ import { Icons } from "@/components/Icons";
 
 export default function Emoji({
   onSelect,
+  variant = "default",
+  size = "message",
 }: {
   onSelect: (emoji: string) => void;
+  variant?:
+    | "default"
+    | "outline"
+    | "destructive"
+    | "alert"
+    | "btn"
+    | "linkForm"
+    | "btnMenu"
+    | "success";
+  size?: "message" | "icon";
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <Popover onOpenChange={setIsOpen} open={isOpen}>
+    <Popover onOpenChange={setIsOpen} open={isOpen} modal={true}>
       <PopoverTrigger asChild>
-        <Button type="button" size="message" title="Emojis">
+        <Button type="button" variant={variant} size={size} title="Emojis">
           <Icons.emoji />
         </Button>
       </PopoverTrigger>

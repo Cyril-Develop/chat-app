@@ -21,12 +21,15 @@ const ShowPassord = ({
       />
       <Button
         type="button"
+        title={
+          showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"
+        }
         aria-label={
           showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"
         }
         variant="linkForm"
         className={cn(
-          "absolute right-0.5 h-auto  top-1/2 transform -translate-y-1/2 cursor-pointer "
+          "absolute inset-y-0 right-0.5 flex items-center cursor-pointer "
         )}
         onClick={() => setShowPassword(!showPassword)}
       >

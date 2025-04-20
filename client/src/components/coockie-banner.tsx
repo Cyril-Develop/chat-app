@@ -23,10 +23,10 @@ const CookieBanner = () => {
     <div className="fixed bottom-0 md:bottom-10 left-0 md:left-10 rounded-md w-full max-w-[580px] bg-background dark:bg-background p-4 shadow-md border-t border-border flex flex-col space-y-3 z-50 ">
       <h3 className="leading-none">Nous respectons votre vie privée 🔒</h3>
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 sm:mb-0">
-        Ce site utilise des cookies pour améliorer votre expérience, notamment
-        pour vous maintenir connecté(e). Pour bénéficier de la meilleure
-        expérience possible, nous vous recommandons de ne pas supprimer les
-        cookies à la fermeture de votre navigateur 🍪.
+        Cette application utilise des cookies pour améliorer votre expérience,
+        notamment pour vous maintenir connecté(e). Pour bénéficier de la
+        meilleure expérience possible, nous vous recommandons de ne pas
+        supprimer les cookies à la fermeture de votre navigateur 🍪.
         <br /> En cliquant sur « Accepter », vous consentez à l'utilisation des
         cookies conformément à nos{" "}
         <Link

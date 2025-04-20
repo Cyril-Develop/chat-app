@@ -1,4 +1,4 @@
-import Logo from "@/assets/chatting.svg";
+import Logo from "/images/chatting.svg";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { Icons } from "@/components/Icons";
 import { sexColor } from "@/utils/sex-color";

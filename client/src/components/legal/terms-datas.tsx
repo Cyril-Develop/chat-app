@@ -70,6 +70,7 @@ export const terms = [
             (publics/privés)
           </li>
           <li>Messages privés entre utilisateurs</li>
+          <li>Appels audio et vidéo en direct</li>
           <li>Partage d'images (par sélection ou glisser-déposer)</li>
           <li>Système de notifications (temps réel et email)</li>
           <li>Fonctionnalités sociales (recherche et ajout d'amis)</li>

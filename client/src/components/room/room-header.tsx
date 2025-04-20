@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { RoomHeaderProps } from "@/types/chat";
 import RoomHeaderMenu from "@/components/room/room-header-menu";
-import VoiceChat from "@/components/voice-chat";
+import VoiceChat from "@/components/voice/voice-chat";
 
 const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
   const role = currentUser?.role;
@@ -15,9 +15,9 @@ const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
           <div className="flex items-center gap-4">
             {room.isPrivate && (
               <VoiceChat
-                roomId={room.id}
-                userId={currentUser?.id}
-                username={currentUser?.username}
+              roomId={room.id}
+              userId={currentUser?.id}
+              username={currentUser?.username}
               />
             )}
             {isMyRoom && <RoomHeaderMenu room={room} />}

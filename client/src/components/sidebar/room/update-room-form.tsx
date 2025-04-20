@@ -99,14 +99,12 @@ const UpdateRoomForm = ({
             </FormItem>
           )}
         />
-        <div className="flex flex-col gap-4">
-          <ButtonForm
-            loading={loading}
-            disabled={loading}
-            defaultValue={btnSubmit}
-            spinnerValue="Modification en cours..."
-          />
-        </div>
+        <ButtonForm
+          loading={loading}
+          disabled={loading}
+          defaultValue={btnSubmit}
+          spinnerValue="Modification en cours..."
+        />
         {apiError && <p className="error">{apiError}</p>}
       </form>
     </Form>

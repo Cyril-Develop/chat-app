@@ -72,7 +72,7 @@ html.dark {
 
 /* FORM */
 .form {
-  @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100dvh-96px)] relative p-4;
+  @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100svh-96px)] relative p-4;
 }
 
 .form-label {
@@ -106,7 +106,7 @@ html.dark {
 }
 
 .chat_aside {
-  @apply hidden lg:flex flex-col gap-8 pt-4 dark:border-secondary-foreground/5 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex;
+  @apply hidden lg:flex flex-col gap-8 pt-4 md:pt-6 dark:border-secondary-foreground/5 bg-muted dark:bg-secondary h-full px-5 xl:px-10 xl:flex;
 }
 
 .chat_aside_container {
@@ -114,17 +114,17 @@ html.dark {
 }
 
 .page_conversation {
-  @apply relative bg-muted dark:bg-secondary p-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)];
+  @apply relative bg-muted dark:bg-secondary pt-4 md:pt-6 px-5 xl:px-10 flex flex-col h-[calc(100svh-96px)];
 }
 
 /* SETTINGS */
 .page_settings {
-  @apply space-y-6 p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
+  @apply space-y-6 px-4 md:px-10 pt-4 md:pt-6 bg-muted dark:bg-secondary min-h-[calc(100svh-96px)];
 }
 
 /* TERMS */
 .terms {
-  @apply flex flex-col items-center p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
+  @apply flex flex-col items-center p-4 md:p-10 bg-muted dark:bg-secondary min-h-[calc(100svh-96px)];
 }
 
 .link-nav {
@@ -151,7 +151,7 @@ html.dark {
   @apply text-sm md:text-base text-primary-foreground;
 }
 
-.item-nav{
+.item-nav {
   @apply p-2 font-semibold text-sm md:text-base;
 }
 

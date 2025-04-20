@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Logo from "@/assets/notFound.svg";
+import Logo from "/images/notFound.svg";
 import { useAuthStore } from "@/store/auth.store";
 
 const NotFound = () => {

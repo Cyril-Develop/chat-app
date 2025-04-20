@@ -43,7 +43,6 @@ export default function Emoji({
           className="h-[350px] w-[280px]"
           onEmojiSelect={({ emoji }) => {
             onSelect(emoji);
-            setIsOpen(false);
           }}
         >
           <EmojiPickerSearch />

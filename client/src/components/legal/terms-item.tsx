@@ -3,7 +3,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { NumberBox } from "@/utils/number-box";
 import { cn } from "@/lib/utils";
 
 interface TermProps {
@@ -19,14 +18,10 @@ export default function TermItem({ term }: { term: TermProps }) {
       value={`item-${term.number}`}
       className={cn("border-border dark:border-secondary-foreground/10")}
     >
-      <AccordionTrigger className="group text-lg sm:text-xl w-full flex items-center gap-3 justify-between hover:underline">
-        <div className="group-hover:no-underline">
-          <NumberBox number={term.number} />
-        </div>
-        <span className="flex-1 text-left">{term.title}</span>
+      <AccordionTrigger className="text-md sm:text-xl w-full flex items-center gap-3 justify-between">
+        {term.title}
       </AccordionTrigger>
-
-      <AccordionContent className="text-gray-600 dark:text-gray-400 text-base sm:text-lg">
+      <AccordionContent className="text-gray-600 dark:text-gray-400 text-sm sm:text-lg">
         {term.text}
       </AccordionContent>
     </AccordionItem>

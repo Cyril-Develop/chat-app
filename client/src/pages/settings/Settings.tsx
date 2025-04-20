@@ -1,9 +1,9 @@
 import { SidebarNav } from "@/components/settings/sidebar-nav";
-import ImageAccount from "@/assets/account.svg";
-import ImageProfile from "@/assets/profile.svg";
-import ImageAppearance from "@/assets/appearance.svg";
-import ImageDashboard from "@/assets/dashboard.svg";
-import ImageNotification from "@/assets/notification.svg";
+import ImageAccount from "/images/account.svg";
+import ImageProfile from "/images/profile.svg";
+import ImageAppearance from "/images/appearance.svg";
+import ImageDashboard from "/images/dashboard.svg";
+import ImageNotification from "/images/notification.svg";
 import ImageSettings from "@/components/image-provider";
 import { Icons } from "@/components/Icons";
 
@@ -82,7 +82,7 @@ const Settings = ({ children }: SettingsLayoutProps) => {
           </aside>
           <div className="flex-1 lg:max-w-2xl">{children}</div>
 
-          <div className="hidden lg:block min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4">
+          <div className="hidden xl:block min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4">
             <ImageSettings logo={imageSettings} />
           </div>
         </div>

@@ -132,6 +132,49 @@ io.on("connection", (socket) => {
     io.emit("roomDeleted", id);
   });
 
+//********** VOICE CHAT AVEC PEERJS **********/
+  socket.on("join-voice-chat", ({ roomId, userId, username, peerId }) => {
+    // Vérifier que l'utilisateur authentifié est celui qui fait la demande
+    if (userId !== socket.user.id) return;
+
+    // Informer les autres utilisateurs dans la salle
+    socket.join(`voice-${roomId}`);
+    socket.to(roomId).emit("user-joined-voice", {
+      userId,
+      username,
+      peerId,
+      roomId,
+    });
+
+    // Diffuser votre peerId aux utilisateurs existants
+    socket.to(roomId).emit("peer-id-broadcast", {
+      userId,
+      peerId,
+      roomId,
+    });
+
+    console.log(
+      `User ${username} (ID: ${userId}) joined voice chat in room ${roomId} with peer ID ${peerId}`
+    );
+  });
+
+  socket.on("leave-voice-chat", ({ roomId, userId, username }) => {
+    // Vérifier que l'utilisateur authentifié est celui qui fait la demande
+    if (userId !== socket.user.id) return;
+
+    // Informer les autres utilisateurs dans la salle
+    socket.leave(`voice-${roomId}`);
+    socket.to(roomId).emit("user-left-voice", {
+      userId,
+      username,
+      roomId,
+    });
+
+    console.log(
+      `User ${username} (ID: ${userId}) left voice chat in room ${roomId}`
+    );
+  });
+
   //********** SEND MESSAGE IN ROOM **********/
   socket.on("sendMessage", (roomId) => {
     io.to(roomId).emit("messageSentInRoom");

@@ -6,7 +6,7 @@ function Footer() {
   return (
     <footer className="bg-primary text-white w-full p-4 md:p-10 flex flex-col gap-4 xl:gap-12 items-center dark:bg-background">
       <div className="flex flex-col xl:flex-row xl:items-center gap-3 xl:gap-20">
-        <div className="flex flex-col space-y-1">
+        <div className="flex flex-col sm:space-y-1">
           <div className="flex items-center gap-2 ">
             <Icons.logo width="20" height="20" />
             Chateo
@@ -18,13 +18,13 @@ function Footer() {
         </div>
 
         <div className="flex flex-col justify-start md:flex-row gap-3 md:gap-20">
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col sm:space-y-1">
             <h2>Support</h2>
             <ul>
               <li>
                 <Link
                   to="/chateo/contact"
-                  className="hover:underline underline-offset-4 dark:text-muted-foreground"
+                  className="hover:underline underline-offset-4 dark:text-muted-foreground text-sm sm:text-base"
                 >
                   Contactez nous
                 </Link>
@@ -32,13 +32,13 @@ function Footer() {
             </ul>
           </div>
 
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col sm:space-y-1">
             <h2>Légal</h2>
             <ul>
               <li>
                 <Link
                   to="/chateo/terms"
-                  className="hover:underline underline-offset-4 dark:text-muted-foreground"
+                  className="hover:underline underline-offset-4 dark:text-muted-foreground text-sm sm:text-base"
                 >
                   Conditions générales d'utilisation
                 </Link>

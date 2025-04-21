@@ -128,7 +128,7 @@ const SendMessage = ({ type }: SendMessageProps) => {
 
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row gap-2 mt-1 mb-1 xl:mt-4 xl:mb-4"
+        className="relative flex flex-col sm:flex-row gap-2 mt-1 xl:mt-4"
       >
         {/* {openEmoji && (
           <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />

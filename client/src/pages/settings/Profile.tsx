@@ -7,7 +7,7 @@ import { SkeletonProfile } from "@/components/skeleton/skeleton";
 const ProfilePage = () => {
   const { data: currentUser, isLoading } = useGetUser();
   return (
-    <div className="space-y-6 md:pb-10">
+    <div className="space-y-6">
       {isLoading ? (
         <SkeletonProfile />
       ) : (

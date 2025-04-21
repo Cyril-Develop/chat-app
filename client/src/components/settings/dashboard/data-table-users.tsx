@@ -41,8 +41,22 @@ export default function DataTableUsers() {
 
   const userColumns: ColumnDef<DashboardUsersProps>[] = [
     {
+      accessorKey: "id",
+      header: () => <div>ID</div>,
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="flex items-center justify-between p-4 w-full h-14">
+            <p>{user.id}</p>
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "username",
-      header: ({ column }) => <SortButton column={column} />,
+      header: ({ column }) => (
+        <SortButton column={column} title="Utilisateurs" />
+      ),
       cell: ({ row }) => {
         const user = row.original;
         return (
@@ -84,6 +98,10 @@ export default function DataTableUsers() {
 
   return (
     <div className="w-full">
+      <div>
+        <h4 className="text-base font-semibold">Utilisateurs</h4>
+        <p className="text-additional-info">Gérez les utilisateurs.</p>
+      </div>
       <div className="py-4">
         <DataTableSearchInput
           table={table}

@@ -183,7 +183,7 @@ const LoginForm = () => {
           isOpen={isForgotPasswordOpen}
           setIsOpen={setIsForgotPasswordOpen}
           handleResetPassword={handleResetPassword}
-          headerTitle="Modifier votre mot de passe"
+          headerTitle="Mot de passe"
           headerDescription="Saisissez l'adresse mail associée à votre compte pour recevoir un lien de réinitialisation."
         />
       )}

@@ -2,7 +2,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
 import ForgotPasswordForm from "@/components/password/forgot-password-form";
 import { ForgotPasswordProps } from "@/types/password";
-import { cn } from "@/lib/utils";
 
 export function ForgotPassword({
   isOpen,
@@ -18,7 +17,7 @@ export function ForgotPassword({
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild></DialogTrigger>
 
-      <DialogContent className={cn("sm:max-w-[425px]")}>
+      <DialogContent>
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
         <ForgotPasswordForm
           btnSubmit="Continuer"

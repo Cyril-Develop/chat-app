@@ -66,67 +66,68 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="form">
-      <CardWrapper
-        title="Modifier votre mot de passe"
-        description="Saisissez un nouveau mot de passe pour sécuriser votre compte."
-      >
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4  sm:space-y-8"
-            noValidate
-          >
-            <div className="space-y-4  sm:space-y-8">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="password" className={cn("text-base")}>Mot de passe</FormLabel>
-                    <FormControl>
-                      <ShowPassord
-                        showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                        field={field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="confirmPassword" className={cn("text-base")}>
-                      Confirmer le mot de passe
-                    </FormLabel>
-                    <FormControl>
-                      <ShowPassord
-                        showPassword={showConfirmPassword}
-                        setShowPassword={setShowConfirmPassword}
-                        field={field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col gap-4">
-              <ButtonForm
-                loading={loading}
-                disabled={loading}
-                defaultValue="Continuer"
-                spinnerValue="Modification en cours"
-              />
-            </div>
-            {apiError && <p className="error">{apiError}</p>}
-          </form>
-        </Form>
-      </CardWrapper>
-    </div>
+    <CardWrapper
+      title="Mot de passe"
+      description="Saisissez un nouveau mot de passe pour sécuriser votre compte."
+    >
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4  sm:space-y-8 pb-3 sm:pb-0"
+          noValidate
+        >
+          <div className="space-y-4  sm:space-y-8">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="password" className={cn("text-base")}>
+                    Mot de passe
+                  </FormLabel>
+                  <FormControl>
+                    <ShowPassord
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel
+                    htmlFor="confirmPassword"
+                    className={cn("text-base")}
+                  >
+                    Confirmer le mot de passe
+                  </FormLabel>
+                  <FormControl>
+                    <ShowPassord
+                      showPassword={showConfirmPassword}
+                      setShowPassword={setShowConfirmPassword}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <ButtonForm
+            loading={loading}
+            disabled={loading}
+            defaultValue="Continuer"
+            spinnerValue="Modification en cours"
+          />
+          {apiError && <p className="error">{apiError}</p>}
+        </form>
+      </Form>
+    </CardWrapper>
   );
 }

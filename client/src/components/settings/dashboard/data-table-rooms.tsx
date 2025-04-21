@@ -21,6 +21,7 @@ import DataTableButton from "@/components/settings/dashboard/data-table-button";
 import DataTableBody from "@/components/settings/dashboard/data-table-body";
 import DataTableHeader from "@/components/settings/dashboard/data-table-header";
 import DataTableSearchInput from "./table-input-search";
+import SortButton from "@/components/settings/dashboard/sort-button";
 
 export default function DataTableRooms() {
   const { data: rooms = [] } = useGetRooms();
@@ -39,18 +40,20 @@ export default function DataTableRooms() {
 
   const roomColumns: ColumnDef<DashboardRoomsProps>[] = [
     {
+      accessorKey: "createBy",
+      header: () => <div>Créateurs</div>,
+      cell: ({ row }) => {
+        const room = row.original;
+        return (
+          <div className="flex items-center p-4 w-full h-14">
+            <p>{room.createdBy}</p>
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "name",
-      header: ({ column }) => (
-        <Button
-          variant="btnMenu"
-          className={cn("p-0")}
-          title="Trier par ordre alphabétique"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Salon
-          <Icons.arrowUpDown height={16} width={16} />
-        </Button>
-      ),
+      header: ({ column }) => <SortButton column={column} title="Salons" />,
       cell: ({ row }) => {
         const room = row.original;
         return (
@@ -87,6 +90,12 @@ export default function DataTableRooms() {
 
   return (
     <div className="w-full">
+      <div>
+        <h4 className="text-base font-semibold">Salons</h4>
+        <p className="text-additional-info">
+          Gérez les salons (privés & publics).
+        </p>
+      </div>
       <div className="flex items-center py-4">
         <DataTableSearchInput
           table={table}

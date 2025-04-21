@@ -33,4 +33,5 @@ export interface DashboardUsersProps {
 export interface DashboardRoomsProps {
   id: number;
   name: string;
+  createdBy: string;
 }

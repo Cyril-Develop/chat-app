@@ -1,7 +1,6 @@
 import DialogHeaderComp from "@/components/dialog/dialog-header";
 import UpdateRoomForm from "@/components/sidebar/room/update-room-form";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
 import { UpdateRoomProps } from "@/types/dialog";
 
 export function UpdateRoom({
@@ -16,7 +15,7 @@ export function UpdateRoom({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className={cn("sm:max-w-[425px]")}>
+      <DialogContent>
         <DialogHeaderComp title={headerTitle} description={headerDescription} />
         <UpdateRoomForm
           btnSubmit="Modifier"

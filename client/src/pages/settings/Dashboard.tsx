@@ -1,16 +1,18 @@
 import DataTableRooms from "@/components/settings/dashboard/data-table-rooms";
 import DataTableUsers from "@/components/settings/dashboard/data-table-users";
+import { Separator } from "@/components/ui/separator";
 
 export default function Dashboard() {
   return (
-    <div>
+    <div className="space-y-6 md:pb-10">
       <div>
         <h3 className="text-lg font-medium">Tableau de bord</h3>
         <p className="text-gray-600 dark:text-gray-400 text-base">
           Gérez les utilisateurs et les salons de discussion.
         </p>
       </div>
-      <div className="flex flex-col min-[1500px]:flex-row gap-4 mt-4">
+      <Separator />
+      <div className="flex flex-col min-[1500px]:flex-row gap-8">
         <DataTableUsers />
         <DataTableRooms />
       </div>

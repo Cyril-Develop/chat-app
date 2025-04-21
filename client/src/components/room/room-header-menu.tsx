@@ -54,7 +54,7 @@ const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
       {open && (
         <UpdateRoom
           headerTitle="Modifier le salon"
-          headerDescription="Mettre à jour la description du salon."
+          headerDescription="Mettez à jour la description du salon."
           isOpen={open}
           setIsOpen={setOpen}
           roomDescription={room.description}

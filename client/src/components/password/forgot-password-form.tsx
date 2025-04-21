@@ -62,26 +62,24 @@ const ForgotPasswordForm = ({
         className="space-y-4  sm:space-y-8"
         noValidate
       >
-        <div className="space-y-4  sm:space-y-8">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className={cn("form-label")}>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="email"
-                    placeholder="john.doe@gmail.com"
-                    className={cn("form-input")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className={cn("form-label")}>Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="email"
+                  placeholder="john.doe@gmail.com"
+                  className={cn("form-input")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <ButtonForm
           loading={loading}
           disabled={loading}

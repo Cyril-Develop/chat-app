@@ -79,8 +79,7 @@ const UpdateRoomForm = ({
                   />
                 </FormControl>
                 <FormDescription className={cn("text-additional-info mt-2")}>
-                  Si vous saisissez une description, elle sera visible par tous
-                  les membres.
+                  La description est visible par tous les membres.
                 </FormDescription>
                 <div className="absolute top-0 right-0.5 flex items-center">
                   <Emoji

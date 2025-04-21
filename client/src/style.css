@@ -102,7 +102,7 @@ html.dark {
 
 /* CHAT */
 .chat {
-  @apply flex justify-center items-center h-[calc(100svh-96px)] relative flex-col lg:flex-row;
+  @apply flex justify-center items-center h-[calc(100dvh-96px)] relative flex-col lg:flex-row;
 }
 
 .chat_aside {
@@ -114,17 +114,17 @@ html.dark {
 }
 
 .page_conversation {
-  @apply relative bg-muted dark:bg-secondary py-4 md:py-6 px-4 xl:px-10 flex flex-col h-[calc(100svh-96px)];
+  @apply relative bg-muted dark:bg-secondary py-4 md:py-6 px-4 xl:px-10 flex flex-col h-[calc(100dvh-96px)];
 }
 
 /* SETTINGS */
 .page_settings {
-  @apply px-4 md:px-10 py-4 md:py-6 space-y-6 bg-muted dark:bg-secondary min-h-[calc(100svh-96px)];
+  @apply px-4 md:px-10 py-4 md:py-6 space-y-6 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
 }
 
 /* TERMS */
 .terms {
-  @apply flex flex-col items-center px-4 md:px-10 py-4 md:py-6 bg-muted dark:bg-secondary min-h-[calc(100svh-96px)];
+  @apply flex flex-col items-center px-4 md:px-10 py-4 md:py-6 bg-muted dark:bg-secondary min-h-[calc(100dvh-96px)];
 }
 
 .link-nav {

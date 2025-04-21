@@ -241,7 +241,7 @@ exports.forgotPassword = async (req, res) => {
   await sendResetPasswordEmail(email, user.id);
 
   res.status(200).json({
-    message: "Un message a été envoyé à l'email indiqué.",
+    message: "Un lien a été envoyé à l'adresse e-mail indiquée.",
   });
 };
 

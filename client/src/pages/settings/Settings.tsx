@@ -27,12 +27,12 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       href: "/chateo/settings/stream",
     },
     {
-      title: "Notifications",
-      href: "/chateo/settings/notifications",
-    },
-    {
       title: "Compte",
       href: "/chateo/settings/account",
+    },
+    {
+      title: "Notifications",
+      href: "/chateo/settings/notifications",
     },
     {
       title: "Tableau de bord",
@@ -57,14 +57,14 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       alt: "stream",
     },
     {
-      href: "/chateo/settings/notifications",
-      img: ImageNotification,
-      alt: "notification",
-    },
-    {
       href: "/chateo/settings/account",
       img: ImageAccount,
       alt: "account",
+    },
+    {
+      href: "/chateo/settings/notifications",
+      img: ImageNotification,
+      alt: "notification",
     },
     {
       href: "/chateo/settings/dashboard",

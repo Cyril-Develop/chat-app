@@ -5,41 +5,16 @@ import { Separator } from "@/components/ui/separator";
 import UserThumbnail from "@/components/user-thumbnail";
 import { cn } from "@/lib/utils";
 import { useRoomStore } from "@/store/room.store";
-import { useSocketStore } from "@/store/socket.store";
-import { getVisibleUsersCount, getVisibleUsersLabel } from "@/utils/room";
-import { useEffect, useState } from "react";
+import { useVoiceStore } from "@/store/voice.store";
+import {
+  getVisibleUsersCount,
+  getVisibleUsersLabel,
+} from "@/utils/room-user-count";
 
 export function RoomUsers() {
-  const { usersInRoom } = useRoomStore();
-  const { socket } = useSocketStore();
-  const [speakingUsers, setSpeakingUsers] = useState<{
-    [userId: number]: boolean;
-  }>({});
-
+  const usersInRoom = useRoomStore((state) => state.usersInRoom);
+  const speakingUsers = useVoiceStore((state) => state.speakingUsers);
   const roomId = useRoomStore((state) => state.room?.id);
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleUserSpeaking = ({ userId }: { userId: number }) => {
-      console.log(`User ${userId} is speaking`);
-      setSpeakingUsers((prev) => ({ ...prev, [userId]: true }));
-    };
-
-    const handleUserStoppedSpeaking = ({ userId }: { userId: number }) => {
-      console.log(`User ${userId} stopped speaking`);
-      
-      setSpeakingUsers((prev) => ({ ...prev, [userId]: false }));
-    };
-
-    socket.on("user-speaking", handleUserSpeaking);
-    socket.on("user-stopped-speaking", handleUserStoppedSpeaking);
-
-    return () => {
-      socket.off("user-speaking", handleUserSpeaking);
-      socket.off("user-stopped-speaking", handleUserStoppedSpeaking);
-    };
-  }, [socket]);
 
   return (
     <>
@@ -72,10 +47,8 @@ export function RoomUsers() {
                           image={user.profileImage}
                           sex={user.sex}
                         />
-                        {isSpeaking && (
-                          <Icons.volumeUp/>
-                        )}
                       </div>
+                      {isSpeaking && <Icons.volumeUp />}
                     </div>
                   );
                 })}

@@ -2,6 +2,7 @@ import { SidebarNav } from "@/components/settings/sidebar-nav";
 import ImageAccount from "/images/account.svg";
 import ImageProfile from "/images/profile.svg";
 import ImageAppearance from "/images/appearance.svg";
+import ImageStream from "/images/media.svg";
 import ImageDashboard from "/images/dashboard.svg";
 import ImageNotification from "/images/notification.svg";
 import ImageSettings from "@/components/image-provider";
@@ -20,6 +21,10 @@ const Settings = ({ children }: SettingsLayoutProps) => {
     {
       title: "Apparence",
       href: "/chateo/settings/appearance",
+    },
+    {
+      title: "Voix",
+      href: "/chateo/settings/stream",
     },
     {
       title: "Notifications",
@@ -45,6 +50,11 @@ const Settings = ({ children }: SettingsLayoutProps) => {
       href: "/chateo/settings/appearance",
       img: ImageAppearance,
       alt: "appearance",
+    },
+    {
+      href: "/chateo/settings/stream",
+      img: ImageStream,
+      alt: "stream",
     },
     {
       href: "/chateo/settings/notifications",

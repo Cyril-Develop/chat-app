@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { RoomHeaderProps } from "@/types/chat";
 import RoomHeaderMenu from "@/components/room/room-header-menu";
-import VoiceChat from "@/components/voice/voice-chat";
+import VoiceChat from "@/components/stream/voice/voice-chat";
 
 const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
   const role = currentUser?.role;

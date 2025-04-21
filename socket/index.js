@@ -31,7 +31,14 @@ const addUser = (userId, socketId, visible) => {
 
 const addUserInRoom = (roomId, id, username, sex, profileImage, visible) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
-    userInRoom.push({ roomId, id, username, sex, profileImage, visible });
+    userInRoom.push({
+      roomId,
+      id,
+      username,
+      sex,
+      profileImage,
+      visible,
+    });
   }
 };
 
@@ -59,7 +66,6 @@ io.use((socket, next) => {
     }
 
     // Extraction du token JWT du cookie
-    // Adapter cette partie selon le format de vos cookies
     const tokenMatch = cookies.match(/token=([^;]*)/);
     if (!tokenMatch) {
       return next(new Error("Authentication token not found"));
@@ -132,7 +138,7 @@ io.on("connection", (socket) => {
     io.emit("roomDeleted", id);
   });
 
-//********** VOICE CHAT AVEC PEERJS **********/
+  //********** VOICE CHAT AVEC PEERJS **********/
   socket.on("join-voice-chat", ({ roomId, userId, username, peerId }) => {
     // Vérifier que l'utilisateur authentifié est celui qui fait la demande
     if (userId !== socket.user.id) return;
@@ -152,10 +158,6 @@ io.on("connection", (socket) => {
       peerId,
       roomId,
     });
-
-    console.log(
-      `User ${username} (ID: ${userId}) joined voice chat in room ${roomId} with peer ID ${peerId}`
-    );
   });
 
   socket.on("leave-voice-chat", ({ roomId, userId, username }) => {
@@ -169,10 +171,15 @@ io.on("connection", (socket) => {
       username,
       roomId,
     });
+  });
 
-    console.log(
-      `User ${username} (ID: ${userId}) left voice chat in room ${roomId}`
-    );
+  socket.on("user-speaking", ({ roomId, userId }) => {
+    // Émettre à toute la room même si l'utilisateur n'est pas dans le chat vocal, permet de savoir qui parle
+    io.to(roomId).emit("user-speaking", { userId });
+  });
+
+  socket.on("user-stopped-speaking", ({ roomId, userId }) => {
+    io.to(roomId).emit("user-stopped-speaking", { userId });
   });
 
   //********** SEND MESSAGE IN ROOM **********/
@@ -185,7 +192,7 @@ io.on("connection", (socket) => {
     const { userId, sex, username, messageId, roomId, receiverId, senderId } =
       data;
 
-    // Cas des messages dans une room (groupe)
+    // Cas des messages dans une room
     if (roomId) {
       io.to(roomId).emit("messageLiked", {
         userId,

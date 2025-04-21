@@ -10,6 +10,7 @@ import Notification from "@/pages/settings/Notification";
 import Profile from "@/pages/settings/Profile";
 import Appearance from "@/pages/settings/Appearance";
 import Settings from "@/pages/settings/Settings";
+import Stream from "@/pages/settings/Stream";
 import { useAuthStore } from "@/store/auth.store";
 import { ThemeProvider } from "@/theme/theme-provider";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
@@ -95,6 +96,18 @@ function App() {
               element={
                 <Settings>
                   <Appearance />
+                </Settings>
+              }
+            />
+          ),
+        },
+        {
+          path: "/chateo/settings/stream",
+          element: (
+            <PrivateRoute
+              element={
+                <Settings>
+                  <Stream />
                 </Settings>
               }
             />

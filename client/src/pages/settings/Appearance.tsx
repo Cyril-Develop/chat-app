@@ -1,4 +1,4 @@
-import  ThemeSelector  from "@/components/settings/theme/theme-selector";
+import ThemeSelector from "@/components/settings/theme/theme-selector";
 import { Separator } from "@/components/ui/separator";
 
 const AppearancePage = () => {

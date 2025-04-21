@@ -21,7 +21,6 @@ export const useRoomStore = create<RoomState>()(
     }),
     {
       name: "room-storage",
-      // Stocke uniquement l'état de la salle dans localStorage (l'identifiant et le nom de la salle)
       partialize: (state) => ({
         room: state.room,
       }),

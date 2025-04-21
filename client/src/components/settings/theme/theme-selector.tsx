@@ -8,7 +8,7 @@ const ThemeSelector = () => {
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-base font-semibold">Thème</p>
+        <h4 className="text-base font-semibold">Thème</h4>
         <p className="text-additional-info">
           Choisissez entre un thème clair ou sombre. Le thème sombre est plus
           adapté à une utilisation nocturne, tandis que le thème clair est idéal
@@ -19,7 +19,7 @@ const ThemeSelector = () => {
       <RadioGroup
         value={theme}
         onValueChange={(value) => setTheme(value as "light" | "dark")}
-        className="flex flex-col sm:flex-row gap-8 pt-4"
+        className="flex flex-col sm:flex-row gap-8"
       >
         <ThemeOption
           value="light"

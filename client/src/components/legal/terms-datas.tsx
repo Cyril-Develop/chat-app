@@ -70,11 +70,15 @@ export const terms = [
             (publics/privés)
           </li>
           <li>Messages privés entre utilisateurs</li>
-          <li>Appels audio et vidéo en direct</li>
+          <li>Appels audio et vidéo (à venir) en direct dans les salons privés et conversations privées</li>
+          <li>
+            Réglages audio personnalisables (volumes d'entrée/sortie et test de
+            microphone)
+          </li>
           <li>Partage d'images (par sélection ou glisser-déposer)</li>
           <li>Système de notifications (temps réel et email)</li>
           <li>Fonctionnalités sociales (recherche et ajout d'amis)</li>
-          <li>Options de personnalisation du profil</li>
+          <li>Options de personnalisation du profil (dark mod)</li>
           <li>Possibilité de bloquer des utilisateurs</li>
           <li>Mode espion</li>
         </ul>

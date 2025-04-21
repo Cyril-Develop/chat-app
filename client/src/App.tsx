@@ -25,11 +25,13 @@ import CoockieBanner from "./components/coockie-banner";
 import SpyIndicator from "@/components/indicator/spy-indicator";
 import PrivateRoute from "@/components/routes/private-route";
 import AdminRoute from "@/components/routes/admin-route";
+import InstallAppButton from "@/components/install-app-button";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   useGlobalNotifications();
   return (
     <>
+      <InstallAppButton />
       <AppInitializer />
       <SpyIndicator />
       <CoockieBanner />

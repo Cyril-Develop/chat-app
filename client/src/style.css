@@ -72,7 +72,7 @@ html.dark {
 
 /* FORM */
 .form {
-  @apply bg-muted dark:bg-secondary flex justify-center sm:items-center min-h-[calc(100svh-96px)] relative p-4;
+  @apply bg-muted dark:bg-secondary flex justify-center items-center min-h-[calc(100svh-96px)] relative p-4;
 }
 
 .form-label {

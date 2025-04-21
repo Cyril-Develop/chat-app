@@ -2,7 +2,7 @@ import { SidebarNav } from "@/components/settings/sidebar-nav";
 import ImageAccount from "/images/account.svg";
 import ImageProfile from "/images/profile.svg";
 import ImageAppearance from "/images/appearance.svg";
-import ImageStream from "/images/media.svg";
+import ImageStream from "/images/stream.svg";
 import ImageDashboard from "/images/dashboard.svg";
 import ImageNotification from "/images/notification.svg";
 import ImageSettings from "@/components/image-provider";

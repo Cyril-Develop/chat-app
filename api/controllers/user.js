@@ -351,7 +351,7 @@ exports.updateUser = async (req, res) => {
       },
     });
 
-    res.status(200).json({ message: "Profil modifié avec succès.", user });
+    res.status(200).json({ message: "Profil mis à jour.", user });
   } catch (err) {
     console.error("Error updating user:", err);
     res.status(500).json({
@@ -389,7 +389,7 @@ exports.updateAccount = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "Adresse email modifiée avec succès.",
+      message: "Adresse email mise à jour.",
       email: user.email,
     });
   } catch (err) {
@@ -467,8 +467,7 @@ exports.deleteAccount = async (req, res) => {
     });
 
     res.status(200).json({
-      message:
-        "Compte supprimé avec succès, nous espérons vous revoir bientôt! 😔",
+      message: "Compte supprimé, nous espérons vous revoir bientôt! 😔",
       affectedUserIds: Array.from(affectedUserIds),
     });
   } catch (err) {
@@ -582,7 +581,7 @@ exports.updateNotification = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "Vos préférences ont été mises à jour avec succès !",
+      message: "Vos préférences ont été mises à jour !",
       user,
     });
   } catch (err) {
@@ -683,7 +682,7 @@ exports.sendFriendRequest = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Demande d'ami envoyée avec succès.",
+      message: `Demande d'ami envoyée à "${newRequest.receiver.username}".`,
       newRequest,
     });
   } catch (error) {
@@ -803,7 +802,7 @@ exports.acceptFriendRequest = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Contact ajouté avec succès.",
+      message: "Contact ajouté à votre liste d'amis.",
       user: user1,
       friend: user2,
     });
@@ -1055,7 +1054,7 @@ exports.unblockUser = async (req, res) => {
     });
 
     res.json({
-      message: "Utilisateur débloqué avec succès.",
+      message: "Utilisateur débloqué.",
       userId,
       unblockedId: blockedId,
     });

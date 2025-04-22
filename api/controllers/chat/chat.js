@@ -72,7 +72,7 @@ exports.updateChatRoom = async (req, res) => {
       data: { description },
     });
     res.status(200).json({
-      message: "Description du salon mise à jour avec succès.",
+      message: "Description du salon mise à jour.",
       chatRoom: updatedChatRoom,
     });
   } catch (error) {
@@ -148,7 +148,7 @@ exports.joinChatRoom = async (req, res) => {
       });
 
       return res.status(200).json({
-        message: "Vous avez rejoint le salon de discussion.",
+        message: `Vous avez rejoint le salon de discussion "${chatRoom.name}".`,
         roomId: chatRoom.id,
         roomName: chatRoom.name,
       });
@@ -278,9 +278,7 @@ exports.deleteChatRoom = async (req, res) => {
       });
     });
 
-    res
-      .status(200)
-      .json({ message: "Salon de discussion supprimé avec succès.", roomId });
+    res.status(200).json({ message: "Salon de discussion supprimé.", roomId });
   } catch (error) {
     console.error(
       "Erreur lors de la suppression du salon de discussion :",

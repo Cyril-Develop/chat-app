@@ -167,7 +167,9 @@ exports.sendOTP = async (req, res) => {
 
   try {
     await sendOTPEmail(email, otpCode);
-    res.status(200).json({ message: "Code OTP envoyé avec succès." });
+    res.status(200).json({
+      message: "Un code OTP a été envoyé à l'adresse email indiquée.",
+    });
   } catch (err) {
     console.error("Error sending OTP:", err);
     res.status(500).json({
@@ -265,7 +267,7 @@ exports.resetPassword = async (req, res) => {
 
     res.status(200).json({
       message:
-        "Mot de passe réinitialisé avec succès, vous pouvez maintenant vous connecter.",
+        "Mot de passe réinitialisé, vous pouvez maintenant vous connecter.",
     });
   } catch (error) {
     res.status(400).json({ error: "Token invalide ou expiré" });

@@ -40,7 +40,7 @@ export function setupVoiceSocketHandlers({
     // Toujours jouer le son et afficher le toast, même si on n'est pas dans le vocal
     playNotificationSound("join");
     toast({
-      title: `${joinedUsername} a rejoint le chat vocal`,
+      title: `${joinedUsername} a rejoint le chat vocal.`,
       logo: <Icons.info />,
     });
 
@@ -135,7 +135,7 @@ export function setupVoiceSocketHandlers({
 
     if (leftUsername) {
       toast({
-        title: `${leftUsername} a quitté le chat vocal`,
+        title: `${leftUsername} a quitté le chat vocal.`,
         logo: <Icons.info />,
       });
     }

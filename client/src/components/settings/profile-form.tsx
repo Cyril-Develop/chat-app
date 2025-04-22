@@ -17,7 +17,6 @@ import { ProfileFormSchema } from "@/schema/main";
 import { ProfileFormProps, ProfileFormValues } from "@/types/setting";
 import { handleKeydown, handleLabelClick } from "@/utils/input-key-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Siren } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
@@ -57,10 +56,9 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
 
     if (username === user.username && bio === user.bio && !image) {
       toast({
-        title: "Erreur",
         description: "Aucune modification n'a été apportée.",
         variant: "destructive",
-        logo: <Siren size={30} />,
+        logo: <Icons.alert />,
       });
     } else {
       const formData = new FormData();

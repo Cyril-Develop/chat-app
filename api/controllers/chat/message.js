@@ -206,7 +206,7 @@ exports.likeMessage = async (req, res) => {
 
     // Vérifier que les données sont bien envoyées
     return res.status(201).json({
-      message: "Like ajouté avec succès.",
+      message: "Like ajouté.",
       like: {
         userId: likeData.user.id,
         sex: likeData.user.sex,
@@ -335,7 +335,7 @@ exports.dislikeMessage = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Like retiré avec succès.",
+      message: "Like retiré.",
       dislike: messageInfo,
     });
   } catch (error) {
@@ -389,9 +389,7 @@ exports.deleteRoomMessage = async (req, res) => {
     await prisma.message.delete({ where: { id: messageId } });
 
     // Retournez un message de succès
-    return res
-      .status(200)
-      .json({ message: "Message supprimé avec succès.", messageId });
+    return res.status(200).json({ message: "Message supprimé.", messageId });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error." });
@@ -624,9 +622,7 @@ exports.deletePrivateMessage = async (req, res) => {
     // Supprimer le message
     await prisma.privateMessage.delete({ where: { id: messageId } });
 
-    return res
-      .status(200)
-      .json({ message: "Message supprimé avec succès.", messageId });
+    return res.status(200).json({ message: "Message supprimé.", messageId });
   } catch (error) {
     console.error(error);
     return res

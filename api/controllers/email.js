@@ -61,7 +61,7 @@ exports.sendEmailContact = async (req, res) => {
       html: contactTemplate(name, email, message),
     });
 
-    res.status(200).json({ message: "Email envoyé avec succès." });
+    res.status(200).json({ message: "Message envoyé, merci !" });
   } catch (err) {
     console.error("Error sending email:", err);
     res.status(500).json({

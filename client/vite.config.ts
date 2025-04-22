@@ -27,17 +27,17 @@ export default defineConfig({
         background_color: "#2563EB",
         icons: [
           {
-            src: "/chateo/favicons/favicon-96x96.png",
+            src: "/chateo/favicons/favicon-96x96.png?v=2",
             sizes: "96x96",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/web-app-manifest-192x192.png",
+            src: "/chateo/favicons/web-app-manifest-192x192.png?v=2",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/web-app-manifest-512x512.png",
+            src: "/chateo/favicons/web-app-manifest-512x512.png?v=2",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
@@ -45,7 +45,7 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "/chateo/screenshots/homepage.webp",
+            src: "/chateo/screenshots/homepage.webp?v=2",
             sizes: "1920x1032",
             type: "image/webp",
           },
@@ -57,6 +57,8 @@ export default defineConfig({
       },
       workbox: {
         cacheId: "chateo-v1",
+        clientsClaim: true,
+        skipWaiting: true,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,webp,wav}"],
         runtimeCaching: [
           {

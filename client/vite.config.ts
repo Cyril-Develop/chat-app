@@ -9,12 +9,10 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
-        "favicon.ico",
-        "favicon/*.png",
-        "icons/*.png",
+        "favicons/**/*.{png,ico,svg}",
         "sounds/*.wav",
         "images/*.svg",
-        "screenshot/*.webp",
+        "screenshots/*.webp",
       ],
       manifest: {
         name: "Chateo",
@@ -28,32 +26,17 @@ export default defineConfig({
         background_color: "#2563EB",
         icons: [
           {
-            src: "/chateo/favicon/apple-touch-icon.png",
-            sizes: "180x180",
+            src: "/chateo/favicons/favicon-96x96.png",
+            sizes: "96x96",
             type: "image/png",
           },
           {
-            src: "/chateo/favicon/favicon-16x16.png",
-            sizes: "16x16",
-            type: "image/png",
-          },
-          {
-            src: "/chateo/favicon/favicon-32x32.png",
-            sizes: "32x32",
-            type: "image/png",
-          },
-          {
-            src: "/chateo/favicon/icon-144x144.png",
-            sizes: "144x144",
-            type: "image/png",
-          },
-          {
-            src: "/chateo/favicon/icon-192x192.png",
+            src: "/chateo/favicons/web-app-manifest-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/chateo/favicon/icon-512x512.png",
+            src: "/chateo/favicons/web-app-manifest-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
@@ -61,13 +44,13 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "/chateo/screenshot/room.webp",
+            src: "/chateo/screenshots/chat.webp",
             sizes: "1920x950",
             type: "image/webp",
             form_factor: "wide",
           },
           {
-            src: "/chateo/screenshot/account.webp",
+            src: "/chateo/screenshots/homepage.webp",
             sizes: "1920x1032",
             type: "image/webp",
           },

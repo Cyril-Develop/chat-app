@@ -5,7 +5,7 @@ import { SheetRight } from "@/components/sheet/sheet-right";
 import useWindowWidth from "@/hooks/window-width";
 import { useAuthStore } from "@/store/auth.store";
 import { Link } from "react-router-dom";
-import { PopoverNotification } from "@/components/sidebar/notification/popover-notification";
+import { PopoverNotification } from "@/components/notification/popover-notification";
 
 const Navbar = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);

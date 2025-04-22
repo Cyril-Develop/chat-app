@@ -1,8 +1,8 @@
 # Chateo - est une application de chat en temps réel.
 
-![room](/client/public/screenshot/room.webp)
-![account](/client/public/screenshot/account.webp)
-![home](/client/public/screenshot/home.webp)
+![chat](/client/public/screenshot/chat.webp)
+![profile](/client/public/screenshot/profile.webp)
+![homepage](/client/public/screenshot/homepage.webp)
 
 ## 🚀 Technologies utilisées :
 
@@ -135,10 +135,14 @@ cd socket && npm start
 - Authentification – Créer un compte utilisateur, se connecter et se déconnecter
 - Salons de discussion – Créer, rejoindre et gérer des salons publics ou privés
 - Messagerie – Envoyer des messages (texte, image) en groupe ou en privé
+- Chat en temps réel – textuel et/ou vocal
 - Amis – Rechercher, ajouter, bloquer et supprimer des amis
 - Statuts en temps réel – Voir qui est en ligne et suivre les changements de statut
 - Mise à jour du profil – Modifier photo de profil, nom d'utilisateur et email
 - Interface responsive – Adaptée aux mobiles et tablettes
+- Notifications – Recevoir des alertes pour les nouveaux messages et les demandes d'amis
+- Mode espion
+- Dark mode
 
 ## 🎮 Tester le projet en ligne
 

@@ -234,15 +234,6 @@ export default function TestMicrophoneButton() {
 
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      <Button
-        size="lg"
-        variant="default"
-        className="text-button w-full"
-        onClick={testing ? stopTest : startTest}
-      >
-        {testing ? "Arrêter le test" : "Vérifions ça !"}
-      </Button>
-
       {testing && (
         <div ref={containerRef} className="flex flex-col items-center w-full">
           <canvas
@@ -252,6 +243,14 @@ export default function TestMicrophoneButton() {
           />
         </div>
       )}
+      <Button
+        size="lg"
+        variant="default"
+        className="text-button w-full"
+        onClick={testing ? stopTest : startTest}
+      >
+        {testing ? "Arrêter le test" : "Vérifions ça !"}
+      </Button>
     </div>
   );
 }

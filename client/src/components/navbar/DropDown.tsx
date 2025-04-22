@@ -19,6 +19,7 @@ import { useTheme } from "@/theme/theme-provider";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
+import { useInstallApp } from "@/hooks/install-app";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const DropDown = () => {
   const { socket } = useSocketStore();
   const { theme } = useTheme();
   const { visible, setVisible } = useAuthStore();
+  const { isInstallable, promptInstall } = useInstallApp();
 
   useEffect(() => {
     socket?.emit("changeStatut", visible);
@@ -126,11 +128,17 @@ const DropDown = () => {
             <Icons.settings width={18} height={18} />
             Paramètres
           </DropdownMenuItem>
+          {isInstallable && (
+            <DropdownMenuItem
+              onClick={promptInstall}
+              className={cn("item-nav")}
+            >
+              <Icons.download width={18} height={18} />
+              Télécharger
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={handleLogout}
-            className={cn("item-nav")}
-          >
+          <DropdownMenuItem onClick={handleLogout} className={cn("item-nav")}>
             <Icons.logout width={18} height={18} />
             Se déconnecter
           </DropdownMenuItem>

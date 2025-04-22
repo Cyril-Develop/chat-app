@@ -17,6 +17,7 @@ export default defineConfig({
       manifest: {
         name: "Chateo",
         short_name: "Chateo",
+        categories: ["social", "communication"],
         description:
           "Chateo est une application de messagerie complète : discussions publiques ou privées, messages directs, partage d'images, notifications, personnalisation, et appels audio.",
         start_url: "/chateo/",
@@ -44,12 +45,6 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "/chateo/screenshots/chat.webp",
-            sizes: "1920x950",
-            type: "image/webp",
-            form_factor: "wide",
-          },
-          {
             src: "/chateo/screenshots/homepage.webp",
             sizes: "1920x1032",
             type: "image/webp",
@@ -61,6 +56,7 @@ export default defineConfig({
         type: "module",
       },
       workbox: {
+        cacheId: "chateo-v1",
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,webp,wav}"],
         runtimeCaching: [
           {

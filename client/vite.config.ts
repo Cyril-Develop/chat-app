@@ -27,18 +27,18 @@ export default defineConfig({
         background_color: "#2563EB",
         icons: [
           {
-            src: "/chateo/favicons/favicon-96x96.png?v=2",
+            src: "/chateo/favicons/favicon-96x96.png",
             sizes: "96x96",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/web-app-manifest-192x192.png?v=2",
+            src: "/chateo/favicons/icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/web-app-manifest-512x512.png?v=2",
-            sizes: "512x512",
+            src: "/chateo/favicons/icon-510x510.png",
+            sizes: "510x510",
             type: "image/png",
             purpose: "any maskable",
           },
@@ -48,6 +48,7 @@ export default defineConfig({
             src: "/chateo/screenshots/homepage.webp?v=2",
             sizes: "1920x1032",
             type: "image/webp",
+            form_factor: "wide",
           },
         ],
       },

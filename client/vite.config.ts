@@ -32,12 +32,12 @@ export default defineConfig({
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/icon-192x192.png",
+            src: "/chateo/favicons/icon-192x192-shadow.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/icon-512x512.png",
+            src: "/chateo/favicons/icon-512x512-shadow.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",

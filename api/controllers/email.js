@@ -16,6 +16,9 @@ exports.sendEmailNotification = async (req, res) => {
   try {
     const receiver = await prisma.user.findUnique({
       where: { id: Number(receiverId) },
+      select: {
+        email: true,
+      },
     });
 
     if (!receiver) {
@@ -24,10 +27,13 @@ exports.sendEmailNotification = async (req, res) => {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
+      select: {
+        username: true,
+      },
     });
 
     await transporter.sendMail({
-      to: process.env.MY_EMAIL,
+      to: receiver.email,
       subject:
         type === "Private message"
           ? "Notification - Nouveau message privé"

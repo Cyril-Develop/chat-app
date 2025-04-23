@@ -12,8 +12,8 @@ export const GlobalNotifications: React.FC = () => {
       toast({
         title: `${
           messages.length > 1
-            ? `${messages.length} messages non lus`
-            : `${messages.length} message non lu`
+            ? `${messages.length} messages non lus.`
+            : `${messages.length} message non lu.`
         }`,
         logo: <Icons.user />,
         variant: "success",
@@ -24,8 +24,8 @@ export const GlobalNotifications: React.FC = () => {
       toast({
         title: `${
           requests.length > 1
-            ? `${requests.length} demandes d'amis en attente`
-            : `${requests.length} demande d'ami en attente`
+            ? `${requests.length} demandes d'amis en attente.`
+            : `${requests.length} demande d'ami en attente.`
         }`,
         logo: <Icons.bell />,
         variant: "success",

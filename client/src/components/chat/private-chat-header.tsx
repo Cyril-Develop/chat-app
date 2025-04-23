@@ -34,7 +34,7 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
 
   return (
     <>
-      <section className="flex flex-col text-md pb-4 min-h-12">
+      <section className="flex flex-col text-md pb-4">
         <div className="flex gap-2">
           <div className="flex justify-between relative w-full">
             {isConnected && <StatutIndicator />}

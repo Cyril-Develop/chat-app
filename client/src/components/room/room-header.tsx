@@ -9,7 +9,7 @@ const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
 
   return (
     <>
-      <section className="flex flex-col pb-4 min-h-12">
+      <section className="flex flex-col pb-4">
         <div className="flex justify-between items-center gap-4">
           <h1 className="text-xl">{room?.name}</h1>
           <div className="flex items-center gap-4">

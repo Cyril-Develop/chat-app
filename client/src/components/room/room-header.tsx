@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import { RoomHeaderProps } from "@/types/chat";
 import RoomHeaderMenu from "@/components/room/room-header-menu";
 import VoiceChat from "@/components/stream/voice/voice-chat";
@@ -9,15 +8,15 @@ const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
 
   return (
     <>
-      <section className="flex flex-col pb-4">
+      <section className="flex flex-col pb-2 sm:pb-4">
         <div className="flex justify-between items-center gap-4">
           <h1 className="text-xl">{room?.name}</h1>
           <div className="flex items-center gap-4">
             {room.isPrivate && (
               <VoiceChat
-              roomId={room.id}
-              userId={currentUser?.id}
-              username={currentUser?.username}
+                roomId={room.id}
+                userId={currentUser?.id}
+                username={currentUser?.username}
               />
             )}
             {isMyRoom && <RoomHeaderMenu room={room} />}
@@ -27,7 +26,6 @@ const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
           {room?.description}
         </p>
       </section>
-      <Separator />
     </>
   );
 };

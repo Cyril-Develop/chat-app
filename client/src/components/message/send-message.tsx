@@ -9,7 +9,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useSendPrivateMessageMutation } from "@/hooks/api/messages/send-private-message";
 import { useSendMessageMutation } from "@/hooks/api/messages/send-message";
@@ -106,7 +105,6 @@ const SendMessage = ({ type }: SendMessageProps) => {
 
   return (
     <Form {...form}>
-      <Separator className="mb-4" />
       <ImageUploader onDropImage={(file) => setImage(file)} />
       {image && (
         <div className="relative w-fit">
@@ -128,12 +126,8 @@ const SendMessage = ({ type }: SendMessageProps) => {
 
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row gap-2 mt-1 xl:mt-4"
+        className="relative flex flex-col sm:flex-row gap-2 mt-2 sm:mt-4"
       >
-        {/* {openEmoji && (
-          <HandleEmojiPicker form={form} setOpenEmoji={setOpenEmoji} />
-        )} */}
-
         <FormField
           control={form.control}
           name="message"

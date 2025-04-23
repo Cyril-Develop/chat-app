@@ -136,6 +136,7 @@ export function Contact() {
                       {friends.map((friend: FriendProps) => (
                         <CommandItem
                           key={friend.id}
+                          className={cn("cursor-pointer flex gap-2 h-11")}
                           onSelect={() => handlePrivateChat(friend.id)}
                           title={
                             contactId === friend.id
@@ -143,7 +144,7 @@ export function Contact() {
                               : "Ouvrir la discussion"
                           }
                         >
-                          <div className="flex items-center justify-between w-full cursor-pointer">
+                          <div className="flex items-center justify-between w-full">
                             <span className={`${sexColor[friend.sex]}`}>
                               {friend.username}
                             </span>
@@ -163,7 +164,9 @@ export function Contact() {
                       {blockedUsers.map((user: BlockedUsersProps) => (
                         <CommandItem
                           key={user.id}
-                          className={cn("flex items-center justify-between")}
+                          className={cn(
+                            "flex items-center justify-between h-11"
+                          )}
                         >
                           <span className={`${sexColor[user.sex]}`}>
                             {user.username}

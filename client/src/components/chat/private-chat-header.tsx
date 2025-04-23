@@ -1,6 +1,5 @@
 import PrivateChatMenu from "@/components/chat/private-chat-menu";
 import StatutIndicator from "@/components/indicator/statut-indicator";
-import { Separator } from "@/components/ui/separator";
 import { useSocketStore } from "@/store/socket.store";
 import { PrivateChatHeaderProps } from "@/types/chat";
 import { HandleUserStatusChangedProps } from "@/types/user";
@@ -34,7 +33,7 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
 
   return (
     <>
-      <section className="flex flex-col text-md pb-4">
+      <section className="flex flex-col space-y-1 text-md pb-2 sm:pb-4">
         <div className="flex gap-2">
           <div className="flex justify-between relative w-full">
             {isConnected && <StatutIndicator />}
@@ -52,7 +51,6 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
           {contactInfos.bio}
         </p>
       </section>
-      <Separator />
     </>
   );
 };

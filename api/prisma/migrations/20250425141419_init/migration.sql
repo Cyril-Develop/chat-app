@@ -22,7 +22,7 @@ CREATE TABLE `User` (
     `profileImage` VARCHAR(191) NOT NULL DEFAULT 'default.jpg',
     `notification` VARCHAR(191) NOT NULL DEFAULT 'accept',
     `role` ENUM('USER', 'ADMIN', 'GUEST') NOT NULL DEFAULT 'USER',
-    `gender` ENUM('HOMME', 'FEMME') NOT NULL,
+    `sex` ENUM('MALE', 'FEMALE', 'NON_BINARY', 'UNDISCLOSED') NOT NULL DEFAULT 'UNDISCLOSED',
 
     UNIQUE INDEX `User_email_key`(`email`),
     UNIQUE INDEX `User_username_key`(`username`),
@@ -42,7 +42,7 @@ CREATE TABLE `BlockedUser` (
 -- CreateTable
 CREATE TABLE `Message` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `message` VARCHAR(191) NOT NULL DEFAULT '',
+    `message` TEXT NOT NULL,
     `image` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `MessageLike` (
 -- CreateTable
 CREATE TABLE `PrivateMessage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `message` VARCHAR(191) NOT NULL,
+    `message` TEXT NOT NULL,
     `image` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

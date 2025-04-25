@@ -1,9 +1,0 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `gender` on the `user` table. All the data in the column will be lost.
-
-*/
--- AlterTable
-ALTER TABLE `user` DROP COLUMN `gender`,
-    ADD COLUMN `sex` ENUM('MALE', 'FEMALE', 'NON_BINARY', 'UNDISCLOSED') NOT NULL DEFAULT 'UNDISCLOSED';

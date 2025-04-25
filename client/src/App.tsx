@@ -2,7 +2,6 @@ import Navbar from "@/components/navbar/Navbar";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import Chat from "@/pages/chat/Chat";
-import Home from "@/pages/home/Home";
 import NotFound from "@/pages/NotFound";
 import Account from "@/pages/settings/Account";
 import Dashboard from "@/pages/settings/Dashboard";
@@ -27,6 +26,7 @@ import PrivateRoute from "@/components/routes/private-route";
 import AdminRoute from "@/components/routes/admin-route";
 import InstallAppButton from "@/components/install-app-button";
 import NotificationTitleUpdater from "@/components/notification/title-updater";
+import RedirectOnAuth from "@/components/routes/redirect-route";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   useGlobalNotifications();
@@ -59,7 +59,7 @@ function App() {
         </Layout>
       ),
       children: [
-        { path: "/chateo", element: <Home /> },
+        { path: "/chateo", element: <RedirectOnAuth /> },
         { path: "/chateo/register", element: <Register /> },
         { path: "/chateo/login", element: <Login /> },
         { path: "/chateo/reset-password/:token", element: <Password /> },

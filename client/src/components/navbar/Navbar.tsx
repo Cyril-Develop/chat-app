@@ -10,7 +10,7 @@ import { PopoverNotification } from "@/components/notification/popover-notificat
 const Navbar = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const windowWidth = useWindowWidth();
-  const isMobileView = windowWidth < 1024;
+  const isTabletView = windowWidth < 1024;
 
   return (
     <nav className="bg-primary flex items-center justify-between h-24 px-2 dark:bg-background md:px-10">
@@ -26,7 +26,7 @@ const Navbar = () => {
       </h1>
 
       <div className="flex items-center gap-3 md:gap-5">
-        {isMobileView && isAuthenticated && (
+        {isTabletView && isAuthenticated && (
           <>
             <SheetLeft />
             <SheetRight />

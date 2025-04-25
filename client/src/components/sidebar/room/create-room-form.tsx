@@ -19,6 +19,7 @@ import { useCreateRoomMutation } from "@/hooks/api/chat/create-room";
 import { cn } from "@/lib/utils";
 import { CreateRoomFormProps } from "@/types/room";
 import Emoji from "@/components/emoji/Emoji";
+import useWindowWidth from "@/hooks/window-width";
 
 const CreateRoomForm = ({
   btnSubmit,
@@ -36,6 +37,8 @@ const CreateRoomForm = ({
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
+  const windowWidth = useWindowWidth();
+  const isDesktopView = windowWidth > 1024;
 
   const createRoom = useCreateRoomMutation();
 
@@ -76,18 +79,20 @@ const CreateRoomForm = ({
                       className={cn("form-input")}
                     />
                   </FormControl>
-                  <div className="absolute inset-y-0 right-0.5 flex items-center">
-                    <Emoji
-                      onSelect={(emoji) => {
-                        const current = form.getValues("name") || "";
-                        form.setValue("name", current + emoji, {
-                          shouldDirty: true,
-                        });
-                      }}
-                      variant="linkForm"
-                      size="icon"
-                    />
-                  </div>
+                  {isDesktopView && (
+                    <div className="absolute inset-y-0 right-0.5 flex items-center">
+                      <Emoji
+                        onSelect={(emoji) => {
+                          const current = form.getValues("name") || "";
+                          form.setValue("name", current + emoji, {
+                            shouldDirty: true,
+                          });
+                        }}
+                        variant="linkForm"
+                        size="icon"
+                      />
+                    </div>
+                  )}
                 </div>
                 <FormMessage />
               </FormItem>
@@ -103,7 +108,7 @@ const CreateRoomForm = ({
                   <FormControl>
                     <Textarea
                       className={cn(
-                        "resize-none min-h-[70px] whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-8"
+                        "resize-none min-h-[70px] whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-3 lg:pr-8"
                       )}
                       maxLength={90}
                       {...field}
@@ -113,18 +118,20 @@ const CreateRoomForm = ({
                     Si vous saisissez une description, elle sera visible par
                     tous les membres.
                   </FormDescription>
-                  <div className="absolute top-0 right-0.5 flex items-center">
-                    <Emoji
-                      onSelect={(emoji) => {
-                        const current = form.getValues("description") || "";
-                        form.setValue("description", current + emoji, {
-                          shouldDirty: true,
-                        });
-                      }}
-                      variant="linkForm"
-                      size="icon"
-                    />
-                  </div>
+                  {isDesktopView && (
+                    <div className="absolute top-0 right-0.5 flex items-center">
+                      <Emoji
+                        onSelect={(emoji) => {
+                          const current = form.getValues("description") || "";
+                          form.setValue("description", current + emoji, {
+                            shouldDirty: true,
+                          });
+                        }}
+                        variant="linkForm"
+                        size="icon"
+                      />
+                    </div>
+                  )}
                 </div>
                 <FormMessage />
               </FormItem>

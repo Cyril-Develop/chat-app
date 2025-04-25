@@ -18,6 +18,7 @@ import { CreateRoomFormProps } from "@/types/room";
 import { useRoomStore } from "@/store/room.store";
 import { Textarea } from "@/components/ui/textarea";
 import Emoji from "@/components/emoji/Emoji";
+import useWindowWidth from "@/hooks/window-width";
 
 const UpdateRoomForm = ({
   btnSubmit,
@@ -34,7 +35,10 @@ const UpdateRoomForm = ({
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const roomId = useRoomStore((state) => state.room?.id);
-  const updateRoomDescription = useUpdateRoomDescriptionMutation();
+  const { mutateAsync: updateRoomDescription } =
+    useUpdateRoomDescriptionMutation();
+  const windowWidth = useWindowWidth();
+  const isDesktopView = windowWidth > 1024;
 
   const onSubmit = async () => {
     setLoading(true);
@@ -46,7 +50,7 @@ const UpdateRoomForm = ({
         setLoading(false);
         return;
       }
-      await updateRoomDescription.mutateAsync({ roomId, description });
+      await updateRoomDescription({ roomId, description });
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);
@@ -72,7 +76,7 @@ const UpdateRoomForm = ({
                 <FormControl>
                   <Textarea
                     className={cn(
-                      "resize-none min-h-[70px] whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-8"
+                      "resize-none min-h-[70px] whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-3 lg:pr-8"
                     )}
                     maxLength={90}
                     {...field}
@@ -81,18 +85,20 @@ const UpdateRoomForm = ({
                 <FormDescription className={cn("text-additional-info mt-2")}>
                   La description est visible par tous les membres.
                 </FormDescription>
-                <div className="absolute top-0 right-0.5 flex items-center">
-                  <Emoji
-                    onSelect={(emoji) => {
-                      const current = form.getValues("description") || "";
-                      form.setValue("description", current + emoji, {
-                        shouldDirty: true,
-                      });
-                    }}
-                    variant="linkForm"
-                    size="icon"
-                  />
-                </div>
+                {isDesktopView && (
+                  <div className="absolute top-0 right-0.5 flex items-center">
+                    <Emoji
+                      onSelect={(emoji) => {
+                        const current = form.getValues("description") || "";
+                        form.setValue("description", current + emoji, {
+                          shouldDirty: true,
+                        });
+                      }}
+                      variant="linkForm"
+                      size="icon"
+                    />
+                  </div>
+                )}
               </div>
               <FormMessage />
             </FormItem>

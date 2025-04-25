@@ -1,4 +1,5 @@
 import { MessageContentProps } from "@/types/message";
+import { linkifyText } from "@/utils/linkify-text";
 
 export default function MessageContent({
   message,
@@ -14,7 +15,7 @@ export default function MessageContent({
               : "bg-primary-foreground rounded-bl-none"
           }`}
         >
-          {message.message}
+          {linkifyText(message.message)}
         </p>
       )}
 

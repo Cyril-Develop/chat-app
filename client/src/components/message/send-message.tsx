@@ -25,6 +25,7 @@ import ImageUploader from "@/components/image-uploader";
 import { useRoomStore } from "@/store/room.store";
 import Emoji from "@/components/emoji/Emoji";
 import { useImageHandlers } from "@/hooks/image-handler";
+import useWindowWidth from "@/hooks/window-width";
 
 const SendMessage = ({ type }: SendMessageProps) => {
   const visible = useAuthStore((state) => state.visible);
@@ -37,6 +38,8 @@ const SendMessage = ({ type }: SendMessageProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { fileInputRef, resetImage, removeImage } = useImageHandlers(setImage);
+  const windowWidth = useWindowWidth();
+  const isDesktopView = windowWidth > 1024;
 
   const form = useForm<MessageFormProps>({
     resolver: zodResolver(PrivateMessageFormSchema),
@@ -126,8 +129,40 @@ const SendMessage = ({ type }: SendMessageProps) => {
 
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col sm:flex-row gap-2 mt-2 sm:mt-4"
+        className="relative flex items-center gap-2 mt-2 sm:mt-4"
       >
+        <FormField
+          control={form.control}
+          name="file"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 p-2 w-11 h-11 cursor-pointer"
+                tabIndex={0}
+                aria-label="Joindre une image"
+                title="Joindre une image"
+                onKeyDown={handleKeydown}
+                onClick={() => handleLabelClick("fileInput")}
+              >
+                <Icons.image />
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.svg"
+                  className="hidden"
+                  value={undefined}
+                  onChange={handleFileChange}
+                  id="fileInput"
+                  ref={fileInputRef}
+                  aria-label="Joindre une image"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="message"
@@ -148,61 +183,28 @@ const SendMessage = ({ type }: SendMessageProps) => {
           )}
         />
 
-        <div className="flex gap-4 md:gap-2 items-center">
-          <FormField
-            control={form.control}
-            name="file"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-8 bg-primary text-primary-foreground hover:bg-primary/80 p-2 w-11 h-11 cursor-pointer"
-                  tabIndex={0}
-                  aria-label="Joindre une image"
-                  title="Joindre une image"
-                  onKeyDown={handleKeydown}
-                  onClick={() => handleLabelClick("fileInput")}
-                >
-                  <Icons.image />
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="file"
-                    accept=".jpg,.jpeg,.png,.svg"
-                    className="hidden"
-                    value={undefined}
-                    onChange={handleFileChange}
-                    id="fileInput"
-                    ref={fileInputRef}
-                    aria-label="Joindre une image"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
+        {isDesktopView && (
           <Emoji
             onSelect={(emoji) => {
               const current = form.getValues("message") || "";
               form.setValue("message", current + emoji, { shouldDirty: true });
             }}
           />
+        )}
 
-          <Button
-            type="submit"
-            size="message"
-            title="Envoyer"
-            className={cn("ml-auto")}
-            disabled={isSendingMessage || noContent}
-          >
-            {isSendingMessage ? (
-              <Icons.loader />
-            ) : (
-              <Icons.send aria-label="Envoyer" />
-            )}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          size="message"
+          title="Envoyer"
+          className={cn("ml-auto")}
+          disabled={isSendingMessage || noContent}
+        >
+          {isSendingMessage ? (
+            <Icons.loader />
+          ) : (
+            <Icons.send aria-label="Envoyer" />
+          )}
+        </Button>
       </form>
       {error && visible === false && <p className="error">{error}</p>}
     </Form>

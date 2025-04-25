@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useImageHandlers } from "@/hooks/image-handler";
 import Emoji from "@/components/emoji/Emoji";
+import useWindowWidth from "@/hooks/window-width";
 
 const ProfileForm = ({ user }: ProfileFormProps) => {
   const defaultValues = {
@@ -40,6 +41,8 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
 
   const [imageUploaded, setImageUploaded] = useState<File | null>(null);
   const { fileInputRef, removeImage } = useImageHandlers(setImageUploaded);
+  const windowWidth = useWindowWidth();
+  const isDesktopView = windowWidth > 1024;
 
   const resetInputRef = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -162,7 +165,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                   <Textarea
                     placeholder="Parle nous un peu de toi..."
                     className={cn(
-                      "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-6 sm:pr-8"
+                      "resize-none whitespace-normal overflow-y-scroll scrollbar-webkit scrollbar-firefox dark:border-popover text-base pr-3 lg:pr-8"
                     )}
                     maxLength={90}
                     {...field}
@@ -171,18 +174,20 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
                 <FormDescription className={cn("text-additional-info mt-2")}>
                   Votre bio apparaîtra sur votre profil.
                 </FormDescription>
-                <div className="absolute top-0 right-0.5 flex items-center">
-                  <Emoji
-                    onSelect={(emoji) => {
-                      const current = form.getValues("bio") || "";
-                      form.setValue("bio", current + emoji, {
-                        shouldDirty: true,
-                      });
-                    }}
-                    variant="linkForm"
-                    size="icon"
-                  />
-                </div>
+                {isDesktopView && (
+                  <div className="absolute top-0 right-0.5 flex items-center">
+                    <Emoji
+                      onSelect={(emoji) => {
+                        const current = form.getValues("bio") || "";
+                        form.setValue("bio", current + emoji, {
+                          shouldDirty: true,
+                        });
+                      }}
+                      variant="linkForm"
+                      size="icon"
+                    />
+                  </div>
+                )}
               </div>
               <FormMessage />
             </FormItem>

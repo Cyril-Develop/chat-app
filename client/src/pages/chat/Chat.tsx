@@ -8,41 +8,13 @@ import { RoomSelector } from "@/components/sidebar/room/room-selector";
 import { RoomUsers } from "@/components/sidebar/room/room-users";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
-import { useAuthStore } from "@/store/auth.store";
 import { useContactStore } from "@/store/contact.store";
 import { useRoomStore } from "@/store/room.store";
-import { useSocketStore } from "@/store/socket.store";
-import { useEffect, useRef } from "react";
 
 const Chat = () => {
   const roomId = useRoomStore((state) => state.room?.id);
-  const { visible } = useAuthStore((state) => ({ visible: state.visible }));
   const { data: currentUser } = useGetUser();
-  const { socket } = useSocketStore();
   const { contactId } = useContactStore();
-  const prevRoomRef = useRef<number | null>(null);
-
-  //! Essayer de refactoriser ce useEffect
-  useEffect(() => {
-    if (roomId && currentUser) {
-      const prevRoom = prevRoomRef.current;
-      if (prevRoom) {
-        socket?.emit("leaveRoom", prevRoom, currentUser?.id);
-      }
-
-      socket?.emit(
-        "joinRoom",
-        roomId,
-        currentUser.id,
-        currentUser.username,
-        currentUser.sex,
-        currentUser.profileImage,
-        visible
-      );
-
-      prevRoomRef.current = roomId;
-    }
-  }, [roomId, socket, currentUser]);
 
   return (
     <div className="chat">

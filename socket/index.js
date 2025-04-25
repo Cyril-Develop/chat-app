@@ -96,21 +96,13 @@ io.on("connection", (socket) => {
   });
 
   //********** CREATE ROOM **********/
-  socket.on("createRoom", (createdBy) => {
-    // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
-    if (createdBy !== socket.user.id) {
-      return;
-    }
+  socket.on("createRoom", () => {
     // Émettre simplement l'événement pour invalider le cache avec tanstack-query
     io.emit("roomCreated");
   });
 
   //********** UPDATE ROOM **********/
-  socket.on("updateRoomDescription", (roomId, createdBy) => {
-    // Vérifier que l'utilisateur qui crée est bien celui qui est authentifié
-    if (createdBy !== socket.user.id) {
-      return;
-    }
+  socket.on("updateRoomDescription", (roomId) => {
     // Émettre simplement l'événement pour invalider le cache avec tanstack-query
     io.emit("roomUpdated", roomId);
   });

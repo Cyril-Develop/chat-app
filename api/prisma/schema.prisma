@@ -65,7 +65,7 @@ model BlockedUser {
 
 model Message {
   id         Int           @id @default(autoincrement())
-  message    String        @default("")
+  message    String        @db.Text
   image      String?
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
@@ -87,7 +87,7 @@ model MessageLike {
 
 model PrivateMessage {
   id         Int                  @id @default(autoincrement())
-  message    String
+  message    String               @db.Text
   image      String?
   createdAt  DateTime             @default(now())
   updatedAt  DateTime             @updatedAt

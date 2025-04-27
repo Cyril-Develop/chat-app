@@ -32,12 +32,11 @@ const JoinPrivateRoomForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: { password: string }) => {
     setLoading(true);
     setApiError("");
     try {
-      const { password } = form.getValues();
-      const data = { roomId, password };
+      const data = { roomId, password: values.password };
       await joinRoom(data);
       onOpenChange(false);
     } catch (error: any) {

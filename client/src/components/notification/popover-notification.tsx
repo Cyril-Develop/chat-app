@@ -19,7 +19,7 @@ export function PopoverNotification() {
     <Popover>
       <PopoverTrigger asChild title="Notifications">
         <Button variant={haveRequest ? "success" : "btn"} size="menu">
-          <Icons.bell />
+          {haveRequest ? <Icons.bellRing /> : <Icons.bell />}
         </Button>
       </PopoverTrigger>
 

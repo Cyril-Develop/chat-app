@@ -282,32 +282,6 @@ export const deleteAccount = async () => {
   }
 };
 
-export const deleteUserAccount = async (userId: number) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/user/delete/${userId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
-    }
-    return responseData;
-  } catch (error: any) {
-    throw error;
-  }
-};
-
 export const editNotification = async (notification: string) => {
   try {
     const response = await fetch(

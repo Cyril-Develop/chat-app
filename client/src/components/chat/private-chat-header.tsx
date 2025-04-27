@@ -5,6 +5,7 @@ import { PrivateChatHeaderProps } from "@/types/chat";
 import { HandleUserStatusChangedProps } from "@/types/user";
 import { useEffect, useState } from "react";
 import UserThumbnail from "@/components/user-thumbnail";
+import { linkifyText } from "@/utils/linkify-text";
 
 const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
   const { socket, users } = useSocketStore();
@@ -48,7 +49,7 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
           </div>
         </div>
         <p className="text-additional-info break-words whitespace-pre-wrap">
-          {contactInfos.bio}
+          {linkifyText(contactInfos.bio)}
         </p>
       </section>
     </>

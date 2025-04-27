@@ -14,7 +14,7 @@ import { useRoomStore } from "@/store/room.store";
 const Chat = () => {
   const roomId = useRoomStore((state) => state.room?.id);
   const { data: currentUser } = useGetUser();
-  const { contactId } = useContactStore();
+  const contactId = useContactStore((state) => state.contactId);
 
   return (
     <div className="chat">

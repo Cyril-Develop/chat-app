@@ -73,7 +73,7 @@ model Message {
   chatRoomId Int
   likes      MessageLike[]
   user       User          @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
-  chatRoom   ChatRoom      @relation(fields: [chatRoomId], references: [id], name: "ChatRoomMessages")
+  chatRoom   ChatRoom      @relation(fields: [chatRoomId], references: [id], name: "ChatRoomMessages", onDelete: Cascade)
 }
 
 model MessageLike {

@@ -166,6 +166,33 @@ export const getPrivateMessages = async (contactId: number) => {
   }
 };
 
+export const fetchLinkPreview = async (url: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/link-preview`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+        credentials: "include",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = {
+        message: responseData.error,
+        errorCode: responseData.errorCode,
+      };
+      throw error;
+    }
+    return responseData;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 export const sendPrivateMessage = async (
   formData: FormData,
   contactId: number
@@ -194,6 +221,7 @@ export const sendPrivateMessage = async (
     throw error;
   }
 };
+
 export const fetchUnreadPrivateMessages = async () => {
   try {
     const response = await fetch(

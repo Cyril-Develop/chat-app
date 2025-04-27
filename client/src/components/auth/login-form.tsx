@@ -45,12 +45,14 @@ const LoginForm = () => {
     resolver: zodResolver(LoginFormSchema),
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: { email: string; password: string }) => {
     setLoading(true);
     setApiError("");
     try {
-      const { email, password } = form.getValues();
-      const { isAuthenticated, user } = await loginByEmail({ email, password });
+      const { isAuthenticated, user } = await loginByEmail({
+        email: values.email,
+        password: values.password,
+      });
       setAuthentication(isAuthenticated, user);
       form.reset();
     } catch (error: any) {

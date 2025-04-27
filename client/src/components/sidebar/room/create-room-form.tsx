@@ -38,16 +38,19 @@ const CreateRoomForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
   const windowWidth = useWindowWidth();
-  const isDesktopView = windowWidth > 1024;
+  const isDesktopView = windowWidth > 1023;
 
   const createRoom = useCreateRoomMutation();
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: {
+    name: string;
+    password?: string;
+    description?: string;
+  }) => {
     setLoading(true);
     setApiError("");
-    const { name, password, description } = form.getValues();
     try {
-      await createRoom.mutateAsync({ name, password, description });
+      await createRoom.mutateAsync(values);
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);

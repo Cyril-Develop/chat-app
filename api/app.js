@@ -30,12 +30,14 @@ app.use("/chateo/api/images", express.static(path.join(__dirname, "images")));
 // Importing routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const adminRoutes = require("./routes/admin");
 const chatRoutes = require('./routes/chat');
 const emailRoutes = require("./routes/email");
 
 // Using routes
 app.use("/chateo/api/auth", authRoutes);
 app.use("/chateo/api/user", userRoutes);
+app.use("/chateo/api/admin", adminRoutes);
 app.use('/chateo/api/chat', chatRoutes);
 app.use("/chateo/api/email", emailRoutes);
 

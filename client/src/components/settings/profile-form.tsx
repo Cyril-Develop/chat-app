@@ -42,7 +42,7 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   const [imageUploaded, setImageUploaded] = useState<File | null>(null);
   const { fileInputRef, removeImage } = useImageHandlers(setImageUploaded);
   const windowWidth = useWindowWidth();
-  const isDesktopView = windowWidth > 1024;
+  const isDesktopView = windowWidth > 1023;
 
   const resetInputRef = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";

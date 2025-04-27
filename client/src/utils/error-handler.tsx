@@ -22,7 +22,6 @@ export const handleApiError = (
     dependencies;
 
   toast({
-    title: "Erreur",
     description: error.message,
     variant: "destructive",
     logo: <Icons.alert />,

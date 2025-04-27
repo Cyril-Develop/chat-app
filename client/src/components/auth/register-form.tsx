@@ -53,21 +53,24 @@ const RegisterForm = () => {
     resolver: zodResolver(RegisterFormSchema),
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: {
+    username: string;
+    email: string;
+    password: string;
+    sex: string;
+  }) => {
     setLoading(true);
     setApiError("");
     try {
-      const { username, email, password, sex } = form.getValues();
+      const { username, email, password, sex } = values;
       setNewUser({ username, email, password, sex: sex as Sex });
 
       const userExists = await verifyIfUserExists(username, email);
 
-      // Si la réponse contient une erreur, c'est que l'utilisateur existe déjà
       if (userExists.error) {
         throw new Error(userExists.error);
       }
 
-      // Si l'utilisateur n'existe pas encore, on peut envoyer l'OTP
       const otpSent = await sendOtp(email);
 
       if (!otpSent) {

@@ -11,8 +11,8 @@ export default function MessageContent({
         <p
           className={`p-3 border rounded-md break-words whitespace-pre-wrap ${
             isMyMessage
-              ? "bg-primary text-secondary dark:text-primary-foreground rounded-br-none"
-              : "bg-primary-foreground rounded-bl-none"
+              ? "bg-primary text-white dark:text-black"
+              : "bg-primary-foreground"
           }`}
         >
           {linkifyText(message.message)}

@@ -1,4 +1,8 @@
+import { Icons } from "@/components/Icons";
+
 export const linkifyText = (text: string) => {
+  if (!text) return null;
+
   const urlRegex = /https?:\/\/[^\s]+/g;
   const elements = [];
   let lastIndex = 0;
@@ -13,7 +17,7 @@ export const linkifyText = (text: string) => {
     }
 
     // Lien cliquable (affiché sans https://)
-    const displayText = url.replace(/^https?:\/\//, "");
+    const displayText = new URL(url).hostname.replace(/^www\./, "");
 
     elements.push(
       <a
@@ -21,10 +25,11 @@ export const linkifyText = (text: string) => {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        title="Ouvrir le lien"
-        aria-label="Ouvrir le lien"
-        className="hover:underline"
+        title="Visiter le lien"
+        aria-label="Visiter le lien"
+        className="hover:underline inline-flex items-center gap-1"
       >
+        <Icons.externalLink width={16} height={16} />
         {displayText}
       </a>
     );

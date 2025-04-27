@@ -39,51 +39,17 @@ export function SkeletonMessage() {
     <>
       {/* Room Header */}
       <div className="flex flex-col justify-between gap-2 pb-4 text-xl min-h-12">
-        <Skeleton className="h-4 w-[200px]" />
-        <Skeleton className="h-4 w-[200px]" />
+        <Skeleton className="h-3.5 w-[200px]" />
+        <Skeleton className="h-3.5 w-[200px]" />
       </div>
       {/* MessagesProvider */}
-      <div className="flex flex-col  grow mt-2 mb-2 xl:mt-4 xl:mb-4">
-        {/* message */}
-        <div className="flex flex-col gap-2 p-3 max-w-[235px] 2xl:max-w-[255px] xl:ml-8">
-          <div className="flex gap-2 items-center">
-            <Skeleton className="h-6 w-6 rounded-full" />
-            <Skeleton className="h-2 w-[100px]" />
-          </div>
-          <Skeleton className="h-16 w-full " />
-          <div className="flex justify-between gap-4 ">
-            <Skeleton className="h-2 w-[200px]" />
-            <div className="flex gap-2">
-              <Skeleton className="h-4 w-4 rounded-sm" />
-              <Skeleton className="h-4 w-4 rounded-sm" />
-            </div>
-          </div>
-        </div>
-        {/* message */}
-        <div className="flex flex-col gap-2 p-3 max-w-[235px] 2xl:max-w-[400px] ml-auto xl:mr-8">
-          <div className="flex gap-2 items-center">
-            <Skeleton className="h-6 w-6 rounded-full" />
-            <Skeleton className="h-2 w-[100px]" />
-          </div>
-          <Skeleton className="h-11 w-full " />
-          <div className="flex justify-between gap-4 ">
-            <Skeleton className="h-2 w-[200px]" />
-            <div className="flex gap-2">
-              <Skeleton className="h-4 w-4 rounded-sm" />
-              <Skeleton className="h-4 w-4 rounded-sm" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="flex flex-col  grow mt-2 mb-2 xl:mt-4 xl:mb-4"></div>
       {/* SendRoomMessage */}
-      {/* 🆗 */}
-      <div className="relative flex flex-col sm:flex-row gap-2 mt-1 mb-1 xl:mt-4 xl:mb-4">
-        <Skeleton className="w-full h-12 " />
-        <div className="flex gap-2 items-center">
-          <Skeleton className="h-11 w-11 " />
-          <Skeleton className="h-11 w-11 " />
-          <Skeleton className="h-11 w-11  ml-auto" />
-        </div>
+      <div className="flex items-center gap-2 mt-2 sm:mt-4">
+        <Skeleton className="h-11 min-w-[44px]" />
+        <Skeleton className="w-full h-11 min-h-[50px] " />
+        <Skeleton className="h-11 min-w-[40px] hidden lg:block" />
+        <Skeleton className="h-11 min-w-[40px]" />
       </div>
     </>
   );

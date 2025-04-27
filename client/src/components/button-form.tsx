@@ -6,6 +6,7 @@ interface ButtonFormProps {
   disabled: boolean;
   defaultValue: string;
   spinnerValue: string;
+  variant?: "default" | "destructive" | "outline" | "secondary";
 }
 
 const ButtonForm = ({
@@ -13,12 +14,13 @@ const ButtonForm = ({
   disabled,
   defaultValue,
   spinnerValue,
+  variant = "default",
 }: ButtonFormProps) => {
   return (
     <Button
       type="submit"
       size="lg"
-      variant="default"
+      variant={variant}
       className="text-button w-full"
       disabled={disabled || loading}
     >

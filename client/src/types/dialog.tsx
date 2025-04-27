@@ -4,6 +4,20 @@ export interface CreateRoomProps {
   headerDescription: string;
 }
 
+export interface BlockUserProps {
+  btnTrigger: React.ReactNode;
+  headerTitle: string;
+  headerDescription: string;
+  userIdToBlock: number;
+}
+
+export interface DeleteUserProps {
+  btnTrigger: React.ReactNode;
+  headerTitle: string;
+  headerDescription: string;
+  userIdToDelete: number;
+}
+
 export interface UpdateRoomProps {
   headerTitle: string;
   headerDescription: string;

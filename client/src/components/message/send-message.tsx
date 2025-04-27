@@ -39,7 +39,7 @@ const SendMessage = ({ type }: SendMessageProps) => {
   const [error, setError] = useState<string | null>(null);
   const { fileInputRef, resetImage, removeImage } = useImageHandlers(setImage);
   const windowWidth = useWindowWidth();
-  const isDesktopView = windowWidth > 1024;
+  const isDesktopView = windowWidth > 1023;
 
   const form = useForm<MessageFormProps>({
     resolver: zodResolver(PrivateMessageFormSchema),

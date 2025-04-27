@@ -1,6 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
-import { deleteUserAccount } from "@/services/User";
+import { deleteUserAccount } from "@/services/Admin";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { useSocketStore } from "@/store/socket.store";
@@ -9,8 +9,8 @@ import { handleApiError } from "@/utils/error-handler";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { DeleteUserAccountParams } from "@/types/admin";
 
-// Lorsque l'administrateur supprime un compte utilisateur
 export const useDeleteUserAccountMutation = () => {
   const queryClient = useQueryClient();
   const { setAuthentication } = useAuthStore();
@@ -19,7 +19,8 @@ export const useDeleteUserAccountMutation = () => {
   const { socket } = useSocketStore();
 
   return useMutation({
-    mutationFn: (userId: number) => deleteUserAccount(userId),
+    mutationFn: ({ userId, reason }: DeleteUserAccountParams) =>
+      deleteUserAccount({ userId, reason }),
     onSuccess: (data) => {
       toast({
         title: data.message,

@@ -9,24 +9,22 @@ import {
   useReactTable,
   PaginationState,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
 import UserThumbnail from "@/components/user-thumbnail";
-import { useDeleteUserAccountMutation } from "@/hooks/api/user/delete-user-account";
 import useGetUsers from "@/hooks/api/user/get-users";
 import { DashboardUsersProps } from "@/types/setting";
 import { Icons } from "@/components/Icons";
 import { useMemo } from "react";
-import { cn } from "@/lib/utils";
 import DataTableButton from "@/components/settings/dashboard/data-table-button";
 import DataTableBody from "@/components/settings/dashboard/data-table-body";
 import DataTableHeader from "@/components/settings/dashboard/data-table-header";
 import SortButton from "@/components/settings/dashboard/sort-button";
 import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
+import { BlockUser } from "@/components/settings/dashboard/block-user";
+import { DeleteUser } from "@/components/settings/dashboard/delete-user";
 
 export default function DataTableUsers() {
   const { data: users = [] } = useGetUsers();
-  const { mutate: deleteUserAccount } = useDeleteUserAccountMutation();
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   // Définir l'état de pagination avec une taille de page de 5
@@ -67,14 +65,20 @@ export default function DataTableUsers() {
               username={user.username}
               sex={user.sex}
             />
-            <Button
-              variant="alert"
-              className={cn("p-0")}
-              title={`Supprimer l'utilisateur : ${user.username}`}
-              onClick={() => deleteUserAccount(user.id)}
-            >
-              <Icons.delete width={18} height={18} />
-            </Button>
+            <div className="flex items-center justify-end gap-4">
+              <BlockUser
+                btnTrigger={<Icons.block width={18} height={18} />}
+                headerTitle="Bloquer l'utilisateur"
+                headerDescription={`Sélectionnez la durée et expliquez le motif pour lequel "${user.username}" doit être bloqué.`}
+                userIdToBlock={user.id}
+              />
+              <DeleteUser
+                btnTrigger={<Icons.delete width={18} height={18} />}
+                headerTitle="Supprimer l'utilisateur"
+                headerDescription={`Précisez le motif de la suppression du compte de "${user.username}".`}
+                userIdToDelete={user.id}
+              />
+            </div>
           </div>
         );
       },

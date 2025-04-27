@@ -109,6 +109,17 @@ const nameRoomSchema = z
     message: "Le nom du salon contient un mot interdit",
   });
 
+// DASHBOARD
+const durationBlockSchema = z.enum(["1j", "7j", "30j", "permanent"], {
+  message: "La durée est requise",
+});
+const reasonSchema = z.enum(
+  ["insultes", "harcelement", "spam", "contenu_inapproprie"],
+  {
+    message: "Le motif est requis",
+  }
+);
+
 // SCHEMAS
 export const RegisterFormSchema = z.object({
   username: usernameSchema,
@@ -150,6 +161,15 @@ export const ProfileFormSchema = z.object({
   username: usernameSchema,
   bio: bioSchema,
   image: z.instanceof(File).nullable(),
+});
+
+export const BlockUserFormSchema = z.object({
+  duration: durationBlockSchema,
+  reason: reasonSchema,
+});
+
+export const DeleteUserFormSchema = z.object({
+  reason: reasonSchema,
 });
 
 export const RoomFormSchema = z.object({

@@ -261,21 +261,8 @@ exports.deleteChatRoom = async (req, res) => {
   const { roomId } = req.body;
 
   try {
-    await prisma.$transaction(async (prisma) => {
-      // Supprimer les messages liés à ce ChatRoom
-      await prisma.message.deleteMany({
-        where: { chatRoomId: roomId },
-      });
-
-      // Supprimer les utilisateurs de la room
-      await prisma.userChatRoom.deleteMany({
-        where: { chatRoomId: roomId },
-      });
-
-      // Supprimer le ChatRoom lui-même
-      await prisma.chatRoom.delete({
-        where: { id: roomId },
-      });
+    await prisma.chatRoom.delete({
+      where: { id: roomId },
     });
 
     res.status(200).json({ message: "Salon de discussion supprimé.", roomId });

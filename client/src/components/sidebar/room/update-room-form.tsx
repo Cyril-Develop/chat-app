@@ -38,19 +38,18 @@ const UpdateRoomForm = ({
   const { mutateAsync: updateRoomDescription } =
     useUpdateRoomDescriptionMutation();
   const windowWidth = useWindowWidth();
-  const isDesktopView = windowWidth > 1024;
+  const isDesktopView = windowWidth > 1023;
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: { description: string }) => {
     setLoading(true);
     setApiError("");
-    const { description } = form.getValues();
     try {
       if (!roomId) {
         setApiError("Aucun salon sélectionné.");
         setLoading(false);
         return;
       }
-      await updateRoomDescription({ roomId, description });
+      await updateRoomDescription({ roomId, description: values.description });
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);

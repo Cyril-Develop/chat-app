@@ -1,8 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const fs = require("fs");
 const path = require("path");
-const prisma = new PrismaClient();
-const jwt = require("jsonwebtoken");
 
 //********** GET ALL USERS **********/
 exports.getAllUsers = async (req, res) => {
@@ -412,149 +411,72 @@ exports.deleteAccount = async (req, res) => {
       });
     }
 
-    // Vérifier si l'utilisateur est membre d'un salon de discussion
-    const existingMembership = await prisma.userChatRoom.findFirst({
-      where: { userId: userId },
-    });
-
-    if (existingMembership) {
-      await prisma.userChatRoom.delete({
-        where: {
-          userId_chatRoomId: {
-            userId: userId,
-            chatRoomId: existingMembership.chatRoomId,
-          },
-        },
+    // Utiliser une transaction pour garantir l'atomicité
+    const result = await prisma.$transaction(async (prisma) => {
+      // Vérifier si l'utilisateur existe
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
       });
-    }
 
-    // Récupérer les amis (dans les deux sens)
-    const friends = await prisma.friend.findMany({
-      where: {
-        OR: [{ userId: userId }, { friendId: userId }],
-      },
-      select: {
-        userId: true,
-        friendId: true,
-      },
-    });
+      if (!user) {
+        throw new Error("Utilisateur non trouvé");
+      }
 
-    // Récupérer ceux qui ont bloqué l'utilisateur
-    const blockers = await prisma.blockedUser.findMany({
-      where: {
-        blockedId: userId,
-      },
-      select: {
-        blockerId: true,
-      },
-    });
+      // Récupérer les données des relations avant suppression
+      const [friends, blockers] = await Promise.all([
+        prisma.friend.findMany({
+          where: {
+            OR: [{ userId: userId }, { friendId: userId }],
+          },
+          select: {
+            userId: true,
+            friendId: true,
+          },
+        }),
+        prisma.blockedUser.findMany({
+          where: {
+            blockedId: userId,
+          },
+          select: {
+            blockerId: true,
+          },
+        }),
+      ]);
 
-    // Construire la liste des utilisateurs affectés
-    const affectedUserIds = new Set();
+      // Supprimer l'utilisateur
+      await prisma.user.delete({
+        where: { id: userId },
+      });
 
-    friends.forEach((f) => {
-      if (f.userId !== userId) affectedUserIds.add(f.userId);
-      if (f.friendId !== userId) affectedUserIds.add(f.friendId);
-    });
+      // Construire la liste des utilisateurs affectés
+      const affectedUserIds = new Set();
+      friends.forEach((f) => {
+        if (f.userId !== userId) affectedUserIds.add(f.userId);
+        if (f.friendId !== userId) affectedUserIds.add(f.friendId);
+      });
+      blockers.forEach((b) => affectedUserIds.add(b.blockerId));
 
-    blockers.forEach((b) => affectedUserIds.add(b.blockerId));
-
-    // Supprimer l'utilisateur de la base de données
-    await prisma.user.delete({
-      where: {
-        id: userId,
-      },
+      return {
+        affectedUserIds: Array.from(affectedUserIds),
+      };
     });
 
     res.status(200).json({
       message: "Compte supprimé, nous espérons vous revoir bientôt! 😔",
-      affectedUserIds: Array.from(affectedUserIds),
+      affectedUserIds: result.affectedUserIds,
     });
   } catch (err) {
     console.error("Error deleting user:", err);
-    res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard",
-    });
-  }
-};
 
-//********** DELETE USER ACCOUNT **********/
-exports.deleteUserAccount = async (req, res) => {
-  try {
-    let userId = req.params.id;
-    userId = Number(userId);
-    const userRole = req.role;
-
-    if (userRole !== "ADMIN") {
-      return res.status(403).json({
-        error: "Action non autorisée.",
+    if (err.message === "Utilisateur non trouvé") {
+      return res.status(404).json({
+        error: "Votre compte n'a pas pu être trouvé.",
       });
     }
 
-    // Vérifier si l'utilisateur est membre d'un salon de discussion
-    // retourne l'id de l'utilisateur et l'id du salon de discussion
-    const existingMembership = await prisma.userChatRoom.findFirst({
-      where: { userId },
-    });
-
-    if (existingMembership) {
-      // Supprimer l'utilisateur du salon de discussion
-      await prisma.userChatRoom.delete({
-        where: {
-          userId_chatRoomId: {
-            userId,
-            chatRoomId: existingMembership.chatRoomId,
-          },
-        },
-      });
-    }
-
-    // Récupérer les amis (dans les deux sens)
-    const friends = await prisma.friend.findMany({
-      where: {
-        OR: [{ userId: userId }, { friendId: userId }],
-      },
-      select: {
-        userId: true,
-        friendId: true,
-      },
-    });
-
-    // Récupérer ceux qui ont bloqué l'utilisateur
-    const blockers = await prisma.blockedUser.findMany({
-      where: {
-        blockedId: userId,
-      },
-      select: {
-        blockerId: true,
-      },
-    });
-
-    // Construire la liste des utilisateurs affectés
-    const affectedUserIds = new Set();
-
-    friends.forEach((f) => {
-      if (f.userId !== userId) affectedUserIds.add(f.userId);
-      if (f.friendId !== userId) affectedUserIds.add(f.friendId);
-    });
-
-    blockers.forEach((b) => affectedUserIds.add(b.blockerId));
-
-    // Ensuite supprimer l'utilisateur de la base de données
-    await prisma.user.delete({
-      where: {
-        id: parseInt(userId),
-      },
-    });
-
-    res.status(200).json({
-      message: "L'utilisateur a été supprimé avec succès.",
-      affectedUserIds: Array.from(affectedUserIds),
-    });
-  } catch (err) {
-    console.error("Error deleting user:", err);
     res.status(500).json({
-      error: "Une erreur est survenue... Veuillez réessayer plus tard.",
+      error:
+        "Une erreur est survenue lors de la suppression de votre compte. Veuillez réessayer plus tard.",
     });
   }
 };
@@ -884,7 +806,6 @@ exports.removeContact = async (req, res) => {
   }
 
   try {
-    // Utilisation d'une transaction pour assurer l'intégrité des données
     await prisma.$transaction([
       // Suppression des relations d'amitié
       prisma.friend.deleteMany({
@@ -913,26 +834,6 @@ exports.removeContact = async (req, res) => {
             {
               userId: contactId,
               receiverId: userId,
-            },
-          ],
-        },
-      }),
-
-      // Suppression des likes associés aux messages privés
-      prisma.privateMessageLike.deleteMany({
-        where: {
-          OR: [
-            {
-              privateMessage: {
-                userId: userId,
-                receiverId: contactId,
-              },
-            },
-            {
-              privateMessage: {
-                userId: contactId,
-                receiverId: userId,
-              },
             },
           ],
         },

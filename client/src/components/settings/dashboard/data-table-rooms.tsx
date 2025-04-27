@@ -15,18 +15,29 @@ import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
 import useGetRooms from "@/hooks/api/chat/get-rooms";
 import { DashboardRoomsProps } from "@/types/setting";
 import { Icons } from "@/components/Icons";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import DataTableButton from "@/components/settings/dashboard/data-table-button";
 import DataTableBody from "@/components/settings/dashboard/data-table-body";
 import DataTableHeader from "@/components/settings/dashboard/data-table-header";
 import DataTableSearchInput from "./table-input-search";
 import SortButton from "@/components/settings/dashboard/sort-button";
+import Alert from "@/components/Alert";
 
 export default function DataTableRooms() {
   const { data: rooms = [] } = useGetRooms();
   const { mutate: deleteRoom } = useDeleteRoomMutation();
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [roomIdToDelete, setRoomIdToDelete] = useState<number | null>(null);
+
+  const handleDeleteRoom = () => {
+    if (roomIdToDelete !== null) {
+      deleteRoom(roomIdToDelete);
+      setAlertOpen(false);
+      setRoomIdToDelete(null);
+    }
+  };
 
   // Définir l'état de pagination avec une taille de page de 5
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -61,18 +72,28 @@ export default function DataTableRooms() {
             <span className="text-base">{room.name}</span>
             <Button
               variant="alert"
-              title={`Supprimer le salon : ${room.name}`}
               className={cn("p-0")}
-              onClick={() => deleteRoom(room.id)}
+              title="Supprimer le salon"
+              onClick={() => {
+                setRoomIdToDelete(room.id);
+                setAlertOpen(true);
+              }}
             >
               <Icons.delete width={18} height={18} />
             </Button>
+            <Alert
+              open={alertOpen}
+              setOpen={setAlertOpen}
+              title="Supprimer le salon"
+              description={`Êtes-vous sûr de vouloir supprimer le salon "${room.name}" ?`}
+              buttonTitle="Supprimer"
+              action={handleDeleteRoom}
+            />
           </div>
         );
       },
     },
   ];
-
   const table = useReactTable({
     data: filteredRooms,
     columns: roomColumns,

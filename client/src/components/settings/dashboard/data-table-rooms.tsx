@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   ColumnDef,
   SortingState,
@@ -12,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
 import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
-import useGetRooms from "@/hooks/api/chat/get-rooms";
+import useFetchAllRooms from "@/hooks/api/admin/fetch-all-rooms";
 import { DashboardRoomsProps } from "@/types/setting";
 import { Icons } from "@/components/Icons";
 import { useMemo, useState } from "react";
@@ -20,14 +19,14 @@ import { cn } from "@/lib/utils";
 import DataTableButton from "@/components/settings/dashboard/data-table-button";
 import DataTableBody from "@/components/settings/dashboard/data-table-body";
 import DataTableHeader from "@/components/settings/dashboard/data-table-header";
-import DataTableSearchInput from "./table-input-search";
+import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
 import SortButton from "@/components/settings/dashboard/sort-button";
 import Alert from "@/components/Alert";
 
 export default function DataTableRooms() {
-  const { data: rooms = [] } = useGetRooms();
+  const { data: rooms = [] } = useFetchAllRooms();
   const { mutate: deleteRoom } = useDeleteRoomMutation();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [roomIdToDelete, setRoomIdToDelete] = useState<number | null>(null);
 
@@ -40,7 +39,7 @@ export default function DataTableRooms() {
   };
 
   // Définir l'état de pagination avec une taille de page de 5
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
   });
@@ -51,25 +50,29 @@ export default function DataTableRooms() {
 
   const roomColumns: ColumnDef<DashboardRoomsProps>[] = [
     {
-      accessorKey: "createBy",
-      header: () => <div>Créateurs</div>,
+      accessorKey: "name",
+      header: ({ column }) => <SortButton column={column} title="Salon" />,
       cell: ({ row }) => {
         const room = row.original;
-        return (
-          <div className="flex items-center p-4 w-full h-14">
-            <p>{room.createdBy}</p>
-          </div>
-        );
+        return <p className="texte-sm sm:text-base">{room.name}</p>;
       },
     },
     {
-      accessorKey: "name",
-      header: ({ column }) => <SortButton column={column} title="Salons" />,
+      accessorKey: "creator",
+      header: () => <div>Créateur</div>,
+      cell: ({ row }) => {
+        const room = row.original;
+        return <p>{room.creator.username}</p>;
+      },
+    },
+    {
+      accessorKey: "Type",
+      header: () => <div>Type</div>,
       cell: ({ row }) => {
         const room = row.original;
         return (
-          <div className="flex justify-between p-4 w-full h-14">
-            <span className="text-base">{room.name}</span>
+          <div className="flex items-center justify-between gap-4">
+            <p>{room.isPrivate ? "Privé" : "Public"}</p>
             <Button
               variant="alert"
               className={cn("p-0")}

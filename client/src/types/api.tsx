@@ -1,10 +1,6 @@
 export interface ApiError extends Error {
-  errorCode?: string;
-  response?: {
-    data?: {
-      errorCode?: string;
-      message?: string;
-      error?: string;
-    };
-  };
+  error: string;       
+  errorCode?: string;   
+  reason?: "insultes" | "harcelement" | "spam" | "contenu_inapproprie";   
+  endDate?: string; 
 }

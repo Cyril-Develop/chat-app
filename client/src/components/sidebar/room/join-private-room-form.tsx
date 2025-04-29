@@ -8,9 +8,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useJoinRoomMutation } from "@/hooks/api/chat/join-chat";
+import { useRoomTransitionMutation } from "@/hooks/api/chat/room-transition";
 import { RoomPasswordSchema } from "@/schema/main";
 import { JoinPrivateRoomFormProps } from "@/types/room";
+import { useRoomStore } from "@/store/room.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,33 +28,30 @@ const JoinPrivateRoomForm = ({
     resolver: zodResolver(RoomPasswordSchema),
   });
 
-  const { mutateAsync: joinRoom } = useJoinRoomMutation();
-  const [loading, setLoading] = useState(false);
+  const { transitionToRoom, isLoading } = useRoomTransitionMutation();
+  const currentRoomId = useRoomStore((state) => state.room?.id);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
 
   const onSubmit = async (values: { password: string }) => {
-    setLoading(true);
     setApiError("");
     try {
       const data = { roomId, password: values.password };
-      await joinRoom(data);
+      await transitionToRoom(data, currentRoomId);
       onOpenChange(false);
     } catch (error: any) {
       setApiError(error.message);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4  sm:space-y-8"
+        className="space-y-4 sm:space-y-8"
         noValidate
       >
-        <div className="space-y-4  sm:space-y-8">
+        <div className="space-y-4 sm:space-y-8">
           <FormField
             control={form.control}
             name="password"
@@ -74,8 +72,8 @@ const JoinPrivateRoomForm = ({
         </div>
         <div className="flex flex-col gap-4">
           <ButtonForm
-            loading={loading}
-            disabled={loading}
+            loading={isLoading}
+            disabled={isLoading}
             defaultValue={btnSubmit}
             spinnerValue="Connexion"
           />

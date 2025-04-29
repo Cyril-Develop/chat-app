@@ -1,9 +1,8 @@
 import { blockUserAccount } from "@/services/Admin";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
-//import { Icons } from "@/components/Icons";
-//import { toast } from "@/components/ui/use-toast";
-//import { useSocketStore } from "@/store/socket.store";
+import { Icons } from "@/components/Icons";
+import { toast } from "@/components/ui/use-toast";
 import { ApiError } from "@/types/api";
 import { handleApiError } from "@/utils/error-handler";
 import { useMutation } from "@tanstack/react-query";
@@ -16,20 +15,18 @@ export const useBlockUserAccountMutation = () => {
   const { setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
-  // const { socket } = useSocketStore();
 
   return useMutation({
     mutationFn: ({ userId, duration, reason }: BlockUserAccountParams) =>
       blockUserAccount({ userId, duration, reason }),
-    onSuccess: () => {
-      // toast({
-      //   title: data.message,
-      //   variant: "success",
-      //   logo: <Icons.check />,
-      // });
-      //socket?.emit("deleteAccount", data.affectedUserIds);
-      // Actualise la liste des utilisateurs pour l'utilisateur courant
-      //queryClient.invalidateQueries({ queryKey: ["users"] });
+    onSuccess: (data) => {
+      toast({
+        title: data.message,
+        variant: "success",
+        logo: <Icons.check />,
+      });
+      // Actualise la liste des utilisateurs pour l'admin
+      queryClient.invalidateQueries({ queryKey: ["users-dashboard"] });
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

@@ -3,6 +3,7 @@ import ProfileForm from "@/components/settings/profile-form";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { SkeletonProfile } from "@/components/skeleton/skeleton";
+import { generateBlockDescription } from "@/utils/generate-alert-description";
 
 const ProfilePage = () => {
   const { data: currentUser, isLoading } = useGetUser();
@@ -18,7 +19,16 @@ const ProfilePage = () => {
               Modifiez la façon dont vous apparaissez aux autres utilisateurs.
             </p>
           </div>
+          {currentUser.isCurrentlyBlocked && (
+            <article className="flex flex-col space-y-2 rounded-md border bg-red-600 dark:bg-red-500 p-4 shadow-md text-primary-foreground outline-none max-w-[700px] ">
+              <h4 className="font-semibold">
+                Votre compte est actuellement bloqué.
+              </h4>
+              <div>{generateBlockDescription(currentUser)}</div>
+            </article>
+          )}
           <PreviewCard user={currentUser} />
+
           <Separator />
           <ProfileForm user={currentUser} />
         </>

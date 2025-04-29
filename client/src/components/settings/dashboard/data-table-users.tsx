@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import { Table } from "@/components/ui/table";
 import UserThumbnail from "@/components/user-thumbnail";
-import useGetUsers from "@/hooks/api/user/get-users";
+import useFetchAllUsers from "@/hooks/api/admin/fetch-all-users";
 import { DashboardUsersProps } from "@/types/setting";
 import { Icons } from "@/components/Icons";
 import { useMemo } from "react";
@@ -22,10 +22,24 @@ import SortButton from "@/components/settings/dashboard/sort-button";
 import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
 import { BlockUser } from "@/components/settings/dashboard/block-user";
 import { DeleteUser } from "@/components/settings/dashboard/delete-user";
+import Alert from "@/components/Alert";
+import { Button } from "@/components/ui/button";
+import { useUnblockUserAccountMutation } from "@/hooks/api/admin/unblock-user-account";
+import { generateBlockDescription } from "@/utils/generate-alert-description";
+import StatutIndicator from "@/components/indicator/statut-indicator";
 
 export default function DataTableUsers() {
-  const { data: users = [] } = useGetUsers();
+  const { data: users = [] } = useFetchAllUsers();
+  const { mutate: unblockUserAccount } = useUnblockUserAccountMutation();
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [alertOpen, setAlertOpen] = React.useState(false);
+
+  const handleUnblockUser = (userId: number) => {
+    if (userId) {
+      setAlertOpen(false);
+      unblockUserAccount(userId);
+    }
+  };
 
   // Définir l'état de pagination avec une taille de page de 5
   const [pagination, setPagination] = React.useState<PaginationState>({
@@ -39,39 +53,61 @@ export default function DataTableUsers() {
 
   const userColumns: ColumnDef<DashboardUsersProps>[] = [
     {
-      accessorKey: "id",
-      header: () => <div>ID</div>,
+      accessorKey: "username",
+      header: ({ column }) => (
+        <SortButton column={column} title="Utilisateur" />
+      ),
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <div className="flex items-center justify-between p-4 w-full h-14">
-            <p>{user.id}</p>
+          <div className="relative">
+            <StatutIndicator userId={user.id} />
+            <UserThumbnail
+              imageSize="8"
+              image={user.profileImage}
+              username={user.username}
+              sex={user.sex}
+              textSize="text-sm sm:text-base"
+            />
           </div>
         );
       },
     },
     {
-      accessorKey: "username",
-      header: ({ column }) => (
-        <SortButton column={column} title="Utilisateurs" />
-      ),
+      accessorKey: "block",
+      header: () => <div>Bloqué</div>,
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <div className="flex justify-between p-4 w-full h-14">
-            <UserThumbnail
-              imageSize="6"
-              image={user.profileImage}
-              username={user.username}
-              sex={user.sex}
-            />
-            <div className="flex items-center justify-end gap-4">
-              <BlockUser
-                btnTrigger={<Icons.block width={18} height={18} />}
-                headerTitle="Bloquer l'utilisateur"
-                headerDescription={`Sélectionnez la durée et expliquez le motif pour lequel "${user.username}" doit être bloqué.`}
-                userIdToBlock={user.id}
-              />
+          <div className="flex items-center justify-between gap-4">
+            <p> {user.isCurrentlyBlocked ? "Oui" : "Non"}</p>
+            <div className="flex items-center justify-center gap-5">
+              {user.isCurrentlyBlocked ? (
+                <>
+                  <Button variant="linkForm" title="Débloquer l'utilisateur">
+                    <Icons.block
+                      width={18}
+                      height={18}
+                      onClick={() => setAlertOpen(true)}
+                    />
+                  </Button>
+                  <Alert
+                    open={alertOpen}
+                    setOpen={setAlertOpen}
+                    title={`Débloquer l'utilisateur "${user.username}"`}
+                    description={generateBlockDescription(user)}
+                    buttonTitle="Débloquer"
+                    action={() => handleUnblockUser(user.id)}
+                  />
+                </>
+              ) : (
+                <BlockUser
+                  btnTrigger={<Icons.block width={18} height={18} />}
+                  headerTitle="Bloquer l'utilisateur"
+                  headerDescription={`Sélectionnez la durée et expliquez le motif pour lequel "${user.username}" doit être bloqué.`}
+                  userIdToBlock={user.id}
+                />
+              )}
               <DeleteUser
                 btnTrigger={<Icons.delete width={18} height={18} />}
                 headerTitle="Supprimer l'utilisateur"

@@ -37,6 +37,7 @@ export const useSocketHandler = () => {
   //**********  ROOM **********/
   const invalidateRooms = () => {
     queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    queryClient.invalidateQueries({ queryKey: ["rooms-dashboard"] });
   };
 
   const handleUserInRoom = (userList: UserInfos[]) => {
@@ -78,6 +79,7 @@ export const useSocketHandler = () => {
     socket?.on("accountDeletedForUser", invalidateFriendsAndBlockedUsers);
     //**********  ROOM **********/
     socket?.on("roomCreated", invalidateRooms);
+    socket?.on("roomDeleted", invalidateRooms);
     socket?.on("getUserInRoom", handleUserInRoom);
     socket?.on("userStatusChanged", handleUserStatusChanged);
     //**********  FRIEND REQUEST **********/
@@ -96,6 +98,7 @@ export const useSocketHandler = () => {
       socket?.off("accountDeletedForUser", invalidateFriendsAndBlockedUsers);
       //**********  ROOM **********/
       socket?.off("roomCreated", invalidateRooms);
+      socket?.off("roomDeleted", invalidateRooms);
       socket?.off("getUserInRoom", handleUserInRoom);
       socket?.off("userStatusChanged", handleUserStatusChanged);
       //**********  FRIEND REQUEST **********/

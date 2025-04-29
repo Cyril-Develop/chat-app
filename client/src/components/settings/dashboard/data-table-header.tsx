@@ -15,7 +15,7 @@ export default function DataTableHeader<T>({ table }: DataTableHeadProps<T>) {
           className={cn("border-b-foreground/5 text-base")}
         >
           {headerGroup.headers.map((header) => (
-            <TableHead key={header.id}>
+            <TableHead key={header.id} className={cn("px-2 sm:px-4")}>
               {header.isPlaceholder
                 ? null
                 : flexRender(

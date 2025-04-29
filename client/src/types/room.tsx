@@ -14,6 +14,7 @@ export interface RoomListProps {
   rooms: Room[];
   roomName: string;
   onSelect: (room: Room) => void;
+  disabled?: boolean;
 }
 
 export interface CreateRoomFormProps {

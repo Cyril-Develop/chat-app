@@ -18,7 +18,7 @@ import Password from "@/pages/password/Password";
 import Terms from "@/pages/legal/Terms";
 import { GlobalNotifications } from "@/components/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
-import { useSocketHandler } from "@/hooks/socket-handler";
+import { useSocketHandler } from "@/socket/socket-handler";
 import { AppInitializer } from "./components/app-initializer";
 import CoockieBanner from "./components/coockie-banner";
 import SpyIndicator from "@/components/indicator/spy-indicator";

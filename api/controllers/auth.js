@@ -1,11 +1,10 @@
-const { PrismaClient } = require("@prisma/client");
+const prisma = require("../lib/prisma");
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
 const crypto = require("crypto");
 const transporter = require("../email/transporter");
-const validRegister = require("../email/templates/valid-register");
-const resetPassword = require("../email/templates/reset-password");
-const prisma = new PrismaClient();
+const validRegister = require("../email/templates/auth/valid-register");
+const resetPassword = require("../email/templates/auth/reset-password");
 
 //**********  REGISTER **********/
 exports.register = async (req, res) => {

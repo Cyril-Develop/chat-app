@@ -22,7 +22,7 @@ export function DeleteUser({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="alert" title="Supprimer l'utilisateur">{btnTrigger}</Button>
+        <Button variant="alert" title="Supprimer l'utilisateur" className={cn("p-0")}>{btnTrigger}</Button>
       </DialogTrigger>
 
       <DialogContent className={cn("sm:max-w-[425px]")}>

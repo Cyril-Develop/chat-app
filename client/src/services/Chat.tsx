@@ -70,11 +70,7 @@ export const createRoom = async (data: CreateRoomProps) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -101,17 +97,10 @@ export const updateRoomDescription = async (
         credentials: "include",
       }
     );
-
     const responseData = await response.json();
-
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
-
     return responseData;
   } catch (error: any) {
     throw error;
@@ -134,11 +123,7 @@ export const joinChat = async (data: JoinRoomProps) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -162,11 +147,7 @@ export const leaveRoom = async (roomId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -190,11 +171,7 @@ export const deleteRoom = async (roomId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {

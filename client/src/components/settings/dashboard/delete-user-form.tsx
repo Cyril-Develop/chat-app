@@ -90,7 +90,7 @@ const DeleteUserForm = ({
                   </Select>
                 </FormControl>
                 <FormDescription className="text-additional-info mt-2">
-                  Ce motif sera notifié à l'utilisateur.
+                  Ce motif sera notifié à l'utilisateur par e-mail.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

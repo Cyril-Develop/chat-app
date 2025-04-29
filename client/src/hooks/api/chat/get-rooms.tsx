@@ -1,6 +1,7 @@
 import { getRooms } from "@/services/Chat";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
+import { ApiError } from "@/types/api";
 import { handleApiError } from "@/utils/error-handler";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -21,7 +22,7 @@ const useGetRooms = () => {
 
   useEffect(() => {
     if (isError && error) {
-      handleApiError(error, {
+      handleApiError(error as ApiError, {
         room,
         setRoom,
         setAuthentication,

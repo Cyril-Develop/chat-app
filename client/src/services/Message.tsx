@@ -12,12 +12,9 @@ export const getMessages = async (roomId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
+    return responseData;
     return responseData;
   } catch (error: any) {
     throw error;
@@ -36,11 +33,7 @@ export const sendMessage = async (formData: FormData, roomId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -67,11 +60,7 @@ export const likeMessage = async (
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -98,11 +87,7 @@ export const dislikeMessage = async (
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -126,11 +111,7 @@ export const deleteMessage = async (messageId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -154,38 +135,7 @@ export const getPrivateMessages = async (contactId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
-    }
-    return responseData;
-  } catch (error: any) {
-    throw error;
-  }
-};
-
-export const fetchLinkPreview = async (url: string) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_REACT_APP_BASE_URL}/chat/link-preview`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-        credentials: "include",
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -210,11 +160,7 @@ export const sendPrivateMessage = async (
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -235,11 +181,7 @@ export const fetchUnreadPrivateMessages = async () => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {
@@ -278,11 +220,7 @@ export const deletePrivateMessage = async (messageId: number) => {
     );
     const responseData = await response.json();
     if (!response.ok) {
-      const error = {
-        message: responseData.error,
-        errorCode: responseData.errorCode,
-      };
-      throw error;
+      throw responseData;
     }
     return responseData;
   } catch (error: any) {

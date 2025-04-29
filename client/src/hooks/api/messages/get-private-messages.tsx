@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
 import { useRoomStore } from "@/store/room.store";
 import { handleApiError } from "@/utils/error-handler";
+import { ApiError } from "@/types/api";
 
 const useGetPrivateMessages = (contactId: number) => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
@@ -21,7 +22,7 @@ const useGetPrivateMessages = (contactId: number) => {
 
   useEffect(() => {
     if (isError && error) {
-      handleApiError(error, {
+      handleApiError(error as ApiError, {
         room,
         setRoom,
         setAuthentication,

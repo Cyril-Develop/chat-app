@@ -4,7 +4,10 @@ const checkToken = require("../middlewares/check-token");
 
 const adminCtrl = require("../controllers/admin");
 
-router.delete("/delete/:id", checkToken, adminCtrl.deleteUserAccount);
-router.post("/block/:id", checkToken, adminCtrl.blockUserAccount);
+router.get("/users", checkToken, adminCtrl.getAllUsers);
+router.get("/rooms", checkToken, adminCtrl.getAllRooms);
+router.post("/users/:id/block", checkToken, adminCtrl.blockUserAccount);
+router.post("/users/:id/unblock", checkToken, adminCtrl.unblockUserAccount);
+router.delete("/users/:id/delete", checkToken, adminCtrl.deleteUserAccount);
 
 module.exports = router;

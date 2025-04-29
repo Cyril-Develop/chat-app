@@ -1,5 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../lib/prisma");
 const fs = require("fs");
 const path = require("path");
 
@@ -7,9 +6,8 @@ const path = require("path");
 exports.getAllUsers = async (req, res) => {
   try {
     const userId = req.userId;
-    const userRole = req.role;
 
-    const usersQuery = {
+    const users = await prisma.user.findMany({
       where: {
         AND: [
           // Exclure les utilisateurs que l'utilisateur actuel a bloqués
@@ -91,14 +89,7 @@ exports.getAllUsers = async (req, res) => {
           },
         },
       },
-    };
-
-    // Si l'utilisateur est un administrateur, ne pas appliquer les filtres de blocage pour afficher tous les utilisateurs dans le Dashboard
-    if (userRole === "ADMIN") {
-      delete usersQuery.where;
-    }
-
-    const users = await prisma.user.findMany(usersQuery);
+    });
 
     res.status(200).json(users);
   } catch (err) {
@@ -172,13 +163,41 @@ exports.getCurrentUser = async (req, res) => {
             },
           },
         },
+        adminBlocks: {
+          where: {
+            isActive: true,
+            OR: [
+              { endDate: null }, // Blocages permanents
+              { endDate: { gt: new Date() } }, // Blocages temporaires non expirés
+            ],
+          },
+          select: {
+            id: true,
+            reason: true,
+            duration: true,
+            startDate: true,
+            endDate: true,
+            isActive: true,
+            admin: {
+              select: {
+                username: true,
+              },
+            },
+          },
+        },
       },
     });
 
     if (user) {
       const friendsList = user.friends.map((f) => f.friend);
+      const isCurrentlyBlocked =
+        user.adminBlocks?.some((block) => block.isActive) ?? false;
 
-      res.status(200).json({ ...user, friendsList });
+      res.status(200).json({
+        ...user,
+        friendsList,
+        isCurrentlyBlocked,
+      });
     } else {
       res.status(404).json({ error: "Utilisateur non trouvé" });
     }
@@ -516,7 +535,7 @@ exports.updateNotification = async (req, res) => {
 
 //********** SEND FRIEND REQUEST **********/
 exports.sendFriendRequest = async (req, res) => {
-  const { receiverId } = req.body;
+  const receiverId = Number(req.params.receiverId);
   const senderId = req.userId;
   const userRole = req.role;
 
@@ -660,7 +679,7 @@ exports.getFriendRequest = async (req, res) => {
 
 //********** ACCEPT FRIEND REQUEST **********/
 exports.acceptFriendRequest = async (req, res) => {
-  const { contactId } = req.body;
+  const contactId = Number(req.params.contactId);
   const userId = req.userId;
 
   if (!userId || !contactId) {
@@ -736,7 +755,7 @@ exports.acceptFriendRequest = async (req, res) => {
 
 //********** REJECT FRIEND REQUEST **********/
 exports.rejectFriendRequest = async (req, res) => {
-  const { contactId } = req.body;
+  const contactId = Number(req.params.contactId);
   const userId = req.userId;
 
   if (!userId || !contactId) {
@@ -790,7 +809,7 @@ exports.rejectFriendRequest = async (req, res) => {
 
 //********** REMOVE CONTACT **********/
 exports.removeContact = async (req, res) => {
-  const { contactId } = req.body;
+  const contactId = Number(req.params.contactId);
   const userId = req.userId;
 
   if (!userId || !contactId) {
@@ -857,7 +876,7 @@ exports.blockUser = async (req, res) => {
   const userId = req.userId;
   const userRole = req.role;
   // Celui qui est bloqué
-  const { contactId } = req.body;
+  const contactId = Number(req.params.contactId);
 
   if (userRole === "GUEST") {
     return res.status(403).json({
@@ -942,22 +961,20 @@ exports.getBlockedUsers = async (req, res) => {
 //********** UNBLOCK USER **********/
 exports.unblockUser = async (req, res) => {
   const userId = req.userId;
-  let blockedId = req.params.blockedId;
-  // convertir blockedId en entier
-  blockedId = Number(blockedId);
+  const contactId = Number(req.params.contactId);
 
   try {
     await prisma.blockedUser.deleteMany({
       where: {
         blockerId: userId,
-        blockedId: blockedId,
+        blockedId: contactId,
       },
     });
 
     res.json({
       message: "Utilisateur débloqué.",
       userId,
-      unblockedId: blockedId,
+      unblockedId: contactId,
     });
   } catch (error) {
     console.error(error);

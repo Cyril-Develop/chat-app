@@ -21,7 +21,7 @@ export default function DataTableBody<T>({
             data-state={row.getIsSelected() && "selected"}
           >
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id} className={cn("p-0")}>
+              <TableCell key={cell.id} className={cn("p-0 px-2 sm:px-4 h-14")}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </TableCell>
             ))}

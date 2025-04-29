@@ -1,6 +1,8 @@
 import { Icons } from "@/components/Icons";
 import { SkeletonInput } from "@/components/skeleton/skeleton";
 import { Button } from "@/components/ui/button";
+import StatutIndicator from "@/components/indicator/statut-indicator";
+import UserThumbnail from "@/components/user-thumbnail";
 import {
   Command,
   CommandEmpty,
@@ -14,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useLeaveRoomMutation } from "@/hooks/api/chat/leave-room";
+import { useRoomTransitionMutation } from "@/hooks/api/chat/room-transition";
 import useGetBlockedUsers from "@/hooks/api/user/get-blocked-users";
 import useGetFriends from "@/hooks/api/user/get-friends";
 import { useUnblockUserMutation } from "@/hooks/api/user/unblock-user";
@@ -35,7 +37,8 @@ export function Contact() {
   const { room } = useRoomStore();
   const { id: roomId } = room || {};
   const { contactId, setContactId } = useContactStore();
-  const { mutate: leaveRoom } = useLeaveRoomMutation();
+  const { transitionToRoom, isLoading: isTransitioning } =
+    useRoomTransitionMutation();
   const [open, setOpen] = useState(false);
   const { messages, clearNotificationsForContact } = useNotificationStore();
   const { mutate: unblockUser } = useUnblockUserMutation();
@@ -61,21 +64,36 @@ export function Contact() {
 
   const handlePrivateChat = useCallback(
     (friendId: number) => {
-      // Si l'utilisateur clique sur un contact et qu'il est dans une room, on la quitte
-      if (roomId) {
-        leaveRoom(roomId);
-      }
       // Si l'utilisateur clique sur le même contact, on ferme la discussion
       if (contactId === friendId) {
         setContactId(null);
+        // Si on était dans une room, on la quitte aussi
+        if (roomId) {
+          transitionToRoom(null, roomId);
+        }
       } else {
-        // Sinon, on ouvre la discussion avec le contact sélectionné et on vide les notifications
-        setContactId(friendId);
-        clearNotificationsForContact(friendId);
+        // Si l'utilisateur est dans une room, on la quitte d'abord
+        if (roomId) {
+          transitionToRoom(null, roomId).then(() => {
+            // Après avoir quitté la room, on ouvre la discussion avec le contact
+            setContactId(friendId);
+            clearNotificationsForContact(friendId);
+          });
+        } else {
+          // Si on est pas dans une room, on change simplement de contact
+          setContactId(friendId);
+          clearNotificationsForContact(friendId);
+        }
       }
       setOpen(false);
     },
-    [contactId, roomId, leaveRoom, setContactId]
+    [
+      contactId,
+      roomId,
+      transitionToRoom,
+      setContactId,
+      clearNotificationsForContact,
+    ]
   );
 
   const haveContact = (friends?.length || 0) > 0;
@@ -100,7 +118,7 @@ export function Contact() {
                 haveNewMessage &&
                   "bg-green-700 hover:bg-green-700/80 dark:bg-green-600 dark:hover:bg-green-600/80"
               )}
-              disabled={!shouldShowPopover}
+              disabled={!shouldShowPopover || isTransitioning}
             >
               {!haveContact && !haveBlockedContact ? (
                 "Aucun contact"
@@ -143,11 +161,16 @@ export function Contact() {
                               ? "Fermer la discussion"
                               : "Ouvrir la discussion"
                           }
+                          disabled={isTransitioning}
                         >
-                          <div className="flex items-center justify-between w-full">
-                            <span className={`${sexColor[friend.sex]}`}>
-                              {friend.username}
-                            </span>
+                          <div className="relative flex items-center justify-between w-full">
+                            <StatutIndicator userId={friend.id} />
+                            <UserThumbnail
+                              imageSize="8"
+                              username={friend.username}
+                              image={friend.profileImage}
+                              sex={friend.sex}
+                            />
                             {countUnreadMessages(friend.id) > 0 && (
                               <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">
                                 {countUnreadMessages(friend.id)}
@@ -176,6 +199,7 @@ export function Contact() {
                             className={cn("p-0")}
                             onClick={() => unblockUser(user.id)}
                             title="Débloquer le contact"
+                            disabled={isTransitioning}
                           >
                             <Icons.close height={16} width={16} />
                           </Button>

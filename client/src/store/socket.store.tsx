@@ -7,15 +7,17 @@ interface SocketStore {
   users: { userId: number; socketId: string; visible: boolean }[];
   connectSocket: (visible: boolean) => void;
   disconnectSocket: () => void;
+  visibleUsers: () => { userId: number; socketId: string; visible: boolean }[];
 }
 
-export const useSocketStore = create<SocketStore>((set) => {
+export const useSocketStore = create<SocketStore>((set, get) => {
   let socket = null as Socket | null;
 
   return {
     socket: null,
     visible: false,
     users: [],
+
     connectSocket: (visible) => {
       if (socket) return;
 
@@ -33,6 +35,18 @@ export const useSocketStore = create<SocketStore>((set) => {
         set({ users });
       });
 
+      // Met à jour la visibilité d'un utilisateur en temps réel
+      socket.on(
+        "userStatusChanged",
+        ({ userId, visible }: { userId: number; visible: boolean }) => {
+          set((state) => ({
+            users: state.users.map((user) =>
+              user.userId === userId ? { ...user, visible } : user
+            ),
+          }));
+        }
+      );
+
       socket.on("disconnect", () => {
         socket = null;
       });
@@ -43,6 +57,10 @@ export const useSocketStore = create<SocketStore>((set) => {
       socket?.disconnect();
       socket = null;
       set({ socket: null, users: [] });
+    },
+
+    visibleUsers: () => {
+      return get().users.filter((user) => user.visible);
     },
   };
 });

@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
 import { useNavigate } from "react-router-dom";
 import { handleApiError } from "@/utils/error-handler";
+import { ApiError } from "@/types/api";
 
 const useGetRequest = () => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
@@ -21,7 +22,7 @@ const useGetRequest = () => {
 
   useEffect(() => {
     if (isError && error) {
-      handleApiError(error, {
+      handleApiError(error as ApiError, {
         room,
         setRoom,
         setAuthentication,

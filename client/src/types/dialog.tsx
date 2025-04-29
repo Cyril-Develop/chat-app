@@ -11,6 +11,13 @@ export interface BlockUserProps {
   userIdToBlock: number;
 }
 
+export interface UnblockUserProps {
+  btnTrigger: React.ReactNode;
+  headerTitle: string;
+  headerDescription: string;
+  userId: number;
+}
+
 export interface DeleteUserProps {
   btnTrigger: React.ReactNode;
   headerTitle: string;

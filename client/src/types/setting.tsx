@@ -28,10 +28,25 @@ export interface DashboardUsersProps {
   profileImage: string;
   sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
   role: string;
+  isCurrentlyBlocked: boolean;
+  totalBlockCount: number;
+  adminBlocks: [
+    {
+      id: number;
+      isActive: boolean;
+      reason: "insultes" | "harcelement" | "spam" | "contenu_inapproprie";
+      duration: string;
+      startDate: string;
+      endDate: string;
+    }
+  ];
 }
 
 export interface DashboardRoomsProps {
   id: number;
   name: string;
-  createdBy: string;
+  isPrivate: boolean;
+  creator: {
+    username: string;
+  };
 }

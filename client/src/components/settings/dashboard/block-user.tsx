@@ -1,5 +1,4 @@
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-//import CreateRoomForm from "@/components/sidebar/room/create-room-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
@@ -22,7 +21,11 @@ export function BlockUser({
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="linkForm" title="Bloquer l'utilisateur">
+        <Button
+          variant="alert"
+          title="Bloquer l'utilisateur"
+          className={cn("p-0")}
+        >
           {btnTrigger}
         </Button>
       </DialogTrigger>

@@ -76,7 +76,7 @@ const BlockUserForm = ({
             name="duration"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="form-label">Durée du blocage</FormLabel>
+                <FormLabel className="form-label">Durée</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="form-input">
@@ -91,7 +91,7 @@ const BlockUserForm = ({
                   </Select>
                 </FormControl>
                 <FormDescription className="text-additional-info mt-2">
-                  Choisissez combien de temps l'utilisateur sera bloqué.
+                  Précisez la durée du blocage. 
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -102,7 +102,7 @@ const BlockUserForm = ({
             name="reason"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="form-label">Motif du blocage</FormLabel>
+                <FormLabel className="form-label">Motif</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="form-input">
@@ -121,7 +121,7 @@ const BlockUserForm = ({
                   </Select>
                 </FormControl>
                 <FormDescription className="text-additional-info mt-2">
-                  Ce motif sera notifié à l'utilisateur.
+                  Ce motif sera notifié à l'utilisateur par e-mail.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

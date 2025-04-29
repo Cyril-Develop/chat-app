@@ -9,10 +9,17 @@ export const useHandleLogout = () => {
   const { setAuthentication } = useAuthStore();
 
   const handleLogout = async () => {
-    logout();
-    setAuthentication(false, null);
-    queryClient.clear();
-    navigate("/chateo/login");
+    try {
+      // Attendre que la requête de déconnexion soit terminée
+      await logout();
+
+      // Puis procéder aux autres opérations
+      setAuthentication(false, null);
+      queryClient.clear();
+      navigate("/chateo/login");
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+    }
   };
 
   return handleLogout;

@@ -39,13 +39,10 @@ export function RoomSelector() {
 
     // Room supprimée
     const handleRoomDeleted = (deletedRoomId: number) => {
-      // Si c'est la room active, la réinitialiser
+      // Si c'est la room active, mettre à jour l'interface de l'utilisateur
       if (currentRoomId === deletedRoomId) {
         setRoom(null);
       }
-
-      // Invalider le cache pour forcer un refetch
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
     };
 
     // On met à jour la room active et rafraîchit la liste des rooms

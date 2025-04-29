@@ -14,7 +14,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 interface AlertProps {
   title: string;
-  description: string;
+  description: string | React.ReactNode;
   buttonTitle: string;
   trigger?: React.ReactNode;
   action (): void;
@@ -31,13 +31,18 @@ function Alert({
   open,
   setOpen,
 }: AlertProps) {
+  const isString = typeof description === "string";
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          {isString ? (
+            <AlertDialogDescription>{description}</AlertDialogDescription>
+          ) : (
+            <div className="text-sm text-muted-foreground">{description}</div>
+          )}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen?.(false)}>Annuler</AlertDialogCancel>

@@ -8,7 +8,7 @@ import {
   cleanupAudioProcessing,
   setupAudioProcessing,
 } from "@/utils/audio-processor";
-import { setupVoiceSocketHandlers } from "@/utils/voice-socket-handler";
+import { setupVoiceSocketHandlers } from "@/socket/voice-socket-handler";
 import { Peer } from "peerjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 

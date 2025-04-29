@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const checkToken = require("../middlewares/check-token");
+const checkBlockedUser = require("../middlewares/check-blocked-user");
 const multer = require("../middlewares/multer");
 const resize = require("../middlewares/resize/image-message");
 
@@ -9,16 +10,16 @@ const messageCtrl = require("../controllers/chat/message");
 
 router.get("/", checkToken, chatCtrl.getChatRooms);
 router.get("/:id", checkToken, chatCtrl.getChatRoom);
-router.post("/create", checkToken, chatCtrl.createChatRoom);
-router.patch("/room/:roomId/description", checkToken, chatCtrl.updateChatRoom);
-router.post('/join', checkToken, chatCtrl.joinChatRoom);
+router.post("/create", checkToken, checkBlockedUser, chatCtrl.createChatRoom);
+router.patch("/room/:roomId/description", checkToken, checkBlockedUser, chatCtrl.updateChatRoom);
+router.post('/join', checkToken, checkBlockedUser, chatCtrl.joinChatRoom);
 router.post('/leave', checkToken, chatCtrl.leaveChatRoom);
-router.delete('/', checkToken, chatCtrl.deleteChatRoom);
+router.delete('/', checkToken, checkBlockedUser, chatCtrl.deleteChatRoom);
 
 //********** MESSAGE ROOM **********/
-router.get("/room/:roomId/message", checkToken, messageCtrl.getRoomMessage);
-router.post("/room/:roomId/message", checkToken, multer, resize, messageCtrl.sendRoomMessage);
-router.delete("/room/message/:messageId", checkToken, messageCtrl.deleteRoomMessage);
+router.get("/room/:roomId/message", checkToken, checkBlockedUser, messageCtrl.getRoomMessage);
+router.post("/room/:roomId/message", checkToken, checkBlockedUser, multer, resize, messageCtrl.sendRoomMessage);
+router.delete("/room/message/:messageId", checkToken, checkBlockedUser, messageCtrl.deleteRoomMessage);
 
 //********** MESSAGE PRIVATE **********/
 router.get("/private/:contactId/message", checkToken, messageCtrl.getPrivateMessages);

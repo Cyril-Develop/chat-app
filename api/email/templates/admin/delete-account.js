@@ -21,7 +21,7 @@ const deleteAccountTemplate = (username, email, reason) => {
       <a href="mailto:${email}" style="color: #007bff; text-decoration: none;">${email}</a> a été supprimé définitivement par notre équipe de modération.
     </p>
     <p style="font-size: 16px; line-height: 1.5;">
-      <strong>Motif de la suppression :</strong><br>
+      <strong>Motif :</strong><br>
       <span style="background-color: #ffffff; padding: 10px; border-radius: 4px; border: 1px solid #ddd; display: block; margin-top: 10px;">
         ${selectedReason}
       </span>

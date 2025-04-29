@@ -70,7 +70,10 @@ export const terms = [
             (publics/privés)
           </li>
           <li>Messages privés entre utilisateurs</li>
-          <li>Appels audio et vidéo (à venir) en direct dans les salons privés et conversations privées</li>
+          <li>
+            Appels audio et vidéo (à venir) en direct dans les salons privés et
+            conversations privées
+          </li>
           <li>
             Réglages audio personnalisables (volumes d'entrée/sortie et test de
             microphone)
@@ -105,26 +108,24 @@ export const terms = [
     text: (
       <>
         <p>En utilisant Chateo, vous vous engagez à :</p>
-        <ul>
+        <ul className="list-disc pl-5">
+          <li>Ne pas utiliser Chateo à des fins illégales ou frauduleuses.</li>
           <li>
-            🚫 Ne pas utiliser Chateo à des fins illégales ou frauduleuses.
-          </li>
-          <li>
-            🚫 Ne pas diffuser des contenus haineux, offensants ou incitant à la
+            Ne pas diffuser des contenus haineux, offensants ou incitant à la
             violence.
           </li>
-          <li>🚫 Ne pas harceler, menacer ou nuire à d'autres utilisateurs.</li>
-          <li>🚫 Ne pas usurper l'identité d'un autre utilisateur.</li>
+          <li> Ne pas harceler, menacer ou nuire à d'autres utilisateurs.</li>
+          <li> Ne pas usurper l'identité d'un autre utilisateur.</li>
           <li>
-            🚫 Ne pas tenter de pirater ou contourner les mesures de sécurité de
-            la plateforme.
+            Ne pas tenter de pirater ou contourner les mesures de sécurité de la
+            plateforme.
           </li>
           <li>
-            🚫 Ne pas partager de contenu à caractère pornographique ou
+            Ne pas partager de contenu à caractère pornographique ou
             inapproprié.
           </li>
           <li>
-            🚫 Ne pas utiliser de programmes automatisés pour interagir avec la
+            Ne pas utiliser de programmes automatisés pour interagir avec la
             plateforme.
           </li>
         </ul>
@@ -138,14 +139,34 @@ export const terms = [
       <p>
         Nous nous réservons le droit de modérer les contenus publiés sur Chateo
         et de prendre des mesures contre les utilisateurs qui ne respectent pas
-        ces CGU. Ces mesures peuvent inclure l'avertissement, la suspension
-        temporaire ou permanente du compte. Nos modérateurs surveillent les
-        comportements suspects.
+        ces CGU. Ces mesures peuvent inclure la suspension temporaire ou
+        permanente du compte. Nos modérateurs surveillent les comportements
+        suspects.
       </p>
     ),
   },
   {
     number: 9,
+    title: "Conséquences du blocage de compte",
+    text: (
+      <>
+        <p>
+          En cas de blocage de votre compte, vous pouvez toujours vous connecter
+          et discuter avec vos amis mais les fonctionnalités suivantes ne sont
+          plus accessibles :
+        </p>
+        <ul className="list-disc pl-5">
+          <li>Participer aux salons de discussion publics ou privés.</li>
+          <li>
+            Utiliser les fonctionnalités sociales (ajout d'amis, appels, etc.)
+          </li>
+          <li>Modifier votre profil ou vos paramètres de compte.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    number: 10,
     title: "Protection des données",
     text: (
       <>
@@ -166,7 +187,7 @@ export const terms = [
     ),
   },
   {
-    number: 10,
+    number: 11,
     title: "Propriété intellectuelle",
     text: (
       <p>
@@ -179,7 +200,7 @@ export const terms = [
     ),
   },
   {
-    number: 11,
+    number: 12,
     title: "Responsabilité",
     text: (
       <>
@@ -197,7 +218,7 @@ export const terms = [
     ),
   },
   {
-    number: 12,
+    number: 13,
     title: "Résiliation",
     text: (
       <p>
@@ -210,7 +231,7 @@ export const terms = [
     ),
   },
   {
-    number: 13,
+    number: 14,
     title: "Contact",
     text: (
       <p>

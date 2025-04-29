@@ -1,4 +1,3 @@
-import { useJoinRoomMutation } from "@/hooks/api/chat/join-chat";
 import { createRoom } from "@/services/Chat";
 import { useAuthStore } from "@/store/auth.store";
 import { useRoomStore } from "@/store/room.store";
@@ -8,24 +7,23 @@ import { CreateRoomProps } from "@/types/room";
 import { handleApiError } from "@/utils/error-handler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useRoomTransitionMutation } from "@/hooks/api/chat/room-transition";
 
 export const useCreateRoomMutation = () => {
   const { room, setRoom } = useRoomStore();
-  const { mutate: joinRoom } = useJoinRoomMutation();
   const { socket } = useSocketStore();
   const navigate = useNavigate();
   const { setAuthentication } = useAuthStore();
   const queryClient = useQueryClient();
+  const { transitionToRoom } = useRoomTransitionMutation();
 
   return useMutation({
     mutationFn: (data: CreateRoomProps) => createRoom(data),
     onSuccess: (data) => {
-      joinRoom({
-        roomId: data.id,
-        roomName: data.name,
-        password: data.password,
-      });
-      setRoom({ id: data.id, name: data.name });
+      transitionToRoom(
+        { roomId: data.id, roomName: data.name, password: data.password },
+        room?.id
+      );
       socket?.emit("createRoom", data.createdBy);
     },
     onError: (error: ApiError) => {

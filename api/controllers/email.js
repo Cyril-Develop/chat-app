@@ -1,5 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../lib/prisma");
 const notificationTemplate = require("../email/templates/notification");
 const contactTemplate = require("../email/templates/contact");
 const transporter = require("../email/transporter");

@@ -1,8 +1,7 @@
 import { JoinRoom } from "@/components/dialog/join-room";
 import RoomList from "@/components/sidebar/room/room-list";
 import { CommandSeparator } from "@/components/ui/command";
-import { useLeaveRoomMutation } from "@/hooks/api/chat/leave-room";
-import { useJoinRoomMutation } from "@/hooks/api/chat/join-chat";
+import { useRoomTransitionMutation } from "@/hooks/api/chat/room-transition";
 import { useRoomStore } from "@/store/room.store";
 import { Room, RoomProviderProps } from "@/types/room";
 import { useEffect, useState } from "react";
@@ -14,8 +13,7 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
   } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const currentRoomId = useRoomStore((state) => state.room?.id);
-  const { mutate: leaveRoom } = useLeaveRoomMutation();
-  const { mutate: joinRoom } = useJoinRoomMutation();
+  const { transitionToRoom, isLoading } = useRoomTransitionMutation();
 
   useEffect(() => {
     if (!isDialogOpen) {
@@ -25,9 +23,11 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
 
   const handlePublicRoomSelect = (room: Room) => {
     if (currentRoomId === room.id) {
-      leaveRoom(room.id);
+      // On quitte simplement la room active sans en rejoindre une nouvelle
+      transitionToRoom(null, room.id);
     } else {
-      joinRoom({ roomId: room.id, roomName: room.name });
+      // On quitte la room active (si nécessaire) et on rejoint la nouvelle room
+      transitionToRoom({ roomId: room.id, roomName: room.name }, currentRoomId);
     }
     setOpen(false);
   };
@@ -41,7 +41,7 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
       setIsDialogOpen(true);
     } else {
       setOpen(false);
-      leaveRoom(room.id);
+      transitionToRoom(null, room.id);
     }
   };
 
@@ -58,6 +58,7 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
           rooms={publicRooms}
           onSelect={handlePublicRoomSelect}
           roomName={roomName}
+          disabled={isLoading}
         />
       )}
       <CommandSeparator />
@@ -69,6 +70,7 @@ const RoomProvider = ({ rooms, roomName, setOpen }: RoomProviderProps) => {
           rooms={privateRooms}
           onSelect={handlePrivateRoomSelect}
           roomName={roomName}
+          disabled={isLoading}
         />
       )}
       {selectedPrivateRoom && (

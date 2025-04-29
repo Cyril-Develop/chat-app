@@ -1,5 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../../lib/prisma");
 
 //**********  CREATE CHAT ROOM **********/
 exports.createChatRoom = async (req, res) => {
@@ -115,44 +114,39 @@ exports.joinChatRoom = async (req, res) => {
     if (chatRoom.isPrivate && chatRoom.password !== password) {
       return res.status(403).json({ error: "Mot de passe incorrect." });
     }
-    // Vérifier si l'utilisateur est déjà membre de ce salon
-    const existingMembership = await prisma.userChatRoom.findFirst({
-      where: { userId: userId, chatRoomId: roomId },
-    });
 
-    if (existingMembership) {
-      // Retirer l'utilisateur du salon
-      await prisma.userChatRoom.delete({
-        where: {
-          userId_chatRoomId: {
-            userId: userId,
-            chatRoomId: roomId,
-          },
-        },
-      });
-      return res
-        .status(200)
-        .json({ message: "Vous avez quitté le salon de discussion." });
-    } else {
-      // retirer l'utilisateur de tous les autres salons de discussion
-      await prisma.userChatRoom.deleteMany({
-        where: { userId: userId },
-      });
-
-      // Ajouter l'utilisateur au nouveau salon de discussion via la table de jonction UserChatRoom
-      await prisma.userChatRoom.create({
-        data: {
+    // Vérifier si l'utilisateur est déjà membre de cette salle
+    const existingMembership = await prisma.userChatRoom.findUnique({
+      where: {
+        userId_chatRoomId: {
           userId: userId,
           chatRoomId: roomId,
         },
-      });
+      },
+    });
 
+    // Si l'utilisateur est déjà membre, renvoyer simplement une réponse réussie
+    if (existingMembership) {
       return res.status(200).json({
-        message: `Vous avez rejoint le salon de discussion "${chatRoom.name}".`,
+        message: `Vous êtes déjà membre du salon "${chatRoom.name}".`,
         roomId: chatRoom.id,
         roomName: chatRoom.name,
       });
     }
+
+    // Ajouter l'utilisateur au nouveau salon de discussion via la table de jonction UserChatRoom
+    await prisma.userChatRoom.create({
+      data: {
+        userId: userId,
+        chatRoomId: roomId,
+      },
+    });
+
+    return res.status(200).json({
+      message: `Vous avez rejoint le salon de discussion "${chatRoom.name}".`,
+      roomId: chatRoom.id,
+      roomName: chatRoom.name,
+    });
   } catch (error) {
     console.error("Erreur lors de la tentative de rejoindre le salon:", error);
     res.status(500).json({ error: "Impossible de rejoindre le salon." });

@@ -1,27 +1,28 @@
-import { fetchLinkPreview } from "@/services/Message";
+import { fetchAllUsers } from "@/services/Admin";
+import { useAuthStore } from "@/store/auth.store";
+import { useRoomStore } from "@/store/room.store";
+import { ApiError } from "@/types/api";
+import { handleApiError } from "@/utils/error-handler";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
-import { useRoomStore } from "@/store/room.store";
-import { handleApiError } from "@/utils/error-handler";
 
-const useGetLinkPreview = (url: string) => {
+const useFetchAllUsers = () => {
   const { isAuthenticated, setAuthentication } = useAuthStore();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["link-preview", url],
-    queryFn: () => fetchLinkPreview(url),
+    queryKey: ["users-dashboard"],
+    queryFn: async () => fetchAllUsers(),
     enabled: isAuthenticated,
     retry: false,
   });
 
   useEffect(() => {
     if (isError && error) {
-      handleApiError(error, {
+      handleApiError(error as ApiError, {
         room,
         setRoom,
         setAuthentication,
@@ -31,7 +32,7 @@ const useGetLinkPreview = (url: string) => {
     }
   }, [isError, error]);
 
-  return { data, isLoading, isError };
+  return { data, isLoading };
 };
 
-export default useGetLinkPreview;
+export default useFetchAllUsers;

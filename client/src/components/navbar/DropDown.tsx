@@ -24,7 +24,7 @@ import { useInstallApp } from "@/hooks/install-app";
 const DropDown = () => {
   const navigate = useNavigate();
   const handleLogout = useHandleLogout();
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const { theme } = useTheme();
   const { visible, setVisible } = useAuthStore();
   const { isInstallable, promptInstall } = useInstallApp();

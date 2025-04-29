@@ -1,8 +1,8 @@
 import { Icons } from "@/components/Icons";
 import StatutIndicator from "@/components/indicator/statut-indicator";
+import UserThumbnail from "@/components/user-thumbnail";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import UserThumbnail from "@/components/user-thumbnail";
 import { cn } from "@/lib/utils";
 import { useRoomStore } from "@/store/room.store";
 import { useVoiceStore } from "@/store/voice.store";
@@ -40,7 +40,7 @@ export function RoomUsers() {
                       className="flex items-center justify-between"
                     >
                       <div className="flex flex-col gap-4 relative">
-                        <StatutIndicator />
+                        <StatutIndicator userId={user.id} />
                         <UserThumbnail
                           imageSize="8"
                           username={user.username}

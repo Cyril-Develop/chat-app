@@ -5,6 +5,7 @@ export interface FriendsListProps {
 export interface FriendProps {
   id: number;
   username: string;
+  profileImage: string;
   sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
 }
 

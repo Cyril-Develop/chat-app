@@ -15,9 +15,9 @@ export const Icons = {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className="lucide lucide-external-link-icon lucide-external-link"
     >
       <path d="M15 3h6v6" />
@@ -764,11 +764,12 @@ export const Icons = {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="lucide lucide-circle-x"
+      className="lucide lucide-user-round-x-icon lucide-user-round-x"
     >
-      <circle cx="12" cy="12" r="10" />
-      <path d="m15 9-6 6" />
-      <path d="m9 9 6 6" />
+      <path d="M2 21a8 8 0 0 1 11.873-7" />
+      <circle cx="10" cy="8" r="5" />
+      <path d="m17 17 5 5" />
+      <path d="m22 17-5 5" />
     </svg>
   ),
   pen: ({ width = 24, height = 24, fill, stroke, ...props }: IconProps) => (

@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 export const usePrivateChat = (contactId: number) => {
   const { data: fetchedContactInfos, isLoading } = useGetUserById(contactId);
   const { data: privateMessages } = useGetPrivateMessage(contactId);
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
 
   // --- SOCKET HANDLERS ---

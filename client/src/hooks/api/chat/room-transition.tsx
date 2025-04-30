@@ -17,13 +17,12 @@ import useGetUser from "@/hooks/api/user/get-current-user";
  */
 export const useRoomTransitionMutation = () => {
   const { room, setRoom } = useRoomStore();
-  const { socket } = useSocketStore();
-  const visible = useAuthStore((state) => state.visible);
+  const socket = useSocketStore((state) => state.socket);
+  const { visible, setAuthentication } = useAuthStore();
   const { data: currentUser } = useGetUser();
   const { contactId, setContactId } = useContactStore();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
 
   // Mutation pour quitter un salon
   const leaveMutation = useMutation({

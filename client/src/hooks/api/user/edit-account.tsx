@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export const useEditAccountMutation = () => {
   const queryClient = useQueryClient();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
 

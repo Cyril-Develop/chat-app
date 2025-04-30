@@ -15,8 +15,8 @@ export const useDeleteAccountMutation = () => {
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
-  const { socket } = useSocketStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
+  const socket = useSocketStore((state) => state.socket);
 
   return useMutation({
     mutationFn: () => deleteAccount(),

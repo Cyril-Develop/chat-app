@@ -10,9 +10,9 @@ import { useNavigate } from "react-router-dom";
 
 export const useUpdateRoomDescriptionMutation = () => {
   const { room, setRoom } = useRoomStore();
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const queryClient = useQueryClient();
 
   return useMutation({

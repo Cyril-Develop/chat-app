@@ -9,10 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 const useGetRoom = (roomId: number) => {
   const { room, setRoom } = useRoomStore();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, setAuthentication } = useAuthStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { setAuthentication } = useAuthStore();
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["room", roomId],

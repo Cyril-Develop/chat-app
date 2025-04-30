@@ -10,11 +10,13 @@ import { useNavigate } from "react-router-dom";
 
 export const useRejectFriendRequestMutation = () => {
   const queryClient = useQueryClient();
-  const { clearRequestFromSender } = useNotificationStore();
+  const clearRequestFromSender = useNotificationStore(
+    (state) => state.clearNotificationsForContact
+  );
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
-  const { socket } = useSocketStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
+  const socket = useSocketStore((state) => state.socket);
 
   return useMutation({
     mutationFn: (contactId: number) => rejectFriendRequest(contactId),

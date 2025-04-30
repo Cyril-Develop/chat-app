@@ -13,10 +13,10 @@ import { DeleteUserAccountParams } from "@/types/admin";
 
 export const useDeleteUserAccountMutation = () => {
   const queryClient = useQueryClient();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
 
   return useMutation({
     mutationFn: ({ userId, reason }: DeleteUserAccountParams) =>

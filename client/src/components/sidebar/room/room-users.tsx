@@ -1,5 +1,4 @@
 import { Icons } from "@/components/Icons";
-import StatutIndicator from "@/components/indicator/statut-indicator";
 import UserThumbnail from "@/components/user-thumbnail";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -39,15 +38,12 @@ export function RoomUsers() {
                       key={user.id}
                       className="flex items-center justify-between"
                     >
-                      <div className="flex flex-col gap-4 relative">
-                        <StatutIndicator userId={user.id} />
-                        <UserThumbnail
-                          imageSize="8"
-                          username={user.username}
-                          image={user.profileImage}
-                          sex={user.sex}
-                        />
-                      </div>
+                      <UserThumbnail
+                        userId={user.id}
+                        username={user.username}
+                        sex={user.sex}
+                        image={user.profileImage}
+                      />
                       {isSpeaking && <Icons.volumeUp />}
                     </div>
                   );

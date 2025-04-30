@@ -1,5 +1,4 @@
 import PrivateChatMenu from "@/components/chat/private-chat-menu";
-import StatutIndicator from "@/components/indicator/statut-indicator";
 import { PrivateChatHeaderProps } from "@/types/chat";
 import UserThumbnail from "@/components/user-thumbnail";
 import { linkifyText } from "@/utils/linkify-text";
@@ -8,13 +7,13 @@ const PrivateChatHeader = ({ contactInfos }: PrivateChatHeaderProps) => {
   return (
     <section className="flex flex-col space-y-1 text-md pb-2 sm:pb-4">
       <div className="flex gap-2">
-        <div className="flex justify-between relative w-full">
-          <StatutIndicator userId={contactInfos.id} />
+        <div className="flex justify-between w-full">
           <UserThumbnail
-            imageSize="9"
+            userId={contactInfos.id}
             username={contactInfos.username}
-            image={contactInfos.profileImage}
             sex={contactInfos.sex}
+            image={contactInfos.profileImage}
+            imageSize="10"
             textSize="text-xl"
           />
           <PrivateChatMenu />

@@ -9,8 +9,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 export const useSendPrivateMessageMutation = () => {
-  const { socket } = useSocketStore();
-  const { setAuthentication } = useAuthStore();
+  const socket = useSocketStore((state) => state.socket);
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const { mutate: sendNotificationByEmailMutation } =
     useSendNotificationByEmailMutation();
   const queryClient = useQueryClient();

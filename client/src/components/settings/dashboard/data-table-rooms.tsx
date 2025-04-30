@@ -127,7 +127,7 @@ export default function DataTableRooms() {
           placeholder="Rechercher un salon..."
         />
       </div>
-      <div className="rounded-md border border-foreground/5 max-h-[315px]">
+      <div className="rounded-md border border-foreground/5 max-h-[330px]">
         <Table>
           <DataTableHeader table={table} />
           <DataTableBody table={table} columnsLength={roomColumns.length} />

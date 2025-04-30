@@ -26,7 +26,6 @@ import Alert from "@/components/Alert";
 import { Button } from "@/components/ui/button";
 import { useUnblockUserAccountMutation } from "@/hooks/api/admin/unblock-user-account";
 import { generateBlockDescription } from "@/utils/generate-alert-description";
-import StatutIndicator from "@/components/indicator/statut-indicator";
 
 export default function DataTableUsers() {
   const { data: users = [] } = useFetchAllUsers();
@@ -60,16 +59,13 @@ export default function DataTableUsers() {
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <div className="relative">
-            <StatutIndicator userId={user.id} />
-            <UserThumbnail
-              imageSize="8"
-              image={user.profileImage}
-              username={user.username}
-              sex={user.sex}
-              textSize="text-sm sm:text-base"
-            />
-          </div>
+          <UserThumbnail
+            userId={user.id}
+            username={user.username}
+            sex={user.sex}
+            image={user.profileImage}
+            textSize="text-sm sm:text-base"
+          />
         );
       },
     },
@@ -149,7 +145,7 @@ export default function DataTableUsers() {
           placeholder="Rechercher un utilisateur..."
         />
       </div>
-      <div className="rounded-md border border-foreground/5 max-h-[315px]">
+      <div className="rounded-md border border-foreground/5 max-h-[330px]">
         <Table>
           <DataTableHeader table={table} />
           <DataTableBody table={table} columnsLength={userColumns.length} />

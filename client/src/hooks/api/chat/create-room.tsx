@@ -11,9 +11,9 @@ import { useRoomTransitionMutation } from "@/hooks/api/chat/room-transition";
 
 export const useCreateRoomMutation = () => {
   const { room, setRoom } = useRoomStore();
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const queryClient = useQueryClient();
   const { transitionToRoom } = useRoomTransitionMutation();
 

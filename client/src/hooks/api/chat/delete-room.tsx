@@ -11,8 +11,8 @@ import { useNavigate } from "react-router-dom";
 
 export const useDeleteRoomMutation = () => {
   const queryClient = useQueryClient();
-  const { socket } = useSocketStore();
-  const { setAuthentication } = useAuthStore();
+  const socket = useSocketStore((state) => state.socket);
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
 

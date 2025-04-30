@@ -128,7 +128,6 @@ exports.joinChatRoom = async (req, res) => {
     // Si l'utilisateur est déjà membre, renvoyer simplement une réponse réussie
     if (existingMembership) {
       return res.status(200).json({
-        message: `Vous êtes déjà membre du salon "${chatRoom.name}".`,
         roomId: chatRoom.id,
         roomName: chatRoom.name,
       });

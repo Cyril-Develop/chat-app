@@ -24,7 +24,7 @@ export function RoomSelector() {
   const { data: fetchedRooms, isLoading } = useGetRooms();
   const { setRoom, room } = useRoomStore();
   const { id: currentRoomId, name: currentRoomName } = room || {};
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
 
   // État local pour la gestion du Popover

@@ -10,11 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { useSocketStore } from "@/store/socket.store";
 
 export const useUnblockUserMutation = () => {
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
 
   return useMutation({
     mutationFn: (blockedId: number | null) => unblockUser(blockedId),

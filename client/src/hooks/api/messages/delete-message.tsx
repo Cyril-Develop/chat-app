@@ -12,10 +12,10 @@ import { useNavigate } from "react-router-dom";
 export const useDeleteMessageMutation = () => {
   const { room, setRoom } = useRoomStore();
   const { id: roomId } = room || {};
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
 
   return useMutation({
     mutationFn: (messageId: number) => deleteMessage(messageId),

@@ -11,7 +11,7 @@ import MessageContent from "@/components/message/message-content";
 import MessageFooter from "@/components/message/message-footer";
 
 const Message = ({ message, type }: MessageProps) => {
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const { data: currentUser } = useGetUser();
   const { mutate: deleteMessageInRoom } = useDeleteMessageMutation();
   const { mutate: deletePrivateMessage } = useDeletePrivateMessageMutation();
@@ -111,7 +111,6 @@ const Message = ({ message, type }: MessageProps) => {
         username={message.user.username}
         sex={message.user.sex}
         imageSize="6"
-        textSize="text-base"
       />
 
       <MessageContent message={message} isMyMessage={isMyMessage} />

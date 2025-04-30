@@ -12,7 +12,7 @@ import { BlockUserAccountParams } from "@/types/admin";
 
 export const useBlockUserAccountMutation = () => {
   const queryClient = useQueryClient();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
 

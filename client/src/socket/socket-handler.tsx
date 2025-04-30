@@ -6,7 +6,7 @@ import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
 
 // Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
   const roomId = useRoomStore((state) => state.room?.id);
   const { setUsersInRoom, updateUserInRoom } = useRoomStore();

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const useHandleLogout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
 
   const handleLogout = async () => {
     try {

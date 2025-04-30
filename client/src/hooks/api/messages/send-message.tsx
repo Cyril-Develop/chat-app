@@ -9,11 +9,11 @@ import { handleApiError } from "@/utils/error-handler";
 import { SendMessageSocketProps } from "@/types/message";
 
 export const useSendMessageMutation = () => {
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const { room, setRoom } = useRoomStore();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
 
   return useMutation({
     mutationFn: ({

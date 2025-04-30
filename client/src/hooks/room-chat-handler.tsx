@@ -9,9 +9,9 @@ import { useRoomStore } from "@/store/room.store";
 export const useRoomChat = (roomId: number) => {
   const { data: fetchedRoom, isLoading } = useGetRoom(roomId);
   const { data: roomMessages } = useGetRoomMessages(roomId);
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
-  const { updateUserInRoom } = useRoomStore();
+  const updateUserInRoom = useRoomStore((state) => state.updateUserInRoom);
 
   // --- SOCKET HANDLERS ---
   const handleDeleteMessage = () => {

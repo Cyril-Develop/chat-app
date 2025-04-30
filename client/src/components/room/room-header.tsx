@@ -12,7 +12,7 @@ const RoomHeader = ({ room, currentUser }: RoomHeaderProps) => {
         <div className="flex justify-between items-center gap-4">
           <h1 className="text-xl">{room?.name}</h1>
           <div className="flex items-center gap-4">
-            {room.isPrivate && (
+            {room?.isPrivate && (
               <VoiceChat
                 roomId={room.id}
                 userId={currentUser?.id}

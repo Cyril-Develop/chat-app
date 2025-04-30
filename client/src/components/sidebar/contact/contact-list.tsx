@@ -1,7 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { SkeletonInput } from "@/components/skeleton/skeleton";
 import { Button } from "@/components/ui/button";
-import StatutIndicator from "@/components/indicator/statut-indicator";
 import UserThumbnail from "@/components/user-thumbnail";
 import {
   Command,
@@ -33,9 +32,8 @@ export function Contact() {
   const { data: blockedUsers, isLoading: loadingBlockedUsers } =
     useGetBlockedUsers();
   const { data: friends, isLoading: loadingFriends } = useGetFriends();
-  const { socket } = useSocketStore();
-  const { room } = useRoomStore();
-  const { id: roomId } = room || {};
+  const socket = useSocketStore((state) => state.socket);
+  const roomId = useRoomStore((state) => state.room?.id);
   const { contactId, setContactId } = useContactStore();
   const { transitionToRoom, isLoading: isTransitioning } =
     useRoomTransitionMutation();
@@ -163,13 +161,13 @@ export function Contact() {
                           }
                           disabled={isTransitioning}
                         >
-                          <div className="relative flex items-center justify-between w-full">
-                            <StatutIndicator userId={friend.id} />
+                          <div className="flex items-center justify-between w-full">
                             <UserThumbnail
-                              imageSize="8"
+                              userId={friend.id}
                               username={friend.username}
-                              image={friend.profileImage}
                               sex={friend.sex}
+                              image={friend.profileImage}
+                              textSize="text-sm sm:text-base"
                             />
                             {countUnreadMessages(friend.id) > 0 && (
                               <span className="bg-green-700 dark:bg-green-600 text-primary-foreground font-semibold rounded-full w-5 h-5 flex items-center justify-center text-xs">

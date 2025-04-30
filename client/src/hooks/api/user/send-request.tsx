@@ -11,10 +11,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 export const useSendRequestMutation = () => {
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const { mutate: sendNotificationByEmailMutation } =
     useSendNotificationByEmailMutation();
-  const { setAuthentication } = useAuthStore();
+  const setAuthentication = useAuthStore((state) => state.setAuthentication);
   const queryClient = useQueryClient();
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();

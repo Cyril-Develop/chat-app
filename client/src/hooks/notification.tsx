@@ -7,10 +7,10 @@ import { useContactStore } from "@/store/contact.store";
 import { useLocation } from "react-router-dom";
 
 export const useGlobalNotifications = () => {
-  const { socket } = useSocketStore();
+  const socket = useSocketStore((state) => state.socket);
   const { messages, addNotification, clearNotificationsForContact } =
     useNotificationStore();
-  const { contactId } = useContactStore();
+  const contactId = useContactStore((state) => state.contactId);
   const currentUserId = useAuthStore((state) => state.user?.id);
   const location = useLocation();
   const isOnChatPage = location.pathname === "/chateo/chat";

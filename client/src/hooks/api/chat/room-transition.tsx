@@ -66,7 +66,8 @@ export const useRoomTransitionMutation = () => {
         currentUser.username,
         currentUser.sex,
         currentUser.profileImage,
-        visible
+        visible,
+        currentUser.role,
       );
     },
     onError: (error: ApiError) => {

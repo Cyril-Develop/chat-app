@@ -31,7 +31,8 @@ export const AppInitializer = () => {
         currentUser.username,
         currentUser.sex,
         currentUser.profileImage,
-        visible
+        visible,
+        currentUser.role
       );
     }
   }, [socket, roomId, currentUser, visible]);

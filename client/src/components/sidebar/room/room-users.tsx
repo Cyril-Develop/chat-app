@@ -43,6 +43,7 @@ export function RoomUsers() {
                         username={user.username}
                         sex={user.sex}
                         image={user.profileImage}
+                        role={user.role}
                       />
                       {isSpeaking && <Icons.volumeUp />}
                     </div>

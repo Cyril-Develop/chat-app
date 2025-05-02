@@ -15,7 +15,7 @@ interface HoverMessageProps {
   }[];
 }
 
-export function HoverMessage({ trigger, users }: HoverMessageProps) {
+export function HoverMessageFooter({ trigger, users }: HoverMessageProps) {
   // Si la liste des utilisateurs est vide, on ne retourne pas le composant
   if (users?.length === 0) return null;
 
@@ -23,7 +23,7 @@ export function HoverMessage({ trigger, users }: HoverMessageProps) {
   const recentLikers = users.slice(-3);
 
   return (
-    <HoverCard>
+    <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger asChild>
         <span className="leading-none">{trigger}</span>
       </HoverCardTrigger>

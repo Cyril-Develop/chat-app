@@ -1,17 +1,8 @@
 const { Server } = require("socket.io");
 require("dotenv").config();
-const https = require("https");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
-};
-
-const server = https.createServer(options);
-
-const io = new Server(server, {
+const io = new Server({
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -29,7 +20,7 @@ const addUser = (userId, socketId, visible) => {
   }
 };
 
-const addUserInRoom = (roomId, id, username, sex, profileImage, visible) => {
+const addUserInRoom = (roomId, id, username, sex, profileImage, visible, role) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
     userInRoom.push({
       roomId,
@@ -38,6 +29,7 @@ const addUserInRoom = (roomId, id, username, sex, profileImage, visible) => {
       sex,
       profileImage,
       visible,
+      role,
     });
   }
 };
@@ -108,9 +100,9 @@ io.on("connection", (socket) => {
   });
 
   //********** JOIN ROOM **********/
-  socket.on("joinRoom", (roomId, id, username, sex, profileImage, visible) => {
+  socket.on("joinRoom", (roomId, id, username, sex, profileImage, visible, role) => {
     socket.join(roomId);
-    addUserInRoom(roomId, id, username, sex, profileImage, visible);
+    addUserInRoom(roomId, id, username, sex, profileImage, visible, role);
 
     const usersInThisRoom = getUsersInRoom(roomId);
     io.to(roomId).emit("getUserInRoom", usersInThisRoom);
@@ -464,6 +456,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.SOCKET_PORT || 3000;
-server.listen(PORT, () => {
+io.listen(PORT, () => {
   console.log(`Socket.IO server is running at https://localhost:${PORT}`);
 });

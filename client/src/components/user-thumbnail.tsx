@@ -10,6 +10,7 @@ interface UserThumbnailProps {
   image: string;
   imageSize?: string;
   textSize?: string;
+  role?: string;
 }
 
 const UserThumbnail = ({
@@ -19,7 +20,10 @@ const UserThumbnail = ({
   image,
   imageSize = "8",
   textSize = "text-base",
+  role = "user",
 }: UserThumbnailProps) => {
+  const isAdmin = role === "ADMIN";
+
   return (
     <div className="flex items-center gap-2">
       <Avatar className={cn(`w-${imageSize} h-${imageSize} overflow-visible`)}>
@@ -33,7 +37,10 @@ const UserThumbnail = ({
         </AvatarFallback>
         {userId && <StatutIndicator userId={userId} />}
       </Avatar>
-      <span className={`${textSize} ${sexColor[sex]}`}>{username}</span>
+      <span className={`${textSize} ${sexColor[sex]}`}>
+        {username}
+        {isAdmin && <span className="text-additional-info"> (Admin)</span>}
+      </span>
     </div>
   );
 };

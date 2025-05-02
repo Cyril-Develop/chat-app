@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const PreviewCard = ({ user }: PreviewCardProps) => {
   return (
-    <article className="flex gap-4 rounded-md border bg-popover dark:bg-background p-4 text-popover-foreground shadow-md outline-none max-w-[700px] ">
+    <article className="flex gap-4 rounded-md border bg-popover dark:bg-background p-4 text-popover-foreground shadow-md max-w-[700px]">
       <Avatar className={cn("w-16 h-16 md:w-24 md:h-24")}>
         <AvatarImage
           src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}/profile/${

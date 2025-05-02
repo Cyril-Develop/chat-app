@@ -11,7 +11,7 @@ import {
 const RoomList = ({ heading, rooms, onSelect, roomName }: RoomListProps) => (
   <CommandGroup heading={heading}>
     {rooms.map((room) => (
-      <HoverCard key={room.id}>
+      <HoverCard key={room.id} openDelay={100} closeDelay={100}>
         <HoverCardTrigger asChild>
           <CommandItem
             className={cn("cursor-pointer flex gap-2 h-11")}

@@ -9,6 +9,13 @@ import { LikeFromSocket, MessageProps } from "@/types/message";
 import { useEffect, useState } from "react";
 import MessageContent from "@/components/message/message-content";
 import MessageFooter from "@/components/message/message-footer";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { HoverMessageHeader } from "@/components/message/hover-message-header";
+import { cn } from "@/lib/utils";
 
 const Message = ({ message, type }: MessageProps) => {
   const socket = useSocketStore((state) => state.socket);
@@ -106,12 +113,20 @@ const Message = ({ message, type }: MessageProps) => {
         isMyMessage ? "ml-auto xl:mr-8" : "xl:ml-8"
       }`}
     >
-      <UserThumbnail
-        image={message.user.profileImage}
-        username={message.user.username}
-        sex={message.user.sex}
-        imageSize="6"
-      />
+      <HoverCard key={message.user.id} openDelay={100} closeDelay={100}>
+        <HoverCardTrigger className="w-fit">
+          <UserThumbnail
+            image={message.user.profileImage}
+            username={message.user.username}
+            sex={message.user.sex}
+            imageSize="6"
+          />
+        </HoverCardTrigger>
+
+        <HoverCardContent className={cn("p-0")}>
+          <HoverMessageHeader user={currentUser} />
+        </HoverCardContent>
+      </HoverCard>
 
       <MessageContent message={message} isMyMessage={isMyMessage} />
 

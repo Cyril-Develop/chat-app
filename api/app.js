@@ -56,7 +56,7 @@ cron.schedule("0 * * * *", async () => {
 });
 
 // Nettoyer les messages des salons tous les jours à 3h du matin (0 3 * * *)
-cron.schedule("*/5 * * * *", async () => {
+cron.schedule("0 3 * * *", async () => {
   console.log("[CRON] Début du nettoyage des messages...");
   try {
     await cleanupRoomMessages();

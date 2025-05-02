@@ -2,7 +2,8 @@ const prisma = require("../lib/prisma");
 const fs = require("fs");
 const path = require("path");
 
-const MAX_MESSAGES_PER_ROOM = 2;
+// Limite de messages par salon
+const MAX_MESSAGES_PER_ROOM = 100;
 
 const cleanupRoomMessages = async () => {
   try {
@@ -35,7 +36,7 @@ const cleanupRoomMessages = async () => {
           select: { id: true },
         });
 
-        // Supprimer les images associées aux messages à supprimer
+        // Supprimer les images associées aux messages
         for (const msg of messagesToDelete) {
           const message = await prisma.message.findUnique({
             where: { id: msg.id },

@@ -62,7 +62,7 @@ export function PopoverMessageHeader({ user }: PopoverMessageCardProps) {
             >
               {user.username}
             </h4>
-            <p className="text-paragraph break-words whitespace-pre-wrap">
+            <p className="text-additional-info break-words whitespace-pre-wrap">
               {user.bio}
             </p>
           </div>

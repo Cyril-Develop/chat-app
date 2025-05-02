@@ -42,6 +42,7 @@ exports.getRoomMessage = async (req, res) => {
             username: true,
             profileImage: true,
             sex: true,
+            bio: true,
           },
         },
         likes: {

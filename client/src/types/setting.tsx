@@ -27,7 +27,7 @@ export interface DashboardUsersProps {
   username: string;
   profileImage: string;
   sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
-  role: string;
+  role: "USER" | "ADMIN" | "GUEST";
   isCurrentlyBlocked: boolean;
   totalBlockCount: number;
   adminBlocks: [

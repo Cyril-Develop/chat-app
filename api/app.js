@@ -27,7 +27,7 @@ const limiter = rateLimit({
 //app.use(limiter);
 
 // Serving images statically
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/chateo/api/images", express.static(path.join(__dirname, "images")));
 
 // Importing routes
 const authRoutes = require("./routes/auth");
@@ -37,11 +37,11 @@ const chatRoutes = require('./routes/chat');
 const emailRoutes = require("./routes/email");
 
 // Using routes
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use("/admin", adminRoutes);
-app.use('/chat', chatRoutes);
-app.use("/email", emailRoutes);
+app.use("/chateo/api/auth", authRoutes);
+app.use("/chateo/api/user", userRoutes);
+app.use("/chateo/api/admin", adminRoutes);
+app.use('/chateo/api/chat', chatRoutes);
+app.use("/chateo/api/email", emailRoutes);
 
 // CRON job to automatically unblock users
 cron.schedule("0 * * * *", async () => {

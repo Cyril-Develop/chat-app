@@ -16,6 +16,8 @@ export interface MessageProps {
       username: string;
       profileImage: string;
       sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
+      bio: string;
+      role: "USER" | "ADMIN" | "GUEST";
     };
     receiver?: {
       id: number;
@@ -107,6 +109,8 @@ export interface MessagesProviderProps {
       id: number;
       username: string;
       profileImage: string;
+      bio: string;
+      role: "USER" | "ADMIN" | "GUEST";
       sex: "MALE" | "FEMALE" | "NON_BINARY" | "UNDISCLOSED";
     };
     receiver?: {

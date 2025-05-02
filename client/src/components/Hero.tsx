@@ -4,9 +4,9 @@ import { MarqueeHero } from "@/components/marquee/marquee-hero";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col justify-center gap-2  h-[calc(100svh-96px)]">
-      <main className="space-x-0 xl:space-x-6 py-8 px-4 md:px-10  w-full max-w-[1600px] mx-auto">
-        <div className="flex flex-col-reverse xl:flex-row justify-center items-center xl:items-center">
+    <main className="flex flex-col justify-around h-auto gap-6 xl:gap-0 xl:h-[calc(100svh-96px)] py-8">
+      <section className="space-x-0 xl:space-x-6 px-4 md:px-10 w-full max-w-[1600px] mx-auto ">
+        <div className="flex flex-col-reverse xl:flex-row justify-center items-center xl:items-center ">
           <div className="xl:flex-1 flex flex-col space-y-4 md:space-y-8 text-center ">
             <h1 className="flex flex-col text-3xl  md:text-5xl lg:text-6xl 2xl:text-7xl font-bold whitespace-nowrap ">
               <span>Vos conversations,</span>
@@ -31,9 +31,9 @@ const Hero = () => {
             className="xl:flex-1 max-w-[250px] md:max-w-[400px] xl:max-w-[500px] 2xl:max-w-[600px]"
           />
         </div>
-      </main>
+      </section>
       <MarqueeHero />
-    </div>
+    </main>
   );
 };
 

@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
 import { sexColor } from "@/utils/sex-color";
-import { Icons } from "../Icons";
+import { Icons } from "@/components/Icons";
 
 interface HoverMessageProps {
   trigger: number;
@@ -15,7 +15,7 @@ interface HoverMessageProps {
   }[];
 }
 
-export function HoverMessageFooter({ trigger, users }: HoverMessageProps) {
+export function HoverMessageLike({ trigger, users }: HoverMessageProps) {
   // Si la liste des utilisateurs est vide, on ne retourne pas le composant
   if (users?.length === 0) return null;
 

@@ -10,7 +10,7 @@ interface UserThumbnailProps {
   image: string;
   imageSize?: string;
   textSize?: string;
-  role?: string;
+  role?: "USER" | "ADMIN" | "GUEST";
 }
 
 const UserThumbnail = ({
@@ -20,7 +20,7 @@ const UserThumbnail = ({
   image,
   imageSize = "8",
   textSize = "text-base",
-  role = "user",
+  role = "USER",
 }: UserThumbnailProps) => {
   const isAdmin = role === "ADMIN";
 

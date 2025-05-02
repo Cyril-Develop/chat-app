@@ -8,7 +8,7 @@ export interface UserInfos {
   createdAt: string;
   notification: string;
   visible: boolean;
-  role: string;
+  role: "USER" | "ADMIN" | "GUEST";
 }
 
 export interface HandleUserStatusChangedProps {

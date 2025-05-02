@@ -1,8 +1,8 @@
 # Chateo - est une application de chat en temps réel.
 
-![chat](/client/public/screenshots/chat.webp?v=2)
-![profile](/client/public/screenshots/profile.webp?v=2)
-![homepage](/client/public/screenshots/homepage.webp?v=2)
+![homepage](/client/public/screenshots/home.webp)
+![chat](/client/public/screenshots/chat.webp)
+![profile](/client/public/screenshots/profile.webp)
 
 ## 🚀 Technologies utilisées :
 

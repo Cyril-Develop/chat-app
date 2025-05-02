@@ -28,7 +28,7 @@ export interface RoomChatProps {
     id: number;
     username: string;
     profileImage: string;
-    role: string;
+    role: "USER" | "ADMIN" | "GUEST";
   };
 }
 
@@ -44,7 +44,7 @@ export interface SearchUserProps {
   id: number;
   profileImage: string;
   receivedFriendRequests: [];
-  role: string;
+  role: "USER" | "ADMIN" | "GUEST";
   sentFriendRequests: [];
   username: string;
 }
@@ -119,7 +119,7 @@ export interface UpdateRelationship {
     bio: string;
     profileImage: string;
     notification: string;
-    role: string;
+    role: "USER" | "ADMIN" | "GUEST";
   };
   friend: {
     id: number;
@@ -130,7 +130,7 @@ export interface UpdateRelationship {
     bio: string;
     profileImage: string;
     notification: string;
-    role: string;
+    role: "USER" | "ADMIN" | "GUEST";
   };
 }
 

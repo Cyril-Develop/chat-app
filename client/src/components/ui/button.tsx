@@ -17,7 +17,8 @@ const buttonVariants = cva(
         secondary: "text-secondary-foreground hover:text-primary",
         btn: "text-secondary hover:bg-secondary hover:text-foreground dark:text-foreground",
         linkForm: "hover:text-primary",
-        btnMenu: "flex gap-2 text-md justify-start",
+        btnMessage: "bg-transparent",
+        btnMenu: "flex gap-2 text-md inline",
         success:
           "bg-green-700 dark:bg-green-600 text-primary-foreground dark:text-foreground hover:bg-green-700/90 dark:hover:bg-green-600/90",
       },
@@ -27,7 +28,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 md:h-12",
         icon: "h-10 w-10",
-        message: "h-11 p-2 w-11",
+        message: "h-11 p-2 w-11"
       },
     },
     defaultVariants: {

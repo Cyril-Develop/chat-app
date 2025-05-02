@@ -1,6 +1,6 @@
 import moment from "moment/min/moment-with-locales";
 import { Icons } from "@/components/Icons";
-import { HoverMessageFooter } from "@/components/message/hover-message-footer";
+import { HoverMessageLike } from "@/components/message/hover-message-like";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +47,7 @@ export default function MessageFooter({
             />
           </Button>
 
-          <HoverMessageFooter
+          <HoverMessageLike
             trigger={likes.length}
             users={likes.map((like) => ({
               username: like.username,

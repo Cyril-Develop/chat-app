@@ -45,7 +45,7 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "/chateo/screenshots/homepage.webp?v=2",
+            src: "/chateo/screenshots/home.webp",
             sizes: "1920x1032",
             type: "image/webp",
             form_factor: "wide",

@@ -1,4 +1,6 @@
 const prisma = require("../lib/prisma");
+const fs = require("fs");
+const path = require("path");
 
 const MAX_MESSAGES_PER_ROOM = 2;
 

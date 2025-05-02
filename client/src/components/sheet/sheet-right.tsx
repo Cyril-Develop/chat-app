@@ -1,7 +1,7 @@
-import { CreateRoom } from "@/components/dialog/create-room";
 import { Icons } from "@/components/Icons";
-import { RoomSelector } from "@/components/sidebar/room/room-selector";
-import { RoomUsers } from "@/components/sidebar/room/room-users";
+import { CreateRoom } from "@/components/room/dialog/create-room";
+import { RoomSelector } from "@/components/room/room-selector";
+import { RoomUsers } from "@/components/room/room-users";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -19,7 +19,7 @@ export function SheetRight() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="btn" size="menu" title="Salons">
-          <Icons.chat />
+          <Icons.users />
           <span className="hidden-text" title="Salons">
             Salons
           </span>

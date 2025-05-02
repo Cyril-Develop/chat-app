@@ -1,6 +1,5 @@
 import Navbar from "@/components/navbar/Navbar";
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
+import Auth from "@/pages/auth/Auth";
 import Chat from "@/pages/chat/Chat";
 import NotFound from "@/pages/NotFound";
 import Account from "@/pages/settings/Account";
@@ -16,7 +15,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Contact from "@/pages/contact/Contact";
 import Password from "@/pages/password/Password";
 import Terms from "@/pages/legal/Terms";
-import { GlobalNotifications } from "@/components/Notification";
+import { GlobalNotifications } from "@/components/notification/Notification";
 import { useGlobalNotifications } from "@/hooks/notification";
 import { useSocketHandler } from "@/socket/socket-handler";
 import { AppInitializer } from "./components/app-initializer";
@@ -60,8 +59,7 @@ function App() {
       ),
       children: [
         { path: "/chateo", element: <RedirectOnAuth /> },
-        { path: "/chateo/register", element: <Register /> },
-        { path: "/chateo/login", element: <Login /> },
+        { path: "/chateo/auth", element: <Auth /> },
         { path: "/chateo/reset-password/:token", element: <Password /> },
         { path: "/chateo/contact", element: <Contact /> },
         { path: "/chateo/terms", element: <Terms /> },

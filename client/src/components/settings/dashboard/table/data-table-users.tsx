@@ -1,31 +1,32 @@
-import * as React from "react";
+import Alert from "@/components/Alert";
+import { Icons } from "@/components/Icons";
+import { BlockUser } from "@/components/settings/dashboard/dialog/block-user";
+import { DeleteUser } from "@/components/settings/dashboard/dialog/delete-user";
+import SortButton from "@/components/settings/dashboard/sort-button";
+import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
+import DataTableBody from "@/components/settings/dashboard/table/data-table-body";
+import DataTableButton from "@/components/settings/dashboard/table/data-table-button";
+import DataTableHeader from "@/components/settings/dashboard/table/data-table-header";
+import { Button } from "@/components/ui/button";
+import { Table } from "@/components/ui/table";
+import UserThumbnail from "@/components/user-thumbnail";
+import useFetchAllUsers from "@/hooks/api/admin/fetch-all-users";
+import { useUnblockUserAccountMutation } from "@/hooks/api/admin/unblock-user-account";
+import { DashboardUsersProps } from "@/types/setting";
+import { generateBlockDescription } from "@/utils/generate-alert-description";
 import {
   ColumnDef,
+  PaginationState,
   SortingState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  PaginationState,
 } from "@tanstack/react-table";
-import { Table } from "@/components/ui/table";
-import UserThumbnail from "@/components/user-thumbnail";
-import useFetchAllUsers from "@/hooks/api/admin/fetch-all-users";
-import { DashboardUsersProps } from "@/types/setting";
-import { Icons } from "@/components/Icons";
+import * as React from "react";
 import { useMemo } from "react";
-import DataTableButton from "@/components/settings/dashboard/data-table-button";
-import DataTableBody from "@/components/settings/dashboard/data-table-body";
-import DataTableHeader from "@/components/settings/dashboard/data-table-header";
-import SortButton from "@/components/settings/dashboard/sort-button";
-import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
-import { BlockUser } from "@/components/settings/dashboard/block-user";
-import { DeleteUser } from "@/components/settings/dashboard/delete-user";
-import Alert from "@/components/Alert";
-import { Button } from "@/components/ui/button";
-import { useUnblockUserAccountMutation } from "@/hooks/api/admin/unblock-user-account";
-import { generateBlockDescription } from "@/utils/generate-alert-description";
+import { Label } from "@/components/ui/label";
 
 export default function DataTableUsers() {
   const { data: users = [] } = useFetchAllUsers();
@@ -134,13 +135,14 @@ export default function DataTableUsers() {
 
   return (
     <div className="w-full">
-      <div>
+      <Label htmlFor="search-user">
         <h4 className="text-base font-semibold">Utilisateurs</h4>
         <p className="text-additional-info">Gérez les utilisateurs.</p>
-      </div>
+      </Label>
       <div className="py-4">
         <DataTableSearchInput
           table={table}
+          id="search-user"
           columnId="username"
           placeholder="Rechercher un utilisateur..."
         />

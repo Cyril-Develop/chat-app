@@ -1,5 +1,5 @@
 import Alert from "@/components/Alert";
-import { AccountForm } from "@/components/settings/account-form";
+import { AccountForm } from "@/components/settings/account/account-form";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useDeleteAccountMutation } from "@/hooks/api/user/delete-account";

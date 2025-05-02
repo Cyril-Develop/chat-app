@@ -15,9 +15,15 @@ export function RoomUsers() {
   const speakingUsers = useVoiceStore((state) => state.speakingUsers);
   const roomId = useRoomStore((state) => state.room?.id);
 
+  // Filtrer les utilisateurs visibles
+  const visibleUsers =
+    usersInRoom?.filter((user) => user.visible === true) || [];
+  // Vérifier s'il y a au moins un utilisateur visible
+  const hasVisibleUsers = visibleUsers.length > 0;
+
   return (
     <>
-      {roomId && (
+      {roomId && hasVisibleUsers && (
         <>
           <div className="flex justify-between items-center">
             <h2 className="text-title">{getVisibleUsersLabel(usersInRoom)}</h2>
@@ -28,27 +34,24 @@ export function RoomUsers() {
           <Separator />
           <ScrollArea className={cn("h-72")}>
             <div className="flex flex-col gap-4">
-              {usersInRoom
-                ?.filter((user) => user.visible === true)
-                .map((user) => {
-                  const isSpeaking = speakingUsers[user.id];
-
-                  return (
-                    <div
-                      key={user.id}
-                      className="flex items-center justify-between"
-                    >
-                      <UserThumbnail
-                        userId={user.id}
-                        username={user.username}
-                        sex={user.sex}
-                        image={user.profileImage}
-                        role={user.role}
-                      />
-                      {isSpeaking && <Icons.volumeUp />}
-                    </div>
-                  );
-                })}
+              {visibleUsers.map((user) => {
+                const isSpeaking = speakingUsers[user.id];
+                return (
+                  <div
+                    key={user.id}
+                    className="flex items-center justify-between"
+                  >
+                    <UserThumbnail
+                      userId={user.id}
+                      username={user.username}
+                      sex={user.sex}
+                      image={user.profileImage}
+                      role={user.role}
+                    />
+                    {isSpeaking && <Icons.volumeUp />}
+                  </div>
+                );
+              })}
             </div>
           </ScrollArea>
         </>

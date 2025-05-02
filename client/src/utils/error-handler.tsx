@@ -39,7 +39,7 @@ export const handleApiError = (
         setAuthentication(false, null);
       }
       queryClient.clear();
-      navigate("/chateo/login");
+      navigate("/chateo/auth");
       break;
 
     case "TOKEN_EXPIRED":
@@ -47,7 +47,7 @@ export const handleApiError = (
       if (setAuthentication) {
         setAuthentication(false, null);
       }
-      navigate("/chateo/login");
+      navigate("/chateo/auth");
       break;
 
     case "BLOCK_ADMIN":

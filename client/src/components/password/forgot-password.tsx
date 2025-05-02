@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import ForgotPasswordForm from "@/components/password/forgot-password-form";
+import ForgotPasswordForm from "@/components/password/form/forgot-password-form";
 import { ForgotPasswordProps } from "@/types/password";
 
 export function ForgotPassword({

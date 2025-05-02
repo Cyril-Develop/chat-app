@@ -1,16 +1,14 @@
-import CardWrapper from "@/components/auth/card-wrapper";
+import CardWrapper from "@/components/auth/card.tsx/card-wrapper";
 import { RegisterFormSchema } from "@/schema/main";
 import { sendOtp, verifyIfUserExists } from "@/services/Auth";
 import { useForm } from "react-hook-form";
-//import Line from "@/components/auth/line";
-//import Icons from "@/components/icons";
-//import { Button } from "../ui/button";
 import ShowPassord from "@/components/auth/show-password";
 import { ValidateAccount } from "@/components/auth/validate-account";
 import ButtonForm from "@/components/button-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -108,13 +106,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <CardWrapper
-      title="Créer un compte "
-      description="Commencez gratuitement."
-      backButtonHref="/chateo/login"
-      backButtonLabel="Se connecter"
-      text="Vous possédez déjà un compte ?"
-    >
+    <CardWrapper title="Créer un compte " description="Commencez gratuitement.">
       <Form {...form}>
         <form
           noValidate
@@ -140,6 +132,7 @@ const RegisterForm = () => {
                         className={cn("form-input")}
                       />
                     </FormControl>
+                    <FormDescription />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -173,6 +166,7 @@ const RegisterForm = () => {
                       </SelectContent>
                     </Select>
                     <FormMessage />
+                    <FormDescription />
                   </FormItem>
                 )}
               />
@@ -192,6 +186,7 @@ const RegisterForm = () => {
                     />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription />
                 </FormItem>
               )}
             />
@@ -200,7 +195,7 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("form-label")}>
+                  <FormLabel htmlFor="password" className={cn("form-label")}>
                     Mot de passe
                   </FormLabel>
                   <FormControl>
@@ -233,20 +228,6 @@ const RegisterForm = () => {
               .
             </p>
           </div>
-          {/* <div className="flex flex-col gap-4">
-              <Line />
-
-              <Button
-                type="button"
-                className="w-full text-lg"
-                variant="secondary"
-                size={"lg"}
-                onClick={() => console.log("google")}
-              >
-                <Icons.google className="mr-2 h-4 w-4" />
-                Continuer avec Google
-              </Button>
-            </div> */}
           {apiError && <p className="error">{apiError}</p>}
         </form>
       </Form>

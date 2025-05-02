@@ -1,6 +1,6 @@
 import { Icons } from "@/components/Icons";
-import { Contact } from "@/components/sidebar/contact/contact-list";
-import { SearchUser } from "@/components/sidebar/contact/search-user";
+import { Contact } from "@/components/contact/contact-list";
+import { SearchUser } from "@/components/contact/search-user";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {

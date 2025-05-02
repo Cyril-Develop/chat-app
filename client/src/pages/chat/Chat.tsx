@@ -1,11 +1,11 @@
 import ChatUnselected from "@/components/chat/chat-unselected";
 import PrivateChat from "@/components/chat/private-chat";
-import { CreateRoom } from "@/components/dialog/create-room";
+import { Contact } from "@/components/contact/contact-list";
+import { SearchUser } from "@/components/contact/search-user";
+import { CreateRoom } from "@/components/room/dialog/create-room";
 import Room from "@/components/room/room-chat";
-import { Contact } from "@/components/sidebar/contact/contact-list";
-import { SearchUser } from "@/components/sidebar/contact/search-user";
-import { RoomSelector } from "@/components/sidebar/room/room-selector";
-import { RoomUsers } from "@/components/sidebar/room/room-users";
+import { RoomSelector } from "@/components/room/room-selector";
+import { RoomUsers } from "@/components/room/room-users";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { useContactStore } from "@/store/contact.store";

@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { BlockUserProps } from "@/types/dialog";
 import { useState } from "react";
-import BlockUserForm from "@/components/settings/dashboard/block-user-form";
+import BlockUserForm from "@/components/settings/dashboard/form/block-user-form";
 
 export function BlockUser({
   btnTrigger,

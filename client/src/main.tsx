@@ -1,23 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "@/App.tsx";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import ToasterProvider from "@/components/toaster-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { registerSW } from "virtual:pwa-register";
 const queryClient = new QueryClient();
-import './style.css';
+import "./style.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <GoogleOAuthProvider clientId="435789967890-vmgo5kea1l8s7u91i7hrs3bboss9rkd3.apps.googleusercontent.com">
-    <React.StrictMode>
-      <ToasterProvider>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </ToasterProvider>
-    </React.StrictMode>
-  </GoogleOAuthProvider>
+  <React.StrictMode>
+    <ToasterProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </ToasterProvider>
+  </React.StrictMode>
 );
 
 // Pour une mise à jour automatique

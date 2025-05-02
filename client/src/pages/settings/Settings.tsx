@@ -5,7 +5,7 @@ import ImageAppearance from "/images/appearance.svg";
 import ImageStream from "/images/stream.svg";
 import ImageDashboard from "/images/dashboard.svg";
 import ImageNotification from "/images/notification.svg";
-import ImageSettings from "@/components/image-provider";
+import ImageProvider from "@/components/settings/image-provider";
 import { Icons } from "@/components/Icons";
 
 interface SettingsLayoutProps {
@@ -93,7 +93,7 @@ const Settings = ({ children }: SettingsLayoutProps) => {
           <div className="flex-1 lg:max-w-2xl">{children}</div>
 
           <div className="hidden xl:block min-w-72 w-2/3 lg:w-1/3 md:w-2/5 sm:w-2/4">
-            <ImageSettings logo={imageSettings} />
+            <ImageProvider logo={imageSettings} />
           </div>
         </div>
       </div>

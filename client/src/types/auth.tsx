@@ -33,10 +33,7 @@ export interface BackButtonProps {
 export interface CardWrapperProps {
   title: string;
   description: string;
-  backButtonHref?: string;
-  backButtonLabel?: string;
   children: React.ReactNode;
-  text?: string;
 }
 
 export interface ShowPassordProps {

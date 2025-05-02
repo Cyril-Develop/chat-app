@@ -1,5 +1,5 @@
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import UpdateRoomForm from "@/components/sidebar/room/update-room-form";
+import UpdateRoomForm from "@/components/room/form/edit-room-form";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { UpdateRoomProps } from "@/types/dialog";
 

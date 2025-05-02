@@ -3,7 +3,7 @@ import { AuthHeaderProps } from "@/types/auth";
 const AuthHeader = ({ title, description }: AuthHeaderProps) => {
   return (
     <div className="w-full flex flex-col gap-y-1 items-center justify-center">
-      <h1 className="text-title md:text-4xl">{title}</h1>
+      <h2 className="text-title md:text-4xl">{title}</h2>
       <p className="text-center text-paragraph md:text-xl">{description}</p>
     </div>
   );

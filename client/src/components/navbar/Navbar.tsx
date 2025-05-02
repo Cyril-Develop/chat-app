@@ -32,16 +32,11 @@ const Navbar = () => {
             <SheetRight />
           </>
         )}
-        {isAuthenticated ? (
+        {isAuthenticated && (
           <>
             <PopoverNotification />
             <DropDown />
           </>
-        ) : (
-          <Link to="chateo/login" className="link-nav" title="Se connecter">
-            <Icons.login />
-            <span className="hidden-text">Se connecter</span>
-          </Link>
         )}
       </div>
     </nav>

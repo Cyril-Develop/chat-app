@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { DeleteUserProps } from "@/types/dialog";
 import { useState } from "react";
-import DeleteUserForm from "@/components/settings/dashboard/delete-user-form";
+import DeleteUserForm from "@/components/settings/dashboard/form/delete-user-form";
 
 export function DeleteUser({
   btnTrigger,

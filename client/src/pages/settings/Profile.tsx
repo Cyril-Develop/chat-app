@@ -1,5 +1,5 @@
-import PreviewCard from "@/components/settings/preview-card";
-import ProfileForm from "@/components/settings/profile-form";
+import PreviewCard from "@/components/settings/profile/preview-card";
+import ProfileForm from "@/components/settings/profile/profile-form";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { SkeletonProfile } from "@/components/skeleton/skeleton";

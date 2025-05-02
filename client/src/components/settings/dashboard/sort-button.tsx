@@ -12,7 +12,7 @@ export default function SortButton({ column, title }: SortButtonProps) {
   return (
     <Button
       variant="btnMenu"
-      className={cn("p-0")}
+      className={cn("p-0 flex items-center gap-1")}
       title="Trier par ordre alphabétique"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
     >

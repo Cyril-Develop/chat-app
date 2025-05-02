@@ -1,5 +1,5 @@
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import JoinPrivateRoomForm from "@/components/sidebar/room/join-private-room-form";
+import JoinPrivateRoomForm from "@/components/room/form/join-private-room-form";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { JoinRoomProps } from "@/types/dialog";

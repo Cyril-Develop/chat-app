@@ -1,4 +1,4 @@
-import CardWrapper from "@/components/auth/card-wrapper";
+import CardWrapper from "@/components/auth/card.tsx/card-wrapper";
 import Line from "@/components/auth/line";
 import ShowPassord from "@/components/auth/show-password";
 import ButtonForm from "@/components/button-form";
@@ -61,11 +61,6 @@ const LoginForm = () => {
       setLoading(false);
     }
   };
-
-  // const googleLogin = useGoogleLogin({
-  //   onSuccess: (tokenResponse) => console.log(tokenResponse),
-  // });
-
   const handleLoginAsGuest = async () => {
     setLoading(true);
     setApiError("");
@@ -88,9 +83,6 @@ const LoginForm = () => {
     <CardWrapper
       title="Se connecter"
       description="Saisissez les identifiants de votre compte."
-      backButtonHref="/chateo/register"
-      backButtonLabel="S'enregistrer"
-      text="Vous n'avez pas encore de compte ?"
     >
       <Form {...form}>
         <form
@@ -113,6 +105,7 @@ const LoginForm = () => {
                       className={cn("form-input")}
                     />
                   </FormControl>
+                  <FormDescription />
                   <FormMessage />
                 </FormItem>
               )}
@@ -153,21 +146,6 @@ const LoginForm = () => {
             defaultValue="Se connecter"
             spinnerValue="Connexion en cours"
           />
-          {/* <div className="flex flex-col gap-4">
-
-            <Line />
-
-            <Button
-              type="button"
-              className="w-full text-lg"
-              variant="secondary"
-              size={"lg"}
-              onClick={() => googleLogin()}
-            >
-              <Icons.google className="mr-2 h-4 w-4" />
-              Continuer avec Google
-            </Button>
-          </div> */}
           {apiError && <p className="error">{apiError}</p>}
         </form>
       </Form>

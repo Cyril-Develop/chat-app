@@ -29,7 +29,15 @@ const addUser = (userId, socketId, visible) => {
   }
 };
 
-const addUserInRoom = (roomId, id, username, sex, profileImage, visible) => {
+const addUserInRoom = (
+  roomId,
+  id,
+  username,
+  sex,
+  profileImage,
+  visible,
+  role
+) => {
   if (!userInRoom.some((user) => user.id === id && user.roomId === roomId)) {
     userInRoom.push({
       roomId,
@@ -38,6 +46,7 @@ const addUserInRoom = (roomId, id, username, sex, profileImage, visible) => {
       sex,
       profileImage,
       visible,
+      role,
     });
   }
 };
@@ -107,14 +116,17 @@ io.on("connection", (socket) => {
     io.emit("roomUpdated", roomId);
   });
 
-  //********** JOIN ROOM **********/
-  socket.on("joinRoom", (roomId, id, username, sex, profileImage, visible) => {
-    socket.join(roomId);
-    addUserInRoom(roomId, id, username, sex, profileImage, visible);
+ //********** JOIN ROOM **********/
+  socket.on(
+    "joinRoom",
+    (roomId, id, username, sex, profileImage, visible, role) => {
+      socket.join(roomId);
+      addUserInRoom(roomId, id, username, sex, profileImage, visible, role);
 
-    const usersInThisRoom = getUsersInRoom(roomId);
-    io.to(roomId).emit("getUserInRoom", usersInThisRoom);
-  });
+      const usersInThisRoom = getUsersInRoom(roomId);
+      io.to(roomId).emit("getUserInRoom", usersInThisRoom);
+    }
+  );
 
   //********** LEAVE ROOM **********/
   socket.on("leaveRoom", (roomId) => {

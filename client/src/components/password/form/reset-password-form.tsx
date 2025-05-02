@@ -1,10 +1,11 @@
-import CardWrapper from "@/components/auth/card-wrapper";
+import CardWrapper from "@/components/auth/card.tsx/card-wrapper";
 import ShowPassord from "@/components/auth/show-password";
 import ButtonForm from "@/components/button-form";
 import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -57,7 +58,7 @@ export default function ResetPassword() {
         logo: <Icons.check />,
       });
       form.reset();
-      navigate("/chateo/login");
+      navigate("/chateo/auth");
     } catch (error: any) {
       setApiError(error.message);
     } finally {
@@ -92,6 +93,7 @@ export default function ResetPassword() {
                       field={field}
                     />
                   </FormControl>
+                  <FormDescription />
                   <FormMessage />
                 </FormItem>
               )}
@@ -114,6 +116,7 @@ export default function ResetPassword() {
                       field={field}
                     />
                   </FormControl>
+                  <FormDescription />
                   <FormMessage />
                 </FormItem>
               )}

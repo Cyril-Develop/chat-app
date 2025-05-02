@@ -1,27 +1,28 @@
+import Alert from "@/components/Alert";
+import { Icons } from "@/components/Icons";
+import SortButton from "@/components/settings/dashboard/sort-button";
+import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
+import DataTableBody from "@/components/settings/dashboard/table/data-table-body";
+import DataTableButton from "@/components/settings/dashboard/table/data-table-button";
+import DataTableHeader from "@/components/settings/dashboard/table/data-table-header";
+import { Button } from "@/components/ui/button";
+import { Table } from "@/components/ui/table";
+import useFetchAllRooms from "@/hooks/api/admin/fetch-all-rooms";
+import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
+import { cn } from "@/lib/utils";
+import { DashboardRoomsProps } from "@/types/setting";
+import { Label } from "@/components/ui/label";
 import {
   ColumnDef,
+  PaginationState,
   SortingState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  PaginationState,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Table } from "@/components/ui/table";
-import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
-import useFetchAllRooms from "@/hooks/api/admin/fetch-all-rooms";
-import { DashboardRoomsProps } from "@/types/setting";
-import { Icons } from "@/components/Icons";
 import { useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
-import DataTableButton from "@/components/settings/dashboard/data-table-button";
-import DataTableBody from "@/components/settings/dashboard/data-table-body";
-import DataTableHeader from "@/components/settings/dashboard/data-table-header";
-import DataTableSearchInput from "@/components/settings/dashboard/table-input-search";
-import SortButton from "@/components/settings/dashboard/sort-button";
-import Alert from "@/components/Alert";
 
 export default function DataTableRooms() {
   const { data: rooms = [] } = useFetchAllRooms();
@@ -114,17 +115,18 @@ export default function DataTableRooms() {
 
   return (
     <div className="w-full">
-      <div>
+      <Label htmlFor="search-room">
         <h4 className="text-base font-semibold">Salons</h4>
         <p className="text-additional-info">
           Gérez les salons (privés & publics).
         </p>
-      </div>
+      </Label>
       <div className="flex items-center py-4">
         <DataTableSearchInput
           table={table}
           columnId="name"
           placeholder="Rechercher un salon..."
+          id="search-room"
         />
       </div>
       <div className="rounded-md border border-foreground/5 max-h-[330px]">

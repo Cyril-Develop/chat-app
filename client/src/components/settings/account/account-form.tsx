@@ -94,6 +94,7 @@ export function AccountForm({ user }: AccountFormValues) {
                     className={cn("form-input")}
                   />
                 </FormControl>
+                <FormDescription />
                 <FormMessage />
               </FormItem>
             )}

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { RoomHeaderMenuProps } from "@/types/chat";
 import { useDeleteRoomMutation } from "@/hooks/api/chat/delete-room";
-import { UpdateRoom } from "../dialog/update-room";
+import { UpdateRoom } from "./dialog/update-room";
 
 const RommHeaderMenu = ({ room }: RoomHeaderMenuProps) => {
   const { mutate: deleteRoom } = useDeleteRoomMutation();

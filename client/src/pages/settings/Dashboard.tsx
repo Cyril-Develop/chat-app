@@ -1,5 +1,5 @@
-import DataTableRooms from "@/components/settings/dashboard/data-table-rooms";
-import DataTableUsers from "@/components/settings/dashboard/data-table-users";
+import DataTableRooms from "@/components/settings/dashboard/table/data-table-rooms";
+import DataTableUsers from "@/components/settings/dashboard/table/data-table-users";
 import { Separator } from "@/components/ui/separator";
 
 export default function Dashboard() {

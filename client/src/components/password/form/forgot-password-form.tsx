@@ -3,6 +3,7 @@ import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -76,6 +77,7 @@ const ForgotPasswordForm = ({
                   className={cn("form-input")}
                 />
               </FormControl>
+              <FormDescription />
               <FormMessage />
             </FormItem>
           )}

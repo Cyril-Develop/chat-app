@@ -6,6 +6,7 @@ interface DataTableSearchInputProps<T> {
   columnId: string;
   placeholder?: string;
   className?: string;
+  id: string;
 }
 
 export default function DataTableSearchInput<T>({
@@ -13,6 +14,7 @@ export default function DataTableSearchInput<T>({
   columnId,
   placeholder = "Rechercher...",
   className = "form-input",
+  id,
 }: DataTableSearchInputProps<T>) {
   const column = table.getColumn(columnId);
 
@@ -22,6 +24,7 @@ export default function DataTableSearchInput<T>({
       value={(column?.getFilterValue() as string) ?? ""}
       onChange={(e) => column?.setFilterValue(e.target.value)}
       className={className}
+      id={id}
     />
   );
 }

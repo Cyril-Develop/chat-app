@@ -1,5 +1,5 @@
-import { JoinRoom } from "@/components/dialog/join-room";
-import RoomList from "@/components/sidebar/room/room-list";
+import { JoinRoom } from "@/components/room/dialog/join-room";
+import RoomList from "@/components/room/room-list";
 import { CommandSeparator } from "@/components/ui/command";
 import { useRoomTransitionMutation } from "@/hooks/api/chat/room-transition";
 import { useRoomStore } from "@/store/room.store";

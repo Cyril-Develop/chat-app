@@ -1,4 +1,4 @@
-import NotificationForm from "@/components/settings/notification-form";
+import NotificationForm from "@/components/settings/notification/notification-form";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
 import { SkeletonNotification } from "@/components/skeleton/skeleton";

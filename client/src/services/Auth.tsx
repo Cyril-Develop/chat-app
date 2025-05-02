@@ -1,21 +1,5 @@
 import { RegisterByEmailProps, LoginByEmailProps } from "@/types/auth";
 
-// export const googleLogin = async () => {
-//   try {
-//     const response = await fetch(
-//       `${import.meta.env.VITE_REACT_APP_BASE_URL}/auth/google`,
-//       {
-//         method: "GET",
-//         credentials: "include",
-//       }
-//     );
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 export const verifyIfUserExists = async (username: string, email: string) => {
   try {
     const response = await fetch(
@@ -32,11 +16,10 @@ export const verifyIfUserExists = async (username: string, email: string) => {
 
     // Vérifie si la réponse contient une erreur
     if (!response.ok) {
-      throw new Error(data.error); // Si l'email ou le username existe, lève une erreur
+      throw new Error(data.error);
     }
 
-    // Si l'utilisateur n'existe pas encore, on peut continuer
-    return data; // Cela retournera le message indiquant que l'utilisateur n'existe pas
+    return data;
   } catch (error: any) {
     console.error("Erreur de vérification utilisateur :", error);
     throw new Error(error.message);
@@ -47,7 +30,7 @@ export const registerByEmail = async ({
   username,
   email,
   password,
-  sex
+  sex,
 }: RegisterByEmailProps) => {
   try {
     const response = await fetch(

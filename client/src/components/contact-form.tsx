@@ -1,23 +1,24 @@
+import CardWrapper from "@/components/auth/card.tsx/card-wrapper";
 import ButtonForm from "@/components/button-form";
+import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
-  FormMessage,
+  FormDescription,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { ContactFormSchema } from "@/schema/main";
+import { sendContactEmail } from "@/services/Email";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ContactFormSchema } from "@/schema/main";
-import { zodResolver } from "@hookform/resolvers/zod";
-import CardWrapper from "@/components/auth/card-wrapper";
-import { Textarea } from "@/components/ui/textarea";
-import { sendContactEmail } from "@/services/Email";
-import { toast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/Icons";
-import { cn } from "@/lib/utils";
 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
@@ -86,6 +87,7 @@ const ContactForm = () => {
                       className={cn("form-input")}
                     />
                   </FormControl>
+                  <FormDescription />
                   <FormMessage />
                 </FormItem>
               )}
@@ -104,6 +106,7 @@ const ContactForm = () => {
                       className={cn("form-input")}
                     />
                   </FormControl>
+                  <FormDescription />
                   <FormMessage />
                 </FormItem>
               )}
@@ -123,6 +126,7 @@ const ContactForm = () => {
                     className={cn("form-input")}
                   />
                 </FormControl>
+                <FormDescription />
                 <FormMessage />
               </FormItem>
             )}
@@ -141,6 +145,7 @@ const ContactForm = () => {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription />
                 <FormMessage />
               </FormItem>
             )}

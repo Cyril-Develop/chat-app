@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import Logo from "/images/hero.svg";
 import { MarqueeHero } from "@/components/marquee/marquee-hero";
+import { useAuthStore } from "@/store/auth.store";
 
 const Hero = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return (
     <main className="flex flex-col justify-around h-auto gap-6 xl:gap-0 xl:h-[calc(100svh-96px)] py-8">
       <section className="space-x-0 xl:space-x-6 px-4 md:px-10 w-full max-w-[1600px] mx-auto ">
@@ -18,7 +20,7 @@ const Hero = () => {
               sécurisé.
             </p>
             <Link
-              to="chat"
+              to={isAuthenticated ? "/chateo/chat" : "/chateo/auth"}
               className="bg-primary font-semibold text-base lg:text-xl text-primary-foreground hover:bg-primary/80 h-11 md:h-14 rounded-md flex items-center justify-center mx-auto px-4 lg:px-6"
             >
               Commencer

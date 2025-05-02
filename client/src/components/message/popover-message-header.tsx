@@ -23,7 +23,7 @@ interface PopoverMessageCardProps {
 export function PopoverMessageHeader({ user }: PopoverMessageCardProps) {
   return (
     <Popover>
-      <PopoverTrigger asChild title="Voir la carte de visite">
+      <PopoverTrigger asChild title="Voir le profil">
         <Button variant="btnMessage" className="p-0 inline w-fit ">
           <UserThumbnail
             image={user.profileImage}
@@ -53,19 +53,19 @@ export function PopoverMessageHeader({ user }: PopoverMessageCardProps) {
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex flex-col gap-2 flex-1">
-            <h4
-              className={cn(
-                sexColor[user.sex],
-                "font-semibold leading-none truncate"
-              )}
-            >
-              {user.username}
-            </h4>
-            <p className="text-additional-info break-words whitespace-pre-wrap">
-              {user.bio}
-            </p>
-          </div>
+          {user.bio && (
+            <div className="flex flex-col gap-2 flex-1">
+              <h4
+                className={cn(
+                  sexColor[user.sex],
+                  "font-semibold leading-none truncate"
+                )}
+              >
+                {user.username}
+              </h4>
+              <p className="text-additional-info break-words">{user.bio}</p>
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>

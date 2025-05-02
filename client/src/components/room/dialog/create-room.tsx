@@ -1,5 +1,5 @@
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import CreateRoomForm from "@/components/sidebar/room/create-room-form";
+import CreateRoomForm from "@/components/room/form/create-room-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";

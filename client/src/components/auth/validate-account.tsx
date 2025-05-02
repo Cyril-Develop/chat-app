@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import DialogHeaderComp from "@/components/dialog/dialog-header";
-import { ValidateAccountForm } from "@/components/auth/validate-account-form";
+import { ValidateAccountForm } from "@/components/auth/form/validate-account-form";
 import { ValidateAccountProps } from "@/types/auth";
 import { cn } from "@/lib/utils";
 

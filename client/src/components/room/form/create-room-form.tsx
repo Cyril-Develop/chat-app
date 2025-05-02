@@ -97,6 +97,7 @@ const CreateRoomForm = ({
                     </div>
                   )}
                 </div>
+                <FormDescription />
                 <FormMessage />
               </FormItem>
             )}

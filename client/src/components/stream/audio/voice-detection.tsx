@@ -8,7 +8,6 @@ interface VoiceDetectionProps {
   stream: MediaStream;
 }
 
-// Fonction pour détecter si l'utilisateur parle ou non
 const detectSpeaking = (
   analyser: AnalyserNode,
   dataArray: Uint8Array
@@ -22,6 +21,7 @@ const detectSpeaking = (
 const VoiceDetection = ({ roomId, userId, stream }: VoiceDetectionProps) => {
   const analyserRef = useRef<AnalyserNode | null>(null);
   const speakingRef = useRef(false);
+  const frameRef = useRef<number | null>(null);
   const socket = useSocketStore((state) => state.socket);
   const setSpeakingUsers = useVoiceStore((state) => state.setSpeakingUsers);
 
@@ -43,10 +43,8 @@ const VoiceDetection = ({ roomId, userId, stream }: VoiceDetectionProps) => {
       if (isNowSpeaking !== speakingRef.current) {
         speakingRef.current = isNowSpeaking;
 
-        // Mettre à jour le store
         setSpeakingUsers(userId, isNowSpeaking);
 
-        // Émettre l'événement socket
         if (socket) {
           socket.emit(
             isNowSpeaking ? "user-speaking" : "user-stopped-speaking",
@@ -55,22 +53,28 @@ const VoiceDetection = ({ roomId, userId, stream }: VoiceDetectionProps) => {
               userId,
             }
           );
-        } else {
-          console.error("Socket is not available");
         }
       }
 
-      requestAnimationFrame(checkSpeaking);
+      frameRef.current = requestAnimationFrame(checkSpeaking);
     };
 
     checkSpeaking();
 
     return () => {
-      // Nettoyer lorsque le composant est démonté
+      // Arrêter la boucle de détection
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+
+      // Réinitialiser les états
       setSpeakingUsers(userId, false);
+      if (socket) {
+        socket.emit("user-stopped-speaking", { roomId, userId });
+      }
+
       analyser.disconnect();
       source.disconnect();
-
       if (audioContext.state === "running") {
         audioContext.close();
       }

@@ -116,7 +116,7 @@ io.on("connection", (socket) => {
     io.emit("roomUpdated", roomId);
   });
 
- //********** JOIN ROOM **********/
+  //********** JOIN ROOM **********/
   socket.on(
     "joinRoom",
     (roomId, id, username, sex, profileImage, visible, role) => {
@@ -142,14 +142,14 @@ io.on("connection", (socket) => {
     io.emit("roomDeleted", id);
   });
 
-  //********** VOICE CHAT AVEC PEERJS **********/
-  socket.on("join-voice-chat", ({ roomId, userId, username, peerId }) => {
+  //********** VOCAL CHAT WITH PEERJS **********/
+  socket.on("join-vocal-chat", ({ roomId, userId, username, peerId }) => {
     // Vérifier que l'utilisateur authentifié est celui qui fait la demande
     if (userId !== socket.user.id) return;
 
     // Informer les autres utilisateurs dans la salle
     socket.join(`voice-${roomId}`);
-    socket.to(roomId).emit("user-joined-voice", {
+    socket.to(roomId).emit("user-joined-vocal", {
       userId,
       username,
       peerId,
@@ -164,13 +164,13 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("leave-voice-chat", ({ roomId, userId, username }) => {
+  socket.on("leave-vocal-chat", ({ roomId, userId, username }) => {
     // Vérifier que l'utilisateur authentifié est celui qui fait la demande
     if (userId !== socket.user.id) return;
 
     // Informer les autres utilisateurs dans la salle
     socket.leave(`voice-${roomId}`);
-    socket.to(roomId).emit("user-left-voice", {
+    socket.to(roomId).emit("user-left-vocal", {
       userId,
       username,
       roomId,

@@ -1,7 +1,7 @@
-import { Socket } from "socket.io-client";
 import { Icons } from "@/components/Icons";
+import { playNotificationSound } from "@/components/stream/audio/sound-provider";
 import { toast } from "@/components/ui/use-toast";
-import { playNotificationSound } from "@/components/stream/voice/sound-provider";
+import { Socket } from "socket.io-client";
 
 export interface VoiceSocketHandlersConfig {
   socket: Socket;
@@ -16,7 +16,7 @@ export interface VoiceSocketHandlersConfig {
   removeAudioElement: (peerId: string) => void;
 }
 
-export function setupVoiceSocketHandlers({
+export function setupVocalSocketHandlers({
   socket,
   userId,
   roomId,
@@ -29,7 +29,7 @@ export function setupVoiceSocketHandlers({
   removeAudioElement,
 }: VoiceSocketHandlersConfig) {
   // Gestionnaire d'événement pour quand un utilisateur rejoint le chat vocal
-  const handleUserJoinedVoice = ({
+  const handleUserJoinedVocalChat = ({
     userId: joinedUserId,
     peerId,
     username: joinedUsername,
@@ -46,8 +46,6 @@ export function setupVoiceSocketHandlers({
 
     // Si on n'est pas dans le vocal, ne pas tenter de peer call
     if (!processedStreamRef.current || !peerRef.current) return;
-
-    console.log("User joined voice:", joinedUserId, peerId, joinedUsername);
 
     const call = peerRef.current.call(peerId, processedStreamRef.current);
 
@@ -68,7 +66,6 @@ export function setupVoiceSocketHandlers({
     });
 
     call.on("close", () => {
-      console.log(`Appel fermé avec ${peerId}`);
       removeAudioElement(peerId);
 
       setConnections((prev) => {
@@ -111,7 +108,6 @@ export function setupVoiceSocketHandlers({
     });
 
     call.on("close", () => {
-      console.log(`Appel fermé avec ${peerId}`);
       removeAudioElement(peerId);
 
       setConnections((prev) => {
@@ -126,7 +122,7 @@ export function setupVoiceSocketHandlers({
   };
 
   // Gestionnaire d'événement pour quand un utilisateur quitte le chat vocal
-  const handleUserLeftVoice = ({
+  const handleUserLeftVocalChat = ({
     userId: leftUserId,
     username: leftUsername,
   }: any) => {
@@ -174,7 +170,6 @@ export function setupVoiceSocketHandlers({
     call.answer(processedStreamRef.current);
 
     call.on("stream", (remoteStream: MediaStream) => {
-      console.log(`Réception du stream de ${call.peer}`);
 
       // Utiliser addAudioElement
       const audioElement = addAudioElement(call.peer, remoteStream);
@@ -191,7 +186,6 @@ export function setupVoiceSocketHandlers({
     });
 
     call.on("close", () => {
-      console.log(`Appel fermé avec ${call.peer}`);
       removeAudioElement(call.peer);
 
       setConnections((prev) => {
@@ -203,15 +197,15 @@ export function setupVoiceSocketHandlers({
   });
 
   // Enregistrer les gestionnaires d'événements
-  socket.on("user-joined-voice", handleUserJoinedVoice);
-  socket.on("user-left-voice", handleUserLeftVoice);
+  socket.on("user-joined-vocal", handleUserJoinedVocalChat);
+  socket.on("user-left-vocal", handleUserLeftVocalChat);
   socket.on("peer-id-broadcast", handlePeerIdBroadcast);
   socket.on("user-speaking", handleUserSpeaking);
   socket.on("user-stopped-speaking", handleUserStoppedSpeaking);
 
   // Fonction pour émettre un événement de participation au chat vocal
-  const emitJoinVoiceChat = (peerId: string) => {
-    socket.emit("join-voice-chat", {
+  const emitJoinVocalChat = (peerId: string) => {
+    socket.emit("join-vocal-chat", {
       roomId,
       userId,
       username,
@@ -220,8 +214,8 @@ export function setupVoiceSocketHandlers({
   };
 
   // Fonction pour émettre un événement de sortie du chat vocal
-  const emitLeaveVoiceChat = () => {
-    socket.emit("leave-voice-chat", {
+  const emitLeaveVocalChat = () => {
+    socket.emit("leave-vocal-chat", {
       roomId,
       userId,
       username,
@@ -230,16 +224,16 @@ export function setupVoiceSocketHandlers({
 
   // Fonction pour nettoyer les gestionnaires d'événements
   const cleanup = () => {
-    socket.off("user-joined-voice", handleUserJoinedVoice);
-    socket.off("user-left-voice", handleUserLeftVoice);
+    socket.off("user-joined-vocal", handleUserJoinedVocalChat);
+    socket.off("user-left-vocal", handleUserLeftVocalChat);
     socket.off("peer-id-broadcast", handlePeerIdBroadcast);
     socket.off("user-speaking", handleUserSpeaking);
     socket.off("user-stopped-speaking", handleUserStoppedSpeaking);
   };
 
   return {
-    emitJoinVoiceChat,
-    emitLeaveVoiceChat,
+    emitJoinVocalChat,
+    emitLeaveVocalChat,
     cleanup,
   };
 }

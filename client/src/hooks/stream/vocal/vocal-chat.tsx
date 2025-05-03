@@ -1,6 +1,6 @@
 import { Icons } from "@/components/Icons";
 import { toast } from "@/components/ui/use-toast";
-import { playNotificationSound } from "@/components/stream/voice/sound-provider";
+import { playNotificationSound } from "@/components/stream/audio/sound-provider";
 import { useMute } from "@/hooks/stream/vocal/mute";
 import { useVoiceStore } from "@/store/voice.store";
 import {
@@ -8,35 +8,35 @@ import {
   cleanupAudioProcessing,
   setupAudioProcessing,
 } from "@/utils/audio-processor";
-import { setupVoiceSocketHandlers } from "@/socket/voice-socket-handler";
+import { setupVocalSocketHandlers } from "@/socket/vocal-socket-handler";
 import { Peer } from "peerjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-interface UseVoiceChatProps {
+interface UseVocalChatProps {
   socket: any | null;
   roomId: number | null;
   username: string | null;
   userId: number | null;
 }
 
-export function useVoiceChat({
+export function useVocalChat({
   socket,
   roomId,
   username,
   userId,
-}: UseVoiceChatProps) {
+}: UseVocalChatProps) {
   const { inputVolume, outputVolume, setSpeakingUsers } = useVoiceStore();
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [isVoiceChatActive, setIsVoiceChatActive] = useState(false);
+  const [isVocalChatActive, setIsVocalChatActive] = useState(false);
   const [connections, setConnections] = useState<{ [key: string]: any }>({});
   const peerRef = useRef<Peer | null>(null);
   const myStreamRef = useRef<MediaStream | null>(null);
   const processedStreamRef = useRef<MediaStream | null>(null);
-  const isVoiceChatActiveRef = useRef(false);
+  const isVocalChatActiveRef = useRef(false);
   const audioProcessingRef = useRef<AudioProcessingContext | null>(null);
   const socketHandlersRef = useRef<{
-    emitJoinVoiceChat: (peerId: string) => void;
-    emitLeaveVoiceChat: () => void;
+    emitJoinVocalChat: (peerId: string) => void;
+    emitLeaveVocalChat: () => void;
     cleanup: () => void;
   } | null>(null);
 
@@ -51,7 +51,7 @@ export function useVoiceChat({
       const audioElement = new Audio();
       audioElement.srcObject = stream;
       audioElement.autoplay = true;
-      audioElement.volume = outputVolume; // Utilise la valeur au moment de la création
+      audioElement.volume = outputVolume;
 
       audioElementsRef.current[peerId] = audioElement;
       return audioElement;
@@ -72,7 +72,7 @@ export function useVoiceChat({
   useEffect(() => {
     if (!socket || !roomId || !userId) return;
 
-    const handlers = setupVoiceSocketHandlers({
+    const handlers = setupVocalSocketHandlers({
       socket,
       userId,
       roomId,
@@ -91,8 +91,8 @@ export function useVoiceChat({
       handlers.cleanup();
 
       // Arrêter le chat vocal lors du démontage
-      if (isVoiceChatActiveRef.current) {
-        stopVoiceChat();
+      if (isVocalChatActiveRef.current) {
+        stopVocalChat();
       }
     };
   }, [
@@ -104,15 +104,54 @@ export function useVoiceChat({
     removeAudioElement,
   ]);
 
-  const startVoiceChat = async () => {
+  // Amélioration de la configuration audio pour réduire la latence et le bruit
+  const audioConstraints = {
+    echoCancellation: { ideal: true },
+    noiseSuppression: { ideal: true },
+    autoGainControl: { ideal: true },
+    // Ajout de contraintes avancées pour améliorer la qualité
+    latency: { ideal: 0.01 }, // Préférer une latence minimale
+    channelCount: { ideal: 1 }, // Mono pour réduire la bande passante
+    sampleRate: { ideal: 48000 }, // Taux d'échantillonnage élevé pour meilleure qualité
+    sampleSize: { ideal: 16 }, // Taille d'échantillon standard
+  };
+
+  // Configuration améliorée pour PeerJS
+  const peerConfig = {
+    config: {
+      // Serveurs STUN publics gratuits
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun3.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:stun.ekiga.net" },
+        { urls: "stun:stun.ideasip.com" },
+        { urls: "stun:stun.stunprotocol.org:3478" },
+        { urls: "stun:stun.voiparound.com" },
+        { urls: "stun:stun.voipbuster.com" },
+        { urls: "stun:stun.voipstunt.com" },
+        { urls: "stun:stun.voxgratia.org" },
+      ],
+      // Optimisations pour la latence
+      iceTransportPolicy: "all",
+      iceCandidatePoolSize: 10,
+      bundlePolicy: "max-bundle",
+      // Prioriser la performance sur la qualité pour réduire la latence
+      sdpSemantics: "unified-plan",
+    },
+    // Réduire les délais de reconnexion
+    pingInterval: 2000,
+    // Options de débogage
+    debug: 3,
+  };
+
+  const startVocalChat = async () => {
     try {
       // Demander l'accès au microphone
       const audioStream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
+        audio: audioConstraints,
       });
       setStream(audioStream);
       myStreamRef.current = audioStream;
@@ -123,18 +162,18 @@ export function useVoiceChat({
       processedStreamRef.current = audioProcessing.processedStream;
 
       // Initialiser PeerJS
-      const peer = new Peer(`room${roomId}-user${userId}`);
+      const peer = new Peer(`room${roomId}-user${userId}`, peerConfig);
       peerRef.current = peer;
 
       peer.on("open", (id) => {
-        setIsVoiceChatActive(true);
+        setIsVocalChatActive(true);
 
         // Jouer le son de connexion
         playNotificationSound("join");
 
         // Informer les autres utilisateurs de votre ID peer
         if (socketHandlersRef.current) {
-          socketHandlersRef.current.emitJoinVoiceChat(id);
+          socketHandlersRef.current.emitJoinVocalChat(id);
         } else {
           // Fallback si les handlers ne sont pas disponibles
           socket?.emit("join-voice-chat", {
@@ -145,7 +184,7 @@ export function useVoiceChat({
           });
         }
 
-        isVoiceChatActiveRef.current = true;
+        isVocalChatActiveRef.current = true;
 
         toast({
           title: "Vous avez rejoint le chat vocal.",
@@ -193,7 +232,7 @@ export function useVoiceChat({
     }
   };
 
-  const stopVoiceChat = () => {
+  const stopVocalChat = () => {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
@@ -222,15 +261,15 @@ export function useVoiceChat({
     }
 
     // Jouer le son de déconnexion
-    if (isVoiceChatActive) {
+    if (isVocalChatActive) {
       playNotificationSound("leave");
     }
 
-    setIsVoiceChatActive(false);
+    setIsVocalChatActive(false);
 
     // Informer les autres utilisateurs que vous avez quitté le chat vocal
     if (socketHandlersRef.current) {
-      socketHandlersRef.current.emitLeaveVoiceChat();
+      socketHandlersRef.current.emitLeaveVocalChat();
     } else {
       // Fallback si les handlers ne sont pas disponibles
       socket?.emit("leave-voice-chat", {
@@ -240,7 +279,7 @@ export function useVoiceChat({
       });
     }
 
-    isVoiceChatActiveRef.current = false;
+    isVocalChatActiveRef.current = false;
 
     // Supprimer tous les éléments audio cachés
     document.querySelectorAll("audio.hidden").forEach((el) => el.remove());
@@ -253,10 +292,10 @@ export function useVoiceChat({
 
   return {
     stream,
-    isVoiceChatActive,
+    isVocalChatActive,
     isMuted,
-    startVoiceChat,
-    stopVoiceChat,
+    startVocalChat,
+    stopVocalChat,
     toggleMute,
     addAudioElement,
     removeAudioElement,

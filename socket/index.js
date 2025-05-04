@@ -142,7 +142,7 @@ io.on("connection", (socket) => {
     io.emit("roomDeleted", id);
   });
 
-	//********** VOCAL CHAT WITH PEERJS **********/
+	 //********** VOCAL CHAT WITH PEERJS **********/
   socket.on("join-vocal-chat", ({ roomId, userId, username, peerId }) => {
     // Vérifier que l'utilisateur authentifié est celui qui fait la demande
     if (userId !== socket.user.id) return;
@@ -184,7 +184,7 @@ io.on("connection", (socket) => {
 
   socket.on("user-stopped-speaking", ({ roomId, userId }) => {
     io.to(roomId).emit("user-stopped-speaking", { userId });
-  });  
+  });
 
   //********** SEND MESSAGE IN ROOM **********/
   socket.on("sendMessage", (roomId) => {

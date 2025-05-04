@@ -109,30 +109,28 @@ export function useVocalChat({
     echoCancellation: { ideal: true },
     noiseSuppression: { ideal: true },
     autoGainControl: { ideal: true },
-    // Ajout de contraintes avancées pour améliorer la qualité
-    latency: { ideal: 0.01 }, // Préférer une latence minimale
+    latency: { ideal: 0.03 }, // Préférer une latence minimale
     channelCount: { ideal: 1 }, // Mono pour réduire la bande passante
-    sampleRate: { ideal: 48000 }, // Taux d'échantillonnage élevé pour meilleure qualité
+    sampleRate: { ideal: 44100 }, // Taux d'échantillonnage élevé pour meilleure qualité
     sampleSize: { ideal: 16 }, // Taille d'échantillon standard
   };
 
   // Configuration améliorée pour PeerJS
   const peerConfig = {
+    host: import.meta.env.VITE_REACT_APP_PEER_HOST,
+    port: Number(import.meta.env.VITE_REACT_APP_PEER_PORT),
+    path: import.meta.env.VITE_REACT_APP_PEER_PATH,
+    secure: import.meta.env.VITE_REACT_APP_NODE_ENV === "production",
     config: {
-      // Serveurs STUN publics gratuits
       iceServers: [
         { urls: "stun:stun.l.google.com:19302" },
         { urls: "stun:stun1.l.google.com:19302" },
-        { urls: "stun:stun2.l.google.com:19302" },
-        { urls: "stun:stun3.l.google.com:19302" },
-        { urls: "stun:stun4.l.google.com:19302" },
-        { urls: "stun:stun.ekiga.net" },
-        { urls: "stun:stun.ideasip.com" },
         { urls: "stun:stun.stunprotocol.org:3478" },
-        { urls: "stun:stun.voiparound.com" },
-        { urls: "stun:stun.voipbuster.com" },
-        { urls: "stun:stun.voipstunt.com" },
-        { urls: "stun:stun.voxgratia.org" },
+        {
+          urls: "turn:openrelay.metered.ca:80",
+          username: "openrelayproject",
+          credential: "openrelayproject",
+        },
       ],
       // Optimisations pour la latence
       iceTransportPolicy: "all",
@@ -143,8 +141,8 @@ export function useVocalChat({
     },
     // Réduire les délais de reconnexion
     pingInterval: 2000,
-    // Options de débogage
-    debug: 3,
+    // Aucun log de débogage
+    debug: 0,
   };
 
   const startVocalChat = async () => {

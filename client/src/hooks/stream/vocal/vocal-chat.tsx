@@ -142,7 +142,7 @@ export function useVocalChat({
     // Réduire les délais de reconnexion
     pingInterval: 2000,
     // Aucun log de débogage
-    debug: 0,
+    debug: 3,
   };
 
   const startVocalChat = async () => {

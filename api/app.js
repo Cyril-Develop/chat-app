@@ -28,21 +28,21 @@ const limiter = rateLimit({
 //app.use(limiter);
 
 // Serving images statically
-app.use("/chateo/api/images", express.static(path.join(__dirname, "images")));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Importing routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
-const chatRoutes = require('./routes/chat');
+const chatRoutes = require("./routes/chat");
 const emailRoutes = require("./routes/email");
 
 // Using routes
-app.use("/chateo/api/auth", authRoutes);
-app.use("/chateo/api/user", userRoutes);
-app.use("/chateo/api/admin", adminRoutes);
-app.use('/chateo/api/chat', chatRoutes);
-app.use("/chateo/api/email", emailRoutes);
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
+app.use("/chat", chatRoutes);
+app.use("/email", emailRoutes);
 
 //********** AUTOMATISATION **********/
 // Nettoyer les blocages périmés tous les jours à minuit (0 0 * * *)

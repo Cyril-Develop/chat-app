@@ -174,7 +174,7 @@ export function useVocalChat({
           socketHandlersRef.current.emitJoinVocalChat(id);
         } else {
           // Fallback si les handlers ne sont pas disponibles
-          socket?.emit("join-voice-chat", {
+          socket?.emit("join-vocal-chat", {
             roomId,
             userId,
             username,
@@ -270,7 +270,7 @@ export function useVocalChat({
       socketHandlersRef.current.emitLeaveVocalChat();
     } else {
       // Fallback si les handlers ne sont pas disponibles
-      socket?.emit("leave-voice-chat", {
+      socket?.emit("leave-vocal-chat", {
         roomId,
         userId,
         username,

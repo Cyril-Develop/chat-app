@@ -5,7 +5,7 @@ import { SkeletonMessage } from "@/components/skeleton/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { useRoomChat } from "@/hooks/room-chat-handler";
 import { RoomChatProps } from "@/types/chat";
-import { releaseWakeLock, requestWakeLock } from "@/utils/screen-wake-lock";
+import { releaseScreenWakeLock, requestScreenWakeLock } from "@/utils/screen-wake-lock";
 import { useEffect } from "react";
 
 const RoomChat = ({ roomId, currentUser }: RoomChatProps) => {
@@ -13,10 +13,10 @@ const RoomChat = ({ roomId, currentUser }: RoomChatProps) => {
 
   // Request wake lock when the component mounts
   useEffect(() => {
-    requestWakeLock();
+    requestScreenWakeLock();
 
     return () => {
-      releaseWakeLock();
+      releaseScreenWakeLock();
     };
   }, []);
 

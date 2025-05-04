@@ -5,7 +5,7 @@ import { SkeletonMessage } from "@/components/skeleton/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { usePrivateChat } from "@/hooks/private-chat-handler";
 import { PrivateChatProps } from "@/types/chat";
-import { releaseWakeLock, requestWakeLock } from "@/utils/screen-wake-lock";
+import { releaseScreenWakeLock, requestScreenWakeLock } from "@/utils/screen-wake-lock";
 import { useEffect } from "react";
 
 const PrivateChat = ({ contactId }: PrivateChatProps) => {
@@ -14,10 +14,10 @@ const PrivateChat = ({ contactId }: PrivateChatProps) => {
 
   // Request wake lock when the component mounts
   useEffect(() => {
-    requestWakeLock();
+    requestScreenWakeLock();
 
     return () => {
-      releaseWakeLock();
+      releaseScreenWakeLock();
     };
   }, []);
 

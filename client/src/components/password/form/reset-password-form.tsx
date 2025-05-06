@@ -124,7 +124,7 @@ export default function ResetPassword() {
           </div>
           <ButtonForm
             loading={loading}
-            disabled={loading}
+            disabled={loading || !form.formState.isDirty}
             defaultValue="Continuer"
             spinnerValue="Modification en cours"
           />

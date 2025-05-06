@@ -34,28 +34,24 @@ const CreateRoomForm = ({
     resolver: zodResolver(RoomFormSchema),
   });
 
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
   const windowWidth = useWindowWidth();
   const isDesktopView = windowWidth > 1023;
 
-  const createRoom = useCreateRoomMutation();
+  const { mutateAsync: createRoom, isPending } = useCreateRoomMutation();
 
   const onSubmit = async (values: {
     name: string;
     password?: string;
     description?: string;
   }) => {
-    setLoading(true);
     setApiError("");
     try {
-      await createRoom.mutateAsync(values);
+      await createRoom(values);
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -166,8 +162,8 @@ const CreateRoomForm = ({
           />
         </div>
         <ButtonForm
-          loading={loading}
-          disabled={loading}
+          loading={isPending}
+          disabled={isPending || !form.formState.isDirty}
           defaultValue={btnSubmit}
           spinnerValue="Création en cours..."
         />

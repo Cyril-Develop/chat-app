@@ -33,7 +33,7 @@ const ReviewCard = ({
 export function MarqueeHero() {
   return (
     <div className="relative w-full flex-row items-center justify-center overflow-hidden">
-      <Marquee pauseOnHover className="[--duration:40s]">
+      <Marquee pauseOnHover className="[--duration:60s]">
         {items.map((item) => (
           <ReviewCard key={item.title} {...item} />
         ))}

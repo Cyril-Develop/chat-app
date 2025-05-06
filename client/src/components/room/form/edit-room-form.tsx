@@ -32,29 +32,24 @@ const UpdateRoomForm = ({
     resolver: zodResolver(UpdateRoomFormSchema),
   });
 
-  const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const roomId = useRoomStore((state) => state.room?.id);
-  const { mutateAsync: updateRoomDescription } =
+  const { mutateAsync: updateRoomDescription, isPending } =
     useUpdateRoomDescriptionMutation();
   const windowWidth = useWindowWidth();
   const isDesktopView = windowWidth > 1023;
 
   const onSubmit = async (values: { description: string }) => {
-    setLoading(true);
     setApiError("");
     try {
       if (!roomId) {
         setApiError("Aucun salon sélectionné.");
-        setLoading(false);
         return;
       }
       await updateRoomDescription({ roomId, description: values.description });
       onSubmitSuccess();
     } catch (error: any) {
       setApiError(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,8 +99,8 @@ const UpdateRoomForm = ({
           )}
         />
         <ButtonForm
-          loading={loading}
-          disabled={loading}
+          loading={isPending}
+          disabled={isPending || !form.formState.isDirty}
           defaultValue={btnSubmit}
           spinnerValue="Modification en cours..."
         />

@@ -12,8 +12,7 @@ function Footer() {
             Chateo
           </div>
           <p className="dark:text-muted-foreground">
-            Une application de messagerie moderne qui connecte les personnes et
-            les communautés.
+            Une application de messagerie moderne qui connecte les personnes.
           </p>
         </div>
 

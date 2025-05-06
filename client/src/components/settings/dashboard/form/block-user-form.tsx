@@ -80,7 +80,7 @@ const BlockUserForm = ({
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="form-input">
-                      <SelectValue placeholder="Sélectionner une durée" />
+                      <SelectValue placeholder="Sélectionner" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1j">1 jour</SelectItem>
@@ -106,7 +106,7 @@ const BlockUserForm = ({
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="form-input">
-                      <SelectValue placeholder="Sélectionner un motif" />
+                      <SelectValue placeholder="Sélectionner" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="insultes">
@@ -131,7 +131,7 @@ const BlockUserForm = ({
 
         <ButtonForm
           loading={isPending}
-          disabled={isPending}
+          disabled={isPending || !form.formState.isDirty}
           variant="destructive"
           defaultValue={btnSubmit}
           spinnerValue="Blocage en cours..."

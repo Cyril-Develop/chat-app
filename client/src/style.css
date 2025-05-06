@@ -47,9 +47,28 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-  .theme {
-    --animate-marquee: marquee var(--duration) infinite linear;
-    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  /* Scrollbar styles */
+  .scrollbar-webkit::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-webkit::-webkit-scrollbar-thumb {
+    background-color: #e2e8f0;
+    border-radius: 20px;
+  }
+
+  .scrollbar-webkit::-webkit-scrollbar-thumb:hover {
+    background-color: #d0d5dc;
+  }
+
+  .scrollbar-webkit::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  .scrollbar-webkit::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 }
 
@@ -160,7 +179,7 @@ html.dark {
 }
 
 /* ANIMATION */
-@keyframes marquee-horizontal {
+@keyframes marquee {
   0% {
     transform: translateX(0);
   }
@@ -170,7 +189,7 @@ html.dark {
 }
 
 .animate-marquee {
-  animation: marquee-horizontal var(--duration) linear infinite;
+  animation: marquee var(--duration) linear infinite;
   will-change: transform;
 }
 
@@ -193,24 +212,5 @@ html.dark {
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-@theme inline {
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(calc(-100% - var(--gap)));
-    }
-  }
-  @keyframes marquee-vertical {
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(calc(-100% - var(--gap)));
-    }
   }
 }

@@ -153,7 +153,7 @@ const ContactForm = () => {
           <div className="pb-3 md:pb-0">
             <ButtonForm
               loading={loading}
-              disabled={loading}
+              disabled={loading || !form.formState.isDirty}
               defaultValue="Envoyer"
               spinnerValue="Envoi en cours"
             />

@@ -15,9 +15,8 @@ const Hero = () => {
               <span>à votre manière...</span>
             </h1>
             <p className="lg:text-xl text-gray-600 dark:text-gray-400">
-              Créez des espaces de discussion personnalisés, échangez en temps
-              réel et construisez votre communauté dans un environnement
-              sécurisé.
+              Faites de nouvelles rencontres et échangez entre amis dans un
+              environnement sécurisé.
             </p>
             <Link
               to={isAuthenticated ? "/chateo/chat" : "/chateo/auth"}

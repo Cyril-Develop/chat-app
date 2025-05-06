@@ -103,7 +103,7 @@ export function AccountForm({ user }: AccountFormValues) {
 
         <ButtonForm
           loading={editAccount.isPending}
-          disabled={editAccount.isPending}
+          disabled={editAccount.isPending || !form.formState.isDirty}
           defaultValue="Enregistrer les modifications"
           spinnerValue="Envoi en cours"
         />

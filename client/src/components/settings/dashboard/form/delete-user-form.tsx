@@ -75,7 +75,7 @@ const DeleteUserForm = ({
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="form-input">
-                      <SelectValue placeholder="Sélectionner un motif" />
+                      <SelectValue placeholder="Sélectionner" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="insultes">
@@ -99,7 +99,7 @@ const DeleteUserForm = ({
         </div>
         <ButtonForm
           loading={isPending}
-          disabled={isPending}
+          disabled={isPending || !form.formState.isDirty}
           variant="destructive"
           defaultValue={btnSubmit}
           spinnerValue="Suppression en cours..."

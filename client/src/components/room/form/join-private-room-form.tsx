@@ -73,7 +73,7 @@ const JoinPrivateRoomForm = ({
         <div className="flex flex-col gap-4">
           <ButtonForm
             loading={isLoading}
-            disabled={isLoading}
+            disabled={isLoading || !form.formState.isDirty}
             defaultValue={btnSubmit}
             spinnerValue="Connexion"
           />

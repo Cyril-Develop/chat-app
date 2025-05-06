@@ -34,14 +34,12 @@ const ForgotPasswordForm = ({
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: { email: string }) => {
     setLoading(true);
     setApiError("");
 
-    const { email } = form.getValues();
-
     try {
-      const response = await forgotPassword(email);
+      const response = await forgotPassword(values.email);
       onSubmitSuccess();
       toast({
         description: response.message,
@@ -84,7 +82,7 @@ const ForgotPasswordForm = ({
         />
         <ButtonForm
           loading={loading}
-          disabled={loading}
+          disabled={loading || !form.formState.isDirty}
           defaultValue={btnSubmit}
           spinnerValue="Envoi..."
         />

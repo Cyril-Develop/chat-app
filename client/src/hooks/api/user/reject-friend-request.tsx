@@ -10,9 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export const useRejectFriendRequestMutation = () => {
   const queryClient = useQueryClient();
-  const clearRequestFromSender = useNotificationStore(
-    (state) => state.clearNotificationsForContact
-  );
+  const clearRequestFromSender = useNotificationStore((state) => state.clearRequestFromSender);
   const { room, setRoom } = useRoomStore();
   const navigate = useNavigate();
   const setAuthentication = useAuthStore((state) => state.setAuthentication);

@@ -36,6 +36,7 @@ const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 const chatRoutes = require('./routes/chat');
 const emailRoutes = require("./routes/email");
+const notificationRoutes = require("./routes/notification");
 
 // Using routes
 app.use("/chateo/api/auth", authRoutes);
@@ -43,6 +44,7 @@ app.use("/chateo/api/user", userRoutes);
 app.use("/chateo/api/admin", adminRoutes);
 app.use('/chateo/api/chat', chatRoutes);
 app.use("/chateo/api/email", emailRoutes);
+app.use("/chateo/api/notification", notificationRoutes);
 
 //********** AUTOMATISATION **********/
 // Nettoyer les blocages périmés tous les jours à minuit (0 0 * * *)

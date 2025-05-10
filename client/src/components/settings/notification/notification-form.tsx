@@ -45,7 +45,7 @@ const NotificationForm = ({ user }: NotificationFormValues) => {
           control={form.control}
           name="type"
           render={({ field }) => (
-            <FormItem className={cn("space-y-3")}>
+            <FormItem className={cn("space-y-2")}>
               <FormLabel id="notification-label" className={cn("text-base")}>
                 Notifications par e-mail
               </FormLabel>

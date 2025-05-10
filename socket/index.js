@@ -1,17 +1,8 @@
 const { Server } = require("socket.io");
 require("dotenv").config();
-const https = require("https");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/cyril-develop.fr/fullchain.pem"),
-};
-
-const server = https.createServer(options);
-
-const io = new Server(server, {
+const io = new Server({
   cors: {
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -116,7 +107,7 @@ io.on("connection", (socket) => {
     io.emit("roomUpdated", roomId);
   });
 
- //********** JOIN ROOM **********/
+  //********** JOIN ROOM **********/
   socket.on(
     "joinRoom",
     (roomId, id, username, sex, profileImage, visible, role) => {
@@ -142,7 +133,7 @@ io.on("connection", (socket) => {
     io.emit("roomDeleted", id);
   });
 
-	 //********** VOCAL CHAT WITH PEERJS **********/
+  //********** VOCAL CHAT WITH PEERJS **********/
   socket.on("join-vocal-chat", ({ roomId, userId, username, peerId }) => {
     // Vérifier que l'utilisateur authentifié est celui qui fait la demande
     if (userId !== socket.user.id) return;
@@ -299,7 +290,7 @@ io.on("connection", (socket) => {
   });
 
   //******** SEND PRIVATE MESSAGE **********/
-  socket.on("sendPrivateMessage", (data) => {
+  socket.on("sendPrivateMessage", async (data) => {
     const receiverSocket = users.find(
       (user) => user.userId === data.receiver.id
     );
@@ -328,6 +319,20 @@ io.on("connection", (socket) => {
           sex: data.user.sex,
         },
       });
+    } else {
+      // Si le receveur est déconnecté, demander au backend d’envoyer la notif
+      await fetch(`${process.env.API_URL}/notification/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiverId: data.receiver.id,
+          title: "Chateo",
+          body: `${data.user.username} vous a envoyé un message privé`,
+          image: data.user.profileImage,
+        }),
+      });
     }
   });
 
@@ -350,27 +355,42 @@ io.on("connection", (socket) => {
       const receiverSocket = users.find((user) => user.userId === receiverId);
       const senderSocket = users.find((user) => user.userId === senderId);
 
-      if (receiverSocket) {
-        io.to(receiverSocket.socketId).emit("receiveFriendRequest");
-      }
-
       if (senderSocket) {
         io.to(senderSocket.socketId).emit("friendRequestSent");
       }
-      // Nouvelle émission uniquement pour la notification du destinataire
-      io.to(receiverSocket.socketId).emit("newNotification", {
-        type: "request",
-        id: requestId,
-        receiver: {
-          id: receiverId,
-        },
-        sender: {
-          id: senderId,
-          username: senderName,
-          sex: sendersex,
-          profileImage: senderProfileImage,
-        },
-      });
+
+      if (receiverSocket) {
+        io.to(receiverSocket.socketId).emit("receiveFriendRequest");
+
+        // Nouvelle émission uniquement pour la notification du destinataire
+        io.to(receiverSocket.socketId).emit("newNotification", {
+          type: "request",
+          id: requestId,
+          receiver: {
+            id: receiverId,
+          },
+          sender: {
+            id: senderId,
+            username: senderName,
+            sex: sendersex,
+            profileImage: senderProfileImage,
+          },
+        });
+      } else {
+        // Si le receveur est déconnecté, demander au backend d’envoyer la notif
+        fetch(`${process.env.API_URL}/notification/send`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            receiverId,
+            title: "Chateo",
+            body: `${senderName} vous a envoyé une demande d'ami`,
+            image: senderProfileImage,
+          }),
+        });
+      }
 
       // On envoie l'event à tous les utilisateurs pour mettre à jour la liste des demandes d'amis dans la liste users
       io.emit("requestPending");
@@ -476,6 +496,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.SOCKET_PORT || 3000;
-server.listen(PORT, () => {
+io.listen(PORT, () => {
   console.log(`Socket.IO server is running at https://localhost:${PORT}`);
 });

@@ -71,6 +71,10 @@ export default defineConfig({
           },
         ],
       },
+      // Configuration pour les notifications push
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.js",
     }),
   ],
   base: "/chateo/",

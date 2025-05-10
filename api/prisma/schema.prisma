@@ -26,54 +26,65 @@ model Otp {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  createdAt    DateTime      @default(now())
-  email        String        @unique
-  password     String        @db.VarChar(255)
-  username     String        @unique
-  bio          String?       @db.VarChar(150)
-  profileImage String        @default("default.jpg")
-  notification String        @default("accept")
-  role         Role          @default(USER)
-  sex          Sex           @default(UNDISCLOSED)
-  blockedUsers BlockedUser[] @relation("BlockerRelation")
-  blockedBy    BlockedUser[] @relation("BlockedRelation")
-
-  // Ajout des relations pour les blocages administratifs
-  adminBlocks       AdminBlock[] @relation("BlockedByAdmin")
-  blocksAdministered AdminBlock[] @relation("AdminBlocker")
-
-  chatRooms        UserChatRoom[]
-  friends          Friend[]       @relation("UserFriends")
-  friendOf         Friend[]       @relation("FriendUsers")
-  createdChatRooms ChatRoom[]     @relation("CreatorChatRooms")
-  messages         Message[]      @relation("UserMessages")
-  likedMessages    MessageLike[]  @relation("UserLikes")
-
-  sentFriendRequests     FriendRequest[] @relation("SenderFriendRequests")
-  receivedFriendRequests FriendRequest[] @relation("ReceiverFriendRequests")
-
-  sentMessages         PrivateMessage[]     @relation("SentPrivateMessages")
-  receivedMessages     PrivateMessage[]     @relation("ReceivedPrivateMessages")
-  likedPrivateMessages PrivateMessageLike[]
+  id                     Int                  @id @default(autoincrement())
+  createdAt              DateTime             @default(now())
+  email                  String               @unique
+  password               String               @db.VarChar(255)
+  username               String               @unique
+  bio                    String?              @db.VarChar(150)
+  profileImage           String               @default("default.jpg")
+  notification           String               @default("accept")
+  role                   Role                 @default(USER)
+  pushSubscriptions      PushSubscription[]
+  sex                    Sex                  @default(UNDISCLOSED)
+  blockedUsers           BlockedUser[]        @relation("BlockerRelation")
+  blockedBy              BlockedUser[]        @relation("BlockedRelation")
+  adminBlocks            AdminBlock[]         @relation("BlockedByAdmin")
+  blocksAdministered     AdminBlock[]         @relation("AdminBlocker")
+  chatRooms              UserChatRoom[]
+  friends                Friend[]             @relation("UserFriends")
+  friendOf               Friend[]             @relation("FriendUsers")
+  createdChatRooms       ChatRoom[]           @relation("CreatorChatRooms")
+  messages               Message[]            @relation("UserMessages")
+  likedMessages          MessageLike[]        @relation("UserLikes")
+  sentFriendRequests     FriendRequest[]      @relation("SenderFriendRequests")
+  receivedFriendRequests FriendRequest[]      @relation("ReceiverFriendRequests")
+  sentMessages           PrivateMessage[]     @relation("SentPrivateMessages")
+  receivedMessages       PrivateMessage[]     @relation("ReceivedPrivateMessages")
+  likedPrivateMessages   PrivateMessageLike[]
 }
 
-// Nouveau modèle pour les blocages administratifs
+model PushSubscription {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  endpoint     String   @db.Text
+  endpointHash String   @db.VarChar(64) // Pour stocker un hachage SHA-256 de l'endpoint
+  p256dh       String
+  auth         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, endpointHash])
+  @@index([userId])
+}
+
 model AdminBlock {
-  id         Int       @id @default(autoincrement())
-  userId     Int
-  adminId    Int
-  reason     String   
-  duration   String    
-  isActive   Boolean   @default(true)
-  startDate  DateTime  @default(now())
-  endDate    DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  
-  user       User      @relation("BlockedByAdmin", fields: [userId], references: [id], onDelete: Cascade)
-  admin      User      @relation("AdminBlocker", fields: [adminId], references: [id])
-  
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  adminId   Int
+  reason    String
+  duration  String
+  isActive  Boolean   @default(true)
+  startDate DateTime  @default(now())
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user  User @relation("BlockedByAdmin", fields: [userId], references: [id], onDelete: Cascade)
+  admin User @relation("AdminBlocker", fields: [adminId], references: [id])
+
   @@index([userId])
   @@index([isActive])
 }
@@ -99,6 +110,10 @@ model Message {
   likes      MessageLike[]
   user       User          @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
   chatRoom   ChatRoom      @relation(fields: [chatRoomId], references: [id], name: "ChatRoomMessages", onDelete: Cascade)
+
+  @@index([userId])
+  @@index([chatRoomId])
+  @@index([createdAt])
 }
 
 model MessageLike {
@@ -123,6 +138,11 @@ model PrivateMessage {
 
   user     User @relation("SentPrivateMessages", fields: [userId], references: [id], onDelete: Cascade)
   receiver User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([receiverId])
+  @@index([isRead])
+  @@index([createdAt])
 }
 
 model PrivateMessageLike {
@@ -176,6 +196,9 @@ model FriendRequest {
 
   sender   User @relation("SenderFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
   receiver User @relation("ReceiverFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
 }
 
 enum RequestStatus {

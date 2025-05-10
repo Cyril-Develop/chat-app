@@ -1,8 +1,9 @@
+import NotificationButton from "@/components/notification/notification-push-button";
 import NotificationForm from "@/components/settings/notification/notification-form";
+import { SkeletonNotification } from "@/components/skeleton/skeleton";
 import { Separator } from "@/components/ui/separator";
 import useGetUser from "@/hooks/api/user/get-current-user";
-import { SkeletonNotification } from "@/components/skeleton/skeleton";
-import NotificationButton from "@/components/notification-button";
+import { PopoverNotificationPush } from "@/components/notification/popover-notification-push";
 
 export default function SettingsNotificationsPage() {
   const { data: currentUser, isLoading } = useGetUser();
@@ -23,7 +24,10 @@ export default function SettingsNotificationsPage() {
 
           <div className="space-y-4">
             <div>
-              <h4 className="text-base font-semibold">Notifications Push</h4>
+              <h4 className="text-base font-semibold flex items-center justify-between">
+                Notifications Push
+                <PopoverNotificationPush />
+              </h4>
               <p className="text-additional-info">
                 Vous pouvez activer ou désactiver les notifications push pour
                 recevoir des alertes même lorsque l'application est fermée.

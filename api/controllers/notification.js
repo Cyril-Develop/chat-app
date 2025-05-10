@@ -136,7 +136,7 @@ exports.sendNotification = async (req, res) => {
 
     // Envoyer à chaque abonnement
     await Promise.all(
-      subscriptions.map((sub) => {
+      subscriptions.map(async (sub) => {
         const subscription = {
           endpoint: sub.endpoint,
           keys: {
@@ -144,7 +144,22 @@ exports.sendNotification = async (req, res) => {
             auth: sub.auth,
           },
         };
-        return webpush.sendNotification(subscription, payload);
+
+        try {
+          await webpush.sendNotification(subscription, payload);
+        } catch (err) {
+          if (err.statusCode === 410 || err.statusCode === 404) {
+            console.warn("Abonnement invalide supprimé:", sub.endpoint);
+            await prisma.pushSubscription.deleteMany({
+              where: {
+                userId: sub.userId,
+                endpoint: sub.endpoint,
+              },
+            });
+          } else {
+            console.error("Erreur d'envoi de notification:", err);
+          }
+        }
       })
     );
 

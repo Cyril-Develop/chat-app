@@ -11,7 +11,7 @@ interface SocketStore {
 }
 
 export const useSocketStore = create<SocketStore>((set, get) => {
-  let socket = null as Socket | null;
+  let socket: Socket | null = null;
 
   return {
     socket: null,
@@ -22,9 +22,7 @@ export const useSocketStore = create<SocketStore>((set, get) => {
       if (socket) return;
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
-        path: "/socket.io/",
         withCredentials: true,
-        transports: ["websocket", "polling"],
       });
 
       socket.on("connect", () => {
@@ -53,6 +51,7 @@ export const useSocketStore = create<SocketStore>((set, get) => {
 
       set({ socket });
     },
+
     disconnectSocket: () => {
       socket?.disconnect();
       socket = null;

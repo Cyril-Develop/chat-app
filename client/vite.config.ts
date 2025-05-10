@@ -57,7 +57,7 @@ export default defineConfig({
         type: "module",
       },
       workbox: {
-        cacheId: "chateo-v1",
+        cacheId: "chateo-v1.0",
         clientsClaim: true,
         skipWaiting: true,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,webp,wav}"],

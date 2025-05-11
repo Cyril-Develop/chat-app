@@ -85,7 +85,20 @@ export const useSocketHandler = () => {
     //**********  FRIEND REQUEST **********/
     socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
 
+    //********** APP STATE **********/
+    // Envoie l'état de l'application sur mobile (visible ou caché) au serveur
+    const handleVisibilityChange = () => {
+      const appState =
+        document.visibilityState === "visible" ? "foreground" : "background";
+      socket?.emit("appStateChanged", { state: appState });
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    // pour forcer un état initial correct
+    handleVisibilityChange();
+
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       socket?.off("requestPending", invalidateUsers);
       socket?.off("friendRequestSent", invalidateUsers);
       socket?.off("removedRelationship", invalidateUsersAndFriends);

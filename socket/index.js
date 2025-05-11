@@ -23,9 +23,9 @@ let users = [];
 // Users in room
 let userInRoom = [];
 
-const addUser = (userId, socketId, visible) => {
+const addUser = (userId, socketId, visible, appState) => {
   if (!users.some((user) => user.userId === userId)) {
-    users.push({ userId, socketId, visible });
+    users.push({ userId, socketId, visible, appState });
   }
 };
 
@@ -98,9 +98,9 @@ io.use((socket, next) => {
 //**********  SOCKET CONNECTION **********/
 io.on("connection", (socket) => {
   // ADD USER ONLINE
-  socket.on("addUser", (visible) => {
+  socket.on("addUser", (visible, appState) => {
     const userId = socket.user.id;
-    addUser(userId, socket.id, visible);
+    addUser(userId, socket.id, visible, appState);
     io.emit("getUsers", users);
   });
 
@@ -114,6 +114,14 @@ io.on("connection", (socket) => {
   socket.on("updateRoomDescription", (roomId) => {
     // Émettre simplement l'événement pour invalider le cache avec tanstack-query
     io.emit("roomUpdated", roomId);
+  });
+
+  //********** UPDATE APP STATE **********/
+  socket.on("appStateChanged", (data) => {
+    const user = users.find((user) => user.socketId === socket.id);
+    if (user) {
+      user.appState = data.state; // 'foreground' or 'background'
+    }
   });
 
   //********** JOIN ROOM **********/
@@ -298,7 +306,7 @@ io.on("connection", (socket) => {
     io.emit("userStatusChanged", { userId, visible });
   });
 
-  //******** SEND PRIVATE MESSAGE **********/
+ //******** SEND PRIVATE MESSAGE **********/
   socket.on("sendPrivateMessage", async (data) => {
     const receiverSocket = users.find(
       (user) => user.userId === data.receiver.id
@@ -310,11 +318,12 @@ io.on("connection", (socket) => {
       io.to(senderSocket.socketId).emit("getPrivateMessage", data);
     }
 
-    // Si le destinataire est connecté, on lui envoie aussi
+    // Le destinataire est connecté
     if (receiverSocket) {
+      // On lui envoie toujours le message
       io.to(receiverSocket.socketId).emit("getPrivateMessage", data);
 
-      // Et on lui envoie une notification
+      // On lui envoie une notification socket (pour UI)
       io.to(receiverSocket.socketId).emit("newNotification", {
         type: "message",
         id: data.id,
@@ -328,8 +337,20 @@ io.on("connection", (socket) => {
           sex: data.user.sex,
         },
       });
+
+      // Si l'application est en arrière-plan, on envoie aussi une notification push
+      if (receiverSocket.appState === "background") {
+        await sendPushNotification(data);
+      }
     } else {
-      // Si le receveur est déconnecté, demander au backend d’envoyer la notif
+      // Si le receveur est déconnecté, envoyer push notification
+      await sendPushNotification(data);
+    }
+  });
+
+  // Fonction pour envoyer les notifications push
+  async function sendPushNotification(data) {
+    try {
       await fetch(`${process.env.API_URL}/notification/send`, {
         method: "POST",
         headers: {
@@ -342,8 +363,10 @@ io.on("connection", (socket) => {
           image: data.user.profileImage,
         }),
       });
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de la notification push:", error);
     }
-  });
+  }  
 
   //********** DELETE PRIVATE MESSAGE **********/
   socket.on("deletePrivateMessage", (messageId) => {

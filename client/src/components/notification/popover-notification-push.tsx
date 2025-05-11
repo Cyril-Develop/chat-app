@@ -61,7 +61,7 @@ export function PopoverNotificationPush() {
             <p>Sur windows :</p>
           </div>
           <ul className="list-disc ml-5">
-            <li>Aller dans les paramètres de Windows</li>
+            <li>Aller dans les paramètres</li>
             <li>
               Rechercher <em>actions et notifications</em>
             </li>

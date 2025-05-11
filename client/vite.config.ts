@@ -21,6 +21,7 @@ export default defineConfig({
         description:
           "Chateo est une application de messagerie complète : discussions publiques ou privées, messages directs, partage d'images, notifications, personnalisation, et appels audio.",
         start_url: "/chateo/",
+        lang: "fr",
         scope: "/chateo/",
         display: "standalone",
         theme_color: "#ffffff",
@@ -57,7 +58,7 @@ export default defineConfig({
         type: "module",
       },
       workbox: {
-        cacheId: "chateo-v1.0",
+        cacheId: "chateo-v1.1",
         clientsClaim: true,
         skipWaiting: true,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,webp,wav}"],

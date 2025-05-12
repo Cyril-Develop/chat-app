@@ -3,16 +3,12 @@ import { useSocketStore } from "@/store/socket.store";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRoomStore } from "@/store/room.store";
 import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
-import useGetUser from "@/hooks/api/user/get-current-user";
-import { useAuthStore } from "@/store/auth.store";
 
 // Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
-  const { socket, setUsers } = useSocketStore((state) => state);
+  const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
   const roomId = useRoomStore((state) => state.room?.id);
-  const { data: currentUser } = useGetUser();
-  const visible = useAuthStore((state) => state.visible);
   const { setUsersInRoom, updateUserInRoom } = useRoomStore();
 
   // --- HANDLERS ---
@@ -59,10 +55,6 @@ export const useSocketHandler = () => {
     queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
   };
 
-  const handleGetUsers = (users: any) => {
-    setUsers(users);
-  };
-
   // --- SOCKET SETUP ---
   useEffect(() => {
     // Une demande d'ami a été envoyée
@@ -92,26 +84,6 @@ export const useSocketHandler = () => {
     socket?.on("userStatusChanged", handleUserStatusChanged);
     //**********  FRIEND REQUEST **********/
     socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
-    //********** SOCKET RECONNECTION **********/
-    socket?.on("getUsers", handleGetUsers);
-
-    //********** SOCKET RECONNECT **********/
-    socket?.on("reconnect", () => {
-      socket.emit("addUser", visible, "foreground");
-
-      if (roomId && currentUser) {
-        socket.emit(
-          "joinRoom",
-          roomId,
-          currentUser.id,
-          currentUser.username,
-          currentUser.sex,
-          currentUser.profileImage,
-          visible,
-          currentUser.role
-        );
-      }
-    });
 
     //********** APP STATE **********/
     // Envoie l'état de l'application sur mobile (visible ou caché) au serveur socket poure l'envoie de notifications
@@ -145,8 +117,6 @@ export const useSocketHandler = () => {
       socket?.off("userStatusChanged", handleUserStatusChanged);
       //**********  FRIEND REQUEST **********/
       socket?.off("receiveFriendRequest", handleReceiveFriendRequest);
-      //********** SOCKET CONNECTION **********/
-      socket?.off("getUsers", handleGetUsers);
     };
   }, [socket, queryClient, roomId]);
 };

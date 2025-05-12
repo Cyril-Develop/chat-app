@@ -12,18 +12,17 @@ import {
 export const items = [
   {
     title: "Exprimez-vous librement",
-    body: `Discuter entre amis, créer des salons privés ou explorer des conversations publiques pour faire de nouvelles rencontres.`,
+    body: `Échangez entre amis, créez des salons privés ou explorez des discussions publiques pour faire de nouvelles rencontres.`,
     icon: <MessagesSquare />,
   },
   {
     title: "Votre profil à votre image",
-    body: `Ajoutez une photo, un pseudo et une description pour personnaliser votre profil et montrer qui vous êtes aux autres utilisateurs.`,
+    body: `Ajoutez une photo, un pseudo et une description pour personnaliser votre profil et montrer qui vous êtes.`,
     icon: <User />,
   },
   {
     title: "Salons de discussion",
-    body: `Créez et participez à des salons publics ou privés et discuter
-        autour de sujets qui vous passionnent.`,
+    body: `Créez et participez à des salons publics ou privés et discutez autour de sujets qui vous passionnent.`,
     icon: <Users />,
   },
   {
@@ -41,20 +40,17 @@ export const items = [
   },
   {
     title: "Appels audio et vidéo",
-    body: `Lancez des appels audio et bientôt vidéo avec vos
-        contacts et dans les salons privés.`,
+    body: `Lancez des appels audio — et bientôt vidéo — avec vos contacts ou dans les salons privés.`,
     icon: <Phone />,
   },
   {
     title: "Notifications",
-    body: `Restez informé avec des notifications en temps réel et par email
-        pour ne jamais rien manquer.`,
+    body: `Recevez des notifications en temps réel, par e-mail ou hors ligne.`,
     icon: <Bell />,
   },
   {
     title: "Contrôle et sécurité",
-    body: `Bloquez les utilisateurs indésirables et naviguez discrètement
-        avec le mode espion pour une expérience sur mesure.`,
+    body: `Bloquez les utilisateurs indésirables et naviguez discrètement grâce au mode espion.`,
     icon: <Shield />,
   },
 ];

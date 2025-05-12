@@ -5,6 +5,9 @@ interface SocketStore {
   socket: Socket | null;
   visible: boolean;
   users: { userId: number; socketId: string; visible: boolean }[];
+  setUsers: (
+    users: { userId: number; socketId: string; visible: boolean }[]
+  ) => void;
   connectSocket: (visible: boolean) => void;
   disconnectSocket: () => void;
   visibleUsers: () => { userId: number; socketId: string; visible: boolean }[];
@@ -17,6 +20,9 @@ export const useSocketStore = create<SocketStore>((set, get) => {
     socket: null,
     visible: false,
     users: [],
+    setUsers: (
+      users: { userId: number; socketId: string; visible: boolean }[]
+    ) => set({ users }),
 
     connectSocket: (visible) => {
       if (socket) return;
@@ -29,10 +35,6 @@ export const useSocketStore = create<SocketStore>((set, get) => {
 
       socket.on("connect", () => {
         socket?.emit("addUser", visible, "foreground");
-      });
-
-      socket.on("getUsers", (users) => {
-        set({ users });
       });
 
       // Met à jour la visibilité d'un utilisateur en temps réel

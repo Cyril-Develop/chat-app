@@ -8,7 +8,7 @@ import { useAuthStore } from "@/store/auth.store";
 
 // Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
-  const socket = useSocketStore((state) => state.socket);
+  const { socket, setUsers } = useSocketStore((state) => state);
   const queryClient = useQueryClient();
   const roomId = useRoomStore((state) => state.room?.id);
   const { data: currentUser } = useGetUser();
@@ -59,6 +59,10 @@ export const useSocketHandler = () => {
     queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
   };
 
+  const handleGetUsers = (users: any) => {
+    setUsers(users);
+  };
+
   // --- SOCKET SETUP ---
   useEffect(() => {
     // Une demande d'ami a été envoyée
@@ -88,6 +92,8 @@ export const useSocketHandler = () => {
     socket?.on("userStatusChanged", handleUserStatusChanged);
     //**********  FRIEND REQUEST **********/
     socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
+    //********** SOCKET RECONNECTION **********/
+    socket?.on("getUsers", handleGetUsers);
 
     //********** SOCKET RECONNECT **********/
     socket?.on("reconnect", () => {
@@ -123,7 +129,7 @@ export const useSocketHandler = () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       socket?.off("reconnect");
       socket?.off("requestPending", invalidateUsers);
-      socket?.off("friendRequestSent", invalidateUsers);
+      socket?.off("friendRequestSent", invalidateBlockedUsers);
       socket?.off("removedRelationship", invalidateUsersAndFriends);
       socket?.off("blockedRelationship", invalidateUsers);
       socket?.off("unblockedRelationship", invalidateUsers);
@@ -139,6 +145,8 @@ export const useSocketHandler = () => {
       socket?.off("userStatusChanged", handleUserStatusChanged);
       //**********  FRIEND REQUEST **********/
       socket?.off("receiveFriendRequest", handleReceiveFriendRequest);
+      //********** SOCKET CONNECTION **********/
+      socket?.off("getUsers", handleGetUsers);
     };
   }, [socket, queryClient, roomId]);
 };

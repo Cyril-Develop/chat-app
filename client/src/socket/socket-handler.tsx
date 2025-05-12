@@ -3,12 +3,16 @@ import { useSocketStore } from "@/store/socket.store";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRoomStore } from "@/store/room.store";
 import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
+import { useAuthStore } from "@/store/auth.store";
+import { useContactStore } from "@/store/contact.store";
 
 // Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
   const socket = useSocketStore((state) => state.socket);
   const queryClient = useQueryClient();
   const roomId = useRoomStore((state) => state.room?.id);
+  const contactId = useContactStore((sate) => sate.contactId);
+  const visible = useAuthStore((state) => state.visible);
   const { setUsersInRoom, updateUserInRoom } = useRoomStore();
 
   // --- HANDLERS ---
@@ -91,6 +95,23 @@ export const useSocketHandler = () => {
       const appState =
         document.visibilityState === "visible" ? "foreground" : "background";
       socket?.emit("appStateChanged", { state: appState });
+
+      // Si l'app revient au premier plan, on re-déclare l'utilisateur au serveur
+      if (appState === "foreground") {
+        socket?.emit("addUser", visible, appState);
+
+        // Si une discussion privée est ouverte, on force la mise à jour des messages
+        if (contactId) {
+          queryClient.invalidateQueries({
+            queryKey: ["messages-private", contactId],
+          });
+          // Si une discussion de groupe est ouverte, on force la mise à jour des messages
+        } else if (roomId) {
+          queryClient.invalidateQueries({
+            queryKey: ["messages-room", roomId],
+          });
+        }
+      }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -117,5 +138,5 @@ export const useSocketHandler = () => {
       //**********  FRIEND REQUEST **********/
       socket?.off("receiveFriendRequest", handleReceiveFriendRequest);
     };
-  }, [socket, queryClient, roomId]);
+  }, [socket, queryClient, roomId, contactId]);
 };

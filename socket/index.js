@@ -24,7 +24,11 @@ let users = [];
 let userInRoom = [];
 
 const addUser = (userId, socketId, visible, appState) => {
-  if (!users.some((user) => user.userId === userId)) {
+  const existingUserIndex = users.findIndex((user) => user.userId === userId);
+
+  if (existingUserIndex !== -1) {
+    users[existingUserIndex] = { userId, socketId, visible, appState };
+  } else {
     users.push({ userId, socketId, visible, appState });
   }
 };

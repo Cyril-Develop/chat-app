@@ -15,7 +15,7 @@ type ErrorHandlerDependencies = {
   setRoom: (room: Room | null) => void;
   setAuthentication?: (isAuthenticated: boolean, user: null) => void;
   queryClient: QueryClient;
-  navigate: NavigateFunction;
+  navigate?: NavigateFunction;
 };
 
 export const handleApiError = (
@@ -39,7 +39,9 @@ export const handleApiError = (
         setAuthentication(false, null);
       }
       queryClient.clear();
-      navigate("/chateo/auth");
+      if (navigate) {
+        navigate("/chateo/auth");
+      }
       break;
 
     case "TOKEN_EXPIRED":
@@ -47,7 +49,9 @@ export const handleApiError = (
       if (setAuthentication) {
         setAuthentication(false, null);
       }
-      navigate("/chateo/auth");
+      if (navigate) {
+        navigate("/chateo/auth");
+      }
       break;
 
     case "BLOCK_ADMIN":

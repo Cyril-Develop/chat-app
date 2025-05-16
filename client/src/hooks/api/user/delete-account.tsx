@@ -6,7 +6,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRoomStore } from "@/store/room.store";
-import { ApiError } from "@/types/api";
+import { ApiError } from "@/types/api"; 
 import { handleApiError } from "@/utils/error-handler";
 import { useSocketStore } from "@/store/socket.store";
 

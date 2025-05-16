@@ -25,6 +25,10 @@ export const useSocketStore = create<SocketStore>((set, get) => {
         path: "/socket.io/",
         withCredentials: true,
         transports: ["websocket", "polling"],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
       });
 
       socket.on("connect", () => {
@@ -47,7 +51,11 @@ export const useSocketStore = create<SocketStore>((set, get) => {
         }
       );
 
-      socket.on("disconnect", () => {
+      socket.on("disconnect", (reason) => {
+        // Tentative de reconnexion si déconnecté par le serveur
+        if (reason === "io server disconnect") {
+          socket?.connect();
+        }
         socket = null;
       });
 

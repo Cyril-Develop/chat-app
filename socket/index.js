@@ -124,7 +124,7 @@ io.on("connection", (socket) => {
   socket.on("appStateChanged", (data) => {
     const user = users.find((user) => user.socketId === socket.id);
     if (user) {
-      user.appState = data.state; // 'foreground' or 'background'
+      user.appState = data.state; // 'foreground' ou 'background'
     }
   });
 
@@ -310,7 +310,7 @@ io.on("connection", (socket) => {
     io.emit("userStatusChanged", { userId, visible });
   });
 
- //******** SEND PRIVATE MESSAGE **********/
+  //******** SEND PRIVATE MESSAGE **********/
   socket.on("sendPrivateMessage", async (data) => {
     const receiverSocket = users.find(
       (user) => user.userId === data.receiver.id
@@ -370,7 +370,7 @@ io.on("connection", (socket) => {
     } catch (error) {
       console.error("Erreur lors de l'envoi de la notification push:", error);
     }
-  }  
+  }
 
   //********** DELETE PRIVATE MESSAGE **********/
   socket.on("deletePrivateMessage", (messageId) => {
@@ -510,18 +510,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     const user = users.find((u) => u.socketId === socket.id);
     if (user) {
-      // Trouver tous les salons où l'utilisateur est présent
-      const userRooms = userInRoom.filter((u) => u.id === user.userId);
-
-      // Retirer l'utilisateur de tous les salons
-      userRooms.forEach((room) => {
-        removeUserInRoom(room.roomId, user.userId);
-
-        // Informer les autres utilisateurs du salon que cet utilisateur a quitté
-        const usersInThisRoom = getUsersInRoom(room.roomId);
-        io.to(room.roomId).emit("getUserInRoom", usersInThisRoom);
-      });
-
       // Informer tous les utilisateurs que cet utilisateur est hors ligne
       io.emit("userStatusChanged", { userId: user.userId, visible: false });
     }

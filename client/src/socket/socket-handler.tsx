@@ -86,11 +86,18 @@ export const useSocketHandler = () => {
     socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
 
     //********** APP STATE **********/
-    // Envoie l'état de l'application sur mobile (visible ou caché) au serveur socket poure l'envoie de notifications
+    // Envoie l'état de l'application sur mobile (premier plan ou arrière plan) au serveur socket
     const handleVisibilityChange = () => {
-      const appState =
-        document.visibilityState === "visible" ? "foreground" : "background";
+      const isVisible = document.visibilityState === "visible";
+      const appState = isVisible ? "foreground" : "background";
+
+      // Envoie au backend l’état de l’app
       socket?.emit("appStateChanged", { state: appState });
+
+      // Si l’app revient au 1er plan ET que le socket n’est pas connectée : reconnecte
+      if (isVisible && socket && !socket.connected) {
+        socket.connect();
+      }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);

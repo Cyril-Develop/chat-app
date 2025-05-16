@@ -1,5 +1,5 @@
-import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
+import { create } from "zustand";
 
 interface SocketStore {
   socket: Socket | null;
@@ -19,7 +19,12 @@ export const useSocketStore = create<SocketStore>((set, get) => {
     users: [],
 
     connectSocket: (visible) => {
-      if (socket) return;
+      // Si le socket existe déjà, on met juste à jour la visibilité
+      if (socket) {
+        socket.emit("addUser", visible, "foreground");
+        set({ visible });
+        return;
+      }
 
       socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL, {
         path: "/socket.io/",
@@ -68,6 +73,7 @@ export const useSocketStore = create<SocketStore>((set, get) => {
 
       set({ socket, visible });
     },
+
     disconnectSocket: () => {
       socket?.disconnect();
       socket = null;

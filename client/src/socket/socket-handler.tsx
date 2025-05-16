@@ -1,12 +1,13 @@
-import { useEffect } from "react";
-import { useSocketStore } from "@/store/socket.store";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRoomStore } from "@/store/room.store";
+import { useSocketStore } from "@/store/socket.store";
 import { HandleUserStatusChangedProps, UserInfos } from "@/types/user";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 // Invalidate les requêtes liées aux utilisateurs et autres événements en temps réel
 export const useSocketHandler = () => {
   const socket = useSocketStore((state) => state.socket);
+  const connectSocket = useSocketStore((state) => state.connectSocket);
   const queryClient = useQueryClient();
   const roomId = useRoomStore((state) => state.room?.id);
   const { setUsersInRoom, updateUserInRoom } = useRoomStore();
@@ -86,17 +87,23 @@ export const useSocketHandler = () => {
     socket?.on("receiveFriendRequest", handleReceiveFriendRequest);
 
     //********** APP STATE **********/
+    // Gestion de la reconnexion
+    socket?.on("reconnect", () => {
+      const isVisible = document.visibilityState === "visible";
+      connectSocket(isVisible);
+    });
+
     // Envoie l'état de l'application sur mobile (premier plan ou arrière plan) au serveur socket
     const handleVisibilityChange = () => {
       const isVisible = document.visibilityState === "visible";
       const appState = isVisible ? "foreground" : "background";
 
-      // Envoie au backend l’état de l’app
+      // Envoie au backend l'état de l'app
       socket?.emit("appStateChanged", { state: appState });
 
-      // Si l’app revient au 1er plan ET que le socket n’est pas connectée : reconnecte
+      // Si l'app revient au 1er plan ET que le socket n'est pas connecté : reconnecte
       if (isVisible && socket && !socket.connected) {
-        socket.connect();
+        connectSocket(true);
       }
     };
 
@@ -125,5 +132,5 @@ export const useSocketHandler = () => {
       //**********  FRIEND REQUEST **********/
       socket?.off("receiveFriendRequest", handleReceiveFriendRequest);
     };
-  }, [socket, queryClient, roomId]);
+  }, [socket, queryClient, roomId, connectSocket]);
 };

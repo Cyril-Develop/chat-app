@@ -56,10 +56,17 @@ export const useSocketStore = create<SocketStore>((set, get) => {
         if (reason === "io server disconnect") {
           socket?.connect();
         }
-        socket = null;
+        set((state) => ({ ...state }));
       });
 
-      set({ socket });
+      // Ajouter un écouteur de reconnexion
+      socket.on("reconnect", () => {
+        console.log("Socket reconnecté");
+        // Émettre à nouveau les événements d'initialisation
+        socket?.emit("addUser", get().visible, "foreground");
+      });
+
+      set({ socket, visible });
     },
     disconnectSocket: () => {
       socket?.disconnect();

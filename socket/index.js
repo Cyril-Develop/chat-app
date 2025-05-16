@@ -124,7 +124,7 @@ io.on("connection", (socket) => {
   socket.on("appStateChanged", (data) => {
     const user = users.find((user) => user.socketId === socket.id);
     if (user) {
-      user.appState = data.state; // 'foreground' ou 'background'
+      user.appState = data.state; // 'foreground' or 'background'
     }
   });
 
@@ -310,7 +310,7 @@ io.on("connection", (socket) => {
     io.emit("userStatusChanged", { userId, visible });
   });
 
-  //******** SEND PRIVATE MESSAGE **********/
+ //******** SEND PRIVATE MESSAGE **********/
   socket.on("sendPrivateMessage", async (data) => {
     const receiverSocket = users.find(
       (user) => user.userId === data.receiver.id
@@ -370,7 +370,7 @@ io.on("connection", (socket) => {
     } catch (error) {
       console.error("Erreur lors de l'envoi de la notification push:", error);
     }
-  }
+  }  
 
   //********** DELETE PRIVATE MESSAGE **********/
   socket.on("deletePrivateMessage", (messageId) => {

@@ -101,6 +101,9 @@ export const useSocketHandler = () => {
       // Envoie au backend l'état de l'app
       socket?.emit("appStateChanged", { state: appState });
 
+      // Met à jour immédiatement l'état de connexion
+      connectSocket(isVisible);
+
       // Si l'app revient au 1er plan ET que le socket n'est pas connecté : reconnecte
       if (isVisible && socket && !socket.connected) {
         connectSocket(true);

@@ -26,7 +26,7 @@ Base de données :
 ### Cloner le projet :
 
 ```terminal
-git clone https://github.com/Cyril-Develop/Chateo.git .
+git clone https://github.com/Cyril-Develop/Chateo-portfolio.git .
 ```
 
 ### Créer le dossier des images :
@@ -140,7 +140,7 @@ cd socket && npm start
 - Statuts en temps réel – Voir qui est en ligne et suivre les changements de statut
 - Mise à jour du profil – Modifier photo de profil, nom d'utilisateur et email
 - Interface responsive – Adaptée aux mobiles et tablettes
-- Notifications – Recevoir des alertes pour les nouveaux messages et les demandes d'amis
+- Notifications – Recevoir des alertes pour les nouveaux messages et les demandes d'amis (temps réel, hors ligne)
 - Mode espion
 - Dark mode
 
@@ -148,4 +148,4 @@ cd socket && npm start
 
 🚀 [Démo Chateo](https://cyril-develop.fr/chateo)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/Chateo?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/Chateo-portfolio?style=for-the-badge)

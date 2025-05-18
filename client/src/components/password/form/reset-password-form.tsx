@@ -58,7 +58,7 @@ export default function ResetPassword() {
         logo: <Icons.check />,
       });
       form.reset();
-      navigate("/chateo/auth");
+      navigate("/chat-app/auth");
     } catch (error: any) {
       setApiError(error.message);
     } finally {

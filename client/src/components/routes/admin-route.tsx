@@ -7,7 +7,7 @@ interface AdminRouteProps {
 
 const AdminRoute = ({ element, role }: AdminRouteProps) => {
   if (role !== "ADMIN") {
-    return <Navigate to="/chateo" />;
+    return <Navigate to="/chat-app" />;
   }
   return element;
 };

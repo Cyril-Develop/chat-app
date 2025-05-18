@@ -220,7 +220,7 @@ const RegisterForm = () => {
             <p className="text-additional-info text-center">
               En vous inscrivant, vous acceptez nos{" "}
               <Link
-                to="/chateo/terms"
+                to="/chat-app/terms"
                 className="text-primary no-underline rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring underline-offset-4 hover:underline focus:underline font-semibold"
               >
                 conditions générales d'utilisation

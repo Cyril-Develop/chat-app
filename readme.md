@@ -1,4 +1,4 @@
-# Chateo - est une application de chat en temps réel.
+# Chat'App est une application de chat en temps réel.
 
 ![homepage](/client/public/screenshots/home.webp)
 ![chat](/client/public/screenshots/chat.webp)
@@ -26,7 +26,7 @@ Base de données :
 ### Cloner le projet :
 
 ```terminal
-git clone https://github.com/Cyril-Develop/Chateo-portfolio.git .
+git clone https://github.com/Cyril-Develop/chat-app.git .
 ```
 
 ### Créer le dossier des images :
@@ -146,6 +146,6 @@ cd socket && npm start
 
 ## 🎮 Tester le projet en ligne
 
-🚀 [Démo Chateo](https://cyril-develop.fr/chateo)
+🚀 [Démo chat-app](https://cyril-develop.fr/chat-app)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/Chateo-portfolio?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/chat-app?style=for-the-badge)

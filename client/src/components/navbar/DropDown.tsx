@@ -66,7 +66,7 @@ const DropDown = () => {
         >
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() => navigate("/chateo/chat")}
+              onClick={() => navigate("/chat-app/chat")}
               className={cn("item-nav")}
             >
               <Icons.chat width={18} height={18} />
@@ -122,7 +122,7 @@ const DropDown = () => {
             </DropdownMenuSub>
           </DropdownMenuGroup>
           <DropdownMenuItem
-            onClick={() => navigate("chateo/settings/profile")}
+            onClick={() => navigate("chat-app/settings/profile")}
             className={cn("item-nav")}
           >
             <Icons.settings width={18} height={18} />

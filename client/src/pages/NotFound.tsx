@@ -19,7 +19,7 @@ const NotFound = () => {
       <img src={Logo} alt="404" className="min-w-72 max-w-[800px] w-2/3" />
 
       <Link
-        to={isAuthenticated ? "/chateo/chat" : "/chateo"}
+        to={isAuthenticated ? "/chat-app/chat" : "/chat-app"}
         className="link-form text-base lg:text-xl"
       >
         Retouner à la page d'accueil

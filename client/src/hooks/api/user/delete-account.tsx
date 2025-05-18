@@ -34,7 +34,7 @@ export const useDeleteAccountMutation = () => {
 
       setAuthentication(false, null);
       queryClient.clear();
-      navigate("/chateo/auth");
+      navigate("/chat-app/auth");
     },
     onError: (error: ApiError) => {
       handleApiError(error, {

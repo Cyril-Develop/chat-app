@@ -6,7 +6,7 @@ const RedirectOnAuth = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   if (isAuthenticated) {
-    return <Navigate to="/chateo/chat" />;
+    return <Navigate to="/chat-app/chat" />;
   }
 
   return <Home />;

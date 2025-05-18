@@ -33,7 +33,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/chateo/chat");
+      navigate("/chat-app/chat");
     }
   }, [isAuthenticated]);
 

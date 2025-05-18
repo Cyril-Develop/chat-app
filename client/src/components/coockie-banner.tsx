@@ -30,7 +30,7 @@ const CookieBanner = () => {
         <br /> En cliquant sur « Accepter », vous consentez à l'utilisation des
         cookies conformément à nos{" "}
         <Link
-          to="/chateo/terms"
+          to="/chat-app/terms"
           className="text-primary no-underline rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring underline-offset-4 hover:underline focus:underline font-semibold"
         >
           conditions générales d'utilisation

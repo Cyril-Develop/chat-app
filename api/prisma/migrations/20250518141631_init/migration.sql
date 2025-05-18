@@ -33,14 +33,15 @@ CREATE TABLE `User` (
 CREATE TABLE `PushSubscription` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
-    `endpoint` VARCHAR(191) NOT NULL,
+    `endpoint` TEXT NOT NULL,
+    `endpointHash` VARCHAR(64) NOT NULL,
     `p256dh` VARCHAR(191) NOT NULL,
     `auth` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `PushSubscription_endpoint_key`(`endpoint`),
     INDEX `PushSubscription_userId_idx`(`userId`),
+    UNIQUE INDEX `PushSubscription_userId_endpointHash_key`(`userId`, `endpointHash`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -40,7 +40,7 @@ export const handleApiError = (
       }
       queryClient.clear();
       if (navigate) {
-        navigate("/chateo/auth");
+        navigate("/chat-app/auth");
       }
       break;
 
@@ -50,7 +50,7 @@ export const handleApiError = (
         setAuthentication(false, null);
       }
       if (navigate) {
-        navigate("/chateo/auth");
+        navigate("/chat-app/auth");
       }
       break;
 

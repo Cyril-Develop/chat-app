@@ -362,7 +362,7 @@ io.on("connection", (socket) => {
         },
         body: JSON.stringify({
           receiverId: data.receiver.id,
-          title: "Chateo",
+          title: "Chat'App",
           body: `${data.user.username} vous a envoyé un message privé`,
           image: data.user.profileImage,
         }),
@@ -421,7 +421,7 @@ io.on("connection", (socket) => {
           },
           body: JSON.stringify({
             receiverId,
-            title: "Chateo",
+            title: "Chat'App",
             body: `${senderName} vous a envoyé une demande d'ami`,
             image: senderProfileImage,
           }),

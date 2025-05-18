@@ -15,30 +15,30 @@ export default defineConfig({
         "screenshots/*.webp",
       ],
       manifest: {
-        name: "Chateo",
-        short_name: "Chateo",
+        name: "Chat'App",
+        short_name: "Chat'App",
         categories: ["social", "communication"],
         description:
-          "Chateo est une application de messagerie complète : discussions publiques ou privées, messages directs, partage d'images, notifications, personnalisation, et appels audio.",
-        start_url: "/chateo/",
+          "chat-app est une application de messagerie complète : discussions publiques ou privées, messages directs, partage d'images, notifications, personnalisation, et appels audio.",
+        start_url: "/chat-app/",
         lang: "fr",
-        scope: "/chateo/",
+        scope: "/chat-app/",
         display: "standalone",
         theme_color: "#ffffff",
         background_color: "#2563EB",
         icons: [
           {
-            src: "/chateo/favicons/favicon-96x96.png",
+            src: "/chat-app/favicons/favicon-96x96.png",
             sizes: "96x96",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/icon-192x192.png",
+            src: "/chat-app/favicons/icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/chateo/favicons/icon-512x512.png",
+            src: "/chat-app/favicons/icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
@@ -46,7 +46,7 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "/chateo/screenshots/home.webp",
+            src: "/chat-app/screenshots/home.webp",
             sizes: "1920x1032",
             type: "image/webp",
             form_factor: "wide",
@@ -58,13 +58,13 @@ export default defineConfig({
         type: "module",
       },
       workbox: {
-        cacheId: "chateo-v1.1",
+        cacheId: "chat-app-v1",
         clientsClaim: true,
         skipWaiting: true,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,webp,wav}"],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/cyril-develop\.fr\/chateo\/api\//,
+            urlPattern: /^https:\/\/cyril-develop\.fr\/chat-app\/api\//,
             handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
@@ -78,7 +78,7 @@ export default defineConfig({
       filename: "sw.js",
     }),
   ],
-  base: "/chateo/",
+  base: "/chat-app/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

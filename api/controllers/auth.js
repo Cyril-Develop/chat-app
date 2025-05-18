@@ -99,7 +99,7 @@ exports.logout = (req, res) => {
 //**********  VERIFY ACCOUNT **********/
 const sendOTPEmail = async (email, otp) => {
   await transporter.sendMail({
-    from: "Chateo",
+    from: "Chat'App",
     to: email,
     subject: "Votre code de vérification.",
     html: validRegister(otp),
@@ -218,7 +218,7 @@ const sendResetPasswordEmail = async (email, userId) => {
   });
 
   await transporter.sendMail({
-    from: "Chateo",
+    from: "Chat'App",
     to: email,
     subject: "Récupération de mot de passe.",
     html: resetPassword(token),

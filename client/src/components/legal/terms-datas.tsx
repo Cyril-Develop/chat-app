@@ -6,7 +6,7 @@ export const terms = [
     title: "Présentation du service",
     text: (
       <p>
-        Chateo est une plateforme de messagerie instantanée permettant aux
+        Chat'App est une plateforme de messagerie instantanée permettant aux
         utilisateurs d'échanger des messages privés et de rejoindre des salons
         de discussion publics ou privés. Notre objectif est de fournir un espace
         sûr et convivial.
@@ -18,7 +18,7 @@ export const terms = [
     title: "Acceptation des CGU",
     text: (
       <p>
-        L'utilisation de Chateo implique l'acceptation{" "}
+        L'utilisation de Chat'App implique l'acceptation{" "}
         <strong>sans réserve</strong> des présentes CGU. <br /> Si vous n'êtes
         pas d'accord avec ces conditions, veuillez ne pas utiliser nos services.
         L'accès à certaines fonctionnalités peut être soumis à des conditions
@@ -34,7 +34,7 @@ export const terms = [
         Nous nous réservons le droit de modifier ces CGU à tout moment. Les
         modifications prendront effet dès leur publication sur la plateforme.
         Les utilisateurs seront notifiés des changements importants. La
-        poursuite de l'utilisation de Chateo après modification constitue une
+        poursuite de l'utilisation de Chat'App après modification constitue une
         acceptation des nouvelles conditions.
       </p>
     ),
@@ -45,7 +45,7 @@ export const terms = [
     text: (
       <>
         <p>
-          Pour accéder à toutes les fonctionnalités de Chateo, vous devez créer
+          Pour accéder à toutes les fonctionnalités de Chat'App, vous devez créer
           un compte en fournissant des informations exactes et à jour. Vous êtes
           responsable de la confidentialité de votre mot de passe et des
           activités effectuées sur votre compte.
@@ -63,7 +63,7 @@ export const terms = [
     title: "Fonctionnalités du service",
     text: (
       <>
-        <p>Chateo offre les fonctionnalités suivantes :</p>
+        <p>Chat'App offre les fonctionnalités suivantes :</p>
         <ul className="list-disc pl-5">
           <li>
             Création et participation à des salons de discussion
@@ -93,7 +93,7 @@ export const terms = [
     title: "Mode espion",
     text: (
       <p>
-        Chateo propose une fonctionnalité appelée "mode espion" qui permet aux
+        Chat'App propose une fonctionnalité appelée "mode espion" qui permet aux
         utilisateurs de se connecter à la plateforme sans être visibles.
         <br />
         En mode espion, vous pouvez créer/rejoindre des salons de discussion et
@@ -107,9 +107,9 @@ export const terms = [
     title: "Utilisation de la plateforme",
     text: (
       <>
-        <p>En utilisant Chateo, vous vous engagez à :</p>
+        <p>En utilisant Chat'App, vous vous engagez à :</p>
         <ul className="list-disc pl-5">
-          <li>Ne pas utiliser Chateo à des fins illégales ou frauduleuses.</li>
+          <li>Ne pas utiliser Chat'App à des fins illégales ou frauduleuses.</li>
           <li>
             Ne pas diffuser des contenus haineux, offensants ou incitant à la
             violence.
@@ -137,7 +137,7 @@ export const terms = [
     title: "Modération et sanctions",
     text: (
       <p>
-        Nous nous réservons le droit de modérer les contenus publiés sur Chateo
+        Nous nous réservons le droit de modérer les contenus publiés sur Chat'App
         et de prendre des mesures contre les utilisateurs qui ne respectent pas
         ces CGU. Ces mesures peuvent inclure la suspension temporaire ou
         permanente du compte. Nos modérateurs surveillent les comportements
@@ -191,7 +191,7 @@ export const terms = [
     title: "Propriété intellectuelle",
     text: (
       <p>
-        Tous les éléments de Chateo (logo, design, textes, etc.) sont protégés
+        Tous les éléments de Chat'App (logo, design, textes, etc.) sont protégés
         par le droit de la propriété intellectuelle. Vous conservez les droits
         sur les contenus que vous publiez, mais nous accordez une licence non
         exclusive pour les utiliser, les adapter et les afficher dans le cadre
@@ -212,7 +212,7 @@ export const terms = [
         <p>
           Les utilisateurs sont entièrement responsables des contenus qu'ils
           partagent et des interactions qu'ils ont avec d'autres utilisateurs
-          sur Chateo.
+          sur Chat'App.
         </p>
       </>
     ),
@@ -224,7 +224,7 @@ export const terms = [
       <p>
         Vous pouvez supprimer votre compte à tout moment depuis les paramètres
         de votre profil. Nous nous réservons le droit de résilier ou suspendre
-        votre accès à Chateo en cas de violation des présentes CGU. Certaines
+        votre accès à Chat'App en cas de violation des présentes CGU. Certaines
         données peuvent être conservées conformément à nos obligations légales
         même après la suppression de votre compte.
       </p>

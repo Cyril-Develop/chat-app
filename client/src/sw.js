@@ -12,7 +12,7 @@ clientsClaim();
 
 // Cache pour les requêtes API
 registerRoute(
-  /^https:\/\/cyril-develop\.fr\/chateo\/api\//,
+  /^https:\/\/cyril-develop\.fr\/chat-app\/api\//,
   new NetworkFirst({
     cacheName: "api-cache",
   })
@@ -29,7 +29,7 @@ self.addEventListener("push", (event) => {
       title: data.title,
       body: data.body,
       icon: data.icon,
-      badge: "/chateo/favicons/favicon-96x96.png",
+      badge: "/chat-app/favicons/favicon-96x96.png",
       vibrate: [100, 50, 100],
       data: {
         url: data.url,
@@ -50,8 +50,8 @@ self.addEventListener("message", (event) => {
       (async () => {
         try {
           await self.registration.showNotification("Notifications activées", {
-            body: "Vous recevrez désormais les notifications de Chateo",
-            icon: "/chateo/favicons/icon-192x192.png",
+            body: "Vous recevrez désormais les notifications de chat-app",
+            icon: "/chat-app/favicons/icon-192x192.png",
             tag: `test-${Date.now()}`,
           });
         } catch (e) {
@@ -67,13 +67,13 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   // URL vers laquelle rediriger l'utilisateur
-  const urlToOpen = event.notification.data?.url || "/chateo/";
+  const urlToOpen = event.notification.data?.url || "/chat-app/";
 
   event.waitUntil(
     clients.matchAll({ type: "window" }).then((clientList) => {
       // Vérifier si une fenêtre est déjà ouverte
       for (const client of clientList) {
-        if (client.url.includes("/chateo/") && "focus" in client) {
+        if (client.url.includes("/chat-app/") && "focus" in client) {
           client.focus();
           client.navigate(urlToOpen);
           return;

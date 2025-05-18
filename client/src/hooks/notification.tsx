@@ -13,7 +13,7 @@ export const useGlobalNotifications = () => {
   const contactId = useContactStore((state) => state.contactId);
   const currentUserId = useAuthStore((state) => state.user?.id);
   const location = useLocation();
-  const isOnChatPage = location.pathname === "/chateo/chat";
+  const isOnChatPage = location.pathname === "/chat-app/chat";
 
   // Lorsqu’un message ou une demande est reçu en live
   useEffect(() => {

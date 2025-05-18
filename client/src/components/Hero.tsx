@@ -19,7 +19,7 @@ const Hero = () => {
               environnement sécurisé.
             </p>
             <Link
-              to={isAuthenticated ? "/chateo/chat" : "/chateo/auth"}
+              to={isAuthenticated ? "/chat-app/chat" : "/chat-app/auth"}
               className="bg-primary font-semibold text-base lg:text-xl text-primary-foreground hover:bg-primary/80 h-11 md:h-14 rounded-md flex items-center justify-center mx-auto px-4 lg:px-6"
             >
               Commencer

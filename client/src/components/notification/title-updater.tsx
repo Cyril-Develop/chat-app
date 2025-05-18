@@ -14,7 +14,7 @@ const NotificationTitleUpdater = () => {
 
     if (total > 0) {
       let visible = true;
-      const baseTitle = "Chateo";
+      const baseTitle = "Chat'App";
 
       intervalRef.current = setInterval(() => {
         document.title = visible
@@ -23,13 +23,13 @@ const NotificationTitleUpdater = () => {
         visible = !visible;
       }, 1000);
     } else {
-      document.title = "Chateo";
+      document.title = "Chat'App";
     }
 
     // Cleanup
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
-      document.title = "Chateo";
+      document.title = "Chat'App";
     };
   }, [messages.length, requests.length]);
 

@@ -58,17 +58,17 @@ function App() {
         </Layout>
       ),
       children: [
-        { path: "/chateo", element: <RedirectOnAuth /> },
-        { path: "/chateo/auth", element: <Auth /> },
-        { path: "/chateo/reset-password/:token", element: <Password /> },
-        { path: "/chateo/contact", element: <Contact /> },
-        { path: "/chateo/terms", element: <Terms /> },
+        { path: "/chat-app", element: <RedirectOnAuth /> },
+        { path: "/chat-app/auth", element: <Auth /> },
+        { path: "/chat-app/reset-password/:token", element: <Password /> },
+        { path: "/chat-app/contact", element: <Contact /> },
+        { path: "/chat-app/terms", element: <Terms /> },
         {
-          path: "/chateo/chat",
+          path: "/chat-app/chat",
           element: <PrivateRoute element={<Chat />} />,
         },
         {
-          path: "/chateo/settings",
+          path: "/chat-app/settings",
           element: (
             <PrivateRoute
               element={
@@ -80,7 +80,7 @@ function App() {
           ),
         },
         {
-          path: "/chateo/settings/profile",
+          path: "/chat-app/settings/profile",
           element: (
             <PrivateRoute
               element={
@@ -92,7 +92,7 @@ function App() {
           ),
         },
         {
-          path: "/chateo/settings/appearance",
+          path: "/chat-app/settings/appearance",
           element: (
             <PrivateRoute
               element={
@@ -104,7 +104,7 @@ function App() {
           ),
         },
         {
-          path: "/chateo/settings/stream",
+          path: "/chat-app/settings/stream",
           element: (
             <PrivateRoute
               element={
@@ -116,7 +116,7 @@ function App() {
           ),
         },
         {
-          path: "/chateo/settings/account",
+          path: "/chat-app/settings/account",
           element: (
             <PrivateRoute
               element={
@@ -128,7 +128,7 @@ function App() {
           ),
         },
         {
-          path: "/chateo/settings/notifications",
+          path: "/chat-app/settings/notifications",
           element: (
             <PrivateRoute
               element={
@@ -140,7 +140,7 @@ function App() {
           ),
         },
         {
-          path: "/chateo/settings/dashboard",
+          path: "/chat-app/settings/dashboard",
           element: (
             <AdminRoute
               element={

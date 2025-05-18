@@ -1,7 +1,7 @@
 const resetPassword = (token) => `
   <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4;">
     <h1 style="color: #007bff; text-align: center;">
-      Chateo
+      Chat'App
     </h1>
     <h2 style="color: #333;">Veuillez cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe :</h2>
     <a href="${process.env.CLIENT_URL}/reset-password/${token}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px;">

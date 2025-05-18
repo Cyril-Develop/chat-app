@@ -124,12 +124,12 @@ exports.sendNotification = async (req, res) => {
       title: title,
       body: body,
       icon: `${process.env.IMAGE_URL}/profile/${image}`,
-      url: "/chateo/",
+      url: "/chat-app/",
       actions: [
         {
           action: "open_url",
           title: "Ouvrir",
-          url: "/chateo/",
+          url: "/chat-app/",
         },
       ],
     });

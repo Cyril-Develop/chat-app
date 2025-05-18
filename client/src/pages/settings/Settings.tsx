@@ -16,58 +16,58 @@ const Settings = ({ children }: SettingsLayoutProps) => {
   const sidebarNavItems = [
     {
       title: "Profil",
-      href: "/chateo/settings/profile",
+      href: "/chat-app/settings/profile",
     },
     {
       title: "Apparence",
-      href: "/chateo/settings/appearance",
+      href: "/chat-app/settings/appearance",
     },
     {
       title: "Voix",
-      href: "/chateo/settings/stream",
+      href: "/chat-app/settings/stream",
     },
     {
       title: "Compte",
-      href: "/chateo/settings/account",
+      href: "/chat-app/settings/account",
     },
     {
       title: "Notifications",
-      href: "/chateo/settings/notifications",
+      href: "/chat-app/settings/notifications",
     },
     {
       title: "Tableau de bord",
-      href: "/chateo/settings/dashboard",
+      href: "/chat-app/settings/dashboard",
     },
   ];
 
   const imageSettings = [
     {
-      href: "/chateo/settings/profile",
+      href: "/chat-app/settings/profile",
       img: ImageProfile,
       alt: "profile",
     },
     {
-      href: "/chateo/settings/appearance",
+      href: "/chat-app/settings/appearance",
       img: ImageAppearance,
       alt: "appearance",
     },
     {
-      href: "/chateo/settings/stream",
+      href: "/chat-app/settings/stream",
       img: ImageStream,
       alt: "stream",
     },
     {
-      href: "/chateo/settings/account",
+      href: "/chat-app/settings/account",
       img: ImageAccount,
       alt: "account",
     },
     {
-      href: "/chateo/settings/notifications",
+      href: "/chat-app/settings/notifications",
       img: ImageNotification,
       alt: "notification",
     },
     {
-      href: "/chateo/settings/dashboard",
+      href: "/chat-app/settings/dashboard",
       img: ImageDashboard,
       alt: "dashboard",
     },

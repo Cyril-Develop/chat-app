@@ -1,5 +1,5 @@
-export const JOIN_SOUND_URL = "/chateo/sounds/join-vocal.wav";
-export const LEAVE_SOUND_URL = "/chateo/sounds/leave-vocal.wav";
+export const JOIN_SOUND_URL = "/chat-app/sounds/join-vocal.wav";
+export const LEAVE_SOUND_URL = "/chat-app/sounds/leave-vocal.wav";
 
 export const playNotificationSound = (type: "join" | "leave") => {
   const soundUrl = type === "join" ? JOIN_SOUND_URL : LEAVE_SOUND_URL;

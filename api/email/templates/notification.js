@@ -1,7 +1,7 @@
 const notificationTemplate = (name, type) => `
   <div style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; color: #333;">
     <h1 style="color: #007bff; text-align: center;">
-      Chateo
+      Chat'App
     </h1>
     <p style="font-size: 16px; line-height: 1.5; background-color: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; text-align: center;">
       ${
@@ -20,10 +20,10 @@ const notificationTemplate = (name, type) => `
 
     <hr style="border-top: 2px solid #ddd; margin: 20px 0;">
     <p style="font-size: 14px; color: #777; text-align: center;">
-      Si vous ne souhaitez plus recevoir de notifications de la part de Chateo, vous pouvez modifier vos préférences dans les paramètres de votre compte.
+      Si vous ne souhaitez plus recevoir de notifications de la part de Chat'App, vous pouvez modifier vos préférences dans les paramètres de votre compte.
     </p>
     <p style="font-size: 14px; color: #777; text-align: center;">
-      Ce message a été envoyé automatiquement depuis <strong>Chateo</strong>.
+      Ce message a été envoyé automatiquement depuis <strong>Chat'App</strong>.
     </p>
   </div>
 `;

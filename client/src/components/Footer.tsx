@@ -9,7 +9,7 @@ function Footer() {
         <div className="flex flex-col sm:space-y-1">
           <div className="flex items-center gap-2 ">
             <Icons.logo width="20" height="20" />
-            Chateo
+            Chat'App
           </div>
           <p className="dark:text-muted-foreground">
             Une application de messagerie moderne qui connecte les personnes.
@@ -22,7 +22,7 @@ function Footer() {
             <ul>
               <li>
                 <Link
-                  to="/chateo/contact"
+                  to="/chat-app/contact"
                   className="hover:underline underline-offset-4 dark:text-muted-foreground text-sm sm:text-base"
                 >
                   Contactez nous
@@ -36,7 +36,7 @@ function Footer() {
             <ul>
               <li>
                 <Link
-                  to="/chateo/terms"
+                  to="/chat-app/terms"
                   className="hover:underline underline-offset-4 dark:text-muted-foreground text-sm sm:text-base"
                 >
                   Conditions générales d'utilisation

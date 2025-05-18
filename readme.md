@@ -1,8 +1,8 @@
 # Chat'App est une application de chat en temps réel.
 
-![homepage](/client/public/screenshots/home.webp)
-![chat](/client/public/screenshots/chat.webp)
-![settings](/client/public/screenshots/settings.webp)
+![homepage](/client/public/screenshot/home.webp)
+![chat](/client/public/screenshot/chat.webp)
+![settings](/client/public/screenshot/settings.webp)
 
 ## 🚀 Technologies utilisées :
 

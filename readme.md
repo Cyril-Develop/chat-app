@@ -1,9 +1,8 @@
-# Chateo - Application de chat en temps réel.
+# Chat'App est une application de chat en temps réel.
 
-![room](/client/public/screenshot/room.webp)
-![profile](/client/public/screenshot/profile.webp)
-![dashboard](/client/public/screenshot/dashboard.webp)
-![home](/client/public/screenshot/home.webp)
+![homepage](/client/public/screenshots/home.webp)
+![chat](/client/public/screenshots/chat.webp)
+![settings](/client/public/screenshots/settings.webp)
 
 ## 🚀 Technologies utilisées :
 
@@ -27,7 +26,7 @@ Base de données :
 ### Cloner le projet :
 
 ```terminal
-git clone https://github.com/Cyril-Develop/Chateo.git .
+git clone https://github.com/Cyril-Develop/chat-app.git .
 ```
 
 ### Créer le dossier des images :
@@ -136,14 +135,17 @@ cd socket && npm start
 - Authentification – Créer un compte utilisateur, se connecter et se déconnecter
 - Salons de discussion – Créer, rejoindre et gérer des salons publics ou privés
 - Messagerie – Envoyer des messages (texte, image) en groupe ou en privé
+- Chat en temps réel – textuel et/ou vocal
 - Amis – Rechercher, ajouter, bloquer et supprimer des amis
 - Statuts en temps réel – Voir qui est en ligne et suivre les changements de statut
 - Mise à jour du profil – Modifier photo de profil, nom d'utilisateur et email
 - Interface responsive – Adaptée aux mobiles et tablettes
+- Notifications – Recevoir des alertes pour les nouveaux messages et les demandes d'amis (temps réel, hors ligne)
+- Mode espion
+- Dark mode
 
 ## 🎮 Tester le projet en ligne
 
-🚀 [Démo Chateo](https://cyril-develop.fr/chateo)
+🚀 [Démo chat-app](https://cyril-develop.fr/chat-app)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/Chateo?style=for-the-badge)
-
+![GitHub repo size](https://img.shields.io/github/repo-size/Cyril-Develop/chat-app?style=for-the-badge)

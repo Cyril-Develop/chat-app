@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+model Otp {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  otp       String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([email])
+  @@map("OTP")
+}
+
+model User {
+  id                     Int                  @id @default(autoincrement())
+  createdAt              DateTime             @default(now())
+  email                  String               @unique
+  password               String               @db.VarChar(255)
+  username               String               @unique
+  bio                    String?              @db.VarChar(150)
+  profileImage           String               @default("default.jpg")
+  notification           String               @default("accept")
+  role                   Role                 @default(USER)
+  pushSubscriptions      PushSubscription[]
+  sex                    Sex                  @default(UNDISCLOSED)
+  blockedUsers           BlockedUser[]        @relation("BlockerRelation")
+  blockedBy              BlockedUser[]        @relation("BlockedRelation")
+  adminBlocks            AdminBlock[]         @relation("BlockedByAdmin")
+  blocksAdministered     AdminBlock[]         @relation("AdminBlocker")
+  chatRooms              UserChatRoom[]
+  friends                Friend[]             @relation("UserFriends")
+  friendOf               Friend[]             @relation("FriendUsers")
+  createdChatRooms       ChatRoom[]           @relation("CreatorChatRooms")
+  messages               Message[]            @relation("UserMessages")
+  likedMessages          MessageLike[]        @relation("UserLikes")
+  sentFriendRequests     FriendRequest[]      @relation("SenderFriendRequests")
+  receivedFriendRequests FriendRequest[]      @relation("ReceiverFriendRequests")
+  sentMessages           PrivateMessage[]     @relation("SentPrivateMessages")
+  receivedMessages       PrivateMessage[]     @relation("ReceivedPrivateMessages")
+  likedPrivateMessages   PrivateMessageLike[]
+}
+
+model PushSubscription {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  endpoint     String   @db.Text
+  endpointHash String   @db.VarChar(64) // Pour stocker un hachage SHA-256 de l'endpoint
+  p256dh       String
+  auth         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, endpointHash])
+  @@index([userId])
+}
+
+model AdminBlock {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  adminId   Int
+  reason    String
+  duration  String
+  isActive  Boolean   @default(true)
+  startDate DateTime  @default(now())
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user  User @relation("BlockedByAdmin", fields: [userId], references: [id], onDelete: Cascade)
+  admin User @relation("AdminBlocker", fields: [adminId], references: [id])
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+model BlockedUser {
+  id        Int  @id @default(autoincrement())
+  blockerId Int
+  blockedId Int
+  blocker   User @relation("BlockerRelation", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   User @relation("BlockedRelation", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+}
+
+model Message {
+  id         Int           @id @default(autoincrement())
+  message    String        @db.Text
+  image      String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  userId     Int
+  chatRoomId Int
+  likes      MessageLike[]
+  user       User          @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
+  chatRoom   ChatRoom      @relation(fields: [chatRoomId], references: [id], name: "ChatRoomMessages", onDelete: Cascade)
+
+  @@index([userId])
+  @@index([chatRoomId])
+  @@index([createdAt])
+}
+
+model MessageLike {
+  messageId Int
+  userId    Int
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User    @relation("UserLikes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([messageId, userId])
+}
+
+model PrivateMessage {
+  id         Int                  @id @default(autoincrement())
+  message    String               @db.Text
+  image      String?
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  userId     Int
+  receiverId Int
+  isRead     Boolean              @default(false)
+  likes      PrivateMessageLike[]
+
+  user     User @relation("SentPrivateMessages", fields: [userId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedPrivateMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([receiverId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+model PrivateMessageLike {
+  privateMessageId Int
+  userId           Int
+  privateMessage   PrivateMessage @relation(fields: [privateMessageId], references: [id], onDelete: Cascade)
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([privateMessageId, userId])
+}
+
+model ChatRoom {
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String?
+  isPrivate   Boolean        @default(false)
+  password    String?        @db.VarChar(255)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  createdBy   Int
+  creator     User           @relation(fields: [createdBy], references: [id], name: "CreatorChatRooms", onDelete: Cascade)
+  users       UserChatRoom[]
+  messages    Message[]      @relation("ChatRoomMessages")
+}
+
+model UserChatRoom {
+  userId     Int
+  chatRoomId Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+
+  @@id([userId, chatRoomId])
+}
+
+model Friend {
+  userId   Int
+  friendId Int
+  user     User @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend   User @relation("FriendUsers", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@id([userId, friendId])
+  @@unique([userId, friendId])
+}
+
+model FriendRequest {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("SenderFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceiverFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  NON_BINARY
+  UNDISCLOSED
+}
+
+enum Role {
+  USER
+  ADMIN
+  GUEST
+}

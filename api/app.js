@@ -19,6 +19,14 @@ app.use(
 );
 app.use(morgan("dev"));
 
+// Middleware pour rediriger les requêtes sans préfixe
+app.use((req, res, next) => {
+  if (!req.path.startsWith("/chat-app/api")) {
+    req.url = `/chat-app/api${req.url}`;
+  }
+  next();
+});
+
 // Preventing DOS attacks
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -34,7 +42,7 @@ app.use("/chat-app/api/images", express.static(path.join(__dirname, "images")));
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
-const chatRoutes = require('./routes/chat');
+const chatRoutes = require("./routes/chat");
 const emailRoutes = require("./routes/email");
 const notificationRoutes = require("./routes/notification");
 

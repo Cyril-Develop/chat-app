@@ -19,7 +19,7 @@ export default defineConfig({
         short_name: "Chat'App",
         categories: ["social", "communication"],
         description:
-          "chat-app est une application de messagerie complète : discussions publiques ou privées, messages directs, partage d'images, notifications, personnalisation, et appels audio.",
+          "Chat'App est une application de messagerie complète : discussions publiques ou privées, messages directs, partage d'images, notifications, personnalisation, et appels audio.",
         start_url: "/chat-app/",
         lang: "fr",
         scope: "/chat-app/",

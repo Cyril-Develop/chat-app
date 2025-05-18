@@ -2,7 +2,7 @@
 
 ![homepage](/client/public/screenshots/home.webp)
 ![chat](/client/public/screenshots/chat.webp)
-![profile](/client/public/screenshots/profile.webp)
+![settings](/client/public/screenshots/settings.webp)
 
 ## 🚀 Technologies utilisées :
 
